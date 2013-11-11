@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#492C1C" >
+
+    <RelativeLayout
+        android:id="@+id/layout_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_top_bg" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/set_title"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/layout_top" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:id="@+id/synchronize"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="15dip"
+                android:text="@string/synchronize"
+                android:textColor="#E03B0D"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:id="@+id/layout_mid"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/synchronize"
+                android:background="@drawable/tong_context_bg"
+                android:padding="10dip"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="10dip" >
+
+                <TextView
+                    android:id="@+id/synchronize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_top"
+                    android:text="@string/content"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dip"
+                    android:background="@drawable/tong_btu_bg2"
+                    android:text="@string/synchronize_btn" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/set"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layout_mid"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="15dip"
+                android:text="@string/set_txt"
+                android:textColor="#E03B0D"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:id="@+id/setting"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/set"
+                android:padding="10dip"
+                android:background="@drawable/tong_context_bg"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="10dip" >
+
+                <RelativeLayout
+                    android:id="@+id/language"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/layout_top" >
+
+                    <TextView
+                        android:id="@+id/language_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/language"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/language_set"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="20dip"
+                        android:layout_toRightOf="@+id/language_text" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/print_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/language"
+                    android:layout_marginTop="10dip"
+                    android:text="@string/print_set"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp" />
+
+                <RelativeLayout
+                    android:id="@+id/print_set_one"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/print_set" >
+
+                    <TextView
+                        android:id="@+id/print_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/print_one"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/print_one_edit"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="20dip"
+                        android:layout_toRightOf="@+id/print_one" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/print_set_two"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/print_set_one" >
+
+                    <TextView
+                        android:id="@+id/print_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/print_two"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/print_two_edit"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="20dip"
+                        android:layout_toRightOf="@+id/print_two" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/take_price"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/print_set_two" >
+
+                    <TextView
+                        android:id="@+id/take_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/take_price"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/take_price_edit"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="20dip"
+                        android:layout_toRightOf="@+id/take_price" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/take_price"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginRight="20dip"
+                    android:layout_marginTop="10dip" >
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="10dip"
+                        android:background="@drawable/tong_btu_bg"
+                        android:text="@string/synchronize_btn2"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/admin_set"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/setting"
+                android:layout_marginLeft="15dip"
+                android:layout_marginTop="15dip"
+                android:text="@string/admin_set"
+                android:textColor="#E03B0D"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/admin_set"
+                android:padding="10dip"
+                android:background="@drawable/tong_context_bg"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="10dip" >
+
+                <RelativeLayout
+                    android:id="@+id/synchronization_menu_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/synchronization_menu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/synchronization_menu"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/synchronization_menu_brn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/tong_btu_bg2"
+                        android:text="@string/synchronize_btn"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/synchronization_pay_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/synchronization_menu_layout"
+                    android:layout_marginTop="10dip" >
+
+                    <TextView
+                        android:id="@+id/synchronization_pay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/synchronization_pay"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/synchronization_pay_brn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/tong_btu_bg2"
+                        android:text="@string/synchronize_btn" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/price_set_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/synchronization_pay_layout"
+                    android:layout_marginTop="10dip" >
+
+                    <TextView
+                        android:id="@+id/price_set"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/price_set"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/price_set_brn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/tong_btu_bg2"
+                        android:text="@string/synchronize_btn" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/pass_set_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/price_set_layout"
+                    android:layout_marginTop="10dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/pass_set"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/user_name_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pass_set_layout"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dip" >
+
+                    <TextView
+                        android:id="@+id/user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/user_name"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/user_name_edit"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="15dip"
+                        android:layout_marginRight="20dip"
+                        android:layout_toRightOf="@+id/user_name" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/tong_btu_bg"
+                        android:text="@string/synchronize_btn" />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
