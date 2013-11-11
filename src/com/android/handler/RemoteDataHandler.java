@@ -440,7 +440,7 @@ public class RemoteDataHandler {
 				msg.getData().putBoolean("hasMore", false);
 				try {
 					String json = HttpHelper.post(url, params);
-
+					System.out.println("json-->"+json);
 					// 注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d", "");
 					JSONObject obj = new JSONObject(json);
