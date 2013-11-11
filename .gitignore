@@ -1,0 +1,9 @@
+*.class
+
+# Package Files #
+*.war
+*.ear
+
+# Folder or System Files
+/bin
+/gen
