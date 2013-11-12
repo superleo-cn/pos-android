@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -40,24 +37,6 @@ public class LoginActivity extends Activity implements OnClickListener{
 		login_name = (EditText) LoginActivity.this.findViewById(R.id.login_name);
 		login_password = (EditText) LoginActivity.this.findViewById(R.id.login_password);
 		ok_btn.setOnClickListener(LoginActivity.this);
-		login_name.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(!hasFocus){
-					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0); //强制隐藏键盘 	
-				}
-			}
-		});
-		login_password.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(!hasFocus){
-					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0); //强制隐藏键盘 	
-				}
-			}
-		});
 	}
 	@Override
 	public void onClick(View v) {
