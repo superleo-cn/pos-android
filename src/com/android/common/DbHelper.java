@@ -41,7 +41,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	//在第一个安装本应用程序时，会回调的方法，主要用于执行数据库表的创建和数据初始化
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-//		db.execSQL(Constants.SQL_NOTEPAD_INFO_CREATE);
+		db.execSQL(Constants.SQL_USER_INFO_CREATE);
 		
 		//注意这个SqliteDatabase实例不需要关闭
 	}
@@ -50,7 +50,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		
 		//清理旧版本中的表
-//		db.execSQL(Constants.SQL_NOTEPAD_INFO_DROP);
+		db.execSQL(Constants.SQL_USER_INFO_DROP);
 		
 		//重新创建新的表
 		onCreate(db);

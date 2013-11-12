@@ -14,8 +14,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.R;
 import com.android.bean.FoodListBean;
-import com.android.singaporeanorderingsystem.R;
 
 public class FoodListAdapter extends BaseAdapter {
 

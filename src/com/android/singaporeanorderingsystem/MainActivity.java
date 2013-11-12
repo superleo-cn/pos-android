@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.R;
 import com.android.adapter.FoodListAdapter;
 import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
@@ -83,7 +85,7 @@ public class MainActivity extends Activity implements OnClickListener{
         setContentView(R.layout.activity_main);
         select_dataList=new ArrayList<SelectFoodBean>();
         sbuff=new StringBuffer();
-       // init_wifiReceiver();
+        init_wifiReceiver();
         initView();
         df=new DecimalFormat("0.00");
     }
@@ -795,13 +797,13 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			}
 	    };
-//	    private void init_wifiReceiver()
-//	    {
-//	    	IntentFilter filter=new IntentFilter();
-//	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-//	    	registerReceiver(wifi_myReceiver,filter);
-//	    	is_revice=true;
-//	    }
+	    private void init_wifiReceiver()
+	    {
+	    	IntentFilter filter=new IntentFilter();
+	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    	registerReceiver(wifi_myReceiver,filter);
+	    	is_revice=true;
+	    }
 //	    
 //	    @Override    
 //	    public boolean onTouchEvent(MotionEvent event) {

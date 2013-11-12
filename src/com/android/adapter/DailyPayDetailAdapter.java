@@ -6,13 +6,15 @@ import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.R;
 import com.android.bean.DailyPayDetailBean;
-import com.android.singaporeanorderingsystem.R;
 
 public class DailyPayDetailAdapter extends BaseAdapter {
 
@@ -69,6 +71,15 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		bean = classList.get(position);
 		viewHolder.text_id_name.setText(bean.getName());
 		viewHolder.text_id_price.setText(bean.getPrice());
+		viewHolder.text_id_price.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus){
+					InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(v.getWindowToken(), 0); //强制隐藏键盘 	
+				}
+			}
+		});
 		return convertView;
 	}
 

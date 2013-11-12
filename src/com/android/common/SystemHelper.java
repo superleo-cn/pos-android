@@ -8,9 +8,14 @@
 package com.android.common;
 
 import java.io.File;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -23,12 +28,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.android.singaporeanorderingsystem.R;
+import com.android.R;
 
 /**
  * 获取系统信息的工具类
@@ -261,4 +268,27 @@ public class SystemHelper {
 				"application/vnd.android.package-archive");
 		context.startActivity(intent);
 	}
+	/**
+	 * 获取手机IP4地址
+	 * **/
+	public static String getLocalIPAddress() throws SocketException{ 
+	    for(Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();en.hasMoreElements();){ 
+	        NetworkInterface intf = en.nextElement(); 
+	        for(Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();){ 
+	            InetAddress inetAddress = enumIpAddr.nextElement(); 
+	            if(!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address)){ 
+	                return inetAddress.getHostAddress().toString(); 
+	            } 
+	        } 
+	    } 
+	    return "null"; 
+	} 
+	/**
+	 * 获取手机MAC地址
+	 * **/
+	public static String getLocalMacAddress(Context context) {     
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);     
+        WifiInfo info = wifi.getConnectionInfo();     
+        return info.getMacAddress();     
+    }     
 }

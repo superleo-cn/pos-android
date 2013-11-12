@@ -8,7 +8,10 @@
  */
 package com.android.common;
 
+import com.android.dao.UserDao;
+
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
@@ -19,13 +22,24 @@ import android.content.SharedPreferences;
  * Copyrights 2013-8-6 hjgang All rights reserved.
  */
 public class MyApp extends Application{
+	private Context context;
 	/** 系统初始化配置文件操作器 */
 	private SharedPreferences sysInitSharedPreferences;
+	private UserDao userdao;
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
+		userdao = new UserDao(this);
+	}
+
+	public UserDao getUserdao() {
+		return userdao;
+	}
+
+	public void setUserdao(UserDao userdao) {
+		this.userdao = userdao;
 	}
 
 	/**

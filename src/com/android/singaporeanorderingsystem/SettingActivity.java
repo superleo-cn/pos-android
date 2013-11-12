@@ -3,8 +3,9 @@ package com.android.singaporeanorderingsystem;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class SettingActivity extends Activity {
+import com.android.R;
 
+public class SettingActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

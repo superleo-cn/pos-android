@@ -49,6 +49,16 @@ public final class Constants {
 	public static final int DB_VERSION = 2;
 	/** 数据库名 */
 	public static final String DB_NAME = "android_pos.db";
+	
+	/** 用户数据库*/
+	public static final String SQL_USER_INFO_CREATE ="CREATE TABLE user(u_id integer primary key AUTOINCREMENT,username varchar(200),password varchar(200),realname varchar(200),usertype varchar(200),status varchar(200));";
+	public static final String SQL_USER_INFO_ALL="select * from user;"; 
+	public static final String SQL_USER_INFO_FILETIME="select * from user where username=''{0}'';"; 
+	public static final String SQL_USER_INFO_INSERT="INSERT INTO user(username, password,realname, usertype,status) VALUES(?,?,?,?,?);";
+	public static final String SQL_USER_INFO_DELETE_BY = "DELETE FROM user WHERE u_id=''{0}'';";
+	public static final String SQL_USER_INFO_DELETE_ALL = "DELETE FROM user;";
+	public static final String SQL_USER_INFO_DROP = "DROP TABLE user;";
+	
 
 	/** 加载情况分页参数 */
 	public static final int PARAM_PAGENO = 1;
@@ -56,11 +66,13 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "192.168.1.56";
+	public static final String HOST = "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/";
 	/** 服务器端口号 */
 	public static final String PORT = "80";
 	/** 应用上下文名 */
-	public static final String APP = "/bendishenghuowc/trunk/mobile/";//
+	public static final String APP = "";//
 	/** 应用上下文完整路径 */
-	public static final String URL_CONTEXTPATH = PROTOCOL +HOST + APP + "28aeb56bf14c9a5f826f8ad65bc6d7f0.php";
+	public static final String URL_CONTEXTPATH = PROTOCOL +HOST;
+	/** 登录页完整URL路径 */
+	public static final String URL_LOGIN_PATH = URL_CONTEXTPATH+"loginJson";
 }
