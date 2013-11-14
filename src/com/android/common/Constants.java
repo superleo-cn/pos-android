@@ -66,7 +66,7 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/";
+	public static final String HOST = "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080";
 	/** 服务器端口号 */
 	public static final String PORT = "80";
 	/** 应用上下文名 */
@@ -74,5 +74,7 @@ public final class Constants {
 	/** 应用上下文完整路径 */
 	public static final String URL_CONTEXTPATH = PROTOCOL +HOST;
 	/** 登录页完整URL路径 */
-	public static final String URL_LOGIN_PATH = URL_CONTEXTPATH+"loginJson";
+	public static final String URL_LOGIN_PATH = URL_CONTEXTPATH+"/loginJson";
+	/** 点菜单完整URL路径 */
+	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH+"/foods/listJson/";
 }

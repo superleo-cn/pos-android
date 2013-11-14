@@ -4,29 +4,29 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.R;
+
 import com.android.bean.DailyPayDetailBean;
+import com.android.singaporeanorderingsystem.R;
 
 public class DailyPayDetailAdapter extends BaseAdapter {
 
+	@SuppressWarnings("unused")
 	private Context context;
 	private LayoutInflater inflater;
 	private List<DailyPayDetailBean> classList;
 	private Handler handler;
-	public DailyPayDetailAdapter(Context context) {
-		this.context = context;
-		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	}
-
+	public static final int CHAGE_NUM_DETAIL=1020;
 	public DailyPayDetailAdapter(Context context, List<DailyPayDetailBean> list,
 			Handler handler) {
 		this.context = context;
@@ -56,8 +56,8 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	}
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		ViewHolder viewHolder;
-		DailyPayDetailBean bean;
+		final ViewHolder viewHolder;
+		final DailyPayDetailBean bean;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.detail_list_item, null);
 			viewHolder = new ViewHolder();
@@ -71,21 +71,45 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		bean = classList.get(position);
 		viewHolder.text_id_name.setText(bean.getName());
 		viewHolder.text_id_price.setText(bean.getPrice());
-		viewHolder.text_id_price.setOnFocusChangeListener(new OnFocusChangeListener() {
+		final String now_str=viewHolder.text_id_price.getText().toString();
+		
+		viewHolder.text_id_price.addTextChangedListener(new TextWatcher(){
+
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(!hasFocus){
-					InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0); //强制隐藏键盘 	
-				}
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
 			}
-		});
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				Log.e("输入改变完", "价格呢");
+				if(now_str.equals(viewHolder.text_id_price.getText().toString())){
+				}else{
+					//bean.setPrice(viewHolder.text_id_price.getText().toString());
+							Message msg = new Message();
+							msg.what = CHAGE_NUM_DETAIL;
+							msg.obj=position+viewHolder.text_id_price.getText().toString();
+							handler.sendMessage(msg);
+							Log.e("执行输入的价格", "价格");	
+				}
+			}});
+		
+		
 		return convertView;
 	}
 
-	public final class ViewHolder {
+	private final class ViewHolder {
 		TextView text_id_name;
 		EditText text_id_price;
 	}
-
+	
 }

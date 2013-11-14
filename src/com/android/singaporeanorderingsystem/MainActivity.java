@@ -9,7 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,7 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.R;
 import com.android.adapter.FoodListAdapter;
 import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
@@ -83,11 +81,7 @@ public class MainActivity extends Activity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        select_dataList=new ArrayList<SelectFoodBean>();
-        sbuff=new StringBuffer();
-        init_wifiReceiver();
-        initView();
-        df=new DecimalFormat("0.00");
+       
     }
     
     /*初始化控件*/
@@ -134,6 +128,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			TextView popu_setting=(TextView) view.findViewById(R.id.popu_setting);
 			TextView popu_exit=(TextView) view.findViewById(R.id.popu_exit);
 			TextView popu_daily=(TextView) view.findViewById(R.id.popu_daily);
+			TextView popu_diancai=(TextView) view.findViewById(R.id.popu_diancai);
+			popu_diancai.setVisibility(View.GONE);
 			popu_setting.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					if (popupWindow.isShowing()) {
@@ -144,6 +140,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					overridePendingTransition(
 							R.anim.in_from_right,
 							R.anim.out_to_left);
+					//MainActivity.this.finish();
 				}
 			});
 			
@@ -160,6 +157,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					overridePendingTransition(
 							R.anim.in_from_right,
 							R.anim.out_to_left);
+					//MainActivity.this.finish();
 				}});
 			popu_exit.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -181,9 +179,11 @@ public class MainActivity extends Activity implements OnClickListener{
     		bean.setImageID(R.drawable.ceshi2);   		
     		if(i>=5){
     			bean.setType("0"); //主食
+    			String main_food=String.valueOf(R.string.main_food);
     			bean.setTitle("主食"+i);
     		}else{
     			bean.setType("1"); //菜品
+    			String vegetable=String.valueOf(R.string.vegetable);
     			bean.setTitle("菜品"+i);
     		}
     		String price=i+".00";
@@ -197,6 +197,7 @@ public class MainActivity extends Activity implements OnClickListener{
     
     public void init_giditNum_view(){
     	List<GiditNumberBean> dataList=new ArrayList<GiditNumberBean>();  	
+    	String delete=String.valueOf(R.string.delete);
     	String []str=new String[]{"1","2","3","4","5","6","7","8","9","0",".","删除"};
     	for(int i=0;i<str.length;i++){
     		GiditNumberBean bean=new GiditNumberBean();
@@ -587,16 +588,16 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.take_package:
 			if(select_dataList.size()==0){
-				Toast.makeText(this, "您还没有进行点餐", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
 			if(!is_takePackage){
 				take_package.setImageResource(R.drawable.package_seclect);
-				Toast.makeText(this, "全部打包", Toast.LENGTH_SHORT).show();				
+				//Toast.makeText(this, "全部打包", Toast.LENGTH_SHORT).show();				
 				is_takePackage=true;
 				//判断是否免单
 				if(is_foc){
 					save_foc_price=save_foc_price+save_selectNum*0.2;
-					Toast.makeText(this, "打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
+				//	Toast.makeText(this, "打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
 					show_totalPrice=show_totalPrice+save_selectNum*0.2;
 					save_foc_price=show_totalPrice;
@@ -604,12 +605,12 @@ public class MainActivity extends Activity implements OnClickListener{
 				}
 			}else{
 				take_package.setImageResource(R.drawable.package_not_select);
-				Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
 				is_takePackage=false;
 				//判断是否免单
 				if(is_foc){
 					save_foc_price=save_foc_price-save_selectNum*0.2;
-					Toast.makeText(this, "取消打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
+				//	Toast.makeText(this, "取消打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
 					show_totalPrice=show_totalPrice-save_selectNum*0.2;
 					save_foc_price=show_totalPrice;
@@ -620,11 +621,11 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.foc:
 			if(select_dataList.size()==0){
-				Toast.makeText(this, "您还没有进行点餐", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
 			if(!is_foc){
 				foc.setImageResource(R.drawable.package_seclect);
-				Toast.makeText(this, "免单", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "免单", Toast.LENGTH_SHORT).show();
 				is_foc=true;
 				if(!is_discount&&!is_takePackage){
 				save_foc_price=show_totalPrice;
@@ -632,7 +633,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				total_price.setText("0.00");
 			}else{
 				foc.setImageResource(R.drawable.package_not_select);
-				Toast.makeText(this, "不免单", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "不免单", Toast.LENGTH_SHORT).show();
 				is_foc=false;
 				show_totalPrice=save_foc_price;
 				total_price.setText(df.format(save_foc_price));
@@ -641,16 +642,16 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.discount:
 			if(select_dataList.size()==0){
-				Toast.makeText(this, "您还没有进行点餐", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
 			if(!is_discount){
 				discount.setImageResource(R.drawable.package_seclect);
-				Toast.makeText(this, "打折", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "打折", Toast.LENGTH_SHORT).show();
 				is_discount=true;
 				//save_discount_price=Double.parseDouble(total_price.getText().toString());
 				if(is_foc){
 					save_foc_price=save_foc_price-save_selectNum*0.5;
-					Toast.makeText(this, "打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(this, "打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
 					show_totalPrice=show_totalPrice-save_selectNum*0.5;
 					save_foc_price=show_totalPrice;
@@ -658,11 +659,11 @@ public class MainActivity extends Activity implements OnClickListener{
 				}
 			}else{
 				discount.setImageResource(R.drawable.package_not_select);
-				Toast.makeText(this, "不打折", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "不打折", Toast.LENGTH_SHORT).show();
 				is_discount=false;
 				if(is_foc){
 					save_foc_price=save_foc_price+save_selectNum*0.5;
-					Toast.makeText(this, "取消打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
+				//	Toast.makeText(this, "取消打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
 					show_totalPrice=show_totalPrice+save_selectNum*0.5;
 					save_foc_price=show_totalPrice;
@@ -678,7 +679,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				gathering.setText(df.format(show_gathering));
 				double result=show_totalPrice;
 				if(result == 0.00){
-					Toast.makeText(this,"您还没有进行点餐", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this,R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 				}else{
 					if(sbuff.toString().trim().equals("0") || sbuff.toString().trim().equals("0.0")){
 						surplus.setText(df.format(show_surplus));
@@ -726,6 +727,12 @@ public class MainActivity extends Activity implements OnClickListener{
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialog, int which) {
+				long result=PriceSave.getInatance(MainActivity.this).save(total_price.getText().toString());
+				if(result==-1){
+					Log.e("保存价格失败", "");
+				}else{
+					Log.e("保存价格成功", "");
+				}
 				clear_data();
 			}});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
@@ -797,13 +804,13 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			}
 	    };
-	    private void init_wifiReceiver()
-	    {
-	    	IntentFilter filter=new IntentFilter();
-	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(wifi_myReceiver,filter);
-	    	is_revice=true;
-	    }
+//	    private void init_wifiReceiver()
+//	    {
+//	    	IntentFilter filter=new IntentFilter();
+//	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+//	    	registerReceiver(wifi_myReceiver,filter);
+//	    	is_revice=true;
+//	    }
 //	    
 //	    @Override    
 //	    public boolean onTouchEvent(MotionEvent event) {
@@ -821,4 +828,16 @@ public class MainActivity extends Activity implements OnClickListener{
 //	    return super.onTouchEvent(event);
 //	     
 //	    }
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		 select_dataList=new ArrayList<SelectFoodBean>();
+	        sbuff=new StringBuffer();
+	       // init_wifiReceiver();
+	        initView();
+	        df=new DecimalFormat("0.00");
+		super.onResume();
+	}
+	    
+	    
 }

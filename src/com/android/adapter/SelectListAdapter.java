@@ -2,15 +2,19 @@
 
 import java.util.List;
 
+import com.android.adapter.GiditNumberAdapter.ViewHolder;
+import com.android.bean.SelectFoodBean;
+import com.android.singaporeanorderingsystem.R;
+
+import android.R.color;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.android.R;
-import com.android.bean.SelectFoodBean;
 
 public class SelectListAdapter extends BaseAdapter {
 
@@ -58,10 +62,14 @@ public class SelectListAdapter extends BaseAdapter {
 		}
 		
 		bean = classList.get(position);
-
+		if(position % 2 ==0){
+			convertView.setBackgroundColor(color.white);
+		}else{
+			convertView.setBackgroundColor(Color.GRAY);
+		}
 		viewHolder.food_name.setText(bean.getFood_name());
 		viewHolder.food_num.setText("x"+bean.getFood_num());
-		viewHolder.food_price.setText("￥"+bean.getFood_price());
+		viewHolder.food_price.setText("S$"+bean.getFood_price());
 		return convertView;
 	}
 	

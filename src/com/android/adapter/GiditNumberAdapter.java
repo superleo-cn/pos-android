@@ -1,16 +1,14 @@
 ﻿package com.android.adapter;
 
 import java.util.List;
-
+import com.android.bean.GiditNumberBean;
+import com.android.singaporeanorderingsystem.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.android.R;
-import com.android.bean.GiditNumberBean;
 
 public class GiditNumberAdapter extends BaseAdapter {
 
