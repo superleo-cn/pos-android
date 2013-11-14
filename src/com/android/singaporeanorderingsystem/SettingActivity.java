@@ -40,7 +40,7 @@ public class SettingActivity extends Activity {
 		this.setContentView(R.layout.setting);
 		language_set=(EditText) findViewById(R.id.language_set);
 		menu=(ImageView) findViewById(R.id.menu_btn);
-		synchronization_menu = (Button) findViewById(R.id.synchronization_menu);
+		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
 		sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type=sharedPrefs.getString("type", "");
 		menu.setOnClickListener(new OnClickListener() {
