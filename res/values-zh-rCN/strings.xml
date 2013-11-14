@@ -4,7 +4,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 	<string name="exit_txt">退出</string>
-	<string name="mainTitle_txt">Ben你好，欢迎你</string>
+	<string name="mainTitle_txt">你好，欢迎你</string>
 	<string name="layoutLeft_title">来一碗</string>
 	<string name="total_prie">应收款:</string>
 	<string name="gathering">收款:</string>

@@ -92,7 +92,7 @@ public class UserDao {
 			db.beginTransaction();
 
 			Object[] paramValues = { user.getUsername(),user.getPasswrod(), user.getRealname(),
-					user.getUsertype(),user.getStatus()};
+					user.getUsertype(),user.getStatus(),user.getShop_id()};
 
 			db.execSQL(Constants.SQL_USER_INFO_INSERT, paramValues);
 
