@@ -88,6 +88,7 @@ public class MainActivity extends Activity implements OnClickListener{
     
     /*初始化控件*/
     public void initView(){
+    	myApp= (MyApp) MainActivity.this.getApplication();
     	menu=(ImageView) this.findViewById(R.id.menu_btn);
     	menu.setOnClickListener(this);
     	login_name=(TextView) this.findViewById(R.id.login_name);
@@ -109,6 +110,7 @@ public class MainActivity extends Activity implements OnClickListener{
     	ok_btn=(Button) this.findViewById(R.id.ok_btn);
     	ok_btn.setOnClickListener(this);
     	initData();
+    	login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
     }
     
     /*初始化数据*/

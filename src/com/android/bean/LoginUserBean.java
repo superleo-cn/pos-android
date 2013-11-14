@@ -27,7 +27,7 @@ public class LoginUserBean {
 		public static final String REALNAME = "realname";
 		public static final String USERTYPE = "usertype";
 		public static final String STATUS = "status";
-		public static final String SHOP_ID = "shop_id";
+		public static final String SHOP_ID = "shop";
 	}
 	private String user_id;
 	private String username;//用户名
@@ -76,7 +76,9 @@ public class LoginUserBean {
 				String usertype = obj.optString(Attr.USERTYPE);
 				String status = obj.optString(Attr.STATUS);
 				String shop_id = obj.optString(Attr.SHOP_ID);
-				login_bean.add(new LoginUserBean(username, realname, usertype, status, shop_id)) ;
+				JSONObject json_obj=new JSONObject(shop_id);
+				String shop = json_obj.optString("id");
+				login_bean.add(new LoginUserBean(username, realname, usertype, status, shop)) ;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

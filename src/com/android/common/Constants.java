@@ -51,10 +51,10 @@ public final class Constants {
 	public static final String DB_NAME = "android_pos.db";
 	
 	/** 用户数据库*/
-	public static final String SQL_USER_INFO_CREATE ="CREATE TABLE user(u_id integer primary key AUTOINCREMENT,username varchar(200),password varchar(200),realname varchar(200),usertype varchar(200),status varchar(200));";
+	public static final String SQL_USER_INFO_CREATE ="CREATE TABLE user(u_id integer primary key AUTOINCREMENT,username varchar(200),password varchar(200),realname varchar(200),usertype varchar(200),status varchar(200),shop_id varchar(200));";
 	public static final String SQL_USER_INFO_ALL="select * from user;"; 
 	public static final String SQL_USER_INFO_FILETIME="select * from user where username=''{0}'';"; 
-	public static final String SQL_USER_INFO_INSERT="INSERT INTO user(username, password,realname, usertype,status) VALUES(?,?,?,?,?);";
+	public static final String SQL_USER_INFO_INSERT="INSERT INTO user(username, password,realname, usertype,status,shop_id) VALUES(?,?,?,?,?,?);";
 	public static final String SQL_USER_INFO_DELETE_BY = "DELETE FROM user WHERE u_id=''{0}'';";
 	public static final String SQL_USER_INFO_DELETE_ALL = "DELETE FROM user;";
 	public static final String SQL_USER_INFO_DROP = "DROP TABLE user;";
@@ -75,6 +75,8 @@ public final class Constants {
 	public static final String URL_CONTEXTPATH = PROTOCOL +HOST;
 	/** 登录页完整URL路径 */
 	public static final String URL_LOGIN_PATH = URL_CONTEXTPATH+"/loginJson";
+	/** 登录页完整URL路径 */
+	public static final String URL_LOGIN_ADMIN_PATH = URL_CONTEXTPATH+"/loginAdminJson";
 	/** 点菜单完整URL路径 */
 	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH+"/foods/listJson/";
 }

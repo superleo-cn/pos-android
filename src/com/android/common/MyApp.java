@@ -27,7 +27,8 @@ public class MyApp extends Application{
 	private SharedPreferences sysInitSharedPreferences;
 	private UserDao userdao;
 	private AndroidPrinter printer;
-
+	private String uid = "0";
+	private String u_name = "";
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -51,6 +52,26 @@ public class MyApp extends Application{
 
 	public void setPrinter(AndroidPrinter printer) {
 		this.printer = printer;
+	}
+
+	public String getU_name() {
+		return u_name;
+	}
+
+	public void setU_name(String u_name) {
+		this.u_name = u_name;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
+	public  String getUid() {
+		return uid;
+	}
+
+	public  String getuName() {
+		return u_name;
 	}
 
 	/**
