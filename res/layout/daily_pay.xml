@@ -301,18 +301,7 @@
                     android:layout_weight="1"
                     android:background="#CC997C"
                     android:orientation="vertical" >
-
-
-                    <ListView
-                        android:id="@+id/daily_num_list"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_margin="10dip"
-                        android:layout_weight="1"
-                        android:background="@drawable/richang_r_l_m_bg"
-                        android:cacheColorHint="#00000000"
-                        android:divider="@null" />
-                    <TextView
+					 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -323,6 +312,44 @@
                         android:textColor="#370E07"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
+                    <ListView
+                        android:id="@+id/daily_num_list"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_margin="10dip"
+                        android:layout_weight="1"
+                        android:background="@drawable/richang_r_l_m_bg"
+                        android:cacheColorHint="#00000000"
+                        android:divider="@null" />
+                    <RelativeLayout 
+                       android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" 
+                        >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dip"
+                        android:singleLine="true"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:text="@string/take_all_price"
+                         />
+                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:textColor="#000000"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentRight="true"
+                        android:id="@+id/take_all_price" />
+                    </RelativeLayout>
                 </LinearLayout>
 
                 <LinearLayout

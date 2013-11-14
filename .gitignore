@@ -8,3 +8,5 @@
 /.settings
 /bin
 /gen
+/.classpath
+/project.properties

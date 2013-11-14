@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.R;
 import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
 import com.android.common.InfolabPasswordGen;

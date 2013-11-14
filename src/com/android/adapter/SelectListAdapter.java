@@ -2,9 +2,11 @@
 
 import java.util.List;
 
+import com.android.R;
 import com.android.adapter.GiditNumberAdapter.ViewHolder;
 import com.android.bean.SelectFoodBean;
-import com.android.singaporeanorderingsystem.R;
+
+
 
 import android.R.color;
 import android.content.Context;

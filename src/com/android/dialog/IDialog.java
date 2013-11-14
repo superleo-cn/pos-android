@@ -2,7 +2,9 @@ package com.android.dialog;
 
 
 
-import com.android.singaporeanorderingsystem.R;
+
+
+import com.android.R;
 
 import android.app.AlertDialog;
 import android.content.Context;

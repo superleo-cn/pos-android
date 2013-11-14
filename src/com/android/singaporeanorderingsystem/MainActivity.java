@@ -3,18 +3,24 @@
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.R;
 import com.android.adapter.FoodListAdapter;
 import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
@@ -78,6 +85,8 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double save_foc_price;
 	private double save_discount_price;
 	private int save_selectNum;
+	public static boolean main_isRever;
+	private SharedPreferences sharedPrefs;
 	private MyApp myApp;
 	private AndroidPrinter printer;
 	/*主菜单activity*/
@@ -185,11 +194,11 @@ public class MainActivity extends Activity implements OnClickListener{
     		if(i>=5){
     			bean.setType("0"); //主食
     			String main_food=String.valueOf(R.string.main_food);
-    			bean.setTitle("主食"+i);
+    			bean.setTitle("food"+i);
     		}else{
     			bean.setType("1"); //菜品
     			String vegetable=String.valueOf(R.string.vegetable);
-    			bean.setTitle("菜品"+i);
+    			bean.setTitle("caipin"+i);
     		}
     		String price=i+".00";
     		bean.setPrice(String.valueOf(price));
@@ -811,40 +820,57 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			}
 	    };
-//	    private void init_wifiReceiver()
-//	    {
-//	    	IntentFilter filter=new IntentFilter();
-//	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-//	    	registerReceiver(wifi_myReceiver,filter);
-//	    	is_revice=true;
-//	    }
-//	    
-//	    @Override    
-//	    public boolean onTouchEvent(MotionEvent event) {
-//	     
-//	    // TODO Auto-generated method stub
-//	     
-//	    if (popupWindow != null && popupWindow.isShowing()) {
-//	     
-//	    popupWindow.dismiss();
-//	     
-//	    popupWindow = null;
-//	     
-//	    }
-//	     
-//	    return super.onTouchEvent(event);
-//	     
-//	    }
+	    
+	    private void init_wifiReceiver()
+	    {
+	    	if(!main_isRever){
+	    	IntentFilter filter=new IntentFilter();
+	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    	registerReceiver(wifi_myReceiver,filter);
+	    	main_isRever=true;
+	    	}
+	    }
+	    
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		 sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
+			String type=sharedPrefs.getString("type", "");
+			if(type.isEmpty()){
+				type="zh";
+			}
+			if(type.equals("zh")){
+				updateLange(Locale.SIMPLIFIED_CHINESE);
+			}else{
+				updateLange(Locale.ENGLISH);
+			}
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
-	       // init_wifiReceiver();
+	       init_wifiReceiver();
 	        initView();
 	        df=new DecimalFormat("0.00");
+	       
 		super.onResume();
 	}
-	    
-	    
+	 
+	public void updateActivity() {
+		  Intent intent = new Intent();
+		  intent.setClass(this,LoginActivity.class);//当前Activity重新打开
+		  intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		  startActivity(intent);
+		 
+		 }
+
+		private void updateLange(Locale locale){    	
+			 Resources res = getResources();
+			 Configuration config = res.getConfiguration();
+			 config.locale = locale;
+			 DisplayMetrics dm = res.getDisplayMetrics();
+			 res.updateConfiguration(config, dm);        
+	    	Toast.makeText(this, "Locale in "+locale+" !", Toast.LENGTH_LONG).show();
+	    	//updateActivity();  
+
+	    }
+	
 }

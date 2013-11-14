@@ -69,4 +69,5 @@
 	<string name="selec_not_food">您还没有进行点餐</string>
 	<string name="ceshi">测试</string>
 	<string name="rmb">元</string>
+	<string name="take_all_price">带回总金额</string>
 </resources>

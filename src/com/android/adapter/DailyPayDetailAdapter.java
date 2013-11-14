@@ -16,8 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
+
+import com.android.R;
 import com.android.bean.DailyPayDetailBean;
-import com.android.singaporeanorderingsystem.R;
+
 
 public class DailyPayDetailAdapter extends BaseAdapter {
 

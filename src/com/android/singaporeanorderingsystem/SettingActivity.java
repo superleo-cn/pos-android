@@ -23,6 +23,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.R;
 import com.android.dialog.DialogBuilder;
 
 public class SettingActivity extends Activity {
