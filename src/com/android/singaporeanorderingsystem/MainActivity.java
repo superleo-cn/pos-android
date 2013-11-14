@@ -36,6 +36,7 @@ import com.android.adapter.SelectListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
+import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 
 public class MainActivity extends Activity implements OnClickListener{
@@ -76,12 +77,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double save_foc_price;
 	private double save_discount_price;
 	private int save_selectNum;
+	private MyApp myApp;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       
+        myApp = (MyApp) MainActivity.this.getApplication();
     }
     
     /*初始化控件*/
@@ -733,6 +735,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				}else{
 					Log.e("保存价格成功", "");
 				}
+				myApp.getPrinter().print("传入要打印的数据。");
 				clear_data();
 			}});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
