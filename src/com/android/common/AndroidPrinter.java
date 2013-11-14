@@ -31,14 +31,14 @@ public class AndroidPrinter {
 		if (connFlag == 0) {
 			onCreate();
 		}
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		if (connFlag == 1) {
-			startPrint(message);
-		}
+//		try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		if (connFlag == 1) {
+//			startPrint(message);
+//		}
 
 	}
 
@@ -97,6 +97,7 @@ public class AndroidPrinter {
 				revThred.start();
 				cheThread = new checkPrintThread();
 				cheThread.start();
+				startPrint("Test");
 				break;
 			case WifiCommunication.WFPRINTER_DISCONNECTED:
 				Toast.makeText(context,
