@@ -1,5 +1,7 @@
 package com.android.dialog;
-import com.android.singaporeanorderingsystem.R;
+
+
+import com.android.R;
 
 import android.content.Context;
 import android.util.AttributeSet;

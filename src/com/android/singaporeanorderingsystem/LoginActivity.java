@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import com.android.R;
 import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
 import com.android.common.InfolabPasswordGen;

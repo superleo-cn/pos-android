@@ -39,6 +39,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
@@ -79,7 +80,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private EditText other;
 	private EditText shop_money;
 	private DecimalFormat  df;
-	public static boolean click_other;
+	private TextView take_all_price;
+	private Double num_count=0.00;
+	public static boolean is_recer;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,6 +91,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	}
 	 
 	 public void initView(){
+		 take_all_price=(TextView) this.findViewById(R.id.take_all_price);
 		 daily_menu=(ImageView) this.findViewById(R.id.daily_menu_btn);
 			daily_menu.setOnClickListener(this);
 			daily_login_name=(TextView) this.findViewById(R.id.daily_login_name);
@@ -181,10 +185,12 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			text_id_all_price.setText(df.format(count));
 			 compute();
 			 for(int i=1 ; i < 5 ; i++){
+				 num_count+=(2*i);
 					number_classList.add(new TakeNumberBean(String.valueOf(0.5*i),String.valueOf(2*i)));
 				}
 				number_adapter=new TakeNumerAdapter(this,number_classList,handler);;
 				num_list.setAdapter(number_adapter);
+			take_all_price.setText(df.format(num_count));
 	 }
 	 
 	 public void initPopupWindow() {
@@ -206,7 +212,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						Intent intent =new Intent(DailyPayActivity.this , MainActivity.class);
 						DailyPayActivity.this.startActivity(intent);
 						overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-						DailyPayActivity.this.finish();
+						//DailyPayActivity.this.finish();
 					}
 				});;
 				popu_setting.setOnClickListener(new OnClickListener() {
@@ -219,7 +225,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						overridePendingTransition(
 								R.anim.in_from_right,
 								R.anim.out_to_left);
-						DailyPayActivity.this.finish();
+						//DailyPayActivity.this.finish();
 					}
 				});
 				
@@ -312,18 +318,25 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				text_id_all_price.setText(df.format(count));
 				compute();
 				}catch(Exception e){
-					Toast.makeText(DailyPayActivity.this, "输入的价格错误", Toast.LENGTH_SHORT).show();
+					Toast.makeText(DailyPayActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
 				}
 				break;
-//			case TakeNumerAdapter.SET_NUM:
-//				String str=(String) msg.obj;
-//				int i=Integer.parseInt(str.substring(0,1));
-//				String price=str.substring(1,str.length());
-//				number_classList.get(i).setText2(price);
-//				 number_adapter.notifyDataSetChanged();
-//				 
-//				 
-//				break;
+			case TakeNumerAdapter.SET_NUM:
+				num_count=0.00;
+				try{
+				for(int i=0;i<number_classList.size();i++){
+					TextView price_tv=(TextView) num_list.getChildAt(i).findViewById(R.id.num_price);
+					Double sigle_price=Double.parseDouble(price_tv.getText().toString());
+					Log.e("操作11",price_tv.getText().toString());
+					num_count+=sigle_price;
+				}
+				Log.e("总价钱",df.format(num_count));
+				take_all_price.setText(df.format(num_count));
+				 
+				}catch(Exception e){
+					Toast.makeText(DailyPayActivity.this,  R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+				break;
 			}
 		}
 		
@@ -388,9 +401,12 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		}
 	    private void init_wifiReceiver()
 	    {
+	    	if(!is_recer){
 	    	IntentFilter filter=new IntentFilter();
 	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 	    	registerReceiver(myReceiver,filter);
+	    	is_recer=true;
+	    	}
 	    }
 	    public void  clear_data(){
 	    	daily_list.setAdapter(null);
@@ -412,6 +428,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	other.setText("");
 	    	shop_money.setText("");
 	    	text_id_all_price.setText("");
+	    	
 	    }
 	    
 	    public void compute(){
@@ -454,7 +471,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			// TODO Auto-generated method stub
 			df=new DecimalFormat("0.00");
 			initView();
-			//init_wifiReceiver();
+			init_wifiReceiver();
 			btu_id_sbumit.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
