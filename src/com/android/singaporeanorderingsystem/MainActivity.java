@@ -36,6 +36,7 @@ import com.android.adapter.SelectListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
+import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 
 public class MainActivity extends Activity implements OnClickListener{
@@ -76,6 +77,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double save_foc_price;
 	private double save_discount_price;
 	private int save_selectNum;
+	private MyApp myApp;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class MainActivity extends Activity implements OnClickListener{
     
     /*初始化控件*/
     public void initView(){
+    	myApp= (MyApp) MainActivity.this.getApplication();
     	menu=(ImageView) this.findViewById(R.id.menu_btn);
     	menu.setOnClickListener(this);
     	login_name=(TextView) this.findViewById(R.id.login_name);
@@ -107,6 +110,7 @@ public class MainActivity extends Activity implements OnClickListener{
     	ok_btn=(Button) this.findViewById(R.id.ok_btn);
     	ok_btn.setOnClickListener(this);
     	initData();
+    	login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
     }
     
     /*初始化数据*/
