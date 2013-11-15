@@ -30,10 +30,14 @@ public class AndroidPrinter {
 		// connect to printer
 		if (connFlag == 0) {
 			connect();
-		} else {
-			startPrint(message);
-		}
-
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				Log.d("WIFI Printer", "try to re-connect printer and print message: " + message);
+			}
+		} 
+		Log.d("WIFI Printer", "start to printer :" + message);
+		startPrint(message);
 	}
 
 	// connect to printer
@@ -41,7 +45,7 @@ public class AndroidPrinter {
 		try {
 			if (connFlag == 0) {
 				connFlag = 1;
-				Log.d("wifi", "Connection to WIFI Printer.");
+				Log.d("WIFI Printer", "Connection to WIFI Printer.");
 				wfComm.initSocket(ip, 9100);
 			}
 		} catch (Exception ex) {
@@ -92,7 +96,6 @@ public class AndroidPrinter {
 			tail[0] = 0x0A;
 			tail[1] = 0x0D;
 			wfComm.sndByte(tail);
-			wfComm.close();
 		}
 	}
 
@@ -164,7 +167,7 @@ public class AndroidPrinter {
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer",
 						"Check Printer Error, trying to re-connect.", e);
-				reconnect();
+				//reconnect();
 			}
 		}
 	}
@@ -187,7 +190,7 @@ public class AndroidPrinter {
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer",
 						"Cannot Receive Message, trying to re-connect.", e);
-				reconnect();
+				//reconnect();
 			}
 		}
 	}
