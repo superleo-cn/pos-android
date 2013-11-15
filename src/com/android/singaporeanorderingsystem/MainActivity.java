@@ -88,7 +88,6 @@ public class MainActivity extends Activity implements OnClickListener{
 	public static boolean main_isRever;
 	private SharedPreferences sharedPrefs;
 	private MyApp myApp;
-	private AndroidPrinter printer;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -747,8 +746,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				}else{
 					Log.e("保存价格成功", "");
 				}
-				printer = new AndroidPrinter(getApplicationContext());
-				printer.print("传入要打印的数据。");
+				myApp.getPrinter().print("测试数据。。。");
 				clear_data();
 			}});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){

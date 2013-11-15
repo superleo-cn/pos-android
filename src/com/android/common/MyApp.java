@@ -35,6 +35,7 @@ public class MyApp extends Application{
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
 		userdao = new UserDao(this);
+		printer = new AndroidPrinter(this);
 	}
 
 	public UserDao getUserdao() {

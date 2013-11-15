@@ -110,46 +110,50 @@ public class LoginActivity extends Activity implements OnClickListener{
 		image_logo_ico.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				String str_login_name=login_name.getText().toString();
-				String str_login_password=login_password.getText().toString();
-				String str_ip = "0";
-				String str_mac = "0";
-				try {
-					str_ip=SystemHelper.getLocalIPAddress() == null ? "0":SystemHelper.getLocalIPAddress();
-					str_mac=SystemHelper.getLocalMacAddress(LoginActivity.this)== null ? "0":SystemHelper.getLocalMacAddress(LoginActivity.this);
-				} catch (SocketException e) {
-					e.printStackTrace();
-				}
-				HashMap<String, String> params =new HashMap<String, String>();
-				params.put("user.username", str_login_name);
-				params.put("user.password", str_login_password);
-				params.put("user.userIp", str_ip);
-				params.put("user.userMac", str_mac);
-				RemoteDataHandler.asyncPost(Constants.URL_LOGIN_ADMIN_PATH, params, new Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
-						if(data.getCode() == 1){
-							String json=data.getJson();
-							ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
-							LoginUserBean user_bean=datas.get(0);
-							if(!user_bean.getUsertype().equals("ADMIN")){
-								Toast.makeText(LoginActivity.this,"你不是管理员无权登录", Toast.LENGTH_SHORT).show();
-								return;
-							}
-							myApp.setUid(user_bean.getShop_id());
-							myApp.setU_name(user_bean.getUsername());
-							Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
-							Intent  intent =new Intent();
-							intent.setClass(LoginActivity.this, MainActivity.class);
-							LoginActivity.this.startActivity(intent);
-							LoginActivity.this.finish();
-						}else if(data.getCode() == 0){
-							Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
-						}else if(data.getCode() == -1){
-							Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
+//				String str_login_name=login_name.getText().toString();
+//				String str_login_password=login_password.getText().toString();
+//				String str_ip = "0";
+//				String str_mac = "0";
+//				try {
+//					str_ip=SystemHelper.getLocalIPAddress() == null ? "0":SystemHelper.getLocalIPAddress();
+//					str_mac=SystemHelper.getLocalMacAddress(LoginActivity.this)== null ? "0":SystemHelper.getLocalMacAddress(LoginActivity.this);
+//				} catch (SocketException e) {
+//					e.printStackTrace();
+//				}
+//				HashMap<String, String> params =new HashMap<String, String>();
+//				params.put("user.username", str_login_name);
+//				params.put("user.password", str_login_password);
+//				params.put("user.userIp", str_ip);
+//				params.put("user.userMac", str_mac);
+//				RemoteDataHandler.asyncPost(Constants.URL_LOGIN_ADMIN_PATH, params, new Callback() {
+//					@Override
+//					public void dataLoaded(ResponseData data) {
+//						if(data.getCode() == 1){
+//							String json=data.getJson();
+////							ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
+////							LoginUserBean user_bean=datas.get(0);
+////							if(!user_bean.getUsertype().equals("ADMIN")){
+////								Toast.makeText(LoginActivity.this,"你不是管理员无权登录", Toast.LENGTH_SHORT).show();
+////								return;
+////							}
+////							myApp.setUid(user_bean.getShop_id());
+////							myApp.setU_name(user_bean.getUsername());
+//							Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
+//							Intent  intent =new Intent();
+//							intent.setClass(LoginActivity.this, MainActivity.class);
+//							LoginActivity.this.startActivity(intent);
+//							LoginActivity.this.finish();
+//						}else if(data.getCode() == 0){
+//							Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+//						}else if(data.getCode() == -1){
+//							Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+//						}
+//					}
+//				});
+				Intent  intent =new Intent();
+				intent.setClass(LoginActivity.this, MainActivity.class);
+				LoginActivity.this.startActivity(intent);
+				LoginActivity.this.finish();
 				return false;
 			}
 		});
