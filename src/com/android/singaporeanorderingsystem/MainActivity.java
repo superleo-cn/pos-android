@@ -746,7 +746,9 @@ public class MainActivity extends Activity implements OnClickListener{
 				}else{
 					Log.e("保存价格成功", "");
 				}
-				myApp.getPrinter().print("测试数据。。。");
+				if(false){
+					myApp.getPrinter().print("测试数据。。。");
+				}
 				clear_data();
 			}});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
