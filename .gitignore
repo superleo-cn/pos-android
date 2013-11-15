@@ -6,7 +6,6 @@
 
 # Folder or System Files
 /.settings
+/lint.xml
 /bin
 /gen
-/.classpath
-/project.properties
