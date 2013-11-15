@@ -92,7 +92,7 @@ public class MainActivity extends Activity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       
+        init_wifiReceiver();
     }
     
     /*初始化控件*/
@@ -820,12 +820,10 @@ public class MainActivity extends Activity implements OnClickListener{
 	    
 	    private void init_wifiReceiver()
 	    {
-	    	if(!main_isRever){
-	    	IntentFilter filter=new IntentFilter();
-	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(wifi_myReceiver,filter);
+	    	IntentFilter filter1=new IntentFilter();
+	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    	registerReceiver(wifi_myReceiver,filter1);
 	    	main_isRever=true;
-	    	}
 	    }
 	    
 
@@ -844,7 +842,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
-	       init_wifiReceiver();
+	      
 	        initView();
 	        df=new DecimalFormat("0.00");
 	       
@@ -869,5 +867,12 @@ public class MainActivity extends Activity implements OnClickListener{
 	    	//updateActivity();  
 
 	    }
+
+		@Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+			unregisterReceiver(wifi_myReceiver);
+			super.onDestroy();
+		}
 	
 }
