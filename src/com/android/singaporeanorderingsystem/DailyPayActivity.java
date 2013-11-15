@@ -234,12 +234,15 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						if (popupWindow.isShowing()) {
 							popupWindow.dismiss();
 						}
-						Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);
-						DailyPayActivity.this.startActivity(intent);
+						Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);						
 						overridePendingTransition(
 								R.anim.in_from_right,
 								R.anim.out_to_left);
-						//DailyPayActivity.this.finish();
+						Bundle bundle=new Bundle();
+						bundle.putString("type", "2");
+						intent.putExtras(bundle);
+						DailyPayActivity.this.startActivity(intent);
+						DailyPayActivity.this.finish();
 					}
 				});
 				

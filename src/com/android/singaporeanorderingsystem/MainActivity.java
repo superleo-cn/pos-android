@@ -85,7 +85,6 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double save_discount_price;
 	private int save_selectNum;
 	public static boolean main_isRever;
-	private SharedPreferences sharedPrefs;
 	private MyApp myApp;
 	/*主菜单activity*/
     @Override
@@ -149,11 +148,15 @@ public class MainActivity extends Activity implements OnClickListener{
 						popupWindow.dismiss();
 					}
 					Intent intent =new Intent(MainActivity.this , SettingActivity.class);
-					MainActivity.this.startActivity(intent);
+					
 					overridePendingTransition(
 							R.anim.in_from_right,
 							R.anim.out_to_left);
-					//MainActivity.this.finish();
+					Bundle bundle=new Bundle();
+					bundle.putString("type", "1");
+					intent.putExtras(bundle);
+					MainActivity.this.startActivity(intent);
+					MainActivity.this.finish();
 				}
 			});
 			
@@ -830,16 +833,6 @@ public class MainActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		 sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
-			String type=sharedPrefs.getString("type", "");
-			if(type.isEmpty()){
-				type="zh";
-			}
-			if(type.equals("zh")){
-				updateLange(Locale.SIMPLIFIED_CHINESE);
-			}else{
-				updateLange(Locale.ENGLISH);
-			}
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
 	      
