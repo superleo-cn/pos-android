@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -178,6 +179,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 public void initData(){
 		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList();
 		Double price=0.00;
+		Resources res =getResources();
+		String[] pay_list=res.getStringArray(R.array.pay_list);
+    	String[] take_number=res.getStringArray(R.array.take_number);
 		for(int i=0;i<priceList.size();i++){
 			price+=Double.parseDouble(priceList.get(i));
 		}
@@ -185,20 +189,22 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			detail_classList = new ArrayList<DailyPayDetailBean>();
 			number_classList = new ArrayList<TakeNumberBean>();
 			
-			for(int i=1 ; i < 5 ; i++){
-				count+=(2*i);
-				detail_classList.add(new DailyPayDetailBean("ceshi", String.valueOf(2*i)));
+			for(int i=1 ; i < pay_list.length ; i++){
+				DailyPayDetailBean bean=new DailyPayDetailBean();
+				bean.setName(pay_list[i]);
+				bean.setPrice("0");
+				detail_classList.add(bean);
 			}
 			detail_adapter= new DailyPayDetailAdapter(this,detail_classList,handler);
 			daily_list.setAdapter(detail_adapter);
 			text_id_all_price.setText(df.format(count));
 			 compute();
 			 
-			 for(int j=1 ; j < 5 ; j++){
+			 for(int j=1 ; j < take_number.length ; j++){
 				//num_count+=(2*i);
 				 TakeNumberBean bean=new TakeNumberBean();
-				 bean.setText1(String.valueOf(0.5*j));
-				 bean.setText2(String.valueOf(2*j));
+				 bean.setText1(take_number[j]);
+				 bean.setText2("0");
 					number_classList.add(bean);
 				}
 				number_adapter=new TakeNumerAdapter(this,number_classList,handler);;
