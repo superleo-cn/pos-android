@@ -12,25 +12,26 @@
     android:id="@+id/food_name"  
     android:textColor="#000000" 
     android:layout_marginTop="5dip"
+    android:textSize="22sp"
     ></TextView>
 	<TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dip"
-    android:layout_weight="1"
+    android:layout_marginRight="5dip"
+    android:layout_weight="1"		
     android:id="@+id/food_num"  
     android:textColor="#000000"  
      android:layout_marginTop="5dip"
+     android:textSize="22sp"
     ></TextView>
 	<TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="5dip"
+    android:layout_marginRight="5dip"
     android:layout_weight="1"
     android:id="@+id/food_price"   
     android:textColor="#000000" 
     android:layout_marginTop="5dip"
+    android:textSize="22sp"
     ></TextView>
-    
-
 </LinearLayout>

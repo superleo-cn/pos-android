@@ -29,6 +29,7 @@ public class MyApp extends Application{
 	private AndroidPrinter printer;
 	private String uid = "0";
 	private String u_name = "";
+	private String u_type = "";
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -74,6 +75,14 @@ public class MyApp extends Application{
 		return u_name;
 	}
 
+	public String getU_type() {
+		return u_type;
+	}
+
+
+	public void setU_type(String u_type) {
+		this.u_type = u_type;
+	}
 	/**
 	 * 获取系统初始化文件操作器
 	 * @return
@@ -81,5 +90,7 @@ public class MyApp extends Application{
 	public SharedPreferences getSysInitSharedPreferences() {
 		return sysInitSharedPreferences;
 	}
+
+
 	
 }

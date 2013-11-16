@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Pos系统</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">POS系统</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 	<string name="exit_txt">退出</string>
