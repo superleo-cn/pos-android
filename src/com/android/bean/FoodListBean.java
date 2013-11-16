@@ -1,6 +1,7 @@
 ﻿package com.android.bean;
 
 public class FoodListBean {
+	private String food_id;
 	private String title;
 	private int imageID;
 	private String price;
@@ -35,6 +36,12 @@ public class FoodListBean {
 	}
 	public void setDaping_id(String daping_id) {
 		this.daping_id = daping_id;
+	}
+	public String getFood_id() {
+		return food_id;
+	}
+	public void setFood_id(String food_id) {
+		this.food_id = food_id;
 	}
 	
 }

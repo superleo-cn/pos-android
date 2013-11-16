@@ -81,6 +81,17 @@
         <item>粿条仔</item>
         <item>细米粉</item>
     </string-array>
+    <string-array name="food_dayin_code">
+        <item>八宝酿豆腐</item>
+        <item>特制酿豆腐</item>
+        <item>全家福大碗汤</item>
+        <item>虾棒墨鱼汤</item>
+        <item>特制辣酱</item>
+        <item>汤</item>
+        <item>珍珠米</item>
+        <item>粿条仔</item>
+        <item>细米粉</item>
+    </string-array>
     <string-array name="pay_list">
         <item>蔬菜 </item>
         <item>打包用具</item>
