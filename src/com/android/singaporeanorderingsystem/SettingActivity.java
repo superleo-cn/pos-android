@@ -84,6 +84,7 @@ public class SettingActivity extends Activity {
 			public void onClick(View v) {
 				String ip = print_one_edit.getText().toString();
 				myApp.setIp_str(ip);
+				myApp.getPrinter().reconnect();
 				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
 			}
 		});

@@ -68,9 +68,9 @@ public class AndroidPrinter {
 	public void connect() {
 		try {
 			if (connFlag == 0) {
-				connFlag = 1;
 				Log.d("WIFI Printer", "Connection to WIFI Printer.");
 				wfComm.initSocket(ip, 9100);
+				connFlag = 1;
 			}
 		} catch (Exception ex) {
 			Log.e("WIFI Printer", "WIFI connection failed", ex);
@@ -122,12 +122,12 @@ public class AndroidPrinter {
 			wfComm.sndByte(bytecmd);
 
 			// cut paper
-//			byte[] bits = new byte[4];
-//			bits[0] = 0x1D;
-//			bits[1] = 0x56;
-//			bits[2] = 0x42;
-//			bits[3] = 90;
-//			wfComm.sndByte(bits);
+			byte[] bits = new byte[4];
+			bits[0] = 0x1D;
+			bits[1] = 0x56;
+			bits[2] = 0x42;
+			bits[3] = 90;
+			wfComm.sndByte(bits);
 
 			// dawer
 			byte[] tail = new byte[3];
@@ -142,10 +142,9 @@ public class AndroidPrinter {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case WifiCommunication.WFPRINTER_CONNECTED:
-				// connFlag = 0;
+				connFlag = 1;
 				Toast.makeText(context, "Connect the WIFI-printer successful",
 						Toast.LENGTH_SHORT).show();
-				// startPrint();
 				revThred = new revMsgThread();
 				revThred.start();
 				cheThread = new checkPrintThread();
