@@ -1,10 +1,14 @@
 package com.android.singaporeanorderingsystem;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import android.R.array;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -42,8 +46,14 @@ import com.android.adapter.SelectListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
+import com.android.common.Constants;
+import com.android.common.HttpHelper;
 import com.android.common.MyApp;
+import com.android.common.SystemHelper;
 import com.android.dialog.DialogBuilder;
+import com.android.handler.RemoteDataHandler;
+import com.android.handler.RemoteDataHandler.Callback;
+import com.android.model.ResponseData;
 
 public class MainActivity extends Activity implements OnClickListener{
 	
@@ -207,11 +217,11 @@ public class MainActivity extends Activity implements OnClickListener{
     	for(int i=0;i<food_name.length;i++){
     		FoodListBean bean=new FoodListBean();
     		bean.setTitle(food_name[i]+"");
-    		bean.setDaping_id(food_dayin_code[i]);
+    		bean.setDaping_id(food_dayin_code[i]+"");
     		bean.setImageID(food_image[i]);  
-    		bean.setType(food_type[i]);
+    		bean.setType(food_type[i]+"");
     		bean.setFood_id(i+1+"");
-    		bean.setPrice(food_price[i]);
+    		bean.setPrice(food_price[i]+"");
     		food_dataList.add(bean);
 //    		if(i>=5){
 //    			bean.setType("0"); //主食
@@ -249,7 +259,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(food_dataList.get(arg2).getType().equals("0")){
+				if(food_dataList.get(arg2).getType().equals("DISH")){
 					
 				}else{
 				save_selectNum++;
@@ -258,6 +268,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					SelectFoodBean bean=new SelectFoodBean();
 					bean.setFood_name(food_dataList.get(arg2).getTitle());
 					bean.setFood_price(food_dataList.get(arg2).getPrice());
+					bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
 					show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
 					if(is_foc){
 						save_foc_price=show_totalPrice;
@@ -310,6 +321,8 @@ public class MainActivity extends Activity implements OnClickListener{
 				}else{
 					SelectFoodBean bean=new SelectFoodBean();
 					bean.setFood_name(food_dataList.get(arg2).getTitle());
+					bean.setFood_price(food_dataList.get(arg2).getPrice());
+					bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
 					for(int i=select_dataList.size()-1;i>=0;i--){
 						SelectFoodBean add_bean=select_dataList.get(i);
 						if(add_bean.getFood_name().equals(bean.getFood_name())){
@@ -501,6 +514,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					bean.setFood_name(food_dataList.get(num).getTitle());
 					bean.setFood_price(food_dataList.get(num).getPrice());
 					bean.setFood_num("1");
+					bean.setFood_dayin_code(food_dataList.get(num).getDaping_id());
 					for(int i=select_dataList.size()-1;i>=0;i--){
 						SelectFoodBean remove_bean=select_dataList.get(i);
 						if(remove_bean.getFood_name().equals(bean.getFood_name())){
@@ -709,6 +723,23 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			break;
 		case R.id.ok_btn:
+			String url= "http://ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/transactions/";
+//			HashMap<String, String> params= new HashMap<String,String>();
+//			params.put("transaction.user.id[]", "1");
+//			params.put("transaction.shop.id[]", "1");
+//			params.put("transaction.quantity[]", "1");
+//			params.put("transaction.food.id[]", "1");
+//			params.put("transaction.totalDiscount[]", "1");
+//			params.put("transaction.totalRetailPrice[]", "1");
+//			params.put("transaction.totalPackage[]", "1");
+//			params.put("transaction.freeOfCharge[]", "1");
+//			params.put("id", "1");
+//			RemoteDataHandler.asyncPost(url, params, new Callback() {
+//				@Override
+//				public void dataLoaded(ResponseData data) {
+//					
+//				}
+//			});
 			try{
 				Log.e("输入的金额", sbuff.toString().trim());
 				show_gathering=Double.parseDouble(sbuff.toString().trim());
@@ -770,7 +801,27 @@ public class MainActivity extends Activity implements OnClickListener{
 					Log.e("保存价格成功", "");
 				}
 				if(false){
-					myApp.getPrinter().print("测试数据。。。");
+					StringBuffer sb=new StringBuffer();
+					SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
+					String time = sdf.format(new Date());
+					sb.append(time+"\n");
+					for(int i = 0 ; i < select_dataList.size() ;i ++){
+						SelectFoodBean bean=select_dataList.get(i);
+						if(i == select_dataList.size()-1){
+							if(is_takePackage){
+								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
+							}else{
+								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
+							}
+						}else{
+							if(is_takePackage){
+								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
+							}else{
+								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
+							}
+						}
+					}
+					myApp.getPrinter().print("测试数据。。。\n"+sb.toString());
 				}
 				clear_data();
 			}});
