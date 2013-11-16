@@ -1,4 +1,4 @@
-﻿package com.android.singaporeanorderingsystem;
+package com.android.singaporeanorderingsystem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -882,3 +882,4 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	
 }
+
