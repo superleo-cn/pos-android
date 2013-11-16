@@ -29,16 +29,27 @@ public class MyApp extends Application{
 	private AndroidPrinter printer;
 	private String uid = "0";
 	private String u_name = "";
-	private String u_type = "";
+	private String ip_str;
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
+		ip_str = sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
 		userdao = new UserDao(this);
 		printer = new AndroidPrinter(this);
 	}
 
+	public String getIp_str() {
+		String ip_str = sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
+		return ip_str;
+	}
+
+	public void setIp_str(String ip_str) {
+		this.ip_str = ip_str;
+		sysInitSharedPreferences.edit().putString("ip_str", this.ip_str).commit();
+	}
+	
 	public UserDao getUserdao() {
 		return userdao;
 	}
@@ -75,14 +86,6 @@ public class MyApp extends Application{
 		return u_name;
 	}
 
-	public String getU_type() {
-		return u_type;
-	}
-
-
-	public void setU_type(String u_type) {
-		this.u_type = u_type;
-	}
 	/**
 	 * 获取系统初始化文件操作器
 	 * @return
@@ -90,7 +93,5 @@ public class MyApp extends Application{
 	public SharedPreferences getSysInitSharedPreferences() {
 		return sysInitSharedPreferences;
 	}
-
-
 	
 }
