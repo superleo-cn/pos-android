@@ -136,8 +136,9 @@ public class LoginActivity extends Activity implements OnClickListener{
 								Toast.makeText(LoginActivity.this,"你不是管理员无权登录", Toast.LENGTH_SHORT).show();
 								return;
 							}
-							myApp.setUid(user_bean.getShop_id());
+							myApp.setShopid(user_bean.getShop_id());
 							myApp.setU_name(user_bean.getUsername());
+							myApp.setUser_id(user_bean.getId());
 							Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
 							Intent  intent =new Intent();
 							intent.setClass(LoginActivity.this, MainActivity.class);
@@ -165,8 +166,9 @@ public class LoginActivity extends Activity implements OnClickListener{
 			LoginUserBean user_bean = user_dao.select(str_login_name);
 			if(user_bean.getUsername() != null && str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
 				Toast.makeText(LoginActivity.this,"恭喜你，shujuku登录成功", Toast.LENGTH_SHORT).show();
-				myApp.setUid(user_bean.getShop_id());
+				myApp.setShopid(user_bean.getShop_id());
 				myApp.setU_name(user_bean.getUsername());
+				myApp.setUser_id(user_bean.getId());
 				Intent  intent =new Intent();
 				intent.setClass(LoginActivity.this, MainActivity.class);
 				LoginActivity.this.startActivity(intent);
@@ -203,7 +205,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 //						pass.generatePassword();
 			            user_bean.setPasswrod(str_login_password);
 						user_dao.insert(user_bean);
-						myApp.setUid(user_bean.getShop_id());
+						myApp.setShopid(user_bean.getShop_id());
+						myApp.setUser_id(user_bean.getId());
 						myApp.setU_name(user_bean.getUsername());
 						Toast.makeText(LoginActivity.this,"恭喜你，登录成功,您的新密码是+"+str_login_password, Toast.LENGTH_SHORT).show();
 						Intent  intent =new Intent();

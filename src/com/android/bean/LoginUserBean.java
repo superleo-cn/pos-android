@@ -23,13 +23,14 @@ import org.json.JSONObject;
  */
 public class LoginUserBean {
 	public static class Attr{
+		public static final String ID = "id";
 		public static final String USERNAME = "username";
 		public static final String REALNAME = "realname";
 		public static final String USERTYPE = "usertype";
 		public static final String STATUS = "status";
 		public static final String SHOP_ID = "shop";
 	}
-	private String user_id;
+	private String id;
 	private String username;//用户名
 	private String passwrod;//密码
 	private String realname;//真实姓名
@@ -40,23 +41,12 @@ public class LoginUserBean {
 	public LoginUserBean(String username, String realname, String usertype,
 			String status) {
 		super();
-		this.username = username;
-		this.realname = realname;
-		this.usertype = usertype;
-		this.status = status;
 	}
 	
-	public LoginUserBean( String username,String realname, String usertype, String status, String shop_id) {
+	public LoginUserBean(String id, String username, String realname, String usertype, String status,
+			String shop_id) {
 		super();
-		this.username = username;
-		this.realname = realname;
-		this.usertype = usertype;
-		this.status = status;
-		this.shop_id = shop_id;
-	}
-	public LoginUserBean(String user_id, String username, String realname, String usertype, String status, String shop_id) {
-		super();
-		this.user_id = user_id;
+		this.id = id;
 		this.username = username;
 		this.realname = realname;
 		this.usertype = usertype;
@@ -71,6 +61,7 @@ public class LoginUserBean {
 			int size = null == arr ? 0 : arr.length();
 			for(int i = 0; i < size; i++){
 				JSONObject obj = arr.getJSONObject(i);
+				String id = obj.optString(Attr.ID);
 				String username = obj.optString(Attr.USERNAME);
 				String realname = obj.optString(Attr.REALNAME);
 				String usertype = obj.optString(Attr.USERTYPE);
@@ -81,7 +72,7 @@ public class LoginUserBean {
 					JSONObject json_obj=new JSONObject(shop_id);
 					shop = json_obj.optString("id");
 				}
-				login_bean.add(new LoginUserBean(username, realname, usertype, status, shop)) ;
+				login_bean.add(new LoginUserBean(id, username, realname, usertype, status, shop)) ;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -124,17 +115,18 @@ public class LoginUserBean {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getUser_id() {
-		return user_id;
+	public String getId() {
+		return id;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setId(String id) {
+		this.id = id;
 	}
 	@Override
 	public String toString() {
-		return "LoginUserBean [user_id=" + user_id + ", username=" + username
+		return "LoginUserBean [id=" + id + ", username=" + username
 				+ ", passwrod=" + passwrod + ", realname=" + realname
 				+ ", usertype=" + usertype + ", status=" + status
 				+ ", shop_id=" + shop_id + "]";
 	}
+	
 }

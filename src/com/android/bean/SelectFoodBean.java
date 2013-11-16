@@ -5,6 +5,14 @@ public class SelectFoodBean {
 	private String food_num;
 	private String food_price;
 	private String food_dayin_code;
+	private String food_id;
+	
+	public String getFood_id() {
+		return food_id;
+	}
+	public void setFood_id(String food_id) {
+		this.food_id = food_id;
+	}
 	public String getFood_name() {
 		return food_name;
 	}
@@ -33,7 +41,8 @@ public class SelectFoodBean {
 	public String toString() {
 		return "SelectFoodBean [food_name=" + food_name + ", food_num="
 				+ food_num + ", food_price=" + food_price
-				+ ", food_dayin_code=" + food_dayin_code + "]";
+				+ ", food_dayin_code=" + food_dayin_code + ", food_id="
+				+ food_id + "]";
 	}
 	
 }

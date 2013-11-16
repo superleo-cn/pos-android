@@ -53,7 +53,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 
-import com.android.bean.FoodListSbmin;
+import com.android.bean.FoodOrder;
 
 /**
  * HttpClient来发请求并返回字符串内容的工具类<br/>
