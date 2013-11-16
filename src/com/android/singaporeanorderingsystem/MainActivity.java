@@ -43,6 +43,7 @@ import com.android.adapter.SelectListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
+import com.android.common.AndroidPrinter;
 import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 
@@ -92,7 +93,6 @@ public class MainActivity extends Activity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       
     }
     
     /*初始化控件*/
@@ -755,6 +755,9 @@ public class MainActivity extends Activity implements OnClickListener{
 					Log.e("保存价格失败", "");
 				}else{
 					Log.e("保存价格成功", "");
+				}
+				if(false){
+					myApp.getPrinter().print("测试数据。。。");
 				}
 				clear_data();
 			}});
