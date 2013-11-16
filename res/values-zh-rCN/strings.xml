@@ -82,7 +82,37 @@
         <item>细米粉</item>
     </string-array>
     <string-array name="food_dayin_code">
-        <item>八宝酿豆腐asdfghjkl</item>
+        <item>1a</item>
+        <item>1b</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+    <string-array name="food_type">
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>STAPLE</item>
+        <item>STAPLE</item>
+        <item>STAPLE</item>
+    </string-array>
+    <string-array name="food_price">
+        <item>3.5</item>
+        <item>3.5</item>
+        <item>10.0</item>
+        <item>7.0</item>
+        <item>7.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
     </string-array>
     <string-array name="pay_list">
         <item>蔬菜 </item>
