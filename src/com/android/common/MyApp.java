@@ -26,7 +26,8 @@ public class MyApp extends Application{
 	/** 系统初始化配置文件操作器 */
 	private SharedPreferences sysInitSharedPreferences;
 	private UserDao userdao;
-	private  String uid = "0";
+	private AndroidPrinter printer;
+	private String uid = "0";
 	private String u_name = "";
 	@Override
 	public void onCreate() {
@@ -34,6 +35,7 @@ public class MyApp extends Application{
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
 		userdao = new UserDao(this);
+		printer = null; //new AndroidPrinter(this);
 	}
 
 	public UserDao getUserdao() {
@@ -42,6 +44,14 @@ public class MyApp extends Application{
 
 	public void setUserdao(UserDao userdao) {
 		this.userdao = userdao;
+	}
+	
+	public AndroidPrinter getPrinter() {
+		return printer;
+	}
+
+	public void setPrinter(AndroidPrinter printer) {
+		this.printer = printer;
 	}
 
 	public String getU_name() {
