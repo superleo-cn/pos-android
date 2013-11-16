@@ -849,7 +849,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
-	      
 	        initView();
 	        df=new DecimalFormat("0.00");
 	       
