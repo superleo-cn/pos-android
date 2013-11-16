@@ -81,4 +81,27 @@
         <item>粿条仔</item>
         <item>细米粉</item>
     </string-array>
+    <string-array name="pay_list">
+        <item>蔬菜 </item>
+        <item>打包用具</item>
+        <item>茶水钱 </item>
+        <item>煤气</item>
+        <item>借款</item>
+        <item>用具</item>
+        <item>五金类</item>
+        <item>其他</item>
+    </string-array>
+    
+    <string-array name="take_number">
+        <item>0.05</item>
+        <item>0.1</item>
+        <item>0.2 </item>
+        <item>0.5</item>
+        <item>1.0</item>
+        <item>2.0</item>
+        <item>5.0</item>
+        <item>10.0</item> 
+        <item>50.0</item>
+        <item>100.0</item>
+    </string-array>
 </resources>

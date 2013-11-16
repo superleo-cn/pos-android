@@ -66,4 +66,27 @@
 	<string name="rmb">rmb</string>
 	<string name="message_2">are you sure change language？</string>
 	<string name="take_all_price">All Money</string>
+	  <string-array name="pay_list">
+        <item>Vegtable </item>
+        <item>Takeaway Materials</item>
+        <item>Drink/Meal</item>
+        <item>Gas</item>
+        <item>Loan</item>
+        <item>Equipment/Utensil</item>
+        <item>General Hardware</item>
+        <item>其他</item>
+    </string-array>
+    
+	  <string-array name="take_number">
+        <item>0.05</item>
+        <item>0.1</item>
+        <item>0.2 </item>
+        <item>0.5</item>
+        <item>1.0</item>
+        <item>2.0</item>
+        <item>5.0</item>
+        <item>10.0</item> 
+        <item>50.0</item>
+        <item>100.0</item>
+    </string-array>
 </resources>
