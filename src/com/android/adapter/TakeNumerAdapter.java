@@ -1,6 +1,7 @@
 package com.android.adapter;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -28,6 +29,8 @@ public class TakeNumerAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<TakeNumberBean> classList;
 	public static final int SET_NUM=2001;
+
+
 	@SuppressWarnings("unused")
 	private Handler handler;
 	public TakeNumerAdapter(Context context, List<TakeNumberBean> list,
@@ -42,14 +45,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 		return classList.size();
 	}
 
-	public List<TakeNumberBean> getClassList() {
-		return classList;
-	}
-
-	public void setClassList(List<TakeNumberBean> classList) {
-		this.classList = classList;
-	}
-
 	public Object getItem(int position) {
 		return null;
 	}
@@ -57,7 +52,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		final TakeNumberBean bean;
@@ -75,8 +69,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 		bean = classList.get(position);
 		viewHolder.num_id_name.setText(bean.getText1());
 		viewHolder.id_price.setText(bean.getText2());
-		//final String now_str=viewHolder.id_price.getText().toString();
-		
 		try{
 			Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
 			int num=Integer.parseInt(viewHolder.id_price.getText().toString());
@@ -84,7 +76,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 			DecimalFormat df=new DecimalFormat("0.00");
 			viewHolder.num_price.setText(df.format(total_price));
 		}catch(Exception e){
-			
+			Log.e("err", "");
 		}
 		
 //		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
@@ -102,6 +94,9 @@ public class TakeNumerAdapter extends BaseAdapter {
 //						Double total_price=price*num;
 //						DecimalFormat df=new DecimalFormat("0.00");
 //						viewHolder.num_price.setText(df.format(total_price));
+////						Message msg = new Message();
+////						msg.what = SET_NUM;
+////						handler.sendMessage(msg);
 //					}catch(Exception e){
 //						
 //					}
@@ -132,16 +127,18 @@ public class TakeNumerAdapter extends BaseAdapter {
 
 				try{
 					Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
-					int num=Integer.parseInt(viewHolder.id_price.getText().toString());
+					String num_tv=viewHolder.id_price.getText().toString();
+					int num=Integer.parseInt(num_tv);
 					Double total_price=price*num;
 					DecimalFormat df=new DecimalFormat("0.00");
-					viewHolder.num_price.setText(df.format(total_price));
-					
+					viewHolder.num_price.setText(df.format(total_price));					
 					Message msg = new Message();
 					msg.what = SET_NUM;
+					msg.obj=position+String.valueOf(total_price);
 					handler.sendMessage(msg);
 					Log.e("计算次数", "");
 				}catch(Exception e){
+					Log.e("计算错误", "");
             }
                 return false; 
             }

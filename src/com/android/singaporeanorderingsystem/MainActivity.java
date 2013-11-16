@@ -86,13 +86,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double save_discount_price;
 	private int save_selectNum;
 	public static boolean main_isRever;
-	private SharedPreferences sharedPrefs;
 	private MyApp myApp;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //init_wifiReceiver();
     }
     
     /*初始化控件*/
@@ -149,11 +149,15 @@ public class MainActivity extends Activity implements OnClickListener{
 						popupWindow.dismiss();
 					}
 					Intent intent =new Intent(MainActivity.this , SettingActivity.class);
-					MainActivity.this.startActivity(intent);
+					
 					overridePendingTransition(
 							R.anim.in_from_right,
 							R.anim.out_to_left);
-					//MainActivity.this.finish();
+					Bundle bundle=new Bundle();
+					bundle.putString("type", "1");
+					intent.putExtras(bundle);
+					MainActivity.this.startActivity(intent);
+					MainActivity.this.finish();
 				}
 			});
 			
@@ -161,7 +165,6 @@ public class MainActivity extends Activity implements OnClickListener{
 
 				@Override
 				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
 					if (popupWindow.isShowing()) {
 						popupWindow.dismiss();
 					}
@@ -186,22 +189,33 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	}
     public void init_foodView(){
-    	food_dataList=new ArrayList<FoodListBean>();   	
-    	for(int i=0;i<10;i++){
+    	food_dataList=new ArrayList<FoodListBean>();   
+    	Resources res =getResources();
+    	String[] food_name=res.getStringArray(R.array.food_name);
+    	for(int i=1;i<=food_name.length;i++){
     		FoodListBean bean=new FoodListBean();
-    		bean.setImageID(R.drawable.ceshi2);   		
+    		bean.setTitle(food_name[i-1]+"");
+    		bean.setImageID(R.drawable.ceshi2);  
     		if(i>=5){
     			bean.setType("0"); //主食
-    			String main_food=String.valueOf(R.string.main_food);
-    			bean.setTitle("food"+i);
     		}else{
     			bean.setType("1"); //菜品
-    			String vegetable=String.valueOf(R.string.vegetable);
-    			bean.setTitle("caipin"+i);
     		}
     		String price=i+".00";
     		bean.setPrice(String.valueOf(price));
     		food_dataList.add(bean);
+//    		if(i>=5){
+//    			bean.setType("0"); //主食
+//    			String main_food=String.valueOf(R.string.main_food);
+//    			bean.setTitle("food"+i);
+//    		}else{
+//    			bean.setType("1"); //菜品
+//    			String vegetable=String.valueOf(R.string.vegetable);
+//    			bean.setTitle("caipin"+i);
+//    		}
+//    		String price=i+".00";
+//    		bean.setPrice(String.valueOf(price));
+//    		food_dataList.add(bean);
     	}
     	FoodListAdapter adapter=new FoodListAdapter(this,food_dataList,handler);
     	foodView.setAdapter(adapter);
@@ -823,31 +837,18 @@ public class MainActivity extends Activity implements OnClickListener{
 	    
 	    private void init_wifiReceiver()
 	    {
-	    	if(!main_isRever){
-	    	IntentFilter filter=new IntentFilter();
-	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(wifi_myReceiver,filter);
+	    	IntentFilter filter1=new IntentFilter();
+	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    	registerReceiver(wifi_myReceiver,filter1);
 	    	main_isRever=true;
-	    	}
 	    }
 	    
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		 sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
-			String type=sharedPrefs.getString("type", "");
-			if(type.isEmpty()){
-				type="zh";
-			}
-			if(type.equals("zh")){
-				updateLange(Locale.SIMPLIFIED_CHINESE);
-			}else{
-				updateLange(Locale.ENGLISH);
-			}
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
-	        
 	        initView();
 	        df=new DecimalFormat("0.00");
 	       
@@ -872,5 +873,12 @@ public class MainActivity extends Activity implements OnClickListener{
 	    	//updateActivity();  
 
 	    }
+
+		@Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+			unregisterReceiver(wifi_myReceiver);
+			super.onDestroy();
+		}
 	
 }

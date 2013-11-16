@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -35,10 +36,14 @@ public class SettingActivity extends Activity {
 	private View view;
 	private ImageView menu;
 	private Button synchronization_menu;
+	public static String type;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);
+		Intent intent=this.getIntent();
+		Bundle bundle=intent.getExtras();
+		type=bundle.getString("type");
 		language_set=(EditText) findViewById(R.id.language_set);
 		menu=(ImageView) findViewById(R.id.menu_btn);
 		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
@@ -138,11 +143,11 @@ public class SettingActivity extends Activity {
 						if (popupWindow.isShowing()) {
 							popupWindow.dismiss();
 						}
-						Intent intent =new Intent(SettingActivity.this , DailyPayActivity.class);
-						SettingActivity.this.startActivity(intent);
+						Intent intent =new Intent(SettingActivity.this , DailyPayActivity.class);						
 						overridePendingTransition(
 								R.anim.in_from_right,
 								R.anim.out_to_left);
+						SettingActivity.this.startActivity(intent);
 						SettingActivity.this.finish();
 					}});
 				popu_exit.setOnClickListener(new OnClickListener() {
@@ -162,6 +167,9 @@ public class SettingActivity extends Activity {
 		  Intent intent = new Intent();
 		  intent.setClass(this,SettingActivity.class);//当前Activity重新打开
 		  intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		  Bundle bundle=new Bundle();
+		  bundle.putString("type", type);
+			intent.putExtras(bundle);
 		  startActivity(intent);
 		  this.finish();
 		 
@@ -196,4 +204,23 @@ public class SettingActivity extends Activity {
 
 	    }
 
+		@Override
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			// TODO Auto-generated method stub
+			if(keyCode==KeyEvent.KEYCODE_BACK){
+				if(type.equals("1")){
+					Intent intent=new Intent();
+					intent.setClass(this, MainActivity.class);
+					startActivity(intent);
+					this.finish();
+				}else{
+					Intent intent=new Intent();
+					intent.setClass(this, DailyPayActivity.class);
+					startActivity(intent);
+					this.finish();
+				}
+			}
+			return super.onKeyDown(keyCode, event);
+		}
+		
 }

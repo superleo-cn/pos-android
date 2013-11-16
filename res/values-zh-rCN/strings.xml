@@ -70,4 +70,15 @@
 	<string name="ceshi">测试</string>
 	<string name="rmb">元</string>
 	<string name="take_all_price">带回总金额</string>
+	<string-array name="food_name">
+        <item>八宝酿豆腐</item>
+        <item>特制酿豆腐</item>
+        <item>全家福大碗汤</item>
+        <item>虾棒墨鱼汤</item>
+        <item>特制辣酱</item>
+        <item>汤</item>
+        <item>珍珠米</item>
+        <item>粿条仔</item>
+        <item>细米粉</item>
+    </string-array>
 </resources>
