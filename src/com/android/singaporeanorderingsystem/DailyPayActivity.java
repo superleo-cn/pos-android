@@ -3,8 +3,10 @@
  */
 package com.android.singaporeanorderingsystem;
 
+import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -43,8 +45,15 @@ import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
+import com.android.bean.GetPayDetailBean;
 import com.android.bean.TakeNumberBean;
+import com.android.common.Constants;
+import com.android.common.MyApp;
+import com.android.common.SystemHelper;
 import com.android.dialog.DialogBuilder;
+import com.android.handler.RemoteDataHandler;
+import com.android.handler.RemoteDataHandler.Callback;
+import com.android.model.ResponseData;
 
 /**
  * @author jingang
@@ -82,12 +91,16 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private DecimalFormat  df;
 	private TextView take_all_price;
 	private Double num_count=0.00;
+	private List<Double> all_num_price;
 	public static boolean is_recer;
+	private MyApp myApp;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
-		
+		//init_wifiReceiver();
+		all_num_price=new ArrayList<Double>();
+	onload_payDetail("1");
 	}
 	 
 	 public void initView(){
@@ -178,19 +191,31 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			}
 			detail_adapter= new DailyPayDetailAdapter(this,detail_classList,handler);
 			daily_list.setAdapter(detail_adapter);
-			//detail_adapter.notifyDataSetChanged();
-			
-			//number_adapter.notifyDataSetChanged();	
-			String rmb=String.valueOf(R.string.rmb);
 			text_id_all_price.setText(df.format(count));
 			 compute();
-			 for(int i=1 ; i < 5 ; i++){
-				 num_count+=(2*i);
-					number_classList.add(new TakeNumberBean(String.valueOf(0.5*i),String.valueOf(2*i)));
+			 
+			 for(int j=1 ; j < 5 ; j++){
+				//num_count+=(2*i);
+				 TakeNumberBean bean=new TakeNumberBean();
+				 bean.setText1(String.valueOf(0.5*j));
+				 bean.setText2(String.valueOf(2*j));
+					number_classList.add(bean);
 				}
 				number_adapter=new TakeNumerAdapter(this,number_classList,handler);;
 				num_list.setAdapter(number_adapter);
-			take_all_price.setText(df.format(num_count));
+				try{
+					for(int i=0;i<number_classList.size();i++){
+						Double sigle_price=Double.parseDouble(number_classList.get(i).getText1());
+						int num=Integer.parseInt(number_classList.get(i).getText2());
+						Double total_price=0.00;
+						total_price=num*sigle_price;
+						all_num_price.add(total_price);
+						num_count=num_count+total_price;					
+					}
+					take_all_price.setText(df.format(num_count));
+				}catch(Exception e){
+					
+				}
 	 }
 	 
 	 public void initPopupWindow() {
@@ -220,12 +245,15 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						if (popupWindow.isShowing()) {
 							popupWindow.dismiss();
 						}
-						Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);
-						DailyPayActivity.this.startActivity(intent);
+						Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);						
 						overridePendingTransition(
 								R.anim.in_from_right,
 								R.anim.out_to_left);
-						//DailyPayActivity.this.finish();
+						Bundle bundle=new Bundle();
+						bundle.putString("type", "2");
+						intent.putExtras(bundle);
+						DailyPayActivity.this.startActivity(intent);
+						DailyPayActivity.this.finish();
 					}
 				});
 				
@@ -323,19 +351,16 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				break;
 			case TakeNumerAdapter.SET_NUM:
 				num_count=0.00;
-				try{
-				for(int i=0;i<number_classList.size();i++){
-					TextView price_tv=(TextView) num_list.getChildAt(i).findViewById(R.id.num_price);
-					Double sigle_price=Double.parseDouble(price_tv.getText().toString());
-					Log.e("操作11",price_tv.getText().toString());
-					num_count+=sigle_price;
+				String str=(String) msg.obj;
+				int num=Integer.parseInt(str.substring(0,1));
+				String price=str.substring(1,str.length());
+				all_num_price.set(num, Double.parseDouble(price));
+				Double sigle_price=0.00;
+				for(int i=0;i<all_num_price.size();i++){	
+					sigle_price=all_num_price.get(i).doubleValue();
+					num_count=num_count+sigle_price;
 				}
-				Log.e("总价钱",df.format(num_count));
 				take_all_price.setText(df.format(num_count));
-				 
-				}catch(Exception e){
-					Toast.makeText(DailyPayActivity.this,  R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
 				break;
 			}
 		}
@@ -401,12 +426,10 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		}
 	    private void init_wifiReceiver()
 	    {
-	    	if(!is_recer){
 	    	IntentFilter filter=new IntentFilter();
 	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 	    	registerReceiver(myReceiver,filter);
 	    	is_recer=true;
-	    	}
 	    }
 	    public void  clear_data(){
 	    	daily_list.setAdapter(null);
@@ -471,7 +494,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			// TODO Auto-generated method stub
 			df=new DecimalFormat("0.00");
 			initView();
-			init_wifiReceiver();
+			
 			btu_id_sbumit.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -482,6 +505,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					CreatedDialog().create().show();
 				}
 			});
+			
 			super.onResume();
 		}
 
@@ -502,5 +526,65 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			 //Toast.makeText(this, "取消软键盘" , Toast.LENGTH_SHORT).show();
 			return super.onTouchEvent(event);
 		}
+
+		@Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+			unregisterReceiver(myReceiver);
+			super.onDestroy();
+		}
+		
+	public void onload_payDetail(String id){
+//		HashMap<String, String> params =new HashMap<String, String>();
+//		params.put("id", id);
+//		RemoteDataHandler.asyncPost(Constants.URL_PAY_DETAIL, params, new Callback() {
+//			@Override
+//			public void dataLoaded(ResponseData data) {
+//				if(data.getCode() == 1){
+//					String json=data.getJson();
+//					Log.e("返回数据", json);
+//					//ArrayList<GetPayDetailBean> datas=GetPayDetailBean.newInstanceList(json);
+//				}else if(data.getCode() == 0){
+//					Toast.makeText(DailyPayActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+//				}else if(data.getCode() == -1){
+//					Toast.makeText(DailyPayActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+//				}
+//			}
+//		});
+		System.out.println("url-->"+Constants.URL_PAY_DETAIL+id);
+		RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL+id,new Callback() {
+			@Override
+			public void dataLoaded(ResponseData data) {
+				if(data.getCode() == 1){
+					String json=data.getJson();
+					Log.e("返回数据", json);
+					//ArrayList<GetPayDetailBean> datas=GetPayDetailBean.newInstanceList(json);
+				}else if(data.getCode() == 0){
+					Toast.makeText(DailyPayActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+				}else if(data.getCode() == -1){
+					Toast.makeText(DailyPayActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		}
+	
+	public void onload_takeNum(String id){
+		HashMap<String, String> params =new HashMap<String, String>();
+		params.put("id", id);
+		RemoteDataHandler.asyncPost(Constants.URL_TAKE_DNUM, params, new Callback() {
+			@Override
+			public void dataLoaded(ResponseData data) {
+				if(data.getCode() == 1){
+					
+					
+				}else if(data.getCode() == 0){
+					//Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+				}else if(data.getCode() == -1){
+					//Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		}
+
 		
 }
