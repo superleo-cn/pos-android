@@ -23,6 +23,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -109,6 +110,17 @@ public class MainActivity extends Activity implements OnClickListener{
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+    	 .detectDiskReads()
+    	 .detectDiskWrites()
+    	 .detectNetwork() // 这里可以替换为detectAll() 就包括了磁盘读写和网络I/O
+    	 .penaltyLog() //打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
+    	 .build());
+    	 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+    	 .detectLeakedSqlLiteObjects() //探测SQLite数据库操作
+    	.penaltyLog() //打印logcat
+    	 .penaltyDeath()
+    	 .build());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
@@ -723,17 +735,17 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			break;
 		case R.id.ok_btn:
-			String url= "http://ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/transactions/";
+//			String url= "http://ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/transactions/store";
 //			HashMap<String, String> params= new HashMap<String,String>();
-//			params.put("transaction.user.id[]", "1");
-//			params.put("transaction.shop.id[]", "1");
-//			params.put("transaction.quantity[]", "1");
-//			params.put("transaction.food.id[]", "1");
-//			params.put("transaction.totalDiscount[]", "1");
-//			params.put("transaction.totalRetailPrice[]", "1");
-//			params.put("transaction.totalPackage[]", "1");
-//			params.put("transaction.freeOfCharge[]", "1");
-//			params.put("id", "1");
+//			params.put("transction[0].androidId", "0");
+//			params.put("transaction[0].user.id", "1");
+//			params.put("transaction[0].shop.id", "1");
+//			params.put("transaction[0].quantity", "1");
+//			params.put("transaction[0].food.id", "1");
+//			params.put("transaction[0].totalDiscount", "1");
+//			params.put("transaction[0].totalRetailPrice", "1");
+//			params.put("transaction[0].totalPackage", "1");
+//			params.put("transaction[0].freeOfCharge", "1");
 //			RemoteDataHandler.asyncPost(url, params, new Callback() {
 //				@Override
 //				public void dataLoaded(ResponseData data) {
@@ -804,24 +816,17 @@ public class MainActivity extends Activity implements OnClickListener{
 					StringBuffer sb=new StringBuffer();
 					SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
 					String time = sdf.format(new Date());
-					sb.append(time+"\n");
+					sb.append(time+"\n\n");
 					for(int i = 0 ; i < select_dataList.size() ;i ++){
 						SelectFoodBean bean=select_dataList.get(i);
-						if(i == select_dataList.size()-1){
 							if(is_takePackage){
 								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
 							}else{
 								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
 							}
-						}else{
-							if(is_takePackage){
-								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
-							}else{
-								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
-							}
-						}
 					}
-					myApp.getPrinter().print("测试数据。。。\n"+sb.toString());
+					myApp.getPrinter().setIp(myApp.getIp_str());
+					myApp.getPrinter().print(sb.toString());
 				}
 				clear_data();
 			}});
