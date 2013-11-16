@@ -530,7 +530,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		@Override
 		protected void onDestroy() {
 			// TODO Auto-generated method stub
-			unregisterReceiver(myReceiver);
+			//unregisterReceiver(myReceiver);
 			super.onDestroy();
 		}
 		

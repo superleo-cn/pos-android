@@ -878,7 +878,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		@Override
 		protected void onDestroy() {
 			// TODO Auto-generated method stub
-			unregisterReceiver(wifi_myReceiver);
+		//	unregisterReceiver(wifi_myReceiver);
 			super.onDestroy();
 		}
 	
