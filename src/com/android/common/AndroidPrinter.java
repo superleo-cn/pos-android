@@ -21,8 +21,18 @@ public class AndroidPrinter {
 
 	public AndroidPrinter(Context context) {
 		this.context = context;
-		wfComm = new WifiCommunication(mHandler);
-		connect();
+		if (wfComm == null) {
+			try{
+				wfComm = new WifiCommunication(mHandler);
+				Log.d("WIFI Printer", "try to re-connect printer and print message. ");
+				connect();
+			}catch(Exception e){
+				Log.d("WIFI Printer", "Cannot find WIFI Printer ", e);
+				Toast.makeText(context, "Cannot find WIFI Printer",
+						Toast.LENGTH_SHORT).show();
+			}
+		} 
+		
 	}
 
 	// start to print
@@ -36,8 +46,11 @@ public class AndroidPrinter {
 				Log.d("WIFI Printer", "try to re-connect printer and print message: " + message);
 			}
 		} 
-		Log.d("WIFI Printer", "start to printer :" + message);
-		startPrint(message);
+		// if conenct to WIFI printer
+		if (connFlag == 1) {
+			Log.d("WIFI Printer", "start to printer :" + message);
+			startPrint(message);
+		}
 	}
 
 	// connect to printer
