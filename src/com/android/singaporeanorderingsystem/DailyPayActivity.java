@@ -3,8 +3,10 @@
  */
 package com.android.singaporeanorderingsystem;
 
+import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -43,8 +45,15 @@ import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
+import com.android.bean.GetPayDetailBean;
 import com.android.bean.TakeNumberBean;
+import com.android.common.Constants;
+import com.android.common.MyApp;
+import com.android.common.SystemHelper;
 import com.android.dialog.DialogBuilder;
+import com.android.handler.RemoteDataHandler;
+import com.android.handler.RemoteDataHandler.Callback;
+import com.android.model.ResponseData;
 
 /**
  * @author jingang
@@ -84,12 +93,14 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private Double num_count=0.00;
 	private List<Double> all_num_price;
 	public static boolean is_recer;
+	private MyApp myApp;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
-		init_wifiReceiver();
+		//init_wifiReceiver();
 		all_num_price=new ArrayList<Double>();
+	onload_payDetail("1");
 	}
 	 
 	 public void initView(){
@@ -494,6 +505,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					CreatedDialog().create().show();
 				}
 			});
+			
 			super.onResume();
 		}
 
@@ -522,5 +534,57 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			super.onDestroy();
 		}
 		
+	public void onload_payDetail(String id){
+//		HashMap<String, String> params =new HashMap<String, String>();
+//		params.put("id", id);
+//		RemoteDataHandler.asyncPost(Constants.URL_PAY_DETAIL, params, new Callback() {
+//			@Override
+//			public void dataLoaded(ResponseData data) {
+//				if(data.getCode() == 1){
+//					String json=data.getJson();
+//					Log.e("返回数据", json);
+//					//ArrayList<GetPayDetailBean> datas=GetPayDetailBean.newInstanceList(json);
+//				}else if(data.getCode() == 0){
+//					Toast.makeText(DailyPayActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+//				}else if(data.getCode() == -1){
+//					Toast.makeText(DailyPayActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+//				}
+//			}
+//		});
+		System.out.println("url-->"+Constants.URL_PAY_DETAIL+id);
+		RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL+id,new Callback() {
+			@Override
+			public void dataLoaded(ResponseData data) {
+				if(data.getCode() == 1){
+					String json=data.getJson();
+					Log.e("返回数据", json);
+					//ArrayList<GetPayDetailBean> datas=GetPayDetailBean.newInstanceList(json);
+				}else if(data.getCode() == 0){
+					Toast.makeText(DailyPayActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+				}else if(data.getCode() == -1){
+					Toast.makeText(DailyPayActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		}
+	
+	public void onload_takeNum(String id){
+		HashMap<String, String> params =new HashMap<String, String>();
+		params.put("id", id);
+		RemoteDataHandler.asyncPost(Constants.URL_TAKE_DNUM, params, new Callback() {
+			@Override
+			public void dataLoaded(ResponseData data) {
+				if(data.getCode() == 1){
+					
+					
+				}else if(data.getCode() == 0){
+					//Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+				}else if(data.getCode() == -1){
+					//Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		}
+
 		
 }

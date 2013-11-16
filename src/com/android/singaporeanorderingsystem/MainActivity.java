@@ -91,7 +91,7 @@ public class MainActivity extends Activity implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        init_wifiReceiver();
+        //init_wifiReceiver();
     }
     
     /*初始化控件*/
