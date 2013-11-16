@@ -189,7 +189,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			detail_classList = new ArrayList<DailyPayDetailBean>();
 			number_classList = new ArrayList<TakeNumberBean>();
 			
-			for(int i=1 ; i < pay_list.length ; i++){
+			for(int i=0 ; i < pay_list.length ; i++){
 				DailyPayDetailBean bean=new DailyPayDetailBean();
 				bean.setName(pay_list[i]);
 				bean.setPrice("0");
@@ -200,7 +200,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			text_id_all_price.setText(df.format(count));
 			 compute();
 			 
-			 for(int j=1 ; j < take_number.length ; j++){
+			 for(int j=0 ; j < take_number.length ; j++){
 				//num_count+=(2*i);
 				 TakeNumberBean bean=new TakeNumberBean();
 				 bean.setText1(take_number[j]);
