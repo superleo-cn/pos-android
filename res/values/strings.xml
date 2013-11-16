@@ -1,71 +1,72 @@
 <resources>
     <string name="app_name">app_name</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
-	<string name="exit_txt">exit</string>
+	<string name="exit_txt">Exit</string>
 	<string name="mainTitle_txt">Ben hello</string>
-	<string name="layoutLeft_title">take_food</string>
-	<string name="total_prie">total_prie:</string>
-	<string name="gathering">gathering:</string>
-	<string name="surplus">surplus:</string>
-	<string name="take_package">take_package</string>
+	<string name="layoutLeft_title">Food Order</string>
+	<string name="total_prie">Total Price:</string>
+	<string name="gathering">Collection:</string>
+	<string name="surplus">Changes:</string>
+	<string name="take_package">Pack</string>
 	<string name="ok">OK</string>
 	<string name="foc">FOC</string>
-	<string name="discount">discount</string>
-	<string name="setting">setting</string>
-	<string name="diancai_name">diancai</string>
-	<string name="exitApp">exitApp</string>
-	<string name="allcount">allcount</string>
-	<string name="message_title">message_title</string>
-	<string name="message_exit">message_exit？</string>
-	<string name="err_price">err_price</string>
-	<string name="message_ok">ok</string>
-	<string name="message_cancle">cancle</string>
-	<string name="login_name">user_name：</string>
-	<string name="login_password">pass_word：</string>
-	<string name="dail_detail">dail_detail</string>
-	<string name="shop_info">shop_info</string>
-	<string name="shop_money">shop_money</string>
+	<string name="discount">Discount</string>
+	<string name="setting">SETTING</string>
+	<string name="diancai_name">POINT OF SALES</string>
+	<string name="exitApp">LOGOUT</string>
+	<string name="allcount">Total Expenses</string>
+	<string name="message_title">Message Title</string>
+	<string name="message_exit">DO YOU WANT TO LOGOUT POS?</string>
+	<string name="err_price">ERROR PRICE</string>
+	<string name="message_ok">OK</string>
+	<string name="message_login">LOGIN</string>
+	<string name="message_cancle">CANCEL</string>
+	<string name="login_name">Username：</string>
+	<string name="login_password">Password：</string>
+	<string name="dail_detail">Expenses</string>
+	<string name="shop_info">Outlet Name:</string>
+	<string name="shop_money">Open Balance</string>
 	<string name="write_name">write_name:</string>
-	<string name="take_number">take_number</string>
-	<string name="cash_register">C:cash_register</string>
-	<string name="today_turnover">D:today_turnover</string>
-	<string name="noon_time">noon_time</string>
-	<string name="noon_turnover">noon_turnover</string>
-	<string name="time">time</string>
-	<string name="total">total(A+B+C)</string>
-	<string name="tomorrow_money">E:tomorrow_money</string>
-	<string name="total_take_num">total_take_num(D-F)</string>
-	<string name="send_person">send_person</string>
-	<string name="other">other</string>
+	<string name="take_number">Daily Collections</string>
+	<string name="cash_register">C:Cash register</string>
+	<string name="today_turnover">D:Daily_turnover</string>
+	<string name="noon_time">Lunch Time</string>
+	<string name="noon_turnover">Lunch Sales</string>
+	<string name="time">Time</string>
+	<string name="total">Total (A+B+C)</string>
+	<string name="tomorrow_money">E:Next Open Balance</string>
+	<string name="total_take_num">Total Collection(D-E)</string>
+	<string name="send_person">Cashier</string>
+	<string name="other">Remarks</string>
 	<string name="message_zhifu">message_zhifu？</string>
 	<string name="open_print">open_print？</string>
 	<string name="set_title">set</string>
 	<string name="synchronize">synchronize</string>
-	<string name="content">content"</string>
+	<string name="content">Content"</string>
 	<string name="synchronize_btn">synchronize</string>
 	<string name="set_txt">set</string>
-	<string name="language">language</string>
-	<string name="print_set">print_set</string>
-	<string name="print_one">print_one</string>
-	<string name="print_two">print_two</string>
-	<string name="take_price">take_price</string>
-	<string name="admin_set">admin_set</string>
-	<string name="synchronization_menu">syn_menu</string>
-	<string name="synchronization_pay">syn_pay</string>
+	<string name="language">Language</string>
+	<string name="print_set">PRINT SETTING</string>
+	<string name="print_one">Printer:</string>
+	<string name="print_two">Printer 2: </string>
+	<string name="take_price">Discount</string>
+	<string name="admin_set">SUPER ADMINISTRATOR SETTING</string>
+	<string name="synchronization_menu">MENU SYNC</string>
+	<string name="synchronization_pay">Price Sync</string>
 	<string name="price_set">price_set</string>
 	<string name="pass_set">pass_set</string>
-	<string name="user_name">user_name</string>
-	<string name="daily_pay">daily_pay</string>
+	<string name="user_name">Username</string>
+	<string name="daily_pay">CASHIER CLOSING</string>
 	<string name="main_food">main_food</string>
 	<string name="vegetable">vegetable</string>
 	<string name="delete">delete</string>
 	<string name="selec_not_food">selec_not_food</string>
 	<string name="ceshi">ceshi</string>
 	<string name="rmb">rmb</string>
-	<string name="message_2">are you sure change language？</string>
-	<string name="take_all_price">All Money</string>
+	<string name="message_2">Do you want to change language？</string>
+	<string name="take_all_price">Total Collection:</string>
+	
 	<string-array name="food_name">
         <item>Signature Yong Tau Foo</item>
         <item>Signature Yong Tau Foo</item>
@@ -101,15 +102,15 @@
         <item>STAPLE</item>
     </string-array>
     <string-array name="food_price">
-        <item>3.5</item>
-        <item>3.5</item>
-        <item>10.0</item>
-        <item>7.0</item>
-        <item>7.0</item>
-        <item>1.0</item>
-        <item>1.0</item>
-        <item>1.0</item>
-        <item>1.0</item>
+        <item>3.50</item>
+        <item>3.50</item>
+        <item>10.00</item>
+        <item>7.00</item>
+        <item>7.00</item>
+        <item>1.00</item>
+        <item>1.00</item>
+        <item>1.00</item>
+        <item>1.00</item>
 
     </string-array>
 	  <string-array name="pay_list">
@@ -120,19 +121,19 @@
         <item>Loan</item>
         <item>Equipment/Utensil</item>
         <item>General Hardware</item>
-        <item>other</item>
+        <item>Others</item>
     </string-array>
     
 	  <string-array name="take_number">
         <item>0.05</item>
-        <item>0.1</item>
-        <item>0.2 </item>
-        <item>0.5</item>
-        <item>1.0</item>
-        <item>2.0</item>
-        <item>5.0</item>
-        <item>10.0</item> 
-        <item>50.0</item>
-        <item>100.0</item>
+        <item>0.10</item>
+        <item>0.20</item>
+        <item>0.50</item>
+        <item>1.00</item>
+        <item>2.00</item>
+        <item>5.00</item>
+        <item>10.00</item> 
+        <item>50.00</item>
+        <item>100.00</item>
     </string-array>
 </resources>

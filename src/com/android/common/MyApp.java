@@ -8,6 +8,7 @@
  */
 package com.android.common;
 
+import com.android.dao.FoodOrderDao;
 import com.android.dao.UserDao;
 
 import android.app.Application;
@@ -26,18 +27,33 @@ public class MyApp extends Application{
 	/** 系统初始化配置文件操作器 */
 	private SharedPreferences sysInitSharedPreferences;
 	private UserDao userdao;
+	private FoodOrderDao food_order_dao;
 	private AndroidPrinter printer;
-	private String uid = "0";
+	private String shopid = "0";
 	private String u_name = "";
+	private String ip_str;
+	private String user_id= "0";
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
+		ip_str = sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
 		userdao = new UserDao(this);
+		food_order_dao = new FoodOrderDao(this);
 		printer = new AndroidPrinter(this);
 	}
 
+	public String getIp_str() {
+		String ip_str = sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
+		return ip_str;
+	}
+
+	public void setIp_str(String ip_str) {
+		this.ip_str = ip_str;
+		sysInitSharedPreferences.edit().putString("ip_str", this.ip_str).commit();
+	}
+	
 	public UserDao getUserdao() {
 		return userdao;
 	}
@@ -62,16 +78,33 @@ public class MyApp extends Application{
 		this.u_name = u_name;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+
+	public String getUser_id() {
+		return user_id;
 	}
 
-	public  String getUid() {
-		return uid;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+	public String getShopid() {
+		return shopid;
+	}
+
+	public void setShopid(String shopid) {
+		this.shopid = shopid;
 	}
 
 	public  String getuName() {
 		return u_name;
+	}
+
+	public FoodOrderDao getFood_order_dao() {
+		return food_order_dao;
+	}
+
+	public void setFood_order_dao(FoodOrderDao food_order_dao) {
+		this.food_order_dao = food_order_dao;
 	}
 
 	/**

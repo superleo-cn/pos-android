@@ -14,6 +14,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.android.bean.FoodOrder;
 import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
 import com.android.common.DbHelper;
@@ -25,10 +26,10 @@ import com.android.common.DbHelper;
  * @时间 上午9:54:13
  * @年份 2012
  */
-public class UserDao {
+public class FoodOrderDao {
 	private DbHelper dbHelper;
 
-	public UserDao(Context context) {
+	public FoodOrderDao(Context context) {
 		dbHelper = new DbHelper(context);
 	}
 
@@ -43,7 +44,7 @@ public class UserDao {
 			db = dbHelper.getSQLiteDatabase();
 			db.beginTransaction();
 
-			db.execSQL(Constants.SQL_USER_INFO_DELETE_ALL);
+			db.execSQL(Constants.SQL_ORDER_INFO_DELETE_ALL);
 
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
@@ -60,13 +61,13 @@ public class UserDao {
 	 * @param user_id
 	 * @return null
 	 * */
-	public void delete(String user_id) {
+	public void delete(String food_flag) {
 		SQLiteDatabase db = null;
 		try {
 			db = dbHelper.getSQLiteDatabase();
 			db.beginTransaction();
 
-			String sql = MessageFormat.format(Constants.SQL_USER_INFO_DELETE_BY,user_id);
+			String sql = MessageFormat.format(Constants.SQL_ORDER_INFO_DELETE_BY,food_flag);
 			db.execSQL(sql);
 
 			db.setTransactionSuccessful();
@@ -85,16 +86,15 @@ public class UserDao {
 	 * @param NotePad
 	 * @return null
 	 * */
-	public void insert(LoginUserBean user) {
+	public void insert(FoodOrder fo) {
 		SQLiteDatabase db = null;
 		try {
 			db = dbHelper.getSQLiteDatabase();
 			db.beginTransaction();
 
-			Object[] paramValues = { user.getUsername(),user.getPasswrod(), user.getRealname(),
-					user.getUsertype(),user.getStatus(),user.getShop_id()};
-
-			db.execSQL(Constants.SQL_USER_INFO_INSERT, paramValues);
+			Object[] paramValues = {fo.getUser_id(),fo.getShop_id(),fo.getQuantity()
+					,fo.getFoodid(),fo.getDiscount(),fo.getRetailprice(),fo.getTotalpackage(),fo.getFoc(),fo.getFood_flag()};
+			db.execSQL(Constants.SQL_ORDER_INFO_INSERT, paramValues);
 
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
@@ -112,21 +112,25 @@ public class UserDao {
 	 * @param null
 	 * @return ArrayList<NotePad>
 	 * */
-	public ArrayList<LoginUserBean> findall() {
-		ArrayList<LoginUserBean> favos = new ArrayList<LoginUserBean>();
+	public ArrayList<FoodOrder> findall() {
+		ArrayList<FoodOrder> favos = new ArrayList<FoodOrder>();
 		SQLiteDatabase db = null;
 		try {
 			db = dbHelper.getSQLiteDatabase();
 			db.beginTransaction();
-			Cursor c = db.rawQuery(Constants.SQL_USER_INFO_ALL, null);
+			Cursor c = db.rawQuery(Constants.SQL_ORDER_INFO_ALL, null);
 			while (c.moveToNext()) {
-				LoginUserBean user_bean = new LoginUserBean();
-				user_bean.setId(c.getString(c.getColumnIndex("u_id")));
-				user_bean.setUsername(c.getString(c.getColumnIndex("username")));
-				user_bean.setRealname(c.getString(c.getColumnIndex("realname")));
-				user_bean.setUsertype(c.getString(c.getColumnIndex("usertype")));
-				user_bean.setStatus(c.getString(c.getColumnIndex("status")));
-				user_bean.setPasswrod(c.getString(c.getColumnIndex("passwrod")));
+				FoodOrder user_bean = new FoodOrder();
+				user_bean.setAndroid_id(c.getString(c.getColumnIndex("o_id")));
+				user_bean.setUser_id(c.getString(c.getColumnIndex("user_id")));
+				user_bean.setShop_id(c.getString(c.getColumnIndex("shop_id")));
+				user_bean.setRetailprice(c.getString(c.getColumnIndex("totalretailprice")));
+				user_bean.setQuantity(c.getString(c.getColumnIndex("quantity")));
+				user_bean.setFoodid(c.getString(c.getColumnIndex("foodid")));
+				user_bean.setDiscount(c.getString(c.getColumnIndex("discount")));
+				user_bean.setTotalpackage(c.getString(c.getColumnIndex("totalpackage")));
+				user_bean.setFoc(c.getString(c.getColumnIndex("foc")));
+				user_bean.setFood_flag(c.getString(c.getColumnIndex("food_flag")));
 				favos.add(user_bean);
 			}
 			db.setTransactionSuccessful();
@@ -146,21 +150,25 @@ public class UserDao {
 	 * @param String
 	 * @return LoginUserBean
 	 * */
-	public LoginUserBean select(String user_name) {
-		LoginUserBean user_bean = new LoginUserBean();
+	public FoodOrder select(String food_flag) {
+		FoodOrder user_bean = new FoodOrder();
 		SQLiteDatabase db = null;
 		try {
 			db = dbHelper.getSQLiteDatabase();
 			db.beginTransaction();
-			String sql = MessageFormat.format(Constants.SQL_USER_INFO_FILETIME, user_name);
+			String sql = MessageFormat.format(Constants.SQL_ORDER_INFO_FILETIME, food_flag);
 			Cursor c = db.rawQuery(sql, null);
 			while (c.moveToNext()) {
-				user_bean.setId(c.getString(c.getColumnIndex("u_id")));
-				user_bean.setUsername(c.getString(c.getColumnIndex("username")));
-				user_bean.setRealname(c.getString(c.getColumnIndex("realname")));
-				user_bean.setUsertype(c.getString(c.getColumnIndex("usertype")));
-				user_bean.setStatus(c.getString(c.getColumnIndex("status")));
-				user_bean.setPasswrod(c.getString(c.getColumnIndex("password")));
+				user_bean.setAndroid_id(c.getString(c.getColumnIndex("o_id")));
+				user_bean.setUser_id(c.getString(c.getColumnIndex("user_id")));
+				user_bean.setShop_id(c.getString(c.getColumnIndex("shop_id")));
+				user_bean.setRetailprice(c.getString(c.getColumnIndex("totalretailprice")));
+				user_bean.setQuantity(c.getString(c.getColumnIndex("quantity")));
+				user_bean.setFoodid(c.getString(c.getColumnIndex("foodid")));
+				user_bean.setDiscount(c.getString(c.getColumnIndex("discount")));
+				user_bean.setTotalpackage(c.getString(c.getColumnIndex("totalpackage")));
+				user_bean.setFoc(c.getString(c.getColumnIndex("foc")));
+				user_bean.setFood_flag(c.getString(c.getColumnIndex("food_flag")));
 			}
 			db.setTransactionSuccessful();
 		} catch (Exception e) {

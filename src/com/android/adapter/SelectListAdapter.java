@@ -67,7 +67,7 @@ public class SelectListAdapter extends BaseAdapter {
 		if(position % 2 ==0){
 			convertView.setBackgroundColor(color.white);
 		}else{
-			convertView.setBackgroundColor(Color.GRAY);
+			convertView.setBackgroundColor(Color.LTGRAY);
 		}
 		viewHolder.food_name.setText(bean.getFood_name());
 		viewHolder.food_num.setText("x"+bean.getFood_num());

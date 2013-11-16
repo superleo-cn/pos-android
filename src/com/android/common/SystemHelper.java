@@ -74,7 +74,7 @@ public class SystemHelper {
 	}
 	// 将字符串转为时间戳 
 	public static String getTime(String time) {
-		SimpleDateFormat format =   new SimpleDateFormat( "yyyy年MM月dd日hh时mm分" );
+		SimpleDateFormat format =   new SimpleDateFormat( "dd/MM/yyyy hh:mm" );
 		Date date = null;
 		if(time ==null || "".equals(time) || "null".equals(time)){
 			return "0";

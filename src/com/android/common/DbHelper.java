@@ -42,6 +42,7 @@ public class DbHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(Constants.SQL_USER_INFO_CREATE);
+		db.execSQL(Constants.SQL_ORDER_INFO_CREATE);
 		
 		//注意这个SqliteDatabase实例不需要关闭
 	}
@@ -51,6 +52,7 @@ public class DbHelper extends SQLiteOpenHelper {
 		
 		//清理旧版本中的表
 		db.execSQL(Constants.SQL_USER_INFO_DROP);
+		db.execSQL(Constants.SQL_ORDER_INFO_DROP);
 		
 		//重新创建新的表
 		onCreate(db);

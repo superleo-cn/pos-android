@@ -25,11 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.R;
+import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 
 public class SettingActivity extends Activity {
 	
 	private EditText language_set;
+	private EditText print_one_edit;
 	private boolean is_chinese;
 	private SharedPreferences sharedPrefs;
 	private PopupWindow popupWindow;
@@ -37,15 +39,20 @@ public class SettingActivity extends Activity {
 	private ImageView menu;
 	private Button synchronization_menu;
 	public static String type;
+	private Button print_one_btu;
+	private MyApp myApp;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);
+		myApp = (MyApp) SettingActivity.this.getApplication();
 		Intent intent=this.getIntent();
 		Bundle bundle=intent.getExtras();
 		type=bundle.getString("type");
 		language_set=(EditText) findViewById(R.id.language_set);
+		print_one_edit=(EditText) findViewById(R.id.print_one_edit);
 		menu=(ImageView) findViewById(R.id.menu_btn);
+		print_one_btu = (Button) findViewById(R.id.print_one_btu);
 		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
 		sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type=sharedPrefs.getString("type", "");
@@ -58,6 +65,7 @@ public class SettingActivity extends Activity {
 				popupWindow.showAsDropDown(menu, 0, -5);
 			}
 		});
+		print_one_edit.setText(myApp.getIp_str());
 		if(type==null){
 			type="en";
 		}
@@ -71,6 +79,15 @@ public class SettingActivity extends Activity {
 		}else{
 			language_set.setText("中文");
 		}
+		print_one_btu.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String ip = print_one_edit.getText().toString();
+				myApp.setIp_str(ip);
+				myApp.getPrinter().reconnect();
+				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
+			}
+		});
 		
 		language_set.setOnClickListener(new OnClickListener(){
 

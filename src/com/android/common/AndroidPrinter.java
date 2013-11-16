@@ -22,17 +22,26 @@ public class AndroidPrinter {
 	public AndroidPrinter(Context context) {
 		this.context = context;
 		if (wfComm == null) {
-			try{
+			try {
 				wfComm = new WifiCommunication(mHandler);
-				Log.d("WIFI Printer", "try to re-connect printer and print message. ");
+				Log.d("WIFI Printer",
+						"try to re-connect printer and print message. ");
 				connect();
-			}catch(Exception e){
+			} catch (Exception e) {
 				Log.d("WIFI Printer", "Cannot find WIFI Printer ", e);
 				Toast.makeText(context, "Cannot find WIFI Printer",
 						Toast.LENGTH_SHORT).show();
 			}
-		} 
-		
+		}
+
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	// start to print
@@ -43,9 +52,11 @@ public class AndroidPrinter {
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
-				Log.d("WIFI Printer", "try to re-connect printer and print message: " + message);
+				Log.d("WIFI Printer",
+						"try to re-connect printer and print message: "
+								+ message);
 			}
-		} 
+		}
 		// if conenct to WIFI printer
 		if (connFlag == 1) {
 			Log.d("WIFI Printer", "start to printer :" + message);
@@ -57,9 +68,9 @@ public class AndroidPrinter {
 	public void connect() {
 		try {
 			if (connFlag == 0) {
-				connFlag = 1;
 				Log.d("WIFI Printer", "Connection to WIFI Printer.");
 				wfComm.initSocket(ip, 9100);
+				connFlag = 1;
 			}
 		} catch (Exception ex) {
 			Log.e("WIFI Printer", "WIFI connection failed", ex);
@@ -83,19 +94,24 @@ public class AndroidPrinter {
 
 	public void startPrint(String message) {
 		// print
-		String msg = "第一次Android客户端必须连接服务器，\n提交[用户名],[密码]以及[MAC地址]提交到服务器进行验证。\n如果验证成功，则生成一个本地密码，为Android本地登录密码。\n\n";
-		String msg1 = "  You have sucessfully created communications between your device and our WIFI printer.\n\n"
+		String message1 = "测试数据。。。。\n" +
+				"1/八宝 酿豆腐\t\t\t\tQuty:1 \n" +
+				"2/特制酿豆腐\t\t\t\tQuty:5 \n" +
+				"3/珍珠米\t\t\t\tQuty:10 \n" +
+				"4/虾棒墨鱼汤\t\t\t\tQuty:20 \n\n";
+		String message2 = "  You have sucessfully created communications between your device and our WIFI printer.\n\n"
 				+ "  Shenzhen Zijiang Electronics Co..Ltd is a high-tech enterprise which specializes"
 				+ " in R&D,manufacturing,marketing of thermal printers and barcode scanners.\n\n"
 				+ "  Please go to our website and see details about our company :\n"
 				+ "     http://www.zjiang.com\n\n";
-		if (msg.length() > 0) {
+		if (message.length() > 0) {
 			byte[] tcmd = new byte[3];
 			tcmd[0] = 0x10;
 			tcmd[1] = 0x04;
 			tcmd[2] = 0x00;
 			wfComm.sndByte(tcmd);
-			wfComm.sendMsg(msg, "gbk");
+			wfComm.sendMsg(message, "gbk");
+			Log.d("WIFI Printer", "Print message is: " + message);
 
 			byte[] bytecmd = new byte[5];
 			bytecmd[0] = 0x1B;
@@ -105,6 +121,15 @@ public class AndroidPrinter {
 			bytecmd[4] = 0x50;
 			wfComm.sndByte(bytecmd);
 
+			// cut paper
+			byte[] bits = new byte[4];
+			bits[0] = 0x1D;
+			bits[1] = 0x56;
+			bits[2] = 0x42;
+			bits[3] = 90;
+			wfComm.sndByte(bits);
+
+			// dawer
 			byte[] tail = new byte[3];
 			tail[0] = 0x0A;
 			tail[1] = 0x0D;
@@ -117,10 +142,9 @@ public class AndroidPrinter {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case WifiCommunication.WFPRINTER_CONNECTED:
-				// connFlag = 0;
+				connFlag = 1;
 				Toast.makeText(context, "Connect the WIFI-printer successful",
 						Toast.LENGTH_SHORT).show();
-				// startPrint();
 				revThred = new revMsgThread();
 				revThred.start();
 				cheThread = new checkPrintThread();
@@ -131,8 +155,10 @@ public class AndroidPrinter {
 				Toast.makeText(context,
 						"Disconnect the WIFI-printer successful",
 						Toast.LENGTH_SHORT).show();
-				revThred.interrupt();
-				cheThread.interrupt();
+				if (wfComm != null && revThred != null && cheThread != null) {
+					revThred.interrupt();
+					cheThread.interrupt();
+				}
 				break;
 			case WifiCommunication.SEND_FAILED:
 				Toast.makeText(context, "Send Data Failed,please reconnect",
@@ -142,14 +168,18 @@ public class AndroidPrinter {
 				connFlag = 0;
 				Toast.makeText(context, "Connect the WIFI printer get error",
 						Toast.LENGTH_SHORT).show();
-				revThred.interrupt();
+				if (wfComm != null && revThred != null) {
+					revThred.interrupt();
+				}
 				break;
 			case WifiCommunication.CONNECTION_LOST:
 				connFlag = 0;
 				Toast.makeText(context, "Connection lost,please reconnect",
 						Toast.LENGTH_SHORT).show();
-				revThred.interrupt();
-				// cheThread.interrupt();
+				if (wfComm != null) {
+					revThred.interrupt();
+					// cheThread.interrupt();
+				}
 				break;
 			case WFPRINTER_REVMSG:
 				byte revData = (byte) Integer.parseInt(msg.obj.toString());
@@ -180,7 +210,7 @@ public class AndroidPrinter {
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer",
 						"Check Printer Error, trying to re-connect.", e);
-				//reconnect();
+				// reconnect();
 			}
 		}
 	}
@@ -203,7 +233,7 @@ public class AndroidPrinter {
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer",
 						"Cannot Receive Message, trying to re-connect.", e);
-				//reconnect();
+				// reconnect();
 			}
 		}
 	}
