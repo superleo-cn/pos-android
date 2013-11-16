@@ -76,8 +76,11 @@ public class LoginUserBean {
 				String usertype = obj.optString(Attr.USERTYPE);
 				String status = obj.optString(Attr.STATUS);
 				String shop_id = obj.optString(Attr.SHOP_ID);
-				JSONObject json_obj=new JSONObject(shop_id);
-				String shop = json_obj.optString("id");
+				String shop = null;
+				if(shop_id!=null && !shop_id.equals("")){
+					JSONObject json_obj=new JSONObject(shop_id);
+					shop = json_obj.optString("id");
+				}
 				login_bean.add(new LoginUserBean(username, realname, usertype, status, shop)) ;
 			}
 		} catch (JSONException e) {

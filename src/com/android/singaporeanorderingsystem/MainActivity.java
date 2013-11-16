@@ -161,7 +161,6 @@ public class MainActivity extends Activity implements OnClickListener{
 
 				@Override
 				public void onClick(View arg0) {
-					// TODO Auto-generated method stub
 					if (popupWindow.isShowing()) {
 						popupWindow.dismiss();
 					}
@@ -186,22 +185,33 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	}
     public void init_foodView(){
-    	food_dataList=new ArrayList<FoodListBean>();   	
-    	for(int i=0;i<10;i++){
+    	food_dataList=new ArrayList<FoodListBean>();   
+    	Resources res =getResources();
+    	String[] food_name=res.getStringArray(R.array.food_name);
+    	for(int i=1;i<=food_name.length;i++){
     		FoodListBean bean=new FoodListBean();
-    		bean.setImageID(R.drawable.ceshi2);   		
+    		bean.setTitle(food_name[i-1]+"");
+    		bean.setImageID(R.drawable.ceshi2);  
     		if(i>=5){
     			bean.setType("0"); //主食
-    			String main_food=String.valueOf(R.string.main_food);
-    			bean.setTitle("food"+i);
     		}else{
     			bean.setType("1"); //菜品
-    			String vegetable=String.valueOf(R.string.vegetable);
-    			bean.setTitle("caipin"+i);
     		}
     		String price=i+".00";
     		bean.setPrice(String.valueOf(price));
     		food_dataList.add(bean);
+//    		if(i>=5){
+//    			bean.setType("0"); //主食
+//    			String main_food=String.valueOf(R.string.main_food);
+//    			bean.setTitle("food"+i);
+//    		}else{
+//    			bean.setType("1"); //菜品
+//    			String vegetable=String.valueOf(R.string.vegetable);
+//    			bean.setTitle("caipin"+i);
+//    		}
+//    		String price=i+".00";
+//    		bean.setPrice(String.valueOf(price));
+//    		food_dataList.add(bean);
     	}
     	FoodListAdapter adapter=new FoodListAdapter(this,food_dataList,handler);
     	foodView.setAdapter(adapter);

@@ -5,6 +5,7 @@ public class FoodListBean {
 	private int imageID;
 	private String price;
 	private String type;
+	private String daping_id;
 	public String getType() {
 		return type;
 	}
@@ -29,4 +30,11 @@ public class FoodListBean {
 	public void setImageID(int imageID) {
 		this.imageID = imageID;
 	}
+	public String getDaping_id() {
+		return daping_id;
+	}
+	public void setDaping_id(String daping_id) {
+		this.daping_id = daping_id;
+	}
+	
 }
