@@ -143,7 +143,7 @@ public class AndroidPrinter {
 				Toast.makeText(context,
 						"Disconnect the WIFI-printer successful",
 						Toast.LENGTH_SHORT).show();
-				if (wfComm != null) {
+				if (wfComm != null && revThred != null && cheThread != null) {
 					revThred.interrupt();
 					cheThread.interrupt();
 				}
@@ -156,7 +156,7 @@ public class AndroidPrinter {
 				connFlag = 0;
 				Toast.makeText(context, "Connect the WIFI printer get error",
 						Toast.LENGTH_SHORT).show();
-				if (wfComm != null) {
+				if (wfComm != null && revThred != null) {
 					revThred.interrupt();
 				}
 				break;
