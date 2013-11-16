@@ -132,12 +132,13 @@
                     android:text="@string/print_set"
                     android:textColor="#ffffff"
                     android:textSize="15sp" />
-
-                <RelativeLayout
+ <LinearLayout
                     android:id="@+id/print_set_one"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/print_set" >
+                    android:layout_below="@+id/print_set"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dip" >
 
                     <TextView
                         android:id="@+id/print_one"
@@ -152,12 +153,20 @@
                         android:id="@+id/print_one_edit"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:layout_marginLeft="15dip"
                         android:layout_marginRight="20dip"
-                        android:padding="2dip"
-                        android:background="@drawable/edit_bg"
                         android:layout_toRightOf="@+id/print_one" />
-                </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/print_one_btu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/tong_btu_bg"
+                        android:text="@string/set_title" />
+                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/print_set_two"

@@ -724,7 +724,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.ok_btn:
 			String url= "http://ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/transactions/";
-//			HashMap<String, String> params= new HashMap<String,String>();
+			HashMap<String, String> params= new HashMap<String,String>();
 //			params.put("transaction.user.id[]", "1");
 //			params.put("transaction.shop.id[]", "1");
 //			params.put("transaction.quantity[]", "1");
@@ -733,13 +733,13 @@ public class MainActivity extends Activity implements OnClickListener{
 //			params.put("transaction.totalRetailPrice[]", "1");
 //			params.put("transaction.totalPackage[]", "1");
 //			params.put("transaction.freeOfCharge[]", "1");
-//			params.put("id", "1");
-//			RemoteDataHandler.asyncPost(url, params, new Callback() {
-//				@Override
-//				public void dataLoaded(ResponseData data) {
-//					
-//				}
-//			});
+			params.put("transactions[0].id", "1");
+			RemoteDataHandler.asyncPost(url, params, new Callback() {
+				@Override
+				public void dataLoaded(ResponseData data) {
+					
+				}
+			});
 			try{
 				Log.e("输入的金额", sbuff.toString().trim());
 				show_gathering=Double.parseDouble(sbuff.toString().trim());
@@ -804,24 +804,17 @@ public class MainActivity extends Activity implements OnClickListener{
 					StringBuffer sb=new StringBuffer();
 					SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
 					String time = sdf.format(new Date());
-					sb.append(time+"\n");
+					sb.append(time+"\n\n");
 					for(int i = 0 ; i < select_dataList.size() ;i ++){
 						SelectFoodBean bean=select_dataList.get(i);
-						if(i == select_dataList.size()-1){
 							if(is_takePackage){
 								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
 							}else{
 								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
 							}
-						}else{
-							if(is_takePackage){
-								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
-							}else{
-								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
-							}
-						}
 					}
-					myApp.getPrinter().print("测试数据。。。\n"+sb.toString());
+					myApp.getPrinter().setIp(myApp.getIp_str());
+					myApp.getPrinter().print(sb.toString());
 				}
 				clear_data();
 			}});

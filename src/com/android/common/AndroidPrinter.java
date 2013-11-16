@@ -36,6 +36,14 @@ public class AndroidPrinter {
 
 	}
 
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
 	// start to print
 	public void print(String message) {
 		// connect to printer
