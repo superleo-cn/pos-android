@@ -847,7 +847,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
-	       init_wifiReceiver();
+	        
 	        initView();
 	        df=new DecimalFormat("0.00");
 	       
