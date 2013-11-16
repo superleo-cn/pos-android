@@ -104,7 +104,16 @@ public class AndroidPrinter {
 			bytecmd[3] = 0x40;
 			bytecmd[4] = 0x50;
 			wfComm.sndByte(bytecmd);
+			
+			//cut paper
+			byte[] bits = new byte[4];
+    		bits[0] = 0x1D;
+    		bits[1] = 0x56;
+    		bits[2] = 0x42;
+    		bits[3] = 90;
+    		wfComm.sndByte(bits);
 
+    		//dawer
 			byte[] tail = new byte[3];
 			tail[0] = 0x0A;
 			tail[1] = 0x0D;
