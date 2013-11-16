@@ -29,13 +29,13 @@
 	<string name="shop_money">shop_money</string>
 	<string name="write_name">write_name:</string>
 	<string name="take_number">take_number</string>
-	<string name="cash_register">C:cash_register</string>
-	<string name="today_turnover">D:today_turnover</string>
-	<string name="noon_time">noon_time</string>
-	<string name="noon_turnover">noon_turnover</string>
-	<string name="time">time</string>
-	<string name="total">total(A+B+C)</string>
-	<string name="tomorrow_money">E:tomorrow_money</string>
+	<string name="cash_register">C:Cash register</string>
+	<string name="today_turnover">D:Daily_turnover</string>
+	<string name="noon_time">Noon</string>
+	<string name="noon_turnover">Noon turnover</string>
+	<string name="time">Time</string>
+	<string name="total">Total(A+B+C)</string>
+	<string name="tomorrow_money">E:Next Open Balance</string>
 	<string name="total_take_num">total_take_num(D-F)</string>
 	<string name="send_person">send_person</string>
 	<string name="other">other</string>
@@ -66,6 +66,7 @@
 	<string name="rmb">rmb</string>
 	<string name="message_2">are you sure change language？</string>
 	<string name="take_all_price">All Money</string>
+	
 	<string-array name="food_name">
         <item>Signature Yong Tau Foo</item>
         <item>Signature Yong Tau Foo</item>
@@ -101,15 +102,15 @@
         <item>STAPLE</item>
     </string-array>
     <string-array name="food_price">
-        <item>3.5</item>
-        <item>3.5</item>
-        <item>10.0</item>
-        <item>7.0</item>
-        <item>7.0</item>
-        <item>1.0</item>
-        <item>1.0</item>
-        <item>1.0</item>
-        <item>1.0</item>
+        <item>3.50</item>
+        <item>3.50</item>
+        <item>10.00</item>
+        <item>7.00</item>
+        <item>7.00</item>
+        <item>1.00</item>
+        <item>1.00</item>
+        <item>1.00</item>
+        <item>1.00</item>
 
     </string-array>
 	  <string-array name="pay_list">
@@ -120,19 +121,19 @@
         <item>Loan</item>
         <item>Equipment/Utensil</item>
         <item>General Hardware</item>
-        <item>其他</item>
+        <item>Others</item>
     </string-array>
     
 	  <string-array name="take_number">
         <item>0.05</item>
-        <item>0.1</item>
-        <item>0.2 </item>
-        <item>0.5</item>
-        <item>1.0</item>
-        <item>2.0</item>
-        <item>5.0</item>
-        <item>10.0</item> 
-        <item>50.0</item>
-        <item>100.0</item>
+        <item>0.10</item>
+        <item>0.20</item>
+        <item>0.50</item>
+        <item>1.00</item>
+        <item>2.00</item>
+        <item>5.00</item>
+        <item>10.00</item> 
+        <item>50.00</item>
+        <item>100.00</item>
     </string-array>
 </resources>
