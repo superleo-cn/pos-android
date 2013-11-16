@@ -1,4 +1,4 @@
-﻿package com.android.singaporeanorderingsystem;
+package com.android.singaporeanorderingsystem;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,6 +43,7 @@ import com.android.adapter.SelectListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
+import com.android.common.AndroidPrinter;
 import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 
@@ -85,24 +86,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double save_discount_price;
 	private int save_selectNum;
 	public static boolean main_isRever;
-	private SharedPreferences sharedPrefs;
 	private MyApp myApp;
 	/*主菜单activity*/
-	private Integer[] food_image={
-			R.drawable.food_image01,
-			R.drawable.food_image02,
-			R.drawable.food_image03,
-			R.drawable.food_image04,
-			R.drawable.food_image05,
-			R.drawable.food_image06,
-			R.drawable.food_image07,
-			R.drawable.food_image08,
-			R.drawable.food_image09,
-	};
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //init_wifiReceiver();
     }
     
     /*初始化控件*/
@@ -159,11 +149,15 @@ public class MainActivity extends Activity implements OnClickListener{
 						popupWindow.dismiss();
 					}
 					Intent intent =new Intent(MainActivity.this , SettingActivity.class);
-					MainActivity.this.startActivity(intent);
+					
 					overridePendingTransition(
 							R.anim.in_from_right,
 							R.anim.out_to_left);
-					//MainActivity.this.finish();
+					Bundle bundle=new Bundle();
+					bundle.putString("type", "1");
+					intent.putExtras(bundle);
+					MainActivity.this.startActivity(intent);
+					MainActivity.this.finish();
 				}
 			});
 			
@@ -198,17 +192,17 @@ public class MainActivity extends Activity implements OnClickListener{
     	food_dataList=new ArrayList<FoodListBean>();   
     	Resources res =getResources();
     	String[] food_name=res.getStringArray(R.array.food_name);
-    	String[] food_dayin_code=res.getStringArray(R.array.food_dayin_code);
-    	String[] food_type=res.getStringArray(R.array.food_type);
-    	String[] food_price=res.getStringArray(R.array.food_price);
-    	for(int i=0;i<food_name.length;i++){
+    	for(int i=1;i<=food_name.length;i++){
     		FoodListBean bean=new FoodListBean();
-    		bean.setTitle(food_name[i]+"");
-    		bean.setDaping_id(food_dayin_code[i]);
-    		bean.setImageID(food_image[i]);  
-    		bean.setType(food_type[i]);
-    		bean.setFood_id(i+1+"");
-    		bean.setPrice(food_price[i]);
+    		bean.setTitle(food_name[i-1]+"");
+    		bean.setImageID(R.drawable.ceshi2);  
+    		if(i>=5){
+    			bean.setType("0"); //主食
+    		}else{
+    			bean.setType("1"); //菜品
+    		}
+    		String price=i+".00";
+    		bean.setPrice(String.valueOf(price));
     		food_dataList.add(bean);
 //    		if(i>=5){
 //    			bean.setType("0"); //主食
@@ -843,31 +837,18 @@ public class MainActivity extends Activity implements OnClickListener{
 	    
 	    private void init_wifiReceiver()
 	    {
-	    	if(!main_isRever){
-	    	IntentFilter filter=new IntentFilter();
-	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(wifi_myReceiver,filter);
+	    	IntentFilter filter1=new IntentFilter();
+	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    	registerReceiver(wifi_myReceiver,filter1);
 	    	main_isRever=true;
-	    	}
 	    }
 	    
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		 sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
-			String type=sharedPrefs.getString("type", "");
-			if(type.isEmpty()){
-				type="zh";
-			}
-			if(type.equals("zh")){
-				updateLange(Locale.SIMPLIFIED_CHINESE);
-			}else{
-				updateLange(Locale.ENGLISH);
-			}
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
-	       init_wifiReceiver();
 	        initView();
 	        df=new DecimalFormat("0.00");
 	       
@@ -892,5 +873,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	    	//updateActivity();  
 
 	    }
+
+		@Override
+		protected void onDestroy() {
+			// TODO Auto-generated method stub
+		//	unregisterReceiver(wifi_myReceiver);
+			super.onDestroy();
+		}
 	
 }
+

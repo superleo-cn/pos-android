@@ -79,4 +79,8 @@ public final class Constants {
 	public static final String URL_LOGIN_ADMIN_PATH = URL_CONTEXTPATH+"/loginAdminJson";
 	/** 点菜单完整URL路径 */
 	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH+"/foods/listJson/";
+	/*支付款项*/
+	public static final String URL_PAY_DETAIL=URL_CONTEXTPATH+"/consumptions/listJson/";
+	/*带回总数*/
+	public static final String URL_TAKE_DNUM=URL_CONTEXTPATH+"/cashs/listJson/";
 }
