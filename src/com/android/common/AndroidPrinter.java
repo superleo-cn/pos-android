@@ -22,17 +22,18 @@ public class AndroidPrinter {
 	public AndroidPrinter(Context context) {
 		this.context = context;
 		if (wfComm == null) {
-			try{
+			try {
 				wfComm = new WifiCommunication(mHandler);
-				Log.d("WIFI Printer", "try to re-connect printer and print message. ");
+				Log.d("WIFI Printer",
+						"try to re-connect printer and print message. ");
 				connect();
-			}catch(Exception e){
+			} catch (Exception e) {
 				Log.d("WIFI Printer", "Cannot find WIFI Printer ", e);
 				Toast.makeText(context, "Cannot find WIFI Printer",
 						Toast.LENGTH_SHORT).show();
 			}
-		} 
-		
+		}
+
 	}
 
 	// start to print
@@ -43,9 +44,11 @@ public class AndroidPrinter {
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
-				Log.d("WIFI Printer", "try to re-connect printer and print message: " + message);
+				Log.d("WIFI Printer",
+						"try to re-connect printer and print message: "
+								+ message);
 			}
-		} 
+		}
 		// if conenct to WIFI printer
 		if (connFlag == 1) {
 			Log.d("WIFI Printer", "start to printer :" + message);
@@ -104,16 +107,16 @@ public class AndroidPrinter {
 			bytecmd[3] = 0x40;
 			bytecmd[4] = 0x50;
 			wfComm.sndByte(bytecmd);
-			
-			//cut paper
-			byte[] bits = new byte[4];
-    		bits[0] = 0x1D;
-    		bits[1] = 0x56;
-    		bits[2] = 0x42;
-    		bits[3] = 90;
-    		wfComm.sndByte(bits);
 
-    		//dawer
+			// cut paper
+			byte[] bits = new byte[4];
+			bits[0] = 0x1D;
+			bits[1] = 0x56;
+			bits[2] = 0x42;
+			bits[3] = 90;
+			wfComm.sndByte(bits);
+
+			// dawer
 			byte[] tail = new byte[3];
 			tail[0] = 0x0A;
 			tail[1] = 0x0D;
@@ -140,8 +143,10 @@ public class AndroidPrinter {
 				Toast.makeText(context,
 						"Disconnect the WIFI-printer successful",
 						Toast.LENGTH_SHORT).show();
-				revThred.interrupt();
-				cheThread.interrupt();
+				if (wfComm != null) {
+					revThred.interrupt();
+					cheThread.interrupt();
+				}
 				break;
 			case WifiCommunication.SEND_FAILED:
 				Toast.makeText(context, "Send Data Failed,please reconnect",
@@ -151,14 +156,18 @@ public class AndroidPrinter {
 				connFlag = 0;
 				Toast.makeText(context, "Connect the WIFI printer get error",
 						Toast.LENGTH_SHORT).show();
-				revThred.interrupt();
+				if (wfComm != null) {
+					revThred.interrupt();
+				}
 				break;
 			case WifiCommunication.CONNECTION_LOST:
 				connFlag = 0;
 				Toast.makeText(context, "Connection lost,please reconnect",
 						Toast.LENGTH_SHORT).show();
-				revThred.interrupt();
-				// cheThread.interrupt();
+				if (wfComm != null) {
+					revThred.interrupt();
+					// cheThread.interrupt();
+				}
 				break;
 			case WFPRINTER_REVMSG:
 				byte revData = (byte) Integer.parseInt(msg.obj.toString());
@@ -189,7 +198,7 @@ public class AndroidPrinter {
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer",
 						"Check Printer Error, trying to re-connect.", e);
-				//reconnect();
+				// reconnect();
 			}
 		}
 	}
@@ -212,7 +221,7 @@ public class AndroidPrinter {
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer",
 						"Cannot Receive Message, trying to re-connect.", e);
-				//reconnect();
+				// reconnect();
 			}
 		}
 	}
