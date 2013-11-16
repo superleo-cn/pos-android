@@ -120,7 +120,7 @@
         <item>Loan</item>
         <item>Equipment/Utensil</item>
         <item>General Hardware</item>
-        <item>其他</item>
+        <item>other</item>
     </string-array>
     
 	  <string-array name="take_number">

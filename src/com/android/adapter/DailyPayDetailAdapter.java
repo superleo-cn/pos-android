@@ -17,8 +17,10 @@ import android.widget.TextView;
 
 
 
+
 import com.android.R;
 import com.android.bean.DailyPayDetailBean;
+import com.android.singaporeanorderingsystem.DailyPayActivity;
 
 
 public class DailyPayDetailAdapter extends BaseAdapter {
@@ -50,7 +52,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int position) {
-		return null;
+		return classList.get(position);
 	}
 
 	public long getItemId(int position) {
@@ -81,6 +83,16 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
 				
+				if(now_str.equals(s.toString())){
+				}else{
+					//bean.setPrice(viewHolder.text_id_price.getText().toString());			
+					//DailyPayActivity.hashMap_detail.put(position, s.toString()); 
+							Message msg = new Message();
+							msg.what = CHAGE_NUM_DETAIL;
+							msg.obj=position+s.toString();
+							handler.sendMessage(msg);
+							Log.e("执行输入的价格", "价格");	
+				}
 			}
 
 			@Override
@@ -93,19 +105,15 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				// TODO Auto-generated method stub
-				Log.e("输入改变完", "价格呢");
-				if(now_str.equals(viewHolder.text_id_price.getText().toString())){
-				}else{
-					//bean.setPrice(viewHolder.text_id_price.getText().toString());
-							Message msg = new Message();
-							msg.what = CHAGE_NUM_DETAIL;
-							msg.obj=position+viewHolder.text_id_price.getText().toString();
-							handler.sendMessage(msg);
-							Log.e("执行输入的价格", "价格");	
-				}
+			//	Log.e("输入改变完", "价格呢");
+				
 			}});
 		
-		
+		   if(DailyPayActivity.hashMap_detail.get(position) != null){  
+			   viewHolder.text_id_price.setText(DailyPayActivity.hashMap_detail.get(position));
+			   Log.e("改变值", "成功");
+			             }  
+
 		return convertView;
 	}
 

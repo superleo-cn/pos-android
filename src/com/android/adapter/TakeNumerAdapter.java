@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.R;
 import com.android.bean.TakeNumberBean;
+import com.android.singaporeanorderingsystem.DailyPayActivity;
 
 
 public class TakeNumerAdapter extends BaseAdapter {
@@ -46,7 +47,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int position) {
-		return null;
+		return classList.get(position);
 	}
 
 	public long getItemId(int position) {
@@ -74,7 +75,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 			int num=Integer.parseInt(viewHolder.id_price.getText().toString());
 			Double total_price=price*num;
 			DecimalFormat df=new DecimalFormat("0.00");
-			viewHolder.num_price.setText(df.format(total_price));
+			viewHolder.num_price.setText("S$"+df.format(total_price));
 		}catch(Exception e){
 			Log.e("err", "");
 		}
@@ -131,7 +132,9 @@ public class TakeNumerAdapter extends BaseAdapter {
 					int num=Integer.parseInt(num_tv);
 					Double total_price=price*num;
 					DecimalFormat df=new DecimalFormat("0.00");
-					viewHolder.num_price.setText(df.format(total_price));					
+					viewHolder.num_price.setText(df.format(total_price));
+					DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
+					DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
 					Message msg = new Message();
 					msg.what = SET_NUM;
 					msg.obj=position+String.valueOf(total_price);
@@ -148,7 +151,12 @@ public class TakeNumerAdapter extends BaseAdapter {
  
         }); 
 
-		
+		  if(DailyPayActivity.hashMap_num.get(position) != null){  
+			  viewHolder.id_price.setText(DailyPayActivity.hashMap_num.get(position)); 	            
+		  }  
+		  if(DailyPayActivity.hashMap_numprice.get(position) != null){  
+			  viewHolder.num_price.setText(DailyPayActivity.hashMap_numprice.get(position));
+		  }
 		return convertView;
 	}
 
