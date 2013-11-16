@@ -23,6 +23,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -109,6 +110,17 @@ public class MainActivity extends Activity implements OnClickListener{
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+    	 .detectDiskReads()
+    	 .detectDiskWrites()
+    	 .detectNetwork() // 这里可以替换为detectAll() 就包括了磁盘读写和网络I/O
+    	 .penaltyLog() //打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
+    	 .build());
+    	 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+    	 .detectLeakedSqlLiteObjects() //探测SQLite数据库操作
+    	.penaltyLog() //打印logcat
+    	 .penaltyDeath()
+    	 .build());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
@@ -723,23 +735,23 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			break;
 		case R.id.ok_btn:
-			String url= "http://ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/transactions/";
-			HashMap<String, String> params= new HashMap<String,String>();
-//			params.put("transaction.user.id[]", "1");
-//			params.put("transaction.shop.id[]", "1");
-//			params.put("transaction.quantity[]", "1");
-//			params.put("transaction.food.id[]", "1");
-//			params.put("transaction.totalDiscount[]", "1");
-//			params.put("transaction.totalRetailPrice[]", "1");
-//			params.put("transaction.totalPackage[]", "1");
-//			params.put("transaction.freeOfCharge[]", "1");
-			params.put("transactions[0].id", "1");
-			RemoteDataHandler.asyncPost(url, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					
-				}
-			});
+//			String url= "http://ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080/transactions/store";
+//			HashMap<String, String> params= new HashMap<String,String>();
+//			params.put("transction[0].androidId", "0");
+//			params.put("transaction[0].user.id", "1");
+//			params.put("transaction[0].shop.id", "1");
+//			params.put("transaction[0].quantity", "1");
+//			params.put("transaction[0].food.id", "1");
+//			params.put("transaction[0].totalDiscount", "1");
+//			params.put("transaction[0].totalRetailPrice", "1");
+//			params.put("transaction[0].totalPackage", "1");
+//			params.put("transaction[0].freeOfCharge", "1");
+//			RemoteDataHandler.asyncPost(url, params, new Callback() {
+//				@Override
+//				public void dataLoaded(ResponseData data) {
+//					
+//				}
+//			});
 			try{
 				Log.e("输入的金额", sbuff.toString().trim());
 				show_gathering=Double.parseDouble(sbuff.toString().trim());
