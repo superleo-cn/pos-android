@@ -66,6 +66,52 @@
 	<string name="rmb">rmb</string>
 	<string name="message_2">are you sure change language？</string>
 	<string name="take_all_price">All Money</string>
+	<string-array name="food_name">
+        <item>Signature Yong Tau Foo</item>
+        <item>Signature Yong Tau Foo</item>
+        <item>Big Bowl Family Size</item>
+        <item>Double S Soup </item>
+        <item>Speciality Chilli Sauce</item>
+        <item>Soup</item>
+        <item>Rice</item>
+        <item>kway teow</item>
+        <item>Bee Hoon</item>
+    </string-array>
+    <string-array name="food_dayin_code">
+
+        <item>1a</item>
+        <item>1b</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+    <string-array name="food_type">
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>DISH</item>
+        <item>STAPLE</item>
+        <item>STAPLE</item>
+        <item>STAPLE</item>
+    </string-array>
+    <string-array name="food_price">
+        <item>3.5</item>
+        <item>3.5</item>
+        <item>10.0</item>
+        <item>7.0</item>
+        <item>7.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+
+    </string-array>
 	  <string-array name="pay_list">
         <item>Vegtable </item>
         <item>Takeaway Materials</item>
