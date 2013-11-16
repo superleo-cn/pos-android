@@ -86,19 +86,24 @@ public class AndroidPrinter {
 
 	public void startPrint(String message) {
 		// print
-		String msg = "第一次Android客户端必须连接服务器，\n提交[用户名],[密码]以及[MAC地址]提交到服务器进行验证。\n如果验证成功，则生成一个本地密码，为Android本地登录密码。\n\n";
-		String msg1 = "  You have sucessfully created communications between your device and our WIFI printer.\n\n"
+		String message1 = "测试数据。。。。\n" +
+				"1/八宝 酿豆腐\t\t\t\tQuty:1 \n" +
+				"2/特制酿豆腐\t\t\t\tQuty:5 \n" +
+				"3/珍珠米\t\t\t\tQuty:10 \n" +
+				"4/虾棒墨鱼汤\t\t\t\tQuty:20 \n\n";
+		String message2 = "  You have sucessfully created communications between your device and our WIFI printer.\n\n"
 				+ "  Shenzhen Zijiang Electronics Co..Ltd is a high-tech enterprise which specializes"
 				+ " in R&D,manufacturing,marketing of thermal printers and barcode scanners.\n\n"
 				+ "  Please go to our website and see details about our company :\n"
 				+ "     http://www.zjiang.com\n\n";
-		if (msg.length() > 0) {
+		if (message.length() > 0) {
 			byte[] tcmd = new byte[3];
 			tcmd[0] = 0x10;
 			tcmd[1] = 0x04;
 			tcmd[2] = 0x00;
 			wfComm.sndByte(tcmd);
-			wfComm.sendMsg(msg, "gbk");
+			wfComm.sendMsg(message, "gbk");
+			Log.d("WIFI Printer", "Print message is: " + message);
 
 			byte[] bytecmd = new byte[5];
 			bytecmd[0] = 0x1B;
@@ -109,12 +114,12 @@ public class AndroidPrinter {
 			wfComm.sndByte(bytecmd);
 
 			// cut paper
-			byte[] bits = new byte[4];
-			bits[0] = 0x1D;
-			bits[1] = 0x56;
-			bits[2] = 0x42;
-			bits[3] = 90;
-			wfComm.sndByte(bits);
+//			byte[] bits = new byte[4];
+//			bits[0] = 0x1D;
+//			bits[1] = 0x56;
+//			bits[2] = 0x42;
+//			bits[3] = 90;
+//			wfComm.sndByte(bits);
 
 			// dawer
 			byte[] tail = new byte[3];
