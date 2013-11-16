@@ -1,11 +1,19 @@
 ﻿package com.android.bean;
 
 public class FoodListBean {
+	private String food_id;
 	private String title;
 	private int imageID;
 	private String price;
 	private String type;
 	private String daping_id;
+	
+	public String getFood_id() {
+		return food_id;
+	}
+	public void setFood_id(String food_id) {
+		this.food_id = food_id;
+	}
 	public String getType() {
 		return type;
 	}

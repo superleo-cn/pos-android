@@ -43,7 +43,6 @@ import com.android.adapter.SelectListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
-import com.android.common.AndroidPrinter;
 import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 
@@ -89,6 +88,17 @@ public class MainActivity extends Activity implements OnClickListener{
 	private SharedPreferences sharedPrefs;
 	private MyApp myApp;
 	/*主菜单activity*/
+	private Integer[] food_image={
+			R.drawable.food_image01,
+			R.drawable.food_image02,
+			R.drawable.food_image03,
+			R.drawable.food_image04,
+			R.drawable.food_image05,
+			R.drawable.food_image06,
+			R.drawable.food_image07,
+			R.drawable.food_image08,
+			R.drawable.food_image09,
+	};
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,17 +198,17 @@ public class MainActivity extends Activity implements OnClickListener{
     	food_dataList=new ArrayList<FoodListBean>();   
     	Resources res =getResources();
     	String[] food_name=res.getStringArray(R.array.food_name);
-    	for(int i=1;i<=food_name.length;i++){
+    	String[] food_dayin_code=res.getStringArray(R.array.food_dayin_code);
+    	String[] food_type=res.getStringArray(R.array.food_type);
+    	String[] food_price=res.getStringArray(R.array.food_price);
+    	for(int i=0;i<food_name.length;i++){
     		FoodListBean bean=new FoodListBean();
-    		bean.setTitle(food_name[i-1]+"");
-    		bean.setImageID(R.drawable.ceshi2);  
-    		if(i>=5){
-    			bean.setType("0"); //主食
-    		}else{
-    			bean.setType("1"); //菜品
-    		}
-    		String price=i+".00";
-    		bean.setPrice(String.valueOf(price));
+    		bean.setTitle(food_name[i]+"");
+    		bean.setDaping_id(food_dayin_code[i]);
+    		bean.setImageID(food_image[i]);  
+    		bean.setType(food_type[i]);
+    		bean.setFood_id(i+1+"");
+    		bean.setPrice(food_price[i]);
     		food_dataList.add(bean);
 //    		if(i>=5){
 //    			bean.setType("0"); //主食
