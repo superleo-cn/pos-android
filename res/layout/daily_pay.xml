@@ -166,11 +166,17 @@
                         android:textColor="#370E07"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+                    <LinearLayout 
+                         android:layout_width="fill_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1"
+                        
+                        >
                     
                     <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.25"
                         android:gravity="right|center_vertical"
                         android:singleLine="true"
                         android:text="S$"
@@ -182,13 +188,14 @@
                         android:id="@+id/text_id_all_price"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right|center_vertical"
+                        android:layout_weight="0.75"
+                        android:gravity="left|center_vertical"
                         android:singleLine="true"
                         android:text=""
                         android:textColor="#370E07"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <Button
@@ -439,8 +446,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/today_turnover"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                     android:textColor="#000000"
+                                    android:textSize="18sp" />
                                 <EditText
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
@@ -470,8 +477,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/noon_time"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                      android:textColor="#000000"
+                                    android:textSize="18sp" />
 
                                 <EditText
                                     android:layout_width="fill_parent"
@@ -502,8 +509,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/noon_turnover"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                      android:textColor="#000000"
+                                    android:textSize="18sp" />
 
                                 <EditText
                                     android:layout_width="fill_parent"
@@ -534,8 +541,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/time"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                      android:textColor="#000000"
+                                    android:textSize="18sp" />
 
                                 <EditText
                                     android:layout_width="fill_parent"
@@ -566,8 +573,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/total"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                      android:textColor="#000000"
+                                    android:textSize="18sp" />
 
                                 <EditText
                                     android:layout_width="fill_parent"
@@ -598,8 +605,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/tomorrow_money"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                      android:textColor="#000000"
+                                    android:textSize="18sp" />
                                 
 
                                 <EditText
@@ -631,8 +638,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/total_take_num"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                      android:textColor="#000000"
+                                    android:textSize="18sp" />
 
                                 <EditText
                                     android:layout_width="fill_parent"
@@ -663,8 +670,8 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/send_person"
-                                    android:textColor="#F5CED3"
-                                    android:textSize="16sp" />
+                                      android:textColor="#000000"
+                                    android:textSize="18sp" />
 
                                 <EditText
                                     android:layout_width="fill_parent"

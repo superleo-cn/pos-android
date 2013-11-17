@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.renderscript.Sampler.Value;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -486,13 +487,14 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	for(int i=0;i<=num_of_visible_view;i++){
 	    		EditText edit=(EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
 	    		edit.setEnabled(false);
-	    		
+	    		edit.setInputType(InputType.TYPE_NULL);
 	    	}
 	    	
 	    	int num_of_view=daily_list.getLastVisiblePosition() - daily_list.getFirstVisiblePosition();
 	    	for(int i=0;i<=num_of_view;i++){
 	    		EditText edit=(EditText) daily_list.getChildAt(i).findViewById(R.id.text_id_price);
 	    		edit.setEnabled(false);
+	    		edit.setInputType(InputType.TYPE_NULL);
 	    		
 	    	}
 	    	cash_register.setText("");
@@ -506,8 +508,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	send_person.setText("");
 	    	other.setText("");
 	    	shop_money.setText("");
-	    	text_id_all_price.setText("");
+	    	//text_id_all_price.setText("");
 	    	
+	    	 
 	    }
 	    
 	    public void compute(){
