@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 
 /**
  * Android系统中操作SQLite数据库的帮助类
@@ -21,12 +22,11 @@ public class DbHelper extends SQLiteOpenHelper {
 	private static String db_name;
 	
 	static{
-		/*
-		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-			db_name = Constants.CACHE_DIR +"/"+Constants.DB_NAME;
-		}else{
-		*/
+//		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+//			db_name = Constants.CACHE_DIR +"/"+Constants.DB_NAME;
+//		}else{
 		db_name = Constants.DB_NAME;
+//		}
 	}
 	
 	public DbHelper(Context context){
