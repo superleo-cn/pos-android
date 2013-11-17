@@ -108,6 +108,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			R.drawable.food_image07,
 			R.drawable.food_image08,
 			R.drawable.food_image09,
+			R.drawable.food_image10,
+			R.drawable.food_image11,
 	};
 	private FoodOrderDao food_dao;
 	
@@ -185,16 +187,18 @@ public class MainActivity extends Activity implements OnClickListener{
 					if (popupWindow.isShowing()) {
 						popupWindow.dismiss();
 					}
-					Intent intent =new Intent(MainActivity.this , SettingActivity.class);
-					
-					overridePendingTransition(
-							R.anim.in_from_right,
-							R.anim.out_to_left);
-					Bundle bundle=new Bundle();
-					bundle.putString("type", "1");
-					intent.putExtras(bundle);
-					MainActivity.this.startActivity(intent);
-					MainActivity.this.finish();
+					if(myApp.getU_type().equals("SUPERADMIN") || myApp.getU_type().equals("ADMIN") || 
+							myApp.getU_type().equals("OPERATOR")){						
+						Intent intent =new Intent(MainActivity.this , SettingActivity.class);
+						overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+						Bundle bundle=new Bundle();
+						bundle.putString("type", "1");
+						intent.putExtras(bundle);
+						MainActivity.this.startActivity(intent);
+						MainActivity.this.finish();
+					}else{
+						Toast.makeText(MainActivity.this, "您的权限不足，无权访问", Toast.LENGTH_SHORT).show();	
+					}
 				}
 			});
 			
@@ -207,9 +211,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					}
 					Intent intent =new Intent(MainActivity.this , DailyPayActivity.class);
 					MainActivity.this.startActivity(intent);
-					overridePendingTransition(
-							R.anim.in_from_right,
-							R.anim.out_to_left);
+					overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
 					//MainActivity.this.finish();
 				}});
 			popu_exit.setOnClickListener(new OnClickListener() {

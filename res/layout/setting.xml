@@ -228,15 +228,16 @@
                 android:layout_marginTop="15dip"
                 android:text="@string/admin_set"
                 android:textColor="#E03B0D"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:textSize="18sp" />
 
             <RelativeLayout
+                android:id="@+id/r_set_admin_lay"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/admin_set"
                 android:padding="10dip"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:background="@drawable/tong_context_bg"
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"

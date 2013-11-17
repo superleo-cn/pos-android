@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +46,9 @@ public class SettingActivity extends Activity {
 	public static String type;
 	private Button print_one_btu;
 	private MyApp myApp;
+	
+	private TextView admin_set;
+	private RelativeLayout r_set_admin_lay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,8 @@ public class SettingActivity extends Activity {
 		language_set = (EditText) findViewById(R.id.language_set);
 		print_one_edit = (EditText) findViewById(R.id.print_one_edit);
 		take_price_edit = (EditText) findViewById(R.id.take_price_edit);
+		admin_set = (TextView) findViewById(R.id.admin_set);
+		r_set_admin_lay =(RelativeLayout) findViewById(R.id.r_set_admin_lay);
 		shop_set = (EditText) findViewById(R.id.shop_set);
 		menu = (ImageView) findViewById(R.id.menu_btn);
 		print_one_btu = (Button) findViewById(R.id.print_one_btu);
@@ -65,6 +71,10 @@ public class SettingActivity extends Activity {
 		synchronization_shop = (Button) findViewById(R.id.synchronization_shop_brn);
 		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type = sharedPrefs.getString("type", "");
+		if(myApp.getU_type().equals("SUPERADMIN")){
+			admin_set.setVisibility(View.VISIBLE);
+			r_set_admin_lay.setVisibility(View.VISIBLE);
+		}
 		menu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

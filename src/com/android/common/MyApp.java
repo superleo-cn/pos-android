@@ -33,6 +33,7 @@ public class MyApp extends Application{
 	private String u_name = "";
 	private String user_id= "0";
 	private String discount="0.5";
+	private String u_type = "CACHIER";
 
 	@Override
 	public void onCreate() {
@@ -48,6 +49,14 @@ public class MyApp extends Application{
 	public String getDiscount() {
 		String discount = sysInitSharedPreferences.getString("discount", "0.5");
 		return discount;
+	}
+
+	public String getU_type() {
+		return u_type;
+	}
+
+	public void setU_type(String u_type) {
+		this.u_type = u_type;
 	}
 
 	public void setDiscount(String discount) {

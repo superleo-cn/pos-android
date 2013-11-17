@@ -252,15 +252,18 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						if (popupWindow.isShowing()) {
 							popupWindow.dismiss();
 						}
-						Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);						
-						overridePendingTransition(
-								R.anim.in_from_right,
-								R.anim.out_to_left);
-						Bundle bundle=new Bundle();
-						bundle.putString("type", "2");
-						intent.putExtras(bundle);
-						DailyPayActivity.this.startActivity(intent);
-						DailyPayActivity.this.finish();
+						if(myApp.getU_type().equals("SUPERADMIN") || myApp.getU_type().equals("ADMIN") || 
+								myApp.getU_type().equals("OPERATOR")){						
+							Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);
+							overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+							Bundle bundle=new Bundle();
+							bundle.putString("type", "1");
+							intent.putExtras(bundle);
+							DailyPayActivity.this.startActivity(intent);
+							DailyPayActivity.this.finish();
+						}else{
+							Toast.makeText(DailyPayActivity.this, "您的权限不足，无权访问", Toast.LENGTH_SHORT).show();	
+						}
 					}
 				});
 				
