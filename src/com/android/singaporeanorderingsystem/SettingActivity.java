@@ -33,6 +33,7 @@ public class SettingActivity extends Activity {
 	private EditText language_set;
 	private EditText print_one_edit;
 	private EditText shop_set;
+	private EditText take_price_edit;
 	private boolean is_chinese;
 	private SharedPreferences sharedPrefs;
 	private PopupWindow popupWindow;
@@ -40,6 +41,7 @@ public class SettingActivity extends Activity {
 	private ImageView menu;
 	private Button synchronization_menu;
 	private Button synchronization_shop;
+	private Button btu_discount;
 	public static String type;
 	private Button print_one_btu;
 	private MyApp myApp;
@@ -54,9 +56,11 @@ public class SettingActivity extends Activity {
 		type = bundle.getString("type");
 		language_set = (EditText) findViewById(R.id.language_set);
 		print_one_edit = (EditText) findViewById(R.id.print_one_edit);
+		take_price_edit = (EditText) findViewById(R.id.take_price_edit);
 		shop_set = (EditText) findViewById(R.id.shop_set);
 		menu = (ImageView) findViewById(R.id.menu_btn);
 		print_one_btu = (Button) findViewById(R.id.print_one_btu);
+		btu_discount = (Button) findViewById(R.id.btu_discount);
 		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
 		synchronization_shop = (Button) findViewById(R.id.synchronization_shop_brn);
 		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
@@ -71,6 +75,7 @@ public class SettingActivity extends Activity {
 			}
 		});
 		print_one_edit.setText(myApp.getIp_str());
+		take_price_edit.setText(myApp.getDiscount());
 		shop_set.setText(myApp.getSettingShopId());
 		if (type == null) {
 			type = "en";
@@ -93,6 +98,15 @@ public class SettingActivity extends Activity {
 				myApp.getPrinter().reconnect();
 				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT)
 						.show();
+			}
+		});
+		btu_discount.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String text_discount=take_price_edit.getText().toString();
+				myApp.setDiscount(text_discount);
+				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT)
+				.show();
 			}
 		});
 
