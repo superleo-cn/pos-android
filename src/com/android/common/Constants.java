@@ -64,6 +64,8 @@ public final class Constants {
 	public static final String SQL_ORDER_INFO_ALL="select * from food_order;"; 
 	public static final String SQL_ORDER_INFO_FILETIME="select * from food_order where food_flag=''{0}'';"; 
 	public static final String SQL_ORDER_INFO_INSERT="INSERT INTO food_order(user_id, shop_id, quantity,foodid,discount,totalretailprice,totalpackage,foc,food_flag) VALUES(?,?,?,?,?,?,?,?,?);";
+	public static final String SQL_ORDER_INFO_UPDATEALL="UPDATE food_order SET food_flag = ?;";
+	public static final String SQL_ORDER_INFO_UPDATE="UPDATE food_order SET food_flag = ? where o_id=?;";
 	public static final String SQL_ORDER_INFO_DELETE_BY = "DELETE FROM food_order WHERE food_flag=''{0}'';";
 	public static final String SQL_ORDER_INFO_DELETE_ALL = "DELETE FROM food_order;";
 	public static final String SQL_ORDER_INFO_DROP = "DROP TABLE food_order;";

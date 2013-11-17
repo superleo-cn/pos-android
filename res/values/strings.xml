@@ -70,15 +70,17 @@
 	<string name="take_all_price">Total Collection:</string>
 	
 	<string-array name="food_name">
-        <item>Signature Yong Tau Foo</item>
-        <item>Signature Yong Tau Foo</item>
-        <item>Big Bowl Family Size</item>
-        <item>Double S Soup </item>
-        <item>Speciality Chilli Sauce</item>
-        <item>Soup</item>
-        <item>Rice</item>
-        <item>kway teow</item>
-        <item>Bee Hoon</item>
+        <item>八宝酿豆腐</item>
+        <item>特制酿豆腐</item>
+        <item>全家福大碗汤</item>
+        <item>虾棒墨鱼汤</item>
+        <item>特制辣酱</item>
+        <item>4.5</item>
+        <item>5.0</item>
+        <item>汤</item>
+        <item>珍珠米</item>
+        <item>粿条仔</item>
+        <item>细米粉</item>
     </string-array>
     <string-array name="food_dayin_code">
 
@@ -87,12 +89,16 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
         <item>6</item>
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>10</item>
     </string-array>
     <string-array name="food_type">
+        <item>DISH</item>
+        <item>DISH</item>
         <item>DISH</item>
         <item>DISH</item>
         <item>DISH</item>
@@ -109,6 +115,8 @@
         <item>10.00</item>
         <item>7.00</item>
         <item>7.00</item>
+         <item>3.5</item>
+        <item>5.0</item>
         <item>1.00</item>
         <item>1.00</item>
         <item>1.00</item>

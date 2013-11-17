@@ -4,27 +4,7 @@
     android:layout_height="match_parent"
     android:background="#492C1C" >
 
-    <RelativeLayout
-        android:id="@+id/layout_top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layout_top_bg" >
-	<ImageView
-            android:id="@+id/menu_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_background"
-            android:scaleType="centerInside"
-            android:src="@drawable/menu_btn" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/set_title"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </RelativeLayout>
+	<include layout="@layout/menu"/>
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -228,6 +208,7 @@
                     android:layout_marginTop="10dip" >
 
                     <Button
+                        android:id="@+id/btu_discount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -247,15 +228,16 @@
                 android:layout_marginTop="15dip"
                 android:text="@string/admin_set"
                 android:textColor="#E03B0D"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:textSize="18sp" />
 
             <RelativeLayout
+                android:id="@+id/r_set_admin_lay"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/admin_set"
                 android:padding="10dip"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:background="@drawable/tong_context_bg"
                 android:layout_marginLeft="10dip"
                 android:layout_marginRight="10dip"

@@ -3,7 +3,6 @@
  */
 package com.android.singaporeanorderingsystem;
 
-import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,23 +18,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.renderscript.Sampler.Value;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -51,12 +45,13 @@ import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
-import com.android.bean.GetPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
+
 import com.android.common.SystemHelper;
 import com.android.dao.DailyMoneyDao;
+
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
 import com.android.dialog.DialogBuilder;
@@ -77,10 +72,10 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private TakeNumerAdapter number_adapter;
 	private Double count=0.00;
 	private TextView text_id_all_price;
-	private ImageView daily_menu; //menu按钮
-	private TextView daily_login_name; //用户名字
-	private RelativeLayout daily_exit_layout; //退出
-	private ImageView daily_wifi_image; //wifi 图标 
+	private ImageView menu; //menu按钮
+	private TextView login_name; //用户名字
+	private RelativeLayout exit_layout; //退出
+	private ImageView wifi_image; //wifi 图标 
 	private Button btu_id_sbumit;
 	private PopupWindow popupWindow;
 	private View view;
@@ -118,12 +113,12 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 
 	 public void initView(){
 		 take_all_price=(TextView) this.findViewById(R.id.take_all_price);
-		 daily_menu=(ImageView) this.findViewById(R.id.daily_menu_btn);
-			daily_menu.setOnClickListener(this);
-			daily_login_name=(TextView) this.findViewById(R.id.daily_login_name);
-			daily_exit_layout=(RelativeLayout) this.findViewById(R.id.daily_layout_exit);
-			daily_exit_layout.setOnClickListener(this);
-			daily_wifi_image=(ImageView) this.findViewById(R.id.daily_wifi_iamge);
+		 	menu=(ImageView) this.findViewById(R.id.menu_btn);
+			menu.setOnClickListener(this);
+			login_name=(TextView) this.findViewById(R.id.login_name);
+			exit_layout=(RelativeLayout) this.findViewById(R.id.layout_exit);
+			exit_layout.setOnClickListener(this);
+			wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
 			daily_list = (ListView) findViewById(R.id.daily_detail_list);
 			num_list = (ListView) findViewById(R.id.daily_num_list);
 			text_id_all_price = (TextView) findViewById(R.id.text_id_all_price);
@@ -263,15 +258,18 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						if (popupWindow.isShowing()) {
 							popupWindow.dismiss();
 						}
-						Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);						
-						overridePendingTransition(
-								R.anim.in_from_right,
-								R.anim.out_to_left);
-						Bundle bundle=new Bundle();
-						bundle.putString("type", "2");
-						intent.putExtras(bundle);
-						DailyPayActivity.this.startActivity(intent);
-						DailyPayActivity.this.finish();
+						if(myApp.getU_type().equals("SUPERADMIN") || myApp.getU_type().equals("ADMIN") || 
+								myApp.getU_type().equals("OPERATOR")){						
+							Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);
+							overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+							Bundle bundle=new Bundle();
+							bundle.putString("type", "1");
+							intent.putExtras(bundle);
+							DailyPayActivity.this.startActivity(intent);
+							DailyPayActivity.this.finish();
+						}else{
+							Toast.makeText(DailyPayActivity.this, "您的权限不足，无权访问", Toast.LENGTH_SHORT).show();	
+						}
 					}
 				});
 				
@@ -309,13 +307,13 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View V) {
 		switch(V.getId()){
-		case R.id.daily_menu_btn:
+		case R.id.menu_btn:
 			initPopupWindow();
 			popupWindow.setFocusable(true);
 			popupWindow.setBackgroundDrawable(new BitmapDrawable());
-			popupWindow.showAsDropDown(daily_menu, 0, -5);
+			popupWindow.showAsDropDown(menu, 0, -5);
 			break;
-		case R.id.daily_layout_exit:
+		case R.id.layout_exit:
 			DialogBuilder builder=new DialogBuilder(DailyPayActivity.this);
 			builder.setTitle(R.string.message_title);
 			builder.setMessage(R.string.message_exit);
@@ -345,10 +343,10 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			// TODO Auto-generated method stub
 			switch(msg.what){
 			case OPEN_WIFI:
-				daily_wifi_image.setImageResource(R.drawable.wifi_open);
+				wifi_image.setImageResource(R.drawable.wifi_open);
 				break;
 			case CLOSE_WIFI:
-				daily_wifi_image.setImageResource(R.drawable.wifi_close);
+				wifi_image.setImageResource(R.drawable.wifi_close);
 				break;
 			case DailyPayDetailAdapter.CHAGE_NUM_DETAIL:
 				try{

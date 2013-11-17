@@ -108,6 +108,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			R.drawable.food_image07,
 			R.drawable.food_image08,
 			R.drawable.food_image09,
+			R.drawable.food_image10,
+			R.drawable.food_image11,
 	};
 	private FoodOrderDao food_dao;
 	
@@ -185,16 +187,18 @@ public class MainActivity extends Activity implements OnClickListener{
 					if (popupWindow.isShowing()) {
 						popupWindow.dismiss();
 					}
-					Intent intent =new Intent(MainActivity.this , SettingActivity.class);
-					
-					overridePendingTransition(
-							R.anim.in_from_right,
-							R.anim.out_to_left);
-					Bundle bundle=new Bundle();
-					bundle.putString("type", "1");
-					intent.putExtras(bundle);
-					MainActivity.this.startActivity(intent);
-					MainActivity.this.finish();
+					if(myApp.getU_type().equals("SUPERADMIN") || myApp.getU_type().equals("ADMIN") || 
+							myApp.getU_type().equals("OPERATOR")){						
+						Intent intent =new Intent(MainActivity.this , SettingActivity.class);
+						overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+						Bundle bundle=new Bundle();
+						bundle.putString("type", "1");
+						intent.putExtras(bundle);
+						MainActivity.this.startActivity(intent);
+						MainActivity.this.finish();
+					}else{
+						Toast.makeText(MainActivity.this, "您的权限不足，无权访问", Toast.LENGTH_SHORT).show();	
+					}
 				}
 			});
 			
@@ -207,9 +211,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					}
 					Intent intent =new Intent(MainActivity.this , DailyPayActivity.class);
 					MainActivity.this.startActivity(intent);
-					overridePendingTransition(
-							R.anim.in_from_right,
-							R.anim.out_to_left);
+					overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
 					//MainActivity.this.finish();
 				}});
 			popu_exit.setOnClickListener(new OnClickListener() {
@@ -753,77 +755,129 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.ok_btn:
 			food_dao=myApp.getFood_order_dao();
-			FoodOrder food_order=new FoodOrder();
-			food_order.setDiscount(dazhe_price);//打折钱数
-			if(is_foc){
-				food_order.setFoc("1");//是否免费 1是 0否
-			}else{
-				food_order.setFoc("0");//是否免费 1是 0否
-			}
-			food_order.setFood_flag("0");//是否成功 1是 0否
-			food_order.setShop_id("1");//店idmyApp.getShopid()
-			food_order.setTotalpackage(dabao_price);//打包钱数
-			food_order.setUser_id(myApp.getUser_id());//用户id
-			food_order.setRetailprice(df.format(show_totalPrice));//收钱数
-			String Foodid = "0";
-			String Quantity = "0";
+//			FoodOrder food_order=new FoodOrder();
+//			food_order.setDiscount(dazhe_price);//打折钱数
+//			if(is_foc){
+//				food_order.setFoc("1");//是否免费 1是 0否
+//			}else{
+//				food_order.setFoc("0");//是否免费 1是 0否
+//			}
+//			food_order.setFood_flag("0");//是否成功 1是 0否
+//			food_order.setShop_id("1");//店idmyApp.getShopid()
+//			food_order.setTotalpackage(dabao_price);//打包钱数
+//			food_order.setUser_id(myApp.getUser_id());//用户id
+//			food_order.setRetailprice(df.format(show_totalPrice));//收钱数
+//			String Foodid = "0";
+//			String Quantity = "0";
+//			for(int i = 0 ; i < select_dataList.size() ; i ++){
+//				SelectFoodBean  bean=select_dataList.get(i);
+//				if(i == select_dataList.size()-1){
+//					Foodid+=bean.getFood_id();
+//					Quantity+=bean.getFood_num();
+//				}else{
+//					Foodid+=bean.getFood_id()+",";
+//					Quantity+=bean.getFood_num()+",";
+//				}
+//			}
+//			food_order.setFoodid(Foodid);//食物id
+//			food_order.setQuantity(Quantity);//数量
+//			System.out.println("-->"+food_order.toString());
+//			food_dao.insert(food_order);
+//			HashMap<String, String> params= new HashMap<String,String>();
+//			ArrayList<FoodOrder> datas=food_dao.findall();
+//			System.out.println("-->"+datas.size());
+//			for(int i = 0 ; i<datas.size() ; i++){
+//				FoodOrder f_order =  datas.get(i);
+//				if(f_order.getFood_flag().equals("0")){
+//					String [] foodid=f_order.getFoodid().split(",");
+//					String [] Food_num=f_order.getQuantity().split(",");
+//					for(int j = 0; j<foodid.length ;j++){
+//						params.put("transactions["+j+"].androidId", f_order.getAndroid_id());
+//						System.out.println("transactions["+j+"].androidId-->"+f_order.getAndroid_id());
+//						params.put("transactions["+j+"].user.id", f_order.getUser_id());
+//						System.out.println("transactions["+j+"].user.id-->"+f_order.getUser_id());
+//						params.put("transactions["+j+"].shop.id", f_order.getShop_id());
+//						System.out.println("transactions["+j+"].shop.id-->"+ f_order.getShop_id());
+//						params.put("transactions["+j+"].quantity", Food_num[i]);
+//						System.out.println("transactions["+j+"].quantity-->"+ Food_num[i]);
+//						params.put("transactions["+j+"].food.id", foodid[i]);
+//						System.out.println("transactions["+j+"].food.id-->"+ foodid[i]);
+//						params.put("transactions["+j+"].totalDiscount", f_order.getDiscount());
+//						System.out.println("transactions["+j+"].totalDiscount-->"+ f_order.getDiscount());
+//						params.put("transactions["+j+"].totalRetailPrice", f_order.getRetailprice());
+//						System.out.println("transactions["+j+"].totalRetailPrice-->"+f_order.getRetailprice());
+//						params.put("transactions["+j+"].totalPackage", f_order.getTotalpackage());
+//						System.out.println("transactions["+j+"].totalPackage-->"+ f_order.getTotalpackage());
+//						params.put("transactions["+j+"].freeOfCharge", f_order.getFoc());
+//						System.out.println("transactions["+j+"].freeOfCharge-->"+ f_order.getFoc());
+//					}
+//				}
+//			}
 			for(int i = 0 ; i < select_dataList.size() ; i ++){
 				SelectFoodBean  bean=select_dataList.get(i);
-				if(i == select_dataList.size()-1){
-					Foodid+=bean.getFood_id();
-					Quantity+=bean.getFood_num();
+				FoodOrder food_order=new FoodOrder();
+				food_order.setDiscount(dazhe_price);//打折钱数
+				if(is_foc){
+					food_order.setFoc("1");//是否免费 1是 0否
 				}else{
-					Foodid+=bean.getFood_id()+",";
-					Quantity+=bean.getFood_num()+",";
+					food_order.setFoc("0");//是否免费 1是 0否
 				}
+				food_order.setFood_flag("0");//是否成功 1是 0否
+				food_order.setShop_id("1");//店idmyApp.getShopid()
+				food_order.setTotalpackage(dabao_price);//打包钱数
+				food_order.setUser_id(myApp.getUser_id());//用户id
+				food_order.setRetailprice(df.format(show_totalPrice));//收钱数
+				food_order.setFoodid(bean.getFood_id());//食物id
+				food_order.setQuantity(bean.getFood_num());//数量
+				food_dao.insert(food_order);
 			}
-			food_order.setFoodid(Foodid);//食物id
-			food_order.setQuantity(Quantity);//数量
-			System.out.println("-->"+food_order.toString());
-			food_dao.insert(food_order);
+			
 			HashMap<String, String> params= new HashMap<String,String>();
 			ArrayList<FoodOrder> datas=food_dao.findall();
 			System.out.println("-->"+datas.size());
 			for(int i = 0 ; i<datas.size() ; i++){
 				FoodOrder f_order =  datas.get(i);
 				if(f_order.getFood_flag().equals("0")){
-					String [] foodid=f_order.getFoodid().split(",");
-					String [] Food_num=f_order.getQuantity().split(",");
-					for(int j = 0; j<foodid.length ;j++){
-						params.put("transactions["+j+"].androidId", f_order.getAndroid_id());
-						System.out.println("transactions["+j+"].androidId-->"+f_order.getAndroid_id());
-						params.put("transactions["+j+"].user.id", f_order.getUser_id());
-						System.out.println("transactions["+j+"].user.id-->"+f_order.getUser_id());
-						params.put("transactions["+j+"].shop.id", f_order.getShop_id());
-						System.out.println("transactions["+j+"].shop.id-->"+ f_order.getShop_id());
-						params.put("transactions["+j+"].quantity", Food_num[i]);
-						System.out.println("transactions["+j+"].quantity-->"+ Food_num[i]);
-						params.put("transactions["+j+"].food.id", foodid[i]);
-						System.out.println("transactions["+j+"].food.id-->"+ foodid[i]);
-						params.put("transactions["+j+"].totalDiscount", f_order.getDiscount());
-						System.out.println("transactions["+j+"].totalDiscount-->"+ f_order.getDiscount());
-						params.put("transactions["+j+"].totalRetailPrice", f_order.getRetailprice());
-						System.out.println("transactions["+j+"].totalRetailPrice-->"+f_order.getRetailprice());
-						params.put("transactions["+j+"].totalPackage", f_order.getTotalpackage());
-						System.out.println("transactions["+j+"].totalPackage-->"+ f_order.getTotalpackage());
-						params.put("transactions["+j+"].freeOfCharge", f_order.getFoc());
-						System.out.println("transactions["+j+"].freeOfCharge-->"+ f_order.getFoc());
-					}
+					System.out.println("f_order.getFood_flag()-->"+f_order.getFood_flag());
+						params.put("transactions["+i+"].androidId", f_order.getAndroid_id());
+						System.out.println("transactions["+i+"].androidId-->"+f_order.getAndroid_id());
+						params.put("transactions["+i+"].user.id", f_order.getUser_id());
+						System.out.println("transactions["+i+"].user.id-->"+f_order.getUser_id());
+						params.put("transactions["+i+"].shop.id", f_order.getShop_id());
+						System.out.println("transactions["+i+"].shop.id-->"+ f_order.getShop_id());
+						params.put("transactions["+i+"].quantity", f_order.getQuantity());
+						System.out.println("transactions["+i+"].quantity-->"+ f_order.getQuantity());
+						params.put("transactions["+i+"].food.id", f_order.getFoodid());
+						System.out.println("transactions["+i+"].food.id-->"+ f_order.getFoodid());
+						params.put("transactions["+i+"].totalDiscount", f_order.getDiscount());
+						System.out.println("transactions["+i+"].totalDiscount-->"+ f_order.getDiscount());
+						params.put("transactions["+i+"].totalRetailPrice", f_order.getRetailprice());
+						System.out.println("transactions["+i+"].totalRetailPrice-->"+f_order.getRetailprice());
+						params.put("transactions["+i+"].totalPackage", f_order.getTotalpackage());
+						System.out.println("transactions["+i+"].totalPackage-->"+ f_order.getTotalpackage());
+						params.put("transactions["+i+"].freeOfCharge", f_order.getFoc());
+						System.out.println("transactions["+i+"].freeOfCharge-->"+ f_order.getFoc());
 				}
 			}
-//			params.put("transactions[0].androidId", "0");
-//			params.put("transactions[0].user.id", "1");
-//			params.put("transactions[0].shop.id", "1");
-//			params.put("transactions[0].quantity", "1");
-//			params.put("transactions[0].food.id", "1");
-//			params.put("transactions[0].totalDiscount", "1");
-//			params.put("transactions[0].totalRetailPrice", "1");
-//			params.put("transactions[0].totalPackage", "1");
-//			params.put("transactions[0].freeOfCharge", "1");
 			RemoteDataHandler.asyncPost(Constants.URL_FOOD_ORDER, params, new Callback() {
 				@Override
 				public void dataLoaded(ResponseData data) {
-					
+					if(data.getCode() == 1){
+						food_dao.updateall("1");
+					}else if(data.getCode() == 0){
+						String json = data.getJson();
+						System.out.println("-----111>>>>>>"+json);
+						json=json.replaceAll("\\[", "");
+						json=json.replaceAll("\\]", "");
+						System.out.println("-----222>>>>>>"+json);
+						String [] str=json.split(",");
+						for(int i = 0; i<str.length;i++){
+							System.out.println("-----333>>>>>>"+str[i]);
+							food_dao.update("1",str[i]);
+						}
+					}else if(data.getCode() == -1){
+						
+					}
 				}
 			});
 			try{

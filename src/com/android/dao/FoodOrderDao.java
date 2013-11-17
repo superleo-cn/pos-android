@@ -10,6 +10,7 @@ package com.android.dao;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -106,7 +107,53 @@ public class FoodOrderDao {
 			}
 		}
 	}
+	/**
+	 * 更新所有数据
+	 * @param NotePad
+	 * @return null
+	 * */
+	public void updateall(String food_flag) {
+		SQLiteDatabase db = null;
+		try {
+			db = dbHelper.getSQLiteDatabase();
+			db.beginTransaction();
 
+			Object[] paramValues = {food_flag};
+			db.execSQL(Constants.SQL_ORDER_INFO_UPDATEALL, paramValues);
+			
+			db.setTransactionSuccessful();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (db != null) {
+				db.endTransaction();
+				db.close();
+			}
+		}}
+	/**
+	 * 更新一个数据
+	 * @param NotePad
+	 * @return null
+	 * */
+	public void update(String food_flag,String android_id) {
+		SQLiteDatabase db = null;
+		try {
+			db = dbHelper.getSQLiteDatabase();
+			db.beginTransaction();
+
+			Object[] paramValues = {food_flag,android_id};
+			db.execSQL(Constants.SQL_ORDER_INFO_UPDATE, paramValues);
+			
+
+			db.setTransactionSuccessful();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (db != null) {
+				db.endTransaction();
+				db.close();
+			}
+		}}
 	/**
 	 * 查询所有数据
 	 * @param null
@@ -115,10 +162,11 @@ public class FoodOrderDao {
 	public ArrayList<FoodOrder> findall() {
 		ArrayList<FoodOrder> favos = new ArrayList<FoodOrder>();
 		SQLiteDatabase db = null;
+		Cursor c = null;
 		try {
 			db = dbHelper.getSQLiteDatabase();
 			db.beginTransaction();
-			Cursor c = db.rawQuery(Constants.SQL_ORDER_INFO_ALL, null);
+			c = db.rawQuery(Constants.SQL_ORDER_INFO_ALL, null);
 			while (c.moveToNext()) {
 				FoodOrder user_bean = new FoodOrder();
 				user_bean.setAndroid_id(c.getString(c.getColumnIndex("o_id")));
@@ -136,9 +184,11 @@ public class FoodOrderDao {
 			db.setTransactionSuccessful();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		}finally {
+			if(c != null){
+				c.close();
+			}
 			if (db != null) {
-				db.endTransaction();
 				db.close();
 			}
 		}

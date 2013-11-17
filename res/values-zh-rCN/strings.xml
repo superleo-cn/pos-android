@@ -77,6 +77,8 @@
         <item>全家福大碗汤</item>
         <item>虾棒墨鱼汤</item>
         <item>特制辣酱</item>
+        <item>4.5</item>
+        <item>5.0</item>
         <item>汤</item>
         <item>珍珠米</item>
         <item>粿条仔</item>
@@ -89,12 +91,16 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
+        <item>5</item>
         <item>6</item>
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>10</item>
     </string-array>
     <string-array name="food_type">
+        <item>DISH</item>
+        <item>DISH</item>
         <item>DISH</item>
         <item>DISH</item>
         <item>DISH</item>
@@ -111,6 +117,8 @@
         <item>10.00</item>
         <item>7.00</item>
         <item>7.00</item>
+        <item>3.5</item>
+        <item>5.0</item>
         <item>1.00</item>
         <item>1.00</item>
         <item>1.00</item>
