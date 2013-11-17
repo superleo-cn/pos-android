@@ -53,6 +53,7 @@
 	<string name="take_price">Discount</string>
 	<string name="admin_set">SUPER ADMINISTRATOR SETTING</string>
 	<string name="synchronization_menu">MENU SYNC</string>
+	<string name="synchronization_shop">OUTLET ID</string>
 	<string name="synchronization_pay">Price Sync</string>
 	<string name="price_set">price_set</string>
 	<string name="pass_set">pass_set</string>
@@ -65,6 +66,7 @@
 	<string name="ceshi">ceshi</string>
 	<string name="rmb">rmb</string>
 	<string name="message_2">Do you want to change language？</string>
+	<string name="message_shop">Do you want to change outlet ID？</string>
 	<string name="take_all_price">Total Collection:</string>
 	
 	<string-array name="food_name">
