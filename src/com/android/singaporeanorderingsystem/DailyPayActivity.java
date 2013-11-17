@@ -226,7 +226,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						all_num_price.add(total_price);
 						num_count=num_count+total_price;					
 					}
-					take_all_price.setText("S$"+df.format(num_count));
+					take_all_price.setText(df.format(num_count));
 				}catch(Exception e){
 					
 				}
@@ -374,7 +374,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					sigle_price=all_num_price.get(i).doubleValue();
 					num_count=num_count+sigle_price;
 				}
-				take_all_price.setText("S$"+df.format(num_count));
+				take_all_price.setText(df.format(num_count));
 				break;
 			}
 		}

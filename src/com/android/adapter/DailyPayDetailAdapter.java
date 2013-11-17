@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+
 
 
 
@@ -67,6 +69,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.text_id_name = (TextView) convertView.findViewById(R.id.text_id_name);
 			viewHolder.text_id_price = (EditText) convertView.findViewById(R.id.text_id_price);
+			viewHolder.text_id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
