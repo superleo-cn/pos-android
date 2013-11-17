@@ -32,15 +32,27 @@ public class MyApp extends Application{
 	private String shopid = "0";
 	private String u_name = "";
 	private String user_id= "0";
+	private String discount="0.5";
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
+		discount= sysInitSharedPreferences.getString("discount", "0.5");
 		userdao = new UserDao(this);
 		food_order_dao = new FoodOrderDao(this);
 		printer = new AndroidPrinter(this);
+	}
+
+	public String getDiscount() {
+		String discount = sysInitSharedPreferences.getString("discount", "0.5");
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+		sysInitSharedPreferences.edit().putString("discount", discount).commit();
 	}
 
 	public String getIp_str() {
