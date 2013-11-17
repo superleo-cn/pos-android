@@ -625,6 +625,19 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			}
 		});
 		}
-
+	/*提交每日支付*/
+	public void post_payList(){
+		
+	}
+	
+	/*提交带回总数*/
+	public void post_numList(){
+		
+	}
+	
+	/*提交每日营业额*/
+	public void post_dailyMoney(){
+		
+	}
 		
 }
