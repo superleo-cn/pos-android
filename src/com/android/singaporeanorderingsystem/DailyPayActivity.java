@@ -449,6 +449,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    }
 	    
 	    public void  clear_data(){
+	    	 InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
 	    	String detail_price;
 	    	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
 	    	String date=df.format(new Date());
@@ -487,14 +488,15 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	for(int i=0;i<=num_of_visible_view;i++){
 	    		EditText edit=(EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
 	    		edit.setEnabled(false);
-	    		edit.setInputType(InputType.TYPE_NULL);
+	    		imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+	    		
 	    	}
 	    	
 	    	int num_of_view=daily_list.getLastVisiblePosition() - daily_list.getFirstVisiblePosition();
 	    	for(int i=0;i<=num_of_view;i++){
 	    		EditText edit=(EditText) daily_list.getChildAt(i).findViewById(R.id.text_id_price);
 	    		edit.setEnabled(false);
-	    		edit.setInputType(InputType.TYPE_NULL);
+	    		imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 	    		
 	    	}
 	    	cash_register.setText("");
@@ -583,6 +585,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			 imm.hideSoftInputFromWindow(send_person.getWindowToken(), 0); //强制隐藏键盘 
 			 imm.hideSoftInputFromWindow(shop_money.getWindowToken(), 0); //强制隐藏键盘 
 			 //Toast.makeText(this, "取消软键盘" , Toast.LENGTH_SHORT).show();
+			
 			return super.onTouchEvent(event);
 		}
 
