@@ -81,91 +81,93 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}catch(Exception e){
 			Log.e("err", "");
 		}
-		viewHolder.id_price.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				// TODO Auto-generated method stub
-				viewHolder.id_price.setFocusable(true);
-				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
-				return false;
-			}});
-		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
-				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
-					
-				}else{
-				
-					try{
-						Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
-						String num_tv=viewHolder.id_price.getText().toString();
-						int num=Integer.parseInt(num_tv);
-						Double total_price=price*num;
-						DecimalFormat df=new DecimalFormat("0.00");
-						viewHolder.num_price.setText(df.format(total_price));
-						DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
-						DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
-						Message msg = new Message();
-						msg.what = SET_NUM;
-						msg.obj=position+String.valueOf(total_price);
-						handler.sendMessage(msg);
-						Log.e("计算次数", "");
-					}catch(Exception e){
-						Log.e("计算错误", "");
-	            }
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				
-			}});
+//		viewHolder.id_price.setOnTouchListener(new OnTouchListener(){
+//
+//			@Override
+//			public boolean onTouch(View arg0, MotionEvent arg1) {
+//				// TODO Auto-generated method stub
+//				viewHolder.id_price.setFocusable(true);
+//				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+//				return false;
+//			}});
 		
-//		viewHolder.id_price.setOnKeyListener(new EditText.OnKeyListener() 
-//        { 
-// 
-//            @Override 
-//            public boolean onKey(View v, int keyCode, KeyEvent event) 
-//            { 
-//                //得到文字，显示在TextView中 
+		
+//		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
 //
-//				try{
-//					Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
-//					String num_tv=viewHolder.id_price.getText().toString();
-//					int num=Integer.parseInt(num_tv);
-//					Double total_price=price*num;
-//					DecimalFormat df=new DecimalFormat("0.00");
-//					viewHolder.num_price.setText(df.format(total_price));
-//					DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
-//					DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
-//					Message msg = new Message();
-//					msg.what = SET_NUM;
-//					msg.obj=position+String.valueOf(total_price);
-//					handler.sendMessage(msg);
-//					Log.e("计算次数", "");
-//				}catch(Exception e){
-//					Log.e("计算错误", "");
-//            }
-//                return false; 
-//            }
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//				// TODO Auto-generated method stub
+//				//viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+//				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
+//					
+//				}else{
+//				
+//					try{
+//						Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
+//						String num_tv=viewHolder.id_price.getText().toString();
+//						int num=Integer.parseInt(num_tv);
+//						Double total_price=price*num;
+//						DecimalFormat df=new DecimalFormat("0.00");
+//						viewHolder.num_price.setText(df.format(total_price));
+//						DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
+//						DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
+//						Message msg = new Message();
+//						msg.what = SET_NUM;
+//						msg.obj=position+String.valueOf(total_price);
+//						handler.sendMessage(msg);
+//						Log.e("计算次数", "");
+//					}catch(Exception e){
+//						Log.e("计算错误", "");
+//	            }
+//				}
+//			}
 //
-//		
-// 
-// 
-//        }); 
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//				// TODO Auto-generated method stub
+//				//viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+//			}
+//
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before,
+//					int count) {
+//				// TODO Auto-generated method stub
+//				
+//			}});
+		
+		viewHolder.id_price.setOnKeyListener(new EditText.OnKeyListener() 
+        { 
+ 
+            @Override 
+            public boolean onKey(View v, int keyCode, KeyEvent event) 
+            { 
+                //得到文字，显示在TextView中 
+
+				try{
+					Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
+					String num_tv=viewHolder.id_price.getText().toString();
+					int num=Integer.parseInt(num_tv);
+					Double total_price=price*num;
+					DecimalFormat df=new DecimalFormat("0.00");
+					viewHolder.num_price.setText(df.format(total_price));
+					DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
+					DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
+					Message msg = new Message();
+					msg.what = SET_NUM;
+					msg.obj=position+String.valueOf(total_price);
+					handler.sendMessage(msg);
+					Log.e("计算次数", "");
+				}catch(Exception e){
+					Log.e("计算错误", "");
+            }
+                return false; 
+            }
+
+		
+ 
+ 
+        }); 
 
 		  if(DailyPayActivity.hashMap_num.get(position) != null){  
 			  viewHolder.id_price.setText(DailyPayActivity.hashMap_num.get(position)); 	            
