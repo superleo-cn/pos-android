@@ -27,12 +27,22 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		+ " ( " 
 		+ "_ID"+ " INTEGER PRIMARY KEY, "
 		+ "android_id" + " TEXT,"
-		+ "cash_id" + " TEXT,"
 		+ "shop_id" + " TEXT,"
 		+ "user_id" + " TEXT,"
-		+ "date" + " TEXT,"
+		+ "aOpenBalance" + " TEXT,"
+		+ "bExpenses" + " TEXT,"
+		+ "cCashCollected" + " TEXT,"
+		+ "dDailyTurnover" + " TEXT,"
+		+ "eNextOpenBalance" + " TEXT,"
+		+ "fBringBackCash" + " TEXT,"
+		+ "gTotalBalance" + " TEXT,"
+		+ "middleCalculateTime" + " TEXT,"
+		+ "middleCalculateBalance" + " TEXT,"
+		+ "calculateTime" + " TEXT,"
+		+ "others" + " TEXT,"
 		+ "type" + " TEXT,"
-		+ "quantity" + " TEXT "
+		+ "date" + " TEXT,"
+		+ "courier" + " TEXT "
 	    + " ) ";
 	private DailyMoneyDao(Context context) {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -58,42 +68,79 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public long save(String android_id,String cash_id,String shop_id,String user_id,String date,String type,String quantity){
+	public long save(
+			String android_id,
+			String shop_id,
+			String user_id,
+			String aOpenBalance,
+			String bExpenses,
+			String cCashCollected,
+			String dDailyTurnover,
+			String eNextOpenBalance,
+			String fBringBackCash,
+			String gTotalBalance,
+			String middleCalculateTime,
+			String middleCalculateBalance,
+			String calculateTime,
+			String others,
+			String courier,
+			String type,
+			String date
+			)
+	{
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		ContentValues values=new ContentValues();
 		values.put("android_id", android_id);
-		values.put("ccash_id", cash_id);
 		values.put("shop_id", shop_id);
 		values.put("user_id", user_id);
-		values.put("date", date);
+		values.put("aOpenBalance", aOpenBalance);
+		values.put("bExpenses", bExpenses);
+		values.put("cCashCollected", cCashCollected);
+		values.put("dDailyTurnover", dDailyTurnover);
+		values.put("eNextOpenBalance", eNextOpenBalance);
+		values.put("fBringBackCash", fBringBackCash);
+		values.put("gTotalBalance", gTotalBalance);
+		values.put("middleCalculateTime", middleCalculateTime);
+		values.put("middleCalculateBalance", middleCalculateBalance);
+		values.put("calculateTime", calculateTime);
+		values.put("others", others);
+		values.put("courier", courier);
 		values.put("type", type);
-		values.put("quantity", quantity);
+		values.put("date", date);
 		long result=db.insert(TABLE_NAME, null, values);
 		db.close();
 		return result;
 		
 	}
-	
-	public List<Map<String,String>> getList(){
+
+	public HashMap<String,String> getList(String date){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		Cursor cursor=db.query(TABLE_NAME, null, null,null, null, null, null, null);
+		Cursor cursor=db.query(TABLE_NAME, null, "date=?",new String[]{date}, null, null, null, null);
 		
-		List<Map<String,String>>  list=new ArrayList<Map<String,String>> ();
+		HashMap<String,String> map=new HashMap<String,String> ();
 		while(cursor.moveToNext()){
-			Map<String,String> map=new HashMap<String,String>();
 			map.put("android_id", cursor.getString(cursor.getColumnIndex("android_id")));
-			map.put("cash_id", cursor.getString(cursor.getColumnIndex("cash_id")));
 			map.put("shop_id", cursor.getString(cursor.getColumnIndex("shop_id")));
 			map.put("user_id", cursor.getString(cursor.getColumnIndex("user_id")));
-			map.put("date", cursor.getString(cursor.getColumnIndex("date")));
+			map.put("aOpenBalance", cursor.getString(cursor.getColumnIndex("aOpenBalance")));
+			map.put("bExpenses", cursor.getString(cursor.getColumnIndex("bExpenses")));
+			map.put("cCashCollected", cursor.getString(cursor.getColumnIndex("cCashCollected")));
+			map.put("dDailyTurnover", cursor.getString(cursor.getColumnIndex("dDailyTurnover")));
+			map.put("eNextOpenBalance", cursor.getString(cursor.getColumnIndex("eNextOpenBalance")));
+			map.put("fBringBackCash", cursor.getString(cursor.getColumnIndex("fBringBackCash")));
+			map.put("gTotalBalance", cursor.getString(cursor.getColumnIndex("gTotalBalance")));
+			map.put("middleCalculateTime", cursor.getString(cursor.getColumnIndex("middleCalculateTime")));
+			map.put("middleCalculateBalance", cursor.getString(cursor.getColumnIndex("middleCalculateBalance")));
+			map.put("calculateTime", cursor.getString(cursor.getColumnIndex("calculateTime")));
+			map.put("others", cursor.getString(cursor.getColumnIndex("others")));
+			map.put("courier", cursor.getString(cursor.getColumnIndex("courier")));
 			map.put("type", cursor.getString(cursor.getColumnIndex("type")));
-			map.put("quantity", cursor.getString(cursor.getColumnIndex("quantity")));
-			list.add(map);
+			map.put("date", cursor.getString(cursor.getColumnIndex("date")));
 		}
 		cursor.close();
 		db.close();
 		
-		return list;
+		return map;
 		
 	}
 	
@@ -102,5 +149,16 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		db.delete(TABLE_NAME, null, null);
 		db.close();
 	}
-
+	
+	public int update_type(String date){
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		ContentValues values=new ContentValues();
+		values.put("type", "1");
+		int result=db.update(TABLE_NAME, values, "date=?", new String[]{date});
+		System.err.print("更新了数据库");
+		db.close();
+		return result;
+		
+	}
+	
 }
