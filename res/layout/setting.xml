@@ -4,27 +4,7 @@
     android:layout_height="match_parent"
     android:background="#492C1C" >
 
-    <RelativeLayout
-        android:id="@+id/layout_top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/layout_top_bg" >
-	<ImageView
-            android:id="@+id/menu_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/menu_background"
-            android:scaleType="centerInside"
-            android:src="@drawable/menu_btn" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="@string/set_title"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
-    </RelativeLayout>
+	<include layout="@layout/menu"/>
 
     <ScrollView
         android:layout_width="fill_parent"
