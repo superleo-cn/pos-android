@@ -30,6 +30,8 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		+ "cash_id" + " TEXT,"
 		+ "shop_id" + " TEXT,"
 		+ "user_id" + " TEXT,"
+		+ "date" + " TEXT,"
+		+ "type" + " TEXT,"
 		+ "quantity" + " TEXT "
 	    + " ) ";
 	private DailyMoneyDao(Context context) {
@@ -56,13 +58,15 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public long save(String android_id,String cash_id,String shop_id,String user_id,String quantity){
+	public long save(String android_id,String cash_id,String shop_id,String user_id,String date,String type,String quantity){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		ContentValues values=new ContentValues();
 		values.put("android_id", android_id);
 		values.put("ccash_id", cash_id);
 		values.put("shop_id", shop_id);
 		values.put("user_id", user_id);
+		values.put("date", date);
+		values.put("type", type);
 		values.put("quantity", quantity);
 		long result=db.insert(TABLE_NAME, null, values);
 		db.close();
@@ -81,6 +85,8 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 			map.put("cash_id", cursor.getString(cursor.getColumnIndex("cash_id")));
 			map.put("shop_id", cursor.getString(cursor.getColumnIndex("shop_id")));
 			map.put("user_id", cursor.getString(cursor.getColumnIndex("user_id")));
+			map.put("date", cursor.getString(cursor.getColumnIndex("date")));
+			map.put("type", cursor.getString(cursor.getColumnIndex("type")));
 			map.put("quantity", cursor.getString(cursor.getColumnIndex("quantity")));
 			list.add(map);
 		}

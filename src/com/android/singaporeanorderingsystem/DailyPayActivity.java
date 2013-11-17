@@ -5,7 +5,9 @@ package com.android.singaporeanorderingsystem;
 
 import java.net.SocketException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -446,6 +448,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    
 	    public void  clear_data(){
 	    	String detail_price;
+	    	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+	    	String date=df.format(new Date());
 	    	for(int i=0;i<detail_classList.size();i++){
 	    		if(hashMap_detail.get(i)==null){
 	    			detail_price="0.00";
@@ -456,6 +460,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		    			String.valueOf(i),
 		    			String.valueOf(i),
 		    			String.valueOf(1),
+		    			date,
+		    			"1",
 		    			detail_price);
 	    	}
 	    	String take_num;
@@ -469,6 +475,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		    			String.valueOf(j),
 		    			String.valueOf(1),
 		    			String.valueOf(1),
+		    			date,
+		    			"1",
 	    				take_num);
 	    	}
 	    	daily_list.setAdapter(null);
