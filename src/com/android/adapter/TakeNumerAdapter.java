@@ -31,8 +31,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<TakeNumberBean> classList;
 	public static final int SET_NUM=2001;
-
-
 	@SuppressWarnings("unused")
 	private Handler handler;
 	public TakeNumerAdapter(Context context, List<TakeNumberBean> list,
@@ -82,48 +80,48 @@ public class TakeNumerAdapter extends BaseAdapter {
 			Log.e("err", "");
 		}
 		
-//		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
-//
-//			@Override
-//			public void afterTextChanged(Editable s) {
-//				// TODO Auto-generated method stub
-//				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
-//					
-//				}else{
-//				
-//					try{
-//						Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
-//						String num_tv=viewHolder.id_price.getText().toString();
-//						int num=Integer.parseInt(num_tv);
-//						Double total_price=price*num;
-//						DecimalFormat df=new DecimalFormat("0.00");
-//						viewHolder.num_price.setText(df.format(total_price));
-//						DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
-//						DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
-//						Message msg = new Message();
-//						msg.what = SET_NUM;
-//						msg.obj=position+String.valueOf(total_price);
-//						handler.sendMessage(msg);
-//						Log.e("计算次数", "");
-//					}catch(Exception e){
-//						Log.e("计算错误", "");
-//	            }
-//				}
-//			}
-//
-//			@Override
-//			public void beforeTextChanged(CharSequence s, int start, int count,
-//					int after) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void onTextChanged(CharSequence s, int start, int before,
-//					int count) {
-//				// TODO Auto-generated method stub
-//				
-//			}});
+		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
+					
+				}else{
+				
+					try{
+						Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
+						String num_tv=viewHolder.id_price.getText().toString();
+						int num=Integer.parseInt(num_tv);
+						Double total_price=price*num;
+						DecimalFormat df=new DecimalFormat("0.00");
+						viewHolder.num_price.setText(df.format(total_price));
+						DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
+						DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
+						Message msg = new Message();
+						msg.what = SET_NUM;
+						msg.obj=position+String.valueOf(total_price);
+						handler.sendMessage(msg);
+						Log.e("计算次数", "");
+					}catch(Exception e){
+						Log.e("计算错误", "");
+	            }
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				
+			}});
 		
 //		viewHolder.id_price.setOnKeyListener(new EditText.OnKeyListener() 
 //        { 
