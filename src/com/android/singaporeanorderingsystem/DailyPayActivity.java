@@ -5,7 +5,9 @@ package com.android.singaporeanorderingsystem;
 
 import java.net.SocketException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,6 +27,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.renderscript.Sampler.Value;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -51,6 +55,8 @@ import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
+import com.android.dao.NumListDao;
+import com.android.dao.PayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -95,6 +101,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private List<Double> all_num_price;
 	public static boolean is_recer;
 	private MyApp myApp;
+	public static  HashMap<Integer, String> hashMap_detail = new HashMap<Integer, String>();  
+	public static  HashMap<Integer, String> hashMap_num = new HashMap<Integer, String>();  
+	public static  HashMap<Integer, String> hashMap_numprice = new HashMap<Integer, String>(); 
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -366,6 +375,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					sigle_price=all_num_price.get(i).doubleValue();
 					num_count=num_count+sigle_price;
 				}
+				
 				take_all_price.setText(df.format(num_count));
 				break;
 			}
@@ -437,12 +447,56 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	registerReceiver(myReceiver,filter);
 	    	is_recer=true;
 	    }
+	    
 	    public void  clear_data(){
-	    	daily_list.setAdapter(null);
+	    	 InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+	    	String detail_price;
+	    	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+	    	String date=df.format(new Date());
+	    	for(int i=0;i<detail_classList.size();i++){
+	    		if(hashMap_detail.get(i)==null){
+	    			detail_price="0.00";
+	    		}else{
+	    			detail_price=hashMap_detail.get(i);
+	    		}
+		    	PayListDao.getInatance(DailyPayActivity.this).save(String.valueOf(i),
+		    			String.valueOf(i),
+		    			String.valueOf(i),
+		    			String.valueOf(1),
+		    			date,
+		    			"1",
+		    			detail_price);
+	    	}
+	    	String take_num;
+	    	for(int j=0;j<number_classList.size();j++){
+	    		if(hashMap_detail.get(j)==null){
+    				take_num="0.00";
+    			}else{
+    				take_num=hashMap_num.get(j);
+    			}
+	    		NumListDao.getInatance(DailyPayActivity.this).save(String.valueOf(j),
+		    			String.valueOf(j),
+		    			String.valueOf(1),
+		    			String.valueOf(1),
+		    			date,
+		    			"1",
+	    				take_num);
+	    	}
+	    	//daily_list.setAdapter(null);
 	    	//daily_num_list.setAdapter(null);
-	    	for(int i=0;i<number_classList.size();i++){
+	    	int num_of_visible_view=num_list.getLastVisiblePosition() - num_list.getFirstVisiblePosition();
+	    	for(int i=0;i<=num_of_visible_view;i++){
 	    		EditText edit=(EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
 	    		edit.setEnabled(false);
+	    		imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+	    		
+	    	}
+	    	
+	    	int num_of_view=daily_list.getLastVisiblePosition() - daily_list.getFirstVisiblePosition();
+	    	for(int i=0;i<=num_of_view;i++){
+	    		EditText edit=(EditText) daily_list.getChildAt(i).findViewById(R.id.text_id_price);
+	    		edit.setEnabled(false);
+	    		imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 	    		
 	    	}
 	    	cash_register.setText("");
@@ -456,8 +510,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	send_person.setText("");
 	    	other.setText("");
 	    	shop_money.setText("");
-	    	text_id_all_price.setText("");
+	    	//text_id_all_price.setText("");
 	    	
+	    	 
 	    }
 	    
 	    public void compute(){
@@ -491,7 +546,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				Double take_price=price_d-price_e;
 				total_take_num.setText(df.format(take_price));
 			}catch(Exception e){
-				Toast.makeText(DailyPayActivity.this,  R.string.err_price, Toast.LENGTH_SHORT).show();
+				e.getMessage();
 			}
 	    }
 
@@ -530,6 +585,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			 imm.hideSoftInputFromWindow(send_person.getWindowToken(), 0); //强制隐藏键盘 
 			 imm.hideSoftInputFromWindow(shop_money.getWindowToken(), 0); //强制隐藏键盘 
 			 //Toast.makeText(this, "取消软键盘" , Toast.LENGTH_SHORT).show();
+			
 			return super.onTouchEvent(event);
 		}
 
@@ -591,6 +647,19 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			}
 		});
 		}
-
+	/*提交每日支付*/
+	public void post_payList(){
+		
+	}
+	
+	/*提交带回总数*/
+	public void post_numList(){
+		
+	}
+	
+	/*提交每日营业额*/
+	public void post_dailyMoney(){
+		
+	}
 		
 }

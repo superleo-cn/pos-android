@@ -31,14 +31,13 @@ public class MyApp extends Application{
 	private AndroidPrinter printer;
 	private String shopid = "0";
 	private String u_name = "";
-	private String ip_str;
 	private String user_id= "0";
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
-		ip_str = sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
 		userdao = new UserDao(this);
 		food_order_dao = new FoodOrderDao(this);
 		printer = new AndroidPrinter(this);
@@ -50,8 +49,15 @@ public class MyApp extends Application{
 	}
 
 	public void setIp_str(String ip_str) {
-		this.ip_str = ip_str;
-		sysInitSharedPreferences.edit().putString("ip_str", this.ip_str).commit();
+		sysInitSharedPreferences.edit().putString("ip_str", ip_str).commit();
+	}
+	
+	public String getSettingShopId() {
+		return sysInitSharedPreferences.getString("shop_id", "0");
+	}
+
+	public void setSettingShopId(String shop_id) {
+		sysInitSharedPreferences.edit().putString("shop_id", shop_id).commit();
 	}
 	
 	public UserDao getUserdao() {

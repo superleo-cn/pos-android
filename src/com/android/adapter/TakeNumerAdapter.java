@@ -8,11 +8,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -20,6 +23,7 @@ import android.widget.TextView;
 
 import com.android.R;
 import com.android.bean.TakeNumberBean;
+import com.android.singaporeanorderingsystem.DailyPayActivity;
 
 
 public class TakeNumerAdapter extends BaseAdapter {
@@ -29,8 +33,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<TakeNumberBean> classList;
 	public static final int SET_NUM=2001;
-
-
 	@SuppressWarnings("unused")
 	private Handler handler;
 	public TakeNumerAdapter(Context context, List<TakeNumberBean> list,
@@ -46,7 +48,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int position) {
-		return null;
+		return classList.get(position);
 	}
 
 	public long getItemId(int position) {
@@ -60,6 +62,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.num_id_name = (TextView) convertView.findViewById(R.id.num_id_name);
 			viewHolder.id_price = (EditText) convertView.findViewById(R.id.num_id_price);
+			viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
 			viewHolder.num_price=(TextView) convertView.findViewById(R.id.num_price);
 			convertView.setTag(viewHolder);
 		} else {
@@ -78,77 +81,100 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}catch(Exception e){
 			Log.e("err", "");
 		}
-		
-//		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
+//		viewHolder.id_price.setOnTouchListener(new OnTouchListener(){
 //
 //			@Override
-//			public void afterTextChanged(Editable s) {
+//			public boolean onTouch(View arg0, MotionEvent arg1) {
 //				// TODO Auto-generated method stub
-//				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
-//					
-//				}else{
-//				
-//					try{
-//						Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
-//						int num=Integer.parseInt(viewHolder.id_price.getText().toString());
-//						Double total_price=price*num;
-//						DecimalFormat df=new DecimalFormat("0.00");
-//						viewHolder.num_price.setText(df.format(total_price));
-////						Message msg = new Message();
-////						msg.what = SET_NUM;
-////						handler.sendMessage(msg);
-//					}catch(Exception e){
-//						
-//					}
-//				}
-//			}
-//
-//			@Override
-//			public void beforeTextChanged(CharSequence s, int start, int count,
-//					int after) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void onTextChanged(CharSequence s, int start, int before,
-//					int count) {
-//				// TODO Auto-generated method stub
-//				
+//				viewHolder.id_price.setFocusable(true);
+//				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+//				return false;
 //			}});
 		
-		viewHolder.id_price.setOnKeyListener(new EditText.OnKeyListener() 
-        { 
- 
-            @Override 
-            public boolean onKey(View v, int keyCode, KeyEvent event) 
-            { 
-                //得到文字，显示在TextView中 
-
-				try{
-					Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
-					String num_tv=viewHolder.id_price.getText().toString();
-					int num=Integer.parseInt(num_tv);
-					Double total_price=price*num;
-					DecimalFormat df=new DecimalFormat("0.00");
-					viewHolder.num_price.setText(df.format(total_price));					
-					Message msg = new Message();
-					msg.what = SET_NUM;
-					msg.obj=position+String.valueOf(total_price);
-					handler.sendMessage(msg);
-					Log.e("计算次数", "");
-				}catch(Exception e){
-					Log.e("计算错误", "");
-            }
-                return false; 
-            }
-
 		
- 
- 
-        }); 
+		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
 
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				//viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
+					
+				}else{
+				
+					try{
+						Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
+						String num_tv=viewHolder.id_price.getText().toString();
+						int num=Integer.parseInt(num_tv);
+						Double total_price=price*num;
+						DecimalFormat df=new DecimalFormat("0.00");
+						viewHolder.num_price.setText(df.format(total_price));
+						DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
+						DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
+						Message msg = new Message();
+						msg.what = SET_NUM;
+						msg.obj=position+String.valueOf(total_price);
+						handler.sendMessage(msg);
+						Log.e("计算次数", "");
+					}catch(Exception e){
+						Log.e("计算错误", "");
+	            }
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				//viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				// TODO Auto-generated method stub
+				
+			}});
 		
+//		viewHolder.id_price.setOnKeyListener(new EditText.OnKeyListener() 
+//        { 
+// 
+//            @Override 
+//            public boolean onKey(View v, int keyCode, KeyEvent event) 
+//            { 
+//                //得到文字，显示在TextView中 
+//
+//				try{
+//					Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
+//					String num_tv=viewHolder.id_price.getText().toString();
+//					int num=Integer.parseInt(num_tv);
+//					Double total_price=price*num;
+//					DecimalFormat df=new DecimalFormat("0.00");
+//					viewHolder.num_price.setText(df.format(total_price));
+//					DailyPayActivity.hashMap_num.put(position, viewHolder.id_price.getText().toString()); 
+//					DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
+//					Message msg = new Message();
+//					msg.what = SET_NUM;
+//					msg.obj=position+String.valueOf(total_price);
+//					handler.sendMessage(msg);
+//					Log.e("计算次数", "");
+//				}catch(Exception e){
+//					Log.e("计算错误", "");
+//            }
+//                return false; 
+//            }
+//
+//		
+// 
+// 
+//        }); 
+
+		  if(DailyPayActivity.hashMap_num.get(position) != null){  
+			  viewHolder.id_price.setText(DailyPayActivity.hashMap_num.get(position)); 	            
+		  }  
+		  if(DailyPayActivity.hashMap_numprice.get(position) != null){  
+			  viewHolder.num_price.setText(DailyPayActivity.hashMap_numprice.get(position));
+		  }
 		return convertView;
 	}
 
