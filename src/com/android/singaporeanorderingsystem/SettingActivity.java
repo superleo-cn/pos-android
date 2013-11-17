@@ -29,33 +29,38 @@ import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 
 public class SettingActivity extends Activity {
-	
+
 	private EditText language_set;
 	private EditText print_one_edit;
+	private EditText shop_set;
 	private boolean is_chinese;
 	private SharedPreferences sharedPrefs;
 	private PopupWindow popupWindow;
 	private View view;
 	private ImageView menu;
 	private Button synchronization_menu;
+	private Button synchronization_shop;
 	public static String type;
 	private Button print_one_btu;
 	private MyApp myApp;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);
 		myApp = (MyApp) SettingActivity.this.getApplication();
-		Intent intent=this.getIntent();
-		Bundle bundle=intent.getExtras();
-		type=bundle.getString("type");
-		language_set=(EditText) findViewById(R.id.language_set);
-		print_one_edit=(EditText) findViewById(R.id.print_one_edit);
-		menu=(ImageView) findViewById(R.id.menu_btn);
+		Intent intent = this.getIntent();
+		Bundle bundle = intent.getExtras();
+		type = bundle.getString("type");
+		language_set = (EditText) findViewById(R.id.language_set);
+		print_one_edit = (EditText) findViewById(R.id.print_one_edit);
+		shop_set = (EditText) findViewById(R.id.shop_set);
+		menu = (ImageView) findViewById(R.id.menu_btn);
 		print_one_btu = (Button) findViewById(R.id.print_one_btu);
 		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
-		sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
-		String type=sharedPrefs.getString("type", "");
+		synchronization_shop = (Button) findViewById(R.id.synchronization_shop_brn);
+		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
+		String type = sharedPrefs.getString("type", "");
 		menu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -66,17 +71,18 @@ public class SettingActivity extends Activity {
 			}
 		});
 		print_one_edit.setText(myApp.getIp_str());
-		if(type==null){
-			type="en";
+		shop_set.setText(myApp.getSettingShopId());
+		if (type == null) {
+			type = "en";
 		}
-		if(type.equals("zh")){
-			is_chinese=true;
-		}else{
-			is_chinese=false;
+		if (type.equals("zh")) {
+			is_chinese = true;
+		} else {
+			is_chinese = false;
 		}
-		if(!is_chinese){
+		if (!is_chinese) {
 			language_set.setText("Eglish");
-		}else{
+		} else {
 			language_set.setText("中文");
 		}
 		print_one_btu.setOnClickListener(new OnClickListener() {
@@ -85,10 +91,23 @@ public class SettingActivity extends Activity {
 				String ip = print_one_edit.getText().toString();
 				myApp.setIp_str(ip);
 				myApp.getPrinter().reconnect();
-				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
+				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT)
+						.show();
 			}
 		});
-		
+
+		// 设置摊位ID,第一次超管必须设置好
+		synchronization_shop.setOnClickListener(new OnClickListener() {;
+			@Override
+			public void onClick(View v) {
+				String shop_id = shop_set.getText().toString();
+				myApp.setSettingShopId(shop_id);
+				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT)
+						.show();
+			}
+		});
+
+		// 语言设置
 		language_set.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -127,117 +146,129 @@ public class SettingActivity extends Activity {
 				
 			}});
 	}
-	
-	 public void initPopupWindow() {
-			if (popupWindow == null) {
-				view = this.getLayoutInflater().inflate(
-						R.layout.popupwindow, null);
-				popupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT,
-						LayoutParams.WRAP_CONTENT);
-				popupWindow.setOutsideTouchable(true);
-				TextView popu_setting=(TextView) view.findViewById(R.id.popu_setting);
-				TextView popu_exit=(TextView) view.findViewById(R.id.popu_exit);
-				TextView popu_daily=(TextView) view.findViewById(R.id.popu_daily);
-				TextView popu_diancai=(TextView) view.findViewById(R.id.popu_diancai);
-				popu_diancai.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						if (popupWindow.isShowing()) {
-							popupWindow.dismiss();
-						}
-						Intent intent =new Intent(SettingActivity.this , MainActivity.class);
-						SettingActivity.this.startActivity(intent);
-						//overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-						SettingActivity.this.finish();
-					}
-				});;
-				popu_setting.setVisibility(View.GONE);
-				
-				popu_daily.setOnClickListener(new OnClickListener(){
 
-					@Override
-					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
-						if (popupWindow.isShowing()) {
-							popupWindow.dismiss();
-						}
-						Intent intent =new Intent(SettingActivity.this , DailyPayActivity.class);						
-						overridePendingTransition(
-								R.anim.in_from_right,
-								R.anim.out_to_left);
-						SettingActivity.this.startActivity(intent);
-						SettingActivity.this.finish();
-					}});
-				popu_exit.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						if (popupWindow.isShowing()) {
-							popupWindow.dismiss();
-						}
-						CreatedDialog().create().show();
+	public void initPopupWindow() {
+		if (popupWindow == null) {
+			view = this.getLayoutInflater().inflate(R.layout.popupwindow, null);
+			popupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
+			popupWindow.setOutsideTouchable(true);
+			TextView popu_setting = (TextView) view
+					.findViewById(R.id.popu_setting);
+			TextView popu_exit = (TextView) view.findViewById(R.id.popu_exit);
+			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
+			TextView popu_diancai = (TextView) view
+					.findViewById(R.id.popu_diancai);
+			popu_diancai.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					if (popupWindow.isShowing()) {
+						popupWindow.dismiss();
+					}
+					Intent intent = new Intent(SettingActivity.this,
+							MainActivity.class);
+					SettingActivity.this.startActivity(intent);
+					// overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+					SettingActivity.this.finish();
+				}
+			});
+			;
+			popu_setting.setVisibility(View.GONE);
+
+			popu_daily.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					// TODO Auto-generated method stub
+					if (popupWindow.isShowing()) {
+						popupWindow.dismiss();
+					}
+					Intent intent = new Intent(SettingActivity.this,
+							DailyPayActivity.class);
+					overridePendingTransition(R.anim.in_from_right,
+							R.anim.out_to_left);
+					SettingActivity.this.startActivity(intent);
+					SettingActivity.this.finish();
+				}
+			});
+			popu_exit.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					if (popupWindow.isShowing()) {
+						popupWindow.dismiss();
+					}
+					CreatedDialog().create().show();
+				}
+			});
+		}
+		if (popupWindow.isShowing()) {
+			popupWindow.dismiss();
+		}
+	}
+
+	public void updateActivity() {
+		Intent intent = new Intent();
+		intent.setClass(this, SettingActivity.class);// 当前Activity重新打开
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Bundle bundle = new Bundle();
+		bundle.putString("type", type);
+		intent.putExtras(bundle);
+		startActivity(intent);
+		this.finish();
+
+	}
+
+	public DialogBuilder CreatedDialog() {
+		DialogBuilder builder = new DialogBuilder(this);
+		builder.setTitle(R.string.message_title);
+		builder.setMessage(R.string.message_exit);
+		builder.setPositiveButton(R.string.message_ok,
+				new android.content.DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+						Intent intent = new Intent(Intent.ACTION_MAIN);
+						intent.addCategory(Intent.CATEGORY_HOME);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(intent);
+						System.exit(0);
 					}
 				});
-			}
-			if (popupWindow.isShowing()) {
-				popupWindow.dismiss();
+		builder.setNegativeButton(R.string.message_cancle,
+				new android.content.DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+		return builder;
+	}
+
+	private void updateLange(Locale locale) {
+		Resources res = getResources();
+		Configuration config = res.getConfiguration();
+		config.locale = locale;
+		DisplayMetrics dm = res.getDisplayMetrics();
+		res.updateConfiguration(config, dm);
+		Toast.makeText(this, "Locale in " + locale + " !", Toast.LENGTH_LONG)
+				.show();
+		updateActivity();
+
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (type.equals("1")) {
+				Intent intent = new Intent();
+				intent.setClass(this, MainActivity.class);
+				startActivity(intent);
+				this.finish();
+			} else {
+				Intent intent = new Intent();
+				intent.setClass(this, DailyPayActivity.class);
+				startActivity(intent);
+				this.finish();
 			}
 		}
-		public void updateActivity() {
-		  Intent intent = new Intent();
-		  intent.setClass(this,SettingActivity.class);//当前Activity重新打开
-		  intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		  Bundle bundle=new Bundle();
-		  bundle.putString("type", type);
-			intent.putExtras(bundle);
-		  startActivity(intent);
-		  this.finish();
-		 
-		 }
-		public DialogBuilder CreatedDialog(){
-			DialogBuilder builder=new DialogBuilder(this);
-			builder.setTitle(R.string.message_title);
-			builder.setMessage(R.string.message_exit);
-			builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
+		return super.onKeyDown(keyCode, event);
+	}
 
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(Intent.ACTION_MAIN);
-					intent.addCategory(Intent.CATEGORY_HOME);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					System.exit(0);
-				}});
-			builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
-
-				public void onClick(DialogInterface dialog, int which) {
-				}});
-			return builder;
-		}
-		private void updateLange(Locale locale){    	
-			 Resources res = getResources();
-			 Configuration config = res.getConfiguration();
-			 config.locale = locale;
-			 DisplayMetrics dm = res.getDisplayMetrics();
-			 res.updateConfiguration(config, dm);        
-	    	Toast.makeText(this, "Locale in "+locale+" !", Toast.LENGTH_LONG).show();
-	    	updateActivity();  
-
-	    }
-
-		@Override
-		public boolean onKeyDown(int keyCode, KeyEvent event) {
-			// TODO Auto-generated method stub
-			if(keyCode==KeyEvent.KEYCODE_BACK){
-				if(type.equals("1")){
-					Intent intent=new Intent();
-					intent.setClass(this, MainActivity.class);
-					startActivity(intent);
-					this.finish();
-				}else{
-					Intent intent=new Intent();
-					intent.setClass(this, DailyPayActivity.class);
-					startActivity(intent);
-					this.finish();
-				}
-			}
-			return super.onKeyDown(keyCode, event);
-		}
-		
 }

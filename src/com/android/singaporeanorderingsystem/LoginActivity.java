@@ -178,12 +178,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 			}else if(user_bean.getUsername() != null && !str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
 				Toast.makeText(LoginActivity.this, "登录失败,用户名或者密码错误", Toast.LENGTH_SHORT).show();
 				return ;
-			}else{
-
-//				Toast.makeText(LoginActivity.this, "登录失败,用户名或者密码错误", Toast.LENGTH_SHORT).show();
-//				return ;
-
 			}
+			
 			String str_ip = "0";
 			String str_mac = "0";
 			try {
@@ -195,6 +191,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 			HashMap<String, String> params =new HashMap<String, String>();
 			params.put("user.username", str_login_name);
 			params.put("user.password", str_login_password);
+			params.put("user.shop.id", myApp.getSettingShopId());
 			params.put("user.userIp", str_ip);
 			params.put("user.userMac", str_mac);
 			RemoteDataHandler.asyncPost(Constants.URL_LOGIN_PATH, params, new Callback() {
@@ -223,19 +220,6 @@ public class LoginActivity extends Activity implements OnClickListener{
 					}
 				}
 			});
-
-			
-			
-			
-//			if(str_login_name.equals("admin") && str_login_password.equals("admin")){
-				Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
-				Intent  intent =new Intent();
-				intent.setClass(this, MainActivity.class);
-				startActivity(intent);
-				this.finish();
-//			}else{
-//				Toast.makeText(LoginActivity.this,"用户名或密码有误，稍后重试", Toast.LENGTH_SHORT).show();
-//			}
 			
 			break;
 		}

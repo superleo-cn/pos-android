@@ -57,6 +57,7 @@
 	<string name="take_price">打折</string>
 	<string name="admin_set">超级管理员配置</string>
 	<string name="synchronization_menu">点菜单同步</string>
+	<string name="synchronization_shop">摊位ID</string>
 	<string name="synchronization_pay">支付款同步</string>
 	<string name="price_set">现金配置</string>
 	<string name="pass_set">重置密码</string>
@@ -69,6 +70,7 @@
 	<string name="ceshi">测试</string>
 	<string name="rmb">元</string>
 	<string name="take_all_price">带回总金额</string>
+	<string name="message_shop">你要修改摊位ID吗？</string>
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>
         <item>特制酿豆腐</item>
