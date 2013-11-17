@@ -13,7 +13,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -79,12 +81,21 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}catch(Exception e){
 			Log.e("err", "");
 		}
-		
+		viewHolder.id_price.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				viewHolder.id_price.setFocusable(true);
+				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+				return false;
+			}});
 		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
 
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
+				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
 				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
 					
 				}else{
