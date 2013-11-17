@@ -20,6 +20,7 @@ import android.os.Environment;
  */
 public class DbHelper extends SQLiteOpenHelper {
 	private static String db_name;
+	public static String Lock = "dblock";
 	
 	static{
 //		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
@@ -59,14 +60,14 @@ public class DbHelper extends SQLiteOpenHelper {
 	}
 
 	public SQLiteDatabase getSQLiteDatabase(){
-		SQLiteDatabase db = null;
-		
-		try{
-			db = this.getWritableDatabase();
-		}catch (Exception e) {
-			db = this.getReadableDatabase();
+		 synchronized(Lock) {
+			SQLiteDatabase db = null;
+			try{
+				db = this.getWritableDatabase();
+			}catch (Exception e) {
+				db = this.getReadableDatabase();
+			}
+			return db;
 		}
-		
-		return db;
 	}
 }
