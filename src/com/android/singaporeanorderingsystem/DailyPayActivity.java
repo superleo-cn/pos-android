@@ -480,11 +480,18 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		    			"1",
 	    				take_num);
 	    	}
-	    	daily_list.setAdapter(null);
+	    	//daily_list.setAdapter(null);
 	    	//daily_num_list.setAdapter(null);
 	    	int num_of_visible_view=num_list.getLastVisiblePosition() - num_list.getFirstVisiblePosition();
 	    	for(int i=0;i<=num_of_visible_view;i++){
 	    		EditText edit=(EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
+	    		edit.setEnabled(false);
+	    		
+	    	}
+	    	
+	    	int num_of_view=daily_list.getLastVisiblePosition() - daily_list.getFirstVisiblePosition();
+	    	for(int i=0;i<=num_of_view;i++){
+	    		EditText edit=(EditText) daily_list.getChildAt(i).findViewById(R.id.text_id_price);
 	    		edit.setEnabled(false);
 	    		
 	    	}
