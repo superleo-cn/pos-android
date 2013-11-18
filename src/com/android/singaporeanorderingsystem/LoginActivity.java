@@ -160,6 +160,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		switch(v.getId()){
 		case R.id.login_ok :
+
 			String str_login_name=login_name.getText().toString();
 			final String str_login_password=login_password.getText().toString();
 			final UserDao user_dao=myApp.getUserdao();
@@ -208,18 +209,17 @@ public class LoginActivity extends Activity implements OnClickListener{
 						myApp.setU_name(user_bean.getUsername());
 						myApp.setU_type(user_bean.getUsertype());
 						Toast.makeText(LoginActivity.this,"恭喜你，登录成功,您的新密码是+"+str_login_password, Toast.LENGTH_SHORT).show();
-
 						Intent  intent =new Intent();
 						intent.setClass(LoginActivity.this, MainActivity.class);
 						LoginActivity.this.startActivity(intent);
 						LoginActivity.this.finish();
-//					}else if(data.getCode() == 0){
-//						Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
-//					}else if(data.getCode() == -1){
-//						Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
-//					}
-//				}
-//			});
+					}else if(data.getCode() == 0){
+						Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+					}else if(data.getCode() == -1){
+						Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
 			
 			break;
 		}
