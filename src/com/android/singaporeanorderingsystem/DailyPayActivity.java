@@ -593,8 +593,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	other.setText("");
 	    	shop_money.setText("");
 	    	//text_id_all_price.setText("");
-	    	//post_payList();
-	    	//post_numList(); 
+	    	post_payList();
+	    	post_numList(); 
 	    	post_dailyMoney();
 	    }
 	    
@@ -737,6 +737,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		List<Map<String,String>> datas=PayListDao.getInatance(this).getList();
 		if(!datas.isEmpty()){
 		for(int i=0;i<datas.size();i++){
+			if(datas.get(i).get("type").equals("0")){
 			params.put("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
 			Log.e("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
 			params.put("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
@@ -747,6 +748,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			Log.e("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
 			params.put("consumeTransactions["+i+"].price", datas.get(i).get("type"));
 			Log.e("consumeTransactions["+i+"].price", datas.get(i).get("type"));
+			}
 		}
 		}
 		RemoteDataHandler.asyncPost(Constants.URL_POST_PAYLIST, params, new Callback() {
@@ -762,9 +764,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						Log.e("数据组",array[i]+"");
 					int result=	PayListDao.getInatance(DailyPayActivity.this).update_type(array[i], "1");
 					if(result==-1){
-						Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
 					}else{
-						Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
 					}
 						
 					}
@@ -788,6 +790,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			List<Map<String,String>> datas=NumListDao.getInatance(this).getList();
 			if(!datas.isEmpty()){
 			for(int i=0;i<datas.size();i++){
+				if(datas.get(i).get("type").equals("0")){
 				params.put("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
 				Log.e("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
 				params.put("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
@@ -798,6 +801,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				Log.e("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
 				params.put("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
 				Log.e("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
+				}
 			}
 			}
 			RemoteDataHandler.asyncPost(Constants.URL_POST_TAKENUM, params, new Callback() {
@@ -813,9 +817,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 							Log.e("数据组",array[i]+"");
 						int result=	NumListDao.getInatance(DailyPayActivity.this).update_type(array[i], "1");
 						if(result==-1){
-							Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
 						}else{
-							Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
 						}
 							
 						}
@@ -835,35 +839,35 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	/*提交每日营业额*/
 	public void post_dailyMoney(){
 		try{
-			//HashMap<String, String> params= DailyMoneyDao.getInatance(DailyPayActivity.this).getList(search_date);
-			HashMap<String, String> map=new HashMap<String,String>();
-			map.put("android_id", "1");
-			map.put("shop_id", "2");
-			map.put("user_id", "1");
-			map.put("aOpenBalance", "0");
-			map.put("bExpenses", "0");
-			map.put("cCashCollected", "0");
-			map.put("dDailyTurnover", "0");
-			map.put("eNextOpenBalance", "0");
-			map.put("fBringBackCash", "0");
-			map.put("gTotalBalance", "0");
-			map.put("middleCalculateTime", "0");
-			map.put("middleCalculateBalance", "0");
-			map.put("calculateTime", "0");
-			map.put("others", "0");
-			map.put("courier", "0");
-			RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, map, new Callback() {
+			HashMap<String, String> params= DailyMoneyDao.getInatance(DailyPayActivity.this).getList(search_date);
+//			HashMap<String, String> map=new HashMap<String,String>();
+//			map.put("dailySummary.android.id", "1");
+//			map.put("dailySummary.shop.id", "2");
+//			map.put("dailySummary.user.id", "1");
+//			map.put("dailySummary.aOpenBalance", "0");
+//			map.put("dailySummary.bExpenses", "0");
+//			map.put("dailySummary.cCashCollected", "0");
+//			map.put("dailySummary.dDailyTurnover", "0");
+//			map.put("dailySummary.eNextOpenBalance", "0");
+//			map.put("dailySummary.fBringBackCash", "0");
+//			map.put("dailySummary.gTotalBalance", "0");
+//			map.put("dailySummary.middleCalculateTime", "0");
+//			map.put("dailySummary.middleCalculateBalance", "0");
+//			map.put("dailySummary.calculateTime", "0");
+//			map.put("dailySummary.others", "0");
+//			map.put("dailySummary.courier", "0");
+			RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, params, new Callback() {
 				@Override
 				public void dataLoaded(ResponseData data) {
 					if(data.getCode() == 1){
 						String json=data.getJson();
 						Toast.makeText(DailyPayActivity.this, "每日营业额提交成功"+json, Toast.LENGTH_SHORT).show();
-//						int result=DailyMoneyDao.getInatance(DailyPayActivity.this).update_type(search_date);
-//						if(result==-1){
-//							Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
-//						}else{
-//							Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
-//						}
+						int result=DailyMoneyDao.getInatance(DailyPayActivity.this).update_type(search_date);
+						if(result==-1){
+							Toast.makeText(DailyPayActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(DailyPayActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
+						}
 					}else if(data.getCode() == 0){
 						Toast.makeText(DailyPayActivity.this, "每日营业额接口提交失败", Toast.LENGTH_SHORT).show();
 					}else if(data.getCode() == -1){
