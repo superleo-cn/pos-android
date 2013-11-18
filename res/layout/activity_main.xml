@@ -53,7 +53,7 @@
                     <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="1.2"
                         android:background="@drawable/select_b0000ackground" >
 
                         <ListView
@@ -290,7 +290,7 @@
                                         android:layout_height="fill_parent"
                                         android:layout_marginBottom="5dip"
                                         android:layout_marginLeft="5dip"
-                                        android:layout_marginRight="20dip"
+                                        android:layout_marginRight="5dip"
                                         android:layout_marginTop="5dip"
                                         android:layout_weight="2"
                                         android:background="#E3313E"
