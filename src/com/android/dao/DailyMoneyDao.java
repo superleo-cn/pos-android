@@ -119,23 +119,23 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		
 		HashMap<String,String> map=new HashMap<String,String> ();
 		while(cursor.moveToNext()){
-			map.put("android_id", cursor.getString(cursor.getColumnIndex("android_id")));
-			map.put("shop_id", cursor.getString(cursor.getColumnIndex("shop_id")));
-			map.put("user_id", cursor.getString(cursor.getColumnIndex("user_id")));
-			map.put("aOpenBalance", cursor.getString(cursor.getColumnIndex("aOpenBalance")));
-			map.put("bExpenses", cursor.getString(cursor.getColumnIndex("bExpenses")));
-			map.put("cCashCollected", cursor.getString(cursor.getColumnIndex("cCashCollected")));
-			map.put("dDailyTurnover", cursor.getString(cursor.getColumnIndex("dDailyTurnover")));
-			map.put("eNextOpenBalance", cursor.getString(cursor.getColumnIndex("eNextOpenBalance")));
-			map.put("fBringBackCash", cursor.getString(cursor.getColumnIndex("fBringBackCash")));
-			map.put("gTotalBalance", cursor.getString(cursor.getColumnIndex("gTotalBalance")));
-			map.put("middleCalculateTime", cursor.getString(cursor.getColumnIndex("middleCalculateTime")));
-			map.put("middleCalculateBalance", cursor.getString(cursor.getColumnIndex("middleCalculateBalance")));
-			map.put("calculateTime", cursor.getString(cursor.getColumnIndex("calculateTime")));
-			map.put("others", cursor.getString(cursor.getColumnIndex("others")));
-			map.put("courier", cursor.getString(cursor.getColumnIndex("courier")));
-			map.put("type", cursor.getString(cursor.getColumnIndex("type")));
-			map.put("date", cursor.getString(cursor.getColumnIndex("date")));
+			map.put("dailySummary.android.id", cursor.getString(cursor.getColumnIndex("android_id")));
+			map.put("dailySummary.shop.id", cursor.getString(cursor.getColumnIndex("shop_id")));
+			map.put("dailySummary.user.id", cursor.getString(cursor.getColumnIndex("user_id")));
+			map.put("dailySummary.aOpenBalance", cursor.getString(cursor.getColumnIndex("aOpenBalance")));
+			map.put("dailySummary.bExpenses", cursor.getString(cursor.getColumnIndex("bExpenses")));
+			map.put("dailySummary.cCashCollected", cursor.getString(cursor.getColumnIndex("cCashCollected")));
+			map.put("dailySummary.dDailyTurnover", cursor.getString(cursor.getColumnIndex("dDailyTurnover")));
+			map.put("dailySummary.eNextOpenBalance", cursor.getString(cursor.getColumnIndex("eNextOpenBalance")));
+			map.put("dailySummary.fBringBackCash", cursor.getString(cursor.getColumnIndex("fBringBackCash")));
+			map.put("dailySummary.gTotalBalance", cursor.getString(cursor.getColumnIndex("gTotalBalance")));
+			map.put("dailySummary.middleCalculateTime", cursor.getString(cursor.getColumnIndex("middleCalculateTime")));
+			map.put("dailySummary.middleCalculateBalance", cursor.getString(cursor.getColumnIndex("middleCalculateBalance")));
+			map.put("dailySummary.calculateTime", cursor.getString(cursor.getColumnIndex("calculateTime")));
+			map.put("dailySummary.others", cursor.getString(cursor.getColumnIndex("others")));
+			map.put("dailySummary.courier", cursor.getString(cursor.getColumnIndex("courier")));
+			map.put("dailySummary.type", cursor.getString(cursor.getColumnIndex("type")));
+			map.put("dailySummary.date", cursor.getString(cursor.getColumnIndex("date")));
 		}
 		cursor.close();
 		db.close();
