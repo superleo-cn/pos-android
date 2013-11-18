@@ -49,11 +49,12 @@ public class SettingActivity extends Activity {
 	private ImageView exit_btn;
 	private TextView admin_set;
 	private RelativeLayout r_set_admin_lay;
-
+	private SharedPreferences spf;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.setting);
+		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();
 		Intent intent = this.getIntent();
 		Bundle bundle = intent.getExtras();

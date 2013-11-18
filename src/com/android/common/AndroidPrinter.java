@@ -176,7 +176,7 @@ public class AndroidPrinter {
 				connFlag = 0;
 				Toast.makeText(context, "Connection lost,please reconnect",
 						Toast.LENGTH_SHORT).show();
-				if (wfComm != null) {
+				if (wfComm != null && revThred != null) {
 					revThred.interrupt();
 					// cheThread.interrupt();
 				}

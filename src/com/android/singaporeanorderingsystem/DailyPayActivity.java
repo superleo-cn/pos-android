@@ -48,10 +48,8 @@ import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
-
 import com.android.common.SystemHelper;
 import com.android.dao.DailyMoneyDao;
-
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
 import com.android.dialog.DialogBuilder;
@@ -108,6 +106,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.daily_pay);
 		//init_wifiReceiver();
 		all_num_price=new ArrayList<Double>();
+		myApp=(MyApp) DailyPayActivity.this.getApplication();
 	//onload_payDetail("1");
 	}
 	 
@@ -360,6 +359,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					count+=Double.parseDouble(detail_classList.get(i).getPrice());
 				}
 				text_id_all_price.setText(df.format(count));
+				
 				compute();
 				}catch(Exception e){
 					Toast.makeText(DailyPayActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
@@ -467,7 +467,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    //Sandroid_id,Sconsumption_id,shop_id,user_id,date,type,price
 		    	PayListDao.getInatance(DailyPayActivity.this).save(String.valueOf(i+1),
 		    			String.valueOf(i+1),
-		    			myApp.getShopid(),
+		    			myApp.getSettingShopId(),
 		    			myApp.getUser_id(),
 		    			date,
 		    			"0",
@@ -487,7 +487,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	   //android_id,cash_id,shop_id,user_id,date,type,quantity
 	    		NumListDao.getInatance(DailyPayActivity.this).save(String.valueOf(j+1),
 		    			String.valueOf(j+1),
-		    			myApp.getShopid(),
+		    			myApp.getSettingShopId(),
 		    			myApp.getUser_id(),
 		    			date,
 		    			"0",
@@ -563,7 +563,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	}
 	    	String type="0";
 			DailyMoneyDao.getInatance(DailyPayActivity.this).save("0", 
-					myApp.getShopid(),
+					myApp.getSettingShopId(),
 					myApp.getUser_id(), 
 					aOpenBalance,
 					bExpenses,
