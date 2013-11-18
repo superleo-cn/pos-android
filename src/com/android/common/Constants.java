@@ -95,4 +95,13 @@ public final class Constants {
 	public static final String URL_TAKE_DNUM=URL_CONTEXTPATH+"/cashs/listJson/";
 	/** 点菜单提交*/
 	public static final String URL_FOOD_ORDER=URL_CONTEXTPATH+"/transactions/submit";
+	
+	/*提交每日支付款*/
+	public static final String URL_POST_PAYLIST=URL_CONTEXTPATH+"/consumeTransactions/submit";	
+	/*带回总数接口*/
+	public static final String URL_POST_TAKENUM=URL_CONTEXTPATH+"/cashTransactions/submit";
+	/*带回总数接口*/
+	public static final String URL_POST_DAILY_MONEY=URL_CONTEXTPATH+"/dailySummarys/submit";
+	
+	
 }

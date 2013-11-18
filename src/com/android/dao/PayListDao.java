@@ -81,7 +81,7 @@ public class PayListDao extends SQLiteOpenHelper {
 		List<Map<String,String>>  list=new ArrayList<Map<String,String>> ();
 		while(cursor.moveToNext()){
 			Map<String,String> map=new HashMap<String,String>();
-			map.put("android_id", cursor.getString(cursor.getColumnIndex("android_id")));
+			map.put("android_id", cursor.getString(cursor.getColumnIndex("_ID")));
 			map.put("consumption_id", cursor.getString(cursor.getColumnIndex("consumption_id")));
 			map.put("shop_id", cursor.getString(cursor.getColumnIndex("shop_id")));
 			map.put("user_id", cursor.getString(cursor.getColumnIndex("user_id")));
@@ -102,5 +102,15 @@ public class PayListDao extends SQLiteOpenHelper {
 		db.delete(TABLE_NAME, null, null);
 		db.close();
 	}
-
+	
+	public int update_type(String id,String type){
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		ContentValues values=new ContentValues();
+		values.put("type", type);
+		int result=db.update(TABLE_NAME, values, "_ID=?", new String[]{id});
+		System.err.print("更新了数据库");
+		db.close();
+		return result;
+		
+	}
 }

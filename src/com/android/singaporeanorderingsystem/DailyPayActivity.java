@@ -3,13 +3,13 @@
  */
 package com.android.singaporeanorderingsystem;
 
-import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -18,23 +18,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.renderscript.Sampler.Value;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -50,11 +45,13 @@ import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
-import com.android.bean.GetPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
+
 import com.android.common.SystemHelper;
+import com.android.dao.DailyMoneyDao;
+
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
 import com.android.dialog.DialogBuilder;
@@ -75,10 +72,10 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private TakeNumerAdapter number_adapter;
 	private Double count=0.00;
 	private TextView text_id_all_price;
-	private ImageView daily_menu; //menu按钮
-	private TextView daily_login_name; //用户名字
-	private RelativeLayout daily_exit_layout; //退出
-	private ImageView daily_wifi_image; //wifi 图标 
+	private ImageView menu; //menu按钮
+	private TextView login_name; //用户名字
+	private RelativeLayout exit_layout; //退出
+	private ImageView wifi_image; //wifi 图标 
 	private Button btu_id_sbumit;
 	private PopupWindow popupWindow;
 	private View view;
@@ -104,23 +101,24 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	public static  HashMap<Integer, String> hashMap_detail = new HashMap<Integer, String>();  
 	public static  HashMap<Integer, String> hashMap_num = new HashMap<Integer, String>();  
 	public static  HashMap<Integer, String> hashMap_numprice = new HashMap<Integer, String>(); 
+	private String search_date;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
 		//init_wifiReceiver();
 		all_num_price=new ArrayList<Double>();
-	onload_payDetail("1");
+	//onload_payDetail("1");
 	}
 	 
 	 public void initView(){
 		 take_all_price=(TextView) this.findViewById(R.id.take_all_price);
-		 daily_menu=(ImageView) this.findViewById(R.id.daily_menu_btn);
-			daily_menu.setOnClickListener(this);
-			daily_login_name=(TextView) this.findViewById(R.id.daily_login_name);
-			daily_exit_layout=(RelativeLayout) this.findViewById(R.id.daily_layout_exit);
-			daily_exit_layout.setOnClickListener(this);
-			daily_wifi_image=(ImageView) this.findViewById(R.id.daily_wifi_iamge);
+		 	menu=(ImageView) this.findViewById(R.id.menu_btn);
+			menu.setOnClickListener(this);
+			login_name=(TextView) this.findViewById(R.id.login_name);
+			exit_layout=(RelativeLayout) this.findViewById(R.id.layout_exit);
+			exit_layout.setOnClickListener(this);
+			wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
 			daily_list = (ListView) findViewById(R.id.daily_detail_list);
 			num_list = (ListView) findViewById(R.id.daily_num_list);
 			text_id_all_price = (TextView) findViewById(R.id.text_id_all_price);
@@ -260,15 +258,18 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						if (popupWindow.isShowing()) {
 							popupWindow.dismiss();
 						}
-						Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);						
-						overridePendingTransition(
-								R.anim.in_from_right,
-								R.anim.out_to_left);
-						Bundle bundle=new Bundle();
-						bundle.putString("type", "2");
-						intent.putExtras(bundle);
-						DailyPayActivity.this.startActivity(intent);
-						DailyPayActivity.this.finish();
+						if(myApp.getU_type().equals("SUPERADMIN") || myApp.getU_type().equals("ADMIN") || 
+								myApp.getU_type().equals("OPERATOR")){						
+							Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);
+							overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+							Bundle bundle=new Bundle();
+							bundle.putString("type", "1");
+							intent.putExtras(bundle);
+							DailyPayActivity.this.startActivity(intent);
+							DailyPayActivity.this.finish();
+						}else{
+							Toast.makeText(DailyPayActivity.this, "您的权限不足，无权访问", Toast.LENGTH_SHORT).show();	
+						}
 					}
 				});
 				
@@ -306,13 +307,13 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View V) {
 		switch(V.getId()){
-		case R.id.daily_menu_btn:
+		case R.id.menu_btn:
 			initPopupWindow();
 			popupWindow.setFocusable(true);
 			popupWindow.setBackgroundDrawable(new BitmapDrawable());
-			popupWindow.showAsDropDown(daily_menu, 0, -5);
+			popupWindow.showAsDropDown(menu, 0, -5);
 			break;
-		case R.id.daily_layout_exit:
+		case R.id.layout_exit:
 			DialogBuilder builder=new DialogBuilder(DailyPayActivity.this);
 			builder.setTitle(R.string.message_title);
 			builder.setMessage(R.string.message_exit);
@@ -342,10 +343,10 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			// TODO Auto-generated method stub
 			switch(msg.what){
 			case OPEN_WIFI:
-				daily_wifi_image.setImageResource(R.drawable.wifi_open);
+				wifi_image.setImageResource(R.drawable.wifi_open);
 				break;
 			case CLOSE_WIFI:
-				daily_wifi_image.setImageResource(R.drawable.wifi_close);
+				wifi_image.setImageResource(R.drawable.wifi_close);
 				break;
 			case DailyPayDetailAdapter.CHAGE_NUM_DETAIL:
 				try{
@@ -382,7 +383,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		}
 		
 	};
-	
+
+
 	 private BroadcastReceiver myReceiver=new BroadcastReceiver()
 	    {
 
@@ -451,39 +453,49 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    public void  clear_data(){
 	    	 InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
 	    	String detail_price;
-	    	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+	    	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 	    	String date=df.format(new Date());
+	    	this.search_date=date;
+	    	/*提交每日支付金额*/	    	
 	    	for(int i=0;i<detail_classList.size();i++){
 	    		if(hashMap_detail.get(i)==null){
 	    			detail_price="0.00";
 	    		}else{
 	    			detail_price=hashMap_detail.get(i);
-	    		}
-		    	PayListDao.getInatance(DailyPayActivity.this).save(String.valueOf(i),
-		    			String.valueOf(i),
-		    			String.valueOf(i),
-		    			String.valueOf(1),
-		    			date,
+	    		} 
+	    /*参数*/		
+	    //Sandroid_id,Sconsumption_id,shop_id,user_id,date,type,price
+		    	PayListDao.getInatance(DailyPayActivity.this).save(String.valueOf(i+1),
+		    			String.valueOf(i+1),
 		    			"1",
+		    			"2",
+		    			date,
+		    			"0",
 		    			detail_price);
 	    	}
+	    /*提交每日支付金额结束*/	
+	    	
+	   /*提交带回总数接口*/
 	    	String take_num;
 	    	for(int j=0;j<number_classList.size();j++){
 	    		if(hashMap_detail.get(j)==null){
-    				take_num="0.00";
+    				take_num="0";
     			}else{
     				take_num=hashMap_num.get(j);
     			}
-	    		NumListDao.getInatance(DailyPayActivity.this).save(String.valueOf(j),
-		    			String.valueOf(j),
-		    			String.valueOf(1),
-		    			String.valueOf(1),
-		    			date,
+	   /*参数*/
+	   //android_id,cash_id,shop_id,user_id,date,type,quantity
+	    		NumListDao.getInatance(DailyPayActivity.this).save(String.valueOf(j+1),
+		    			String.valueOf(j+1),
 		    			"1",
+		    			"2",
+		    			date,
+		    			"0",
 	    				take_num);
 	    	}
-	    	//daily_list.setAdapter(null);
-	    	//daily_num_list.setAdapter(null);
+	    
+	    /*提交带回总数接口结束*/
+
 	    	int num_of_visible_view=num_list.getLastVisiblePosition() - num_list.getFirstVisiblePosition();
 	    	for(int i=0;i<=num_of_visible_view;i++){
 	    		EditText edit=(EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
@@ -499,6 +511,76 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    		imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
 	    		
 	    	}
+	    	
+	    	
+	    	String aOpenBalance=shop_money.getText().toString();
+	    	if(aOpenBalance.isEmpty()){
+	    		aOpenBalance="0";
+	    	}
+	    	String bExpenses=text_id_all_price.getText().toString();
+	    	if(bExpenses.isEmpty()){
+	    		bExpenses="0";
+	    	}
+	    	String cCashCollected=cash_register.getText().toString();
+	    	if(cCashCollected.isEmpty()){
+	    		cCashCollected="0";
+	    	}
+	    	String dDailyTurnover=today_turnover.getText().toString();
+	    	if(dDailyTurnover.isEmpty()){
+	    		dDailyTurnover="0";
+	    	}
+	    	String eNextOpenBalance=tomorrow_money.getText().toString();
+	    	if(eNextOpenBalance.isEmpty()){
+	    		eNextOpenBalance="0";
+	    	}
+	    	String fBringBackCash=total_take_num.getText().toString();
+	    	if(fBringBackCash.isEmpty()){
+	    		fBringBackCash="0";
+	    	}
+	    	String gTotalBalance=total.getText().toString();
+	    	if(gTotalBalance.isEmpty()){
+	    		gTotalBalance="0";
+	    	}
+	    	String middleCalculateTime=noon_time.getText().toString();
+	    	if(middleCalculateTime.isEmpty()){
+	    		middleCalculateTime="yyyy-MM-dd";
+	    	}
+	    	String middleCalculateBalance=noon_turnover.getText().toString();
+	    	if(middleCalculateBalance.isEmpty()){
+	    		middleCalculateBalance="0";
+	    	}
+	    	String calculateTime=time.getText().toString();
+	    	if(calculateTime.isEmpty()){
+	    		calculateTime="yyyy-MM-dd";
+	    	}
+	    	String others=other.getText().toString();
+	    	if(others.isEmpty()){
+	    		others="";
+	    	}
+	    	String courier=send_person.getText().toString();
+	    	if(courier.isEmpty()){
+	    		courier="";
+	    	}
+	    	String type="0";
+			DailyMoneyDao.getInatance(DailyPayActivity.this).save("0", 
+					"2",
+					"1", 
+					aOpenBalance,
+					bExpenses,
+					cCashCollected, 
+					dDailyTurnover,
+					eNextOpenBalance, 
+					fBringBackCash,
+					gTotalBalance,
+					middleCalculateTime,
+					middleCalculateBalance,
+					calculateTime,
+					others, 
+					courier, 
+					type,
+					date);
+	    	
+	    	
 	    	cash_register.setText("");
 	    	today_turnover.setText("");
 	    	noon_time.setText("");
@@ -511,8 +593,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	other.setText("");
 	    	shop_money.setText("");
 	    	//text_id_all_price.setText("");
-	    	
-	    	 
+	    	//post_payList();
+	    	//post_numList(); 
+	    	post_dailyMoney();
 	    }
 	    
 	    public void compute(){
@@ -649,17 +732,148 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		}
 	/*提交每日支付*/
 	public void post_payList(){
-		
+		try{
+		HashMap<String, String> params= new HashMap<String,String>();
+		List<Map<String,String>> datas=PayListDao.getInatance(this).getList();
+		if(!datas.isEmpty()){
+		for(int i=0;i<datas.size();i++){
+			params.put("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+			Log.e("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+			params.put("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
+			Log.e("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
+			params.put("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+			Log.e("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+			params.put("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+			Log.e("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+			params.put("consumeTransactions["+i+"].price", datas.get(i).get("type"));
+			Log.e("consumeTransactions["+i+"].price", datas.get(i).get("type"));
+		}
+		}
+		RemoteDataHandler.asyncPost(Constants.URL_POST_PAYLIST, params, new Callback() {
+			@Override
+			public void dataLoaded(ResponseData data) {
+				if(data.getCode() == 1){
+					String json=data.getJson();
+					Toast.makeText(DailyPayActivity.this, "每日支付接口提交成功"+json, Toast.LENGTH_SHORT).show();
+				String str=json.substring(1,json.length()-1);
+				String []array=str.split(",");
+				if(array.length!=0){
+					for(int i=0;i<array.length;i++){
+						Log.e("数据组",array[i]+"");
+					int result=	PayListDao.getInatance(DailyPayActivity.this).update_type(array[i], "1");
+					if(result==-1){
+						Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
+					}
+						
+					}
+				}
+				}else if(data.getCode() == 0){
+					Toast.makeText(DailyPayActivity.this, "每日支付接口提交失败", Toast.LENGTH_SHORT).show();
+				}else if(data.getCode() == -1){
+					Toast.makeText(DailyPayActivity.this, "每日支付接口服务器出错", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		}catch(Exception e){
+			e.getMessage();
+		}
 	}
 	
 	/*提交带回总数*/
 	public void post_numList(){
-		
+		try{
+			HashMap<String, String> params= new HashMap<String,String>();
+			List<Map<String,String>> datas=NumListDao.getInatance(this).getList();
+			if(!datas.isEmpty()){
+			for(int i=0;i<datas.size();i++){
+				params.put("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+				Log.e("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+				params.put("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
+				Log.e("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
+				params.put("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+				Log.e("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+				params.put("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+				Log.e("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+				params.put("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
+				Log.e("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
+			}
+			}
+			RemoteDataHandler.asyncPost(Constants.URL_POST_TAKENUM, params, new Callback() {
+				@Override
+				public void dataLoaded(ResponseData data) {
+					if(data.getCode() == 1){
+						String json=data.getJson();
+						Toast.makeText(DailyPayActivity.this, "带回总数接口提交成功"+json, Toast.LENGTH_SHORT).show();
+					String str=json.substring(1,json.length()-1);
+					String []array=str.split(",");
+					if(array.length!=0){
+						for(int i=0;i<array.length;i++){
+							Log.e("数据组",array[i]+"");
+						int result=	NumListDao.getInatance(DailyPayActivity.this).update_type(array[i], "1");
+						if(result==-1){
+							Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
+						}
+							
+						}
+					}
+					}else if(data.getCode() == 0){
+						Toast.makeText(DailyPayActivity.this, "带回总数接口提交失败", Toast.LENGTH_SHORT).show();
+					}else if(data.getCode() == -1){
+						Toast.makeText(DailyPayActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			}catch(Exception e){
+				e.getMessage();
+			}
 	}
 	
 	/*提交每日营业额*/
 	public void post_dailyMoney(){
-		
+		try{
+			//HashMap<String, String> params= DailyMoneyDao.getInatance(DailyPayActivity.this).getList(search_date);
+			HashMap<String, String> map=new HashMap<String,String>();
+			map.put("android_id", "1");
+			map.put("shop_id", "2");
+			map.put("user_id", "1");
+			map.put("aOpenBalance", "0");
+			map.put("bExpenses", "0");
+			map.put("cCashCollected", "0");
+			map.put("dDailyTurnover", "0");
+			map.put("eNextOpenBalance", "0");
+			map.put("fBringBackCash", "0");
+			map.put("gTotalBalance", "0");
+			map.put("middleCalculateTime", "0");
+			map.put("middleCalculateBalance", "0");
+			map.put("calculateTime", "0");
+			map.put("others", "0");
+			map.put("courier", "0");
+			RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, map, new Callback() {
+				@Override
+				public void dataLoaded(ResponseData data) {
+					if(data.getCode() == 1){
+						String json=data.getJson();
+						Toast.makeText(DailyPayActivity.this, "每日营业额提交成功"+json, Toast.LENGTH_SHORT).show();
+//						int result=DailyMoneyDao.getInatance(DailyPayActivity.this).update_type(search_date);
+//						if(result==-1){
+//							Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
+//						}else{
+//							Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
+//						}
+					}else if(data.getCode() == 0){
+						Toast.makeText(DailyPayActivity.this, "每日营业额接口提交失败", Toast.LENGTH_SHORT).show();
+					}else if(data.getCode() == -1){
+						Toast.makeText(DailyPayActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			}catch(Exception e){
+				e.getMessage();
+			}
 	}
 		
 }
