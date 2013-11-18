@@ -29,7 +29,6 @@ public class MyApp extends Application{
 	private UserDao userdao;
 	private FoodOrderDao food_order_dao;
 	private AndroidPrinter printer;
-	private String shopid = "0";
 	private String u_name = "";
 	private String user_id= "0";
 	private String discount="0.5";
@@ -112,14 +111,6 @@ public class MyApp extends Application{
 
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
-	}
-
-	public String getShopid() {
-		return shopid;
-	}
-
-	public void setShopid(String shopid) {
-		this.shopid = shopid;
 	}
 
 	public  String getuName() {

@@ -825,7 +825,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					food_order.setFoc("0");//是否免费 1是 0否
 				}
 				food_order.setFood_flag("0");//是否成功 1是 0否
-				food_order.setShop_id(myApp.getShopid());//店idmyApp.getShopid()
+				food_order.setShop_id(myApp.getSettingShopId());//店idmyApp.getShopid()
 				food_order.setTotalpackage(dabao_price);//打包钱数
 				food_order.setUser_id(myApp.getUser_id());//用户id
 				food_order.setRetailprice(df.format(show_totalPrice));//收钱数
