@@ -467,8 +467,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    //Sandroid_id,Sconsumption_id,shop_id,user_id,date,type,price
 		    	PayListDao.getInatance(DailyPayActivity.this).save(String.valueOf(i+1),
 		    			String.valueOf(i+1),
-		    			"1",
-		    			"2",
+		    			myApp.getShopid(),
+		    			myApp.getUser_id(),
 		    			date,
 		    			"0",
 		    			detail_price);
@@ -487,8 +487,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	   //android_id,cash_id,shop_id,user_id,date,type,quantity
 	    		NumListDao.getInatance(DailyPayActivity.this).save(String.valueOf(j+1),
 		    			String.valueOf(j+1),
-		    			"1",
-		    			"2",
+		    			myApp.getShopid(),
+		    			myApp.getUser_id(),
 		    			date,
 		    			"0",
 	    				take_num);
@@ -563,8 +563,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	}
 	    	String type="0";
 			DailyMoneyDao.getInatance(DailyPayActivity.this).save("0", 
-					"2",
-					"1", 
+					myApp.getShopid(),
+					myApp.getUser_id(), 
 					aOpenBalance,
 					bExpenses,
 					cCashCollected, 
