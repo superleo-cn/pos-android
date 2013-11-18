@@ -593,8 +593,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	other.setText("");
 	    	shop_money.setText("");
 	    	//text_id_all_price.setText("");
-	    	//post_payList();
-	    	//post_numList(); 
+	    	post_payList();
+	    	post_numList(); 
 	    	post_dailyMoney();
 	    }
 	    
@@ -764,9 +764,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						Log.e("数据组",array[i]+"");
 					int result=	PayListDao.getInatance(DailyPayActivity.this).update_type(array[i], "1");
 					if(result==-1){
-						Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
 					}else{
-						Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
 					}
 						
 					}
@@ -817,9 +817,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 							Log.e("数据组",array[i]+"");
 						int result=	NumListDao.getInatance(DailyPayActivity.this).update_type(array[i], "1");
 						if(result==-1){
-							Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
 						}else{
-							Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
 						}
 							
 						}
