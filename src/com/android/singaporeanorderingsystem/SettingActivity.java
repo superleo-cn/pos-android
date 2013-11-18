@@ -46,7 +46,7 @@ public class SettingActivity extends Activity {
 	public static String type;
 	private Button print_one_btu;
 	private MyApp myApp;
-	
+	private ImageView exit_btn;
 	private TextView admin_set;
 	private RelativeLayout r_set_admin_lay;
 	private SharedPreferences spf;
@@ -65,6 +65,7 @@ public class SettingActivity extends Activity {
 		admin_set = (TextView) findViewById(R.id.admin_set);
 		r_set_admin_lay =(RelativeLayout) findViewById(R.id.r_set_admin_lay);
 		shop_set = (EditText) findViewById(R.id.shop_set);
+		exit_btn = (ImageView) findViewById(R.id.exit_btn);
 		menu = (ImageView) findViewById(R.id.menu_btn);
 		print_one_btu = (Button) findViewById(R.id.print_one_btu);
 		btu_discount = (Button) findViewById(R.id.btu_discount);
@@ -101,6 +102,12 @@ public class SettingActivity extends Activity {
 		} else {
 			language_set.setText("中文");
 		}
+		exit_btn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CreatedDialog().create().show();
+			}
+		});
 		print_one_btu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
