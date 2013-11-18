@@ -62,7 +62,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.num_id_name = (TextView) convertView.findViewById(R.id.num_id_name);
 			viewHolder.id_price = (EditText) convertView.findViewById(R.id.num_id_price);
-			viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
 			viewHolder.num_price=(TextView) convertView.findViewById(R.id.num_price);
 			convertView.setTag(viewHolder);
 		} else {

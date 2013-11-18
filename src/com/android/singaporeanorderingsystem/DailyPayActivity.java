@@ -360,6 +360,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					count+=Double.parseDouble(detail_classList.get(i).getPrice());
 				}
 				text_id_all_price.setText(df.format(count));
+				
 				compute();
 				}catch(Exception e){
 					Toast.makeText(DailyPayActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();

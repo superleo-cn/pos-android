@@ -69,7 +69,6 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.text_id_name = (TextView) convertView.findViewById(R.id.text_id_name);
 			viewHolder.text_id_price = (EditText) convertView.findViewById(R.id.text_id_price);
-			viewHolder.text_id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
