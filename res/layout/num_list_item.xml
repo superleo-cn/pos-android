@@ -56,29 +56,30 @@
              />
     </LinearLayout>
     
-    <LinearLayout 
+    <RelativeLayout 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:layout_weight="1"  
         >
     <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$2"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:focusable="false"
+            android:id="@+id/num_price" />
+      <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="S$"
             android:layout_marginLeft="5dip"
-            android:layout_weight="0.25"
             android:textColor="#000000"
-            android:gravity="right|center_vertical"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/num_price"
             android:textSize="18sp" />
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="$2"
-            android:layout_weight="0.75"
-            android:textColor="#000000"
-            android:gravity="left|center_vertical"
-            android:textSize="18sp"
-            android:focusable="false"
-            android:id="@+id/num_price" />
-</LinearLayout>
+</RelativeLayout>
 </LinearLayout>
