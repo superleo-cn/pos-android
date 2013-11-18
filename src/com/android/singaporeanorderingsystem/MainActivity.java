@@ -946,20 +946,22 @@ public class MainActivity extends Activity implements OnClickListener{
 				}else{
 					Log.e("保存价格成功", "");
 				}
-				StringBuffer sb=new StringBuffer();
-				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
-				String time = sdf.format(new Date());
-				sb.append(time+"\n\n");
-				for(int i = 0 ; i < select_dataList.size() ;i ++){
-					SelectFoodBean bean=select_dataList.get(i);
-						if(is_takePackage){
-							sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
-						}else{
-							sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
-						}
+				if(false){
+					StringBuffer sb=new StringBuffer();
+					SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
+					String time = sdf.format(new Date());
+					sb.append(time+"\n\n");
+					for(int i = 0 ; i < select_dataList.size() ;i ++){
+						SelectFoodBean bean=select_dataList.get(i);
+							if(is_takePackage){
+								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"(包)"+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");	
+							}else{
+								sb.append(bean.getFood_dayin_code()+"/"+bean.getFood_name()+"\t\t\t\t\t"+"Qty："+bean.getFood_num()+"\n\n");
+							}
+					}
+					myApp.getPrinter().setIp(myApp.getIp_str());
+					myApp.getPrinter().print(sb.toString());
 				}
-				myApp.getPrinter().setIp(myApp.getIp_str());
-				myApp.getPrinter().print(sb.toString());
 				clear_data();
 			}});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
