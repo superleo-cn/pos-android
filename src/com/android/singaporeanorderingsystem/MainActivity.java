@@ -54,6 +54,7 @@ import com.android.common.HttpHelper;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
 import com.android.dao.FoodOrderDao;
+import com.android.dao.FoodOrderDao2;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -116,10 +117,10 @@ public class MainActivity extends Activity implements OnClickListener{
 			R.drawable.food_image10,
 			R.drawable.food_image11,
 	};
-	private FoodOrderDao food_dao;
 	
 	private String dabao_price="0";
 	private String dazhe_price="0";
+	private FoodOrderDao2 f_dao;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -766,7 +767,6 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			break;
 		case R.id.ok_btn:
-			food_dao=myApp.getFood_order_dao();
 //			FoodOrder food_order=new FoodOrder();
 //			food_order.setDiscount(dazhe_price);//打折钱数
 //			if(is_foc){
@@ -825,6 +825,7 @@ public class MainActivity extends Activity implements OnClickListener{
 //					}
 //				}
 //			}
+			f_dao = FoodOrderDao2.getInatance(MainActivity.this);
 			for(int i = 0 ; i < select_dataList.size() ; i ++){
 				SelectFoodBean  bean=select_dataList.get(i);
 				FoodOrder food_order=new FoodOrder();
@@ -842,11 +843,11 @@ public class MainActivity extends Activity implements OnClickListener{
 				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
 				food_order.setQuantity(bean.getFood_num());//数量
-				food_dao.insert(food_order);
+				f_dao.save(food_order);
 			}
 			
 			HashMap<String, String> params= new HashMap<String,String>();
-			ArrayList<FoodOrder> datas=food_dao.findall();
+			ArrayList<FoodOrder> datas=f_dao.getList("0");
 			System.out.println("-->"+datas.size());
 			for(int i = 0 ; i<datas.size() ; i++){
 				FoodOrder f_order =  datas.get(i);
@@ -876,7 +877,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				@Override
 				public void dataLoaded(ResponseData data) {
 					if(data.getCode() == 1){
-						food_dao.updateall("1");
+						f_dao.update_all_type("0");
 					}else if(data.getCode() == 0){
 						String json = data.getJson();
 						System.out.println("-----111>>>>>>"+json);
@@ -886,7 +887,7 @@ public class MainActivity extends Activity implements OnClickListener{
 						String [] str=json.split(",");
 						for(int i = 0; i<str.length;i++){
 							System.out.println("-----333>>>>>>"+str[i]);
-							food_dao.update("1",str[i]);
+							f_dao.update_type("0");
 						}
 					}else if(data.getCode() == -1){
 						
