@@ -53,6 +53,7 @@ import com.android.common.HttpHelper;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
 import com.android.dao.FoodOrderDao;
+import com.android.dao.FoodOrderDao2;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -112,7 +113,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			R.drawable.food_image11,
 	};
 	private FoodOrderDao food_dao;
-	
+	private FoodOrderDao2 f_dao;
 	private String dabao_price="0";
 	private String dazhe_price="0";
 	/*主菜单activity*/
@@ -823,17 +824,20 @@ public class MainActivity extends Activity implements OnClickListener{
 					food_order.setFoc("0");//是否免费 1是 0否
 				}
 				food_order.setFood_flag("0");//是否成功 1是 0否
-				food_order.setShop_id("1");//店idmyApp.getShopid()
+				food_order.setShop_id(myApp.getShopid());//店idmyApp.getShopid()
 				food_order.setTotalpackage(dabao_price);//打包钱数
 				food_order.setUser_id(myApp.getUser_id());//用户id
 				food_order.setRetailprice(df.format(show_totalPrice));//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
 				food_order.setQuantity(bean.getFood_num());//数量
-				food_dao.insert(food_order);
+//				food_dao.insert(food_order);
+				f_dao=FoodOrderDao2.getInatance(MainActivity.this);
+				f_dao.save(food_order);
 			}
 			
 			HashMap<String, String> params= new HashMap<String,String>();
-			ArrayList<FoodOrder> datas=food_dao.findall();
+//			ArrayList<FoodOrder> datas=food_dao.findall();
+			ArrayList<FoodOrder> datas=f_dao.getList("0");
 			System.out.println("-->"+datas.size());
 			for(int i = 0 ; i<datas.size() ; i++){
 				FoodOrder f_order =  datas.get(i);
@@ -863,7 +867,8 @@ public class MainActivity extends Activity implements OnClickListener{
 				@Override
 				public void dataLoaded(ResponseData data) {
 					if(data.getCode() == 1){
-						food_dao.updateall("1");
+//						food_dao.updateall("1");
+						f_dao.update_all_type("0");
 					}else if(data.getCode() == 0){
 						String json = data.getJson();
 						System.out.println("-----111>>>>>>"+json);
@@ -873,7 +878,8 @@ public class MainActivity extends Activity implements OnClickListener{
 						String [] str=json.split(",");
 						for(int i = 0; i<str.length;i++){
 							System.out.println("-----333>>>>>>"+str[i]);
-							food_dao.update("1",str[i]);
+							f_dao.update_type(str[i]);
+//							food_dao.update("1",str[i]);
 						}
 					}else if(data.getCode() == -1){
 						

@@ -10,13 +10,11 @@ package com.android.dao;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.android.bean.FoodOrder;
-import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
 import com.android.common.DbHelper;
 
