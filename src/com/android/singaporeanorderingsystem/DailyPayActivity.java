@@ -48,10 +48,8 @@ import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
-
 import com.android.common.SystemHelper;
 import com.android.dao.DailyMoneyDao;
-
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
 import com.android.dialog.DialogBuilder;
@@ -108,6 +106,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.daily_pay);
 		//init_wifiReceiver();
 		all_num_price=new ArrayList<Double>();
+		myApp=(MyApp) DailyPayActivity.this.getApplication();
 	//onload_payDetail("1");
 	}
 	 
