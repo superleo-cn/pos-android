@@ -98,6 +98,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private int save_selectNum;
 	public static boolean main_isRever;
 	private MyApp myApp;
+	private double package_money;
 	private Integer[] food_image={
 			R.drawable.food_image01,
 			R.drawable.food_image02,
@@ -279,7 +280,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
-				if(food_dataList.get(arg2).getType().equals("DISH")){
+				if(food_dataList.get(arg2).getType().equals("STAPLE")){
 					
 				}else{
 				save_selectNum++;
@@ -294,35 +295,35 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_foc){
 						save_foc_price=show_totalPrice;
 						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("0")){
+							if(food_dataList.get(arg2).getType().equals("STAPLE")){
 								
 							}else{
-							save_foc_price=show_totalPrice-0.5;
+							save_foc_price=show_totalPrice-save_discount_price;
 							}
 							
 						}
 						if(is_takePackage){
-							if(food_dataList.get(arg2).getType().equals("0")){
+							if(food_dataList.get(arg2).getType().equals("STAPLE")){
 								
 							}else{
-							save_foc_price=show_totalPrice+0.2;
+							save_foc_price=show_totalPrice+package_money;
 							}
 						}
 						
 						show_totalPrice=0;
 					}else{
 						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("0")){
+							if(food_dataList.get(arg2).getType().equals("STAPLE")){
 								
 							}else{
-							show_totalPrice=show_totalPrice-0.5;
+							show_totalPrice=show_totalPrice-save_discount_price;
 							}
 						}
 						if(is_takePackage){
-							if(food_dataList.get(arg2).getType().equals("0")){
+							if(food_dataList.get(arg2).getType().equals("STAPLE")){
 								
 							}else{
-							show_totalPrice=show_totalPrice+0.2;
+							show_totalPrice=show_totalPrice+package_money;
 							}
 						}
 						save_foc_price=show_totalPrice;
@@ -359,34 +360,34 @@ public class MainActivity extends Activity implements OnClickListener{
 							if(is_foc){
 								save_foc_price=show_totalPrice;
 								if(is_discount){
-									if(food_dataList.get(arg2).getType().equals("0")){
+									if(food_dataList.get(arg2).getType().equals("STAPLE")){
 										
 									}else{
-									save_foc_price=show_totalPrice-0.5;
+									save_foc_price=show_totalPrice-save_discount_price;
 									}
 								}
 								if(is_takePackage){
-									if(food_dataList.get(arg2).getType().equals("0")){
+									if(food_dataList.get(arg2).getType().equals("STAPLE")){
 										
 									}else{
-									save_foc_price=show_totalPrice+0.2;
+									save_foc_price=show_totalPrice+package_money;
 									}
 								}
 								
 								show_totalPrice=0;
 							}else{
 								if(is_discount){
-									if(food_dataList.get(arg2).getType().equals("0")){
+									if(food_dataList.get(arg2).getType().equals("STAPLE")){
 										
 									}else{
-									show_totalPrice=show_totalPrice-0.5;
+									show_totalPrice=show_totalPrice-save_discount_price;
 									}
 								}
 								if(is_takePackage){
-									if(food_dataList.get(arg2).getType().equals("0")){
+									if(food_dataList.get(arg2).getType().equals("STAPLE")){
 										
 									}else{
-									show_totalPrice=show_totalPrice+0.2;
+									show_totalPrice=show_totalPrice+package_money;
 									}
 								}
 								save_foc_price=show_totalPrice;
@@ -404,33 +405,33 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_foc){
 						save_foc_price=show_totalPrice;
 						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("0")){
+							if(food_dataList.get(arg2).getType().equals("STAPLE")){
 								
 							}else{
-							save_foc_price=show_totalPrice-0.5;
+							save_foc_price=show_totalPrice-save_discount_price;
 							}
 						}
-						if(is_takePackage){if(food_dataList.get(arg2).getType().equals("0")){
+						if(is_takePackage){if(food_dataList.get(arg2).getType().equals("STAPLE")){
 							
 						}else{
 							
-							save_foc_price=show_totalPrice+0.2;
+							save_foc_price=show_totalPrice+package_money;
 						}
 						}
 						show_totalPrice=0;
 					}else{
 						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("0")){
+							if(food_dataList.get(arg2).getType().equals("STAPLE")){
 								
 							}else{
-							show_totalPrice=show_totalPrice-0.5;
+							show_totalPrice=show_totalPrice-save_discount_price;
 							}
 						}
 						if(is_takePackage){
-							if(food_dataList.get(arg2).getType().equals("0")){
+							if(food_dataList.get(arg2).getType().equals("STAPLE")){
 								
 							}else{
-							show_totalPrice=show_totalPrice+0.2;
+							show_totalPrice=show_totalPrice+package_money;
 							}
 						}
 						save_foc_price=show_totalPrice;
@@ -543,7 +544,7 @@ public class MainActivity extends Activity implements OnClickListener{
 						if(remove_bean.getFood_name().equals(bean.getFood_name())){
 							int number=Integer.parseInt(remove_bean.getFood_num());
 							number=number-1;
-							if(food_dataList.get(num).getType().equals("0")){
+							if(food_dataList.get(num).getType().equals("STAPLE")){
 								
 							}else{
 							save_selectNum--;
@@ -554,33 +555,33 @@ public class MainActivity extends Activity implements OnClickListener{
 								if(is_foc){
 									save_foc_price=show_totalPrice;
 									if(is_discount){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										save_foc_price=show_totalPrice-0.5;
+										save_foc_price=show_totalPrice-save_discount_price;
 										}
 									}
 									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										save_foc_price=show_totalPrice+0.2;
+										save_foc_price=show_totalPrice+package_money;
 										}
 									}
 									show_totalPrice=0;
 								}else{
 									if(is_discount){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										show_totalPrice=show_totalPrice+0.5;
+										show_totalPrice=show_totalPrice+save_discount_price;
 										}
 									}
 									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										show_totalPrice=show_totalPrice-0.2;
+										show_totalPrice=show_totalPrice-package_money;
 										}
 									}
 									save_foc_price=show_totalPrice;
@@ -599,33 +600,33 @@ public class MainActivity extends Activity implements OnClickListener{
 								if(is_foc){
 									save_foc_price=show_totalPrice;
 									if(is_discount){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										save_foc_price=show_totalPrice-0.5;
+										save_foc_price=show_totalPrice-save_discount_price;
 										}
 									}
 									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										save_foc_price=show_totalPrice+0.2;
+										save_foc_price=show_totalPrice+package_money;
 										}
 									}
 									show_totalPrice=0;
 								}else{
 									if(is_discount){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										show_totalPrice=show_totalPrice+0.5;
+										show_totalPrice=show_totalPrice+save_discount_price;
 										}
 									}
 									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("0")){
+										if(food_dataList.get(num).getType().equals("STAPLE")){
 											
 										}else{
-										show_totalPrice=show_totalPrice-0.2;
+										show_totalPrice=show_totalPrice-package_money;
 										}
 									}
 									save_foc_price=show_totalPrice;
@@ -669,11 +670,11 @@ public class MainActivity extends Activity implements OnClickListener{
 				is_takePackage=true;
 				//判断是否免单
 				if(is_foc){
-					save_foc_price=save_foc_price+save_selectNum*0.2;
+					save_foc_price=save_foc_price+save_selectNum*package_money;
 					dabao_price="0";
 				//	Toast.makeText(this, "打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
-					show_totalPrice=show_totalPrice+save_selectNum*0.2;
+					show_totalPrice=show_totalPrice+save_selectNum*package_money;
 					save_foc_price=show_totalPrice;
 					total_price.setText(df.format(show_totalPrice));
 					dabao_price=df.format(show_totalPrice);
@@ -684,11 +685,11 @@ public class MainActivity extends Activity implements OnClickListener{
 				is_takePackage=false;
 				//判断是否免单
 				if(is_foc){
-					save_foc_price=save_foc_price-save_selectNum*0.2;
+					save_foc_price=save_foc_price-save_selectNum*package_money;
 					dabao_price="";
 				//	Toast.makeText(this, "取消打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
-					show_totalPrice=show_totalPrice-save_selectNum*0.2;
+					show_totalPrice=show_totalPrice-save_selectNum*package_money;
 					save_foc_price=show_totalPrice;
 					total_price.setText(df.format(show_totalPrice));
 					dabao_price=df.format(show_totalPrice);
@@ -727,11 +728,11 @@ public class MainActivity extends Activity implements OnClickListener{
 				is_discount=true;
 				//save_discount_price=Double.parseDouble(total_price.getText().toString());
 				if(is_foc){
-					save_foc_price=save_foc_price-save_selectNum*0.5;
+					save_foc_price=save_foc_price-save_selectNum*save_discount_price;
 					dazhe_price = "0";
 					//Toast.makeText(this, "打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
-					show_totalPrice=show_totalPrice-save_selectNum*0.5;
+					show_totalPrice=show_totalPrice-save_selectNum*save_discount_price;
 					save_foc_price=show_totalPrice;
 					total_price.setText(df.format(show_totalPrice));
 					dazhe_price = df.format(show_totalPrice);
@@ -741,11 +742,11 @@ public class MainActivity extends Activity implements OnClickListener{
 				//Toast.makeText(this, "不打折", Toast.LENGTH_SHORT).show();
 				is_discount=false;
 				if(is_foc){
-					save_foc_price=save_foc_price+save_selectNum*0.5;
+					save_foc_price=save_foc_price+save_selectNum*save_discount_price;
 					dazhe_price = "0";
 				//	Toast.makeText(this, "取消打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
 				}else{
-					show_totalPrice=show_totalPrice+save_selectNum*0.5;
+					show_totalPrice=show_totalPrice+save_selectNum*save_discount_price;
 					save_foc_price=show_totalPrice;
 					total_price.setText(df.format(show_totalPrice));
 					dazhe_price = df.format(show_totalPrice);
@@ -1040,11 +1041,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
 	        initView();
 	        df=new DecimalFormat("0.00");
-	       
+	        save_discount_price=Double.parseDouble(myApp.getDiscount());
+	        package_money=0.2;
 		super.onResume();
 	}
 	 
