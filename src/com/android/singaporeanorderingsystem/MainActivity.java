@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.R.array;
+import android.R.raw;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -73,6 +74,9 @@ public class MainActivity extends Activity implements OnClickListener{
 	private ImageView take_package; //打包选项
 	private ImageView foc;     //FOC
 	private ImageView discount; //打折选项
+	private RelativeLayout r_lay_id_take_package;
+	private RelativeLayout r_lay_id_foc;
+	private RelativeLayout r_lay_id_discount;
 	private GridView giditNum_view; //0-9按钮   用gridView做的按钮
 	private Button ok_btn; //ok 按钮
 	private boolean frist=true;//首次选择
@@ -150,11 +154,14 @@ public class MainActivity extends Activity implements OnClickListener{
     	gathering=(TextView) this.findViewById(R.id.gathering);
     	surplus=(TextView) this.findViewById(R.id.surplus);
     	take_package=(ImageView) this.findViewById(R.id.take_package);
-    	take_package.setOnClickListener(this);
     	foc=(ImageView) this.findViewById(R.id.foc);
-    	foc.setOnClickListener(this);
     	discount=(ImageView) this.findViewById(R.id.discount);
-    	discount.setOnClickListener(this);
+    	r_lay_id_take_package=(RelativeLayout) this.findViewById(R.id.r_lay_id_take_package);
+    	r_lay_id_foc=(RelativeLayout) this.findViewById(R.id.r_lay_id_foc);
+    	r_lay_id_discount=(RelativeLayout) this.findViewById(R.id.r_lay_id_discount);
+    	r_lay_id_take_package.setOnClickListener(this);
+    	r_lay_id_foc.setOnClickListener(this);
+    	r_lay_id_discount.setOnClickListener(this);
     	giditNum_view=(GridView) this.findViewById(R.id.digit_btn);
     	ok_btn=(Button) this.findViewById(R.id.ok_btn);
     	ok_btn.setOnClickListener(this);
@@ -266,7 +273,7 @@ public class MainActivity extends Activity implements OnClickListener{
     public void init_giditNum_view(){
     	List<GiditNumberBean> dataList=new ArrayList<GiditNumberBean>();  	
     	String delete=String.valueOf(R.string.delete);
-    	String []str=new String[]{"1","2","3","4","5","6","7","8","9","0",".","删除"};
+    	String []str=new String[]{"1","2","3","4","5","6","7","8","9","0",".","C"};
     	for(int i=0;i<str.length;i++){
     		GiditNumberBean bean=new GiditNumberBean();
     		bean.setNumber(str[i]);
@@ -661,12 +668,12 @@ public class MainActivity extends Activity implements OnClickListener{
 			CreatedDialog().create().show();
 			
 			break;
-		case R.id.take_package:
+		case R.id.r_lay_id_take_package:
 			if(select_dataList.size()==0){
 				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
 			if(!is_takePackage){
-				take_package.setImageResource(R.drawable.package_seclect);
+								take_package.setImageResource(R.drawable.package_seclect);
 				//Toast.makeText(this, "全部打包", Toast.LENGTH_SHORT).show();				
 				is_takePackage=true;
 				//判断是否免单
@@ -681,6 +688,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					dabao_price=df.format(show_totalPrice);
 				}
 			}else{
+				
 				take_package.setImageResource(R.drawable.package_not_select);
 				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
 				is_takePackage=false;
@@ -698,7 +706,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			}
 			break;
-		case R.id.foc:
+		case R.id.r_lay_id_foc:
+
 			if(select_dataList.size()==0){
 				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
@@ -719,7 +728,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 			}
 			break;
-		case R.id.discount:
+		case R.id.r_lay_id_discount:
 			if(select_dataList.size()==0){
 				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
@@ -828,7 +837,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				food_order.setShop_id(myApp.getShopid());//店idmyApp.getShopid()
 				food_order.setTotalpackage(dabao_price);//打包钱数
 				food_order.setUser_id(myApp.getUser_id());//用户id
-				food_order.setRetailprice(df.format(show_totalPrice));//收钱数
+				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
 				food_order.setQuantity(bean.getFood_num());//数量
 //				food_dao.insert(food_order);

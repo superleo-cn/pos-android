@@ -32,7 +32,7 @@
                     android:layout_height="fill_parent"
                     android:descendantFocusability="blocksDescendants"
                     android:horizontalSpacing="5dp"
-                    android:numColumns="3"
+                    android:numColumns="4"
                     android:verticalSpacing="10dp" >
                 </GridView>
             </RelativeLayout>
@@ -92,6 +92,8 @@
                                 android:layout_marginRight="10dip"
                                 android:layout_marginTop="10dip"
                                 android:orientation="horizontal"
+                                android:background="#F8CD21"
+                                android:padding="5dip"
                                 android:weightSum="3" >
 
                                 <LinearLayout
@@ -104,14 +106,14 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/total_prie"
-                                        android:textColor="#FFFFFF" />
+                                        android:textColor="#000000" />
 
                                     <TextView
                                         android:id="@+id/total_price"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="0.0"
-                                        android:textColor="#F0FFFF"
+                                        android:textColor="#000000"
                                         android:textSize="18sp" />
                                 </LinearLayout>
 
@@ -125,14 +127,14 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/gathering"
-                                        android:textColor="#FFFFFF" />
+                                        android:textColor="#000000" />
 
                                     <TextView
                                         android:id="@+id/gathering"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="0.00"
-                                        android:textColor="#F0FFFF"
+                                        android:textColor="#000000"
                                         android:textSize="18sp" />
                                 </LinearLayout>
 
@@ -146,14 +148,14 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="@string/surplus"
-                                        android:textColor="#FFFFFF" />
+                                        android:textColor="#000000" />
 
                                     <TextView
                                         android:id="@+id/surplus"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:text="0.00"
-                                        android:textColor="#F0FFFF"
+                                        android:textColor="#E3313E"
                                         android:textSize="18sp" />
                                 </LinearLayout>
                             </LinearLayout>
@@ -169,6 +171,7 @@
                                 android:orientation="horizontal" >
 
                                 <RelativeLayout
+                                    android:id="@+id/r_lay_id_take_package"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -196,6 +199,7 @@
                                 </RelativeLayout>
 
                                 <RelativeLayout
+                                    android:id="@+id/r_lay_id_foc"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -225,6 +229,7 @@
                                 </RelativeLayout>
 
                                 <RelativeLayout
+                                    android:id="@+id/r_lay_id_discount"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"

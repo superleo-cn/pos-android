@@ -2,14 +2,17 @@
     android:id="@+id/layout_top"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/layout_top_bg" >
+    android:paddingTop="5dip"
+    android:paddingBottom="5dip"
+    android:background="#D15C2A" >
 
         <ImageView
             android:id="@+id/menu_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/menu_background"
             android:scaleType="centerInside"
+            android:layout_marginLeft="20dip"
+            android:layout_centerVertical="true"
             android:src="@drawable/menu_btn" />
 
         <TextView
@@ -32,7 +35,8 @@
             android:layout_toRightOf="@+id/food_menu_txt"
             android:background="#00000000"
             android:scaleType="centerInside"
-            android:src="@drawable/line" />
+            android:src="@drawable/line"
+             />
 
         <ImageView
             android:id="@+id/login_image"
@@ -66,7 +70,7 @@
                 android:id="@+id/layout_exit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/exit_background" >
+                 >
 
                 <ImageView
                     android:id="@+id/exit_btn"
