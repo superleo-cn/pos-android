@@ -81,7 +81,7 @@ public class SettingActivity extends Activity {
 			is_chinese = false;
 		}
 		if (!is_chinese) {
-			language_set.setText("Eglish");
+			language_set.setText("English");
 		} else {
 			language_set.setText("中文");
 		}
@@ -130,7 +130,7 @@ public class SettingActivity extends Activity {
 						is_chinese=true;
 						}else{
 							updateLange(Locale.ENGLISH);
-							language_set.setText("Eglish");
+							language_set.setText("English");
 							Editor editor = sharedPrefs.edit();
 							editor.putString("type", "en");
 							editor.commit();

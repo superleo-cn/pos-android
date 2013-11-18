@@ -48,7 +48,7 @@
 	<string name="set_txt">set</string>
 	<string name="language">Language</string>
 	<string name="print_set">PRINT SETTING</string>
-	<string name="print_one">Printer:</string>
+	<string name="print_one">Printer IP:</string>
 	<string name="print_two">Printer 2: </string>
 	<string name="take_price">Discount</string>
 	<string name="admin_set">SUPER ADMINISTRATOR SETTING</string>
@@ -61,7 +61,7 @@
 	<string name="daily_pay">CASHIER CLOSING</string>
 	<string name="main_food">main_food</string>
 	<string name="vegetable">vegetable</string>
-	<string name="delete">delete</string>
+	<string name="delete">Delete</string>
 	<string name="selec_not_food">selec_not_food</string>
 	<string name="ceshi">ceshi</string>
 	<string name="rmb">rmb</string>
