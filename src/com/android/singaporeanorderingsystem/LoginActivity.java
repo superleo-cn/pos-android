@@ -208,7 +208,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 						myApp.setUser_id(user_bean.getId());
 						myApp.setU_name(user_bean.getUsername());
 						myApp.setU_type(user_bean.getUsertype());
-						Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this,"恭喜你，登录成功,您的新密码是+"+str_login_password, Toast.LENGTH_SHORT).show();
 						Intent  intent =new Intent();
 						intent.setClass(LoginActivity.this, MainActivity.class);
 						LoginActivity.this.startActivity(intent);
@@ -239,7 +239,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 			 config.locale = locale;
 			 DisplayMetrics dm = res.getDisplayMetrics();
 			 res.updateConfiguration(config, dm);        
-//	    	Toast.makeText(this, "Locale in "+locale+" !", Toast.LENGTH_LONG).show();
+	    	Toast.makeText(this, "Locale in "+locale+" !", Toast.LENGTH_LONG).show();
 	    	//updateActivity();  
 
 	    }
