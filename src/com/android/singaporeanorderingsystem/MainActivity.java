@@ -274,7 +274,7 @@ public class MainActivity extends Activity implements OnClickListener{
     public void init_giditNum_view(){
     	List<GiditNumberBean> dataList=new ArrayList<GiditNumberBean>();  	
     	String delete=String.valueOf(R.string.delete);
-    	String []str=new String[]{"1","2","3","4","5","6","7","8","9","0",".","C"};
+    	String []str=new String[]{"7","8","9","4","5","6","1","2","3","0",".","C"};
     	for(int i=0;i<str.length;i++){
     		GiditNumberBean bean=new GiditNumberBean();
     		bean.setNumber(str[i]);
