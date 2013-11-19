@@ -458,15 +458,15 @@ public class MainActivity extends Activity implements OnClickListener{
 				// TODO Auto-generated method stub
 				switch(arg2){
 				case 0:
-					sbuff.append(1);
+					sbuff.append(7);
 					gathering.setText(sbuff.toString().trim());
 					break;
 				case 1:
-					sbuff.append(2);
+					sbuff.append(8);
 					gathering.setText(sbuff.toString().trim());
 					break;
 				case 2:
-					sbuff.append(3);
+					sbuff.append(9);
 					gathering.setText(sbuff.toString().trim());
 					break;
 				case 3:
@@ -482,15 +482,15 @@ public class MainActivity extends Activity implements OnClickListener{
 					gathering.setText(sbuff.toString().trim());
 					break;
 				case 6:
-					sbuff.append(7);
+					sbuff.append(1);
 					gathering.setText(sbuff.toString().trim());
 					break;
 				case 7:
-					sbuff.append(8);
+					sbuff.append(2);
 					gathering.setText(sbuff.toString().trim());
 					break;
 				case 8:
-					sbuff.append(9);
+					sbuff.append(3);
 					gathering.setText(sbuff.toString().trim());
 					break;
 				case 9:

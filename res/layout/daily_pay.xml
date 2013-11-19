@@ -351,6 +351,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -382,6 +383,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -414,6 +416,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -446,6 +449,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -478,6 +482,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -510,6 +515,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -543,6 +549,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -575,6 +582,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
+                                android:paddingTop="5dip"
                                 android:orientation="horizontal" >
 
                                 <TextView
@@ -606,6 +614,7 @@
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
+                                android:paddingTop="5dip"
                                 android:orientation="vertical">
                                 <TextView
                                     android:layout_width="fill_parent"

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#ffffffff</color>
+    <color name="my_update01">#313C4B</color>
+    <color name="my_update02">#3E6D8B</color>
+    <color name="black">#ff000000</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="bg_gray">#ffecedef</color>
+    <color name="listview_bg_gray">#ffecedef</color>
+    <color name="listview_txt_gray">#ff8a8a8a</color>
+    <color name="checkbox_fg_gray">#ff8a8a8a</color>
+    <color name="header">#58567D</color>
+    <color name="bg_hui">#F5F5F5</color>
+    <color name="bg_fenhong">#FF2323</color>
+    <color name="vpi__background_holo_dark">#ff000000</color>
+    <color name="vpi__background_holo_light">#fff3f3f3</color>
+    <color name="vpi__bright_foreground_holo_dark">@color/vpi__background_holo_light</color>
+    <color name="vpi__bright_foreground_holo_light">@color/vpi__background_holo_dark</color>
+    <color name="vpi__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
+    <color name="vpi__bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <color name="vpi__bright_foreground_inverse_holo_dark">@color/vpi__bright_foreground_holo_light</color>
+    <color name="vpi__bright_foreground_inverse_holo_light">@color/vpi__bright_foreground_holo_dark</color>
+ 	<color name="popup_main_background">#b0000000</color>
+    <color name="choose_eara_item_press_color">#f4f4f4</color>
+</resources>

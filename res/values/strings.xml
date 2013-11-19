@@ -65,6 +65,7 @@
 	<string name="selec_not_food">selec_not_food</string>
 	<string name="ceshi">ceshi</string>
 	<string name="rmb">rmb</string>
+	<string name="login_wait">登陆中...</string>
 	<string name="message_2">Do you want to change language？</string>
 	<string name="message_shop">Do you want to change outlet ID？</string>
 	<string name="take_all_price">Total Collection:</string>
