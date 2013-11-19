@@ -215,6 +215,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					}
 					Intent intent =new Intent(MainActivity.this , DailyPayActivity.class);
 					MainActivity.this.startActivity(intent);
+					MainActivity.this.finish();
 					overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
 					//MainActivity.this.finish();
 				}});
