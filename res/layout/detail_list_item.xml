@@ -39,6 +39,7 @@
             android:layout_weight="1"
             android:text=" 12.00"
             android:singleLine="true"
+            android:numeric="integer"
             android:textColor="#000000"
             android:textSize="18sp" />
     </LinearLayout>
