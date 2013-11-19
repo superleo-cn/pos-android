@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import android.R.array;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -49,9 +48,7 @@ import com.android.bean.FoodOrder;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
-import com.android.common.HttpHelper;
 import com.android.common.MyApp;
-import com.android.common.SystemHelper;
 import com.android.dao.FoodOrderDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
@@ -235,13 +232,14 @@ public class MainActivity extends Activity implements OnClickListener{
     	String[] food_dayin_code=res.getStringArray(R.array.food_dayin_code);
     	String[] food_type=res.getStringArray(R.array.food_type);
     	String[] food_price=res.getStringArray(R.array.food_price);
+    	String[] food_id =res.getStringArray(R.array.food_id);
     	for(int i=0;i<food_name.length;i++){
     		FoodListBean bean=new FoodListBean();
     		bean.setTitle(food_name[i]+"");
     		bean.setDaping_id(food_dayin_code[i]+"");
     		bean.setImageID(food_image[i]);  
     		bean.setType(food_type[i]+"");
-    		bean.setFood_id(i+1+"");
+    		bean.setFood_id(food_id[i]);
     		bean.setPrice(food_price[i]+"");
     		food_dataList.add(bean);
 //    		if(i>=5){

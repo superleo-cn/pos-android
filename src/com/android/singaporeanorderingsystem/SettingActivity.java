@@ -46,9 +46,9 @@ public class SettingActivity extends Activity {
 	public static String type;
 	private Button print_one_btu;
 	private MyApp myApp;
-	private ImageView exit_btn;
 	private TextView admin_set;
 	private RelativeLayout r_set_admin_lay;
+	private RelativeLayout layout_exit;
 	private SharedPreferences spf;
 	
 	@Override
@@ -64,8 +64,8 @@ public class SettingActivity extends Activity {
 		take_price_edit = (EditText) findViewById(R.id.take_price_edit);
 		admin_set = (TextView) findViewById(R.id.admin_set);
 		r_set_admin_lay =(RelativeLayout) findViewById(R.id.r_set_admin_lay);
+		layout_exit =(RelativeLayout) findViewById(R.id.layout_exit);
 		shop_set = (EditText) findViewById(R.id.shop_set);
-		exit_btn = (ImageView) findViewById(R.id.exit_btn);
 		menu = (ImageView) findViewById(R.id.menu_btn);
 		print_one_btu = (Button) findViewById(R.id.print_one_btu);
 		btu_discount = (Button) findViewById(R.id.btu_discount);
@@ -102,7 +102,7 @@ public class SettingActivity extends Activity {
 		} else {
 			language_set.setText("中文");
 		}
-		exit_btn.setOnClickListener(new OnClickListener() {
+		layout_exit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CreatedDialog().create().show();
@@ -286,7 +286,6 @@ public class SettingActivity extends Activity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (type.equals("1")) {
 				Intent intent = new Intent();
