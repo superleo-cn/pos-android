@@ -76,13 +76,13 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com:8080";
+	public static final String HOST = "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
 	/** 服务器端口号 */
-	public static final String PORT = "80";
+	public static final String PORT = ":8080";
 	/** 应用上下文名 */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */
-	public static final String URL_CONTEXTPATH = PROTOCOL +HOST;
+	public static final String URL_CONTEXTPATH = PROTOCOL + HOST + PORT;
 	/** 登录页完整URL路径 */
 	public static final String URL_LOGIN_PATH = URL_CONTEXTPATH+"/loginJson";
 	/** 登录页完整URL路径 */
