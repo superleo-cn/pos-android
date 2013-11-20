@@ -78,7 +78,7 @@ public final class Constants {
 	/** 服务器IP */
 	public static final String HOST = "http://ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
 	/** 服务器端口号 */
-	public static final String PORT = ":80";
+	public static final String PORT = ":8080";
 	/** 应用上下文名 */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */
