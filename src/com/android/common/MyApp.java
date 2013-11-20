@@ -33,6 +33,7 @@ public class MyApp extends Application{
 	private String user_id= "0";
 	private String discount="0.5";
 	private String u_type = "CACHIER";
+	private String daily_pay_submit_flag="1";
 
 	@Override
 	public void onCreate() {
@@ -56,6 +57,14 @@ public class MyApp extends Application{
 
 	public void setU_type(String u_type) {
 		this.u_type = u_type;
+	}
+
+	public String getDaily_pay_submit_flag() {
+		return daily_pay_submit_flag;
+	}
+
+	public void setDaily_pay_submit_flag(String daily_pay_submit_flag) {
+		this.daily_pay_submit_flag = daily_pay_submit_flag;
 	}
 
 	public void setDiscount(String discount) {

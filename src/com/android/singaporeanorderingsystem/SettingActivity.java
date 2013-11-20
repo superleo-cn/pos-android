@@ -114,8 +114,7 @@ public class SettingActivity extends Activity {
 				String ip = print_one_edit.getText().toString();
 				myApp.setIp_str(ip);
 				myApp.getPrinter().reconnect();
-				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
 			}
 		});
 		btu_discount.setOnClickListener(new OnClickListener() {
@@ -123,8 +122,7 @@ public class SettingActivity extends Activity {
 			public void onClick(View v) {
 				String text_discount=take_price_edit.getText().toString();
 				myApp.setDiscount(text_discount);
-				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT)
-				.show();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -134,7 +132,7 @@ public class SettingActivity extends Activity {
 			public void onClick(View v) {
 				String shop_id = shop_set.getText().toString();
 				myApp.setSettingShopId(shop_id);
-				Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_SHORT)
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT)
 						.show();
 			}
 		});
@@ -145,7 +143,7 @@ public class SettingActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(SettingActivity.this, "点击了设置语言", Toast.LENGTH_SHORT).show();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_language_succ), Toast.LENGTH_SHORT).show();
 				DialogBuilder builder=new DialogBuilder(SettingActivity.this);
 				builder.setTitle(R.string.message_title);
 				builder.setMessage(R.string.message_2);

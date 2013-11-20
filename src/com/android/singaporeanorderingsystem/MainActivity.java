@@ -201,7 +201,7 @@ public class MainActivity extends Activity implements OnClickListener{
 						MainActivity.this.startActivity(intent);
 						MainActivity.this.finish();
 					}else{
-						Toast.makeText(MainActivity.this, "您的权限不足，无权访问", Toast.LENGTH_SHORT).show();	
+						Toast.makeText(MainActivity.this, getString(R.string.insufficientpermissions), Toast.LENGTH_SHORT).show();	
 					}
 				}
 			});

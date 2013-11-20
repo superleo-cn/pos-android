@@ -136,21 +136,21 @@ public class LoginActivity extends Activity implements OnClickListener{
 							ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
 							LoginUserBean user_bean=datas.get(0);
 							if(!user_bean.getUsertype().equals("SUPERADMIN")){
-								Toast.makeText(LoginActivity.this,"你不是管理员无权登录", Toast.LENGTH_SHORT).show();
+								Toast.makeText(LoginActivity.this,getString(R.string.login_quanxian), Toast.LENGTH_SHORT).show();
 								return;
 							}
 							myApp.setU_name(user_bean.getUsername());
 							myApp.setUser_id(user_bean.getId());
 							myApp.setU_type(user_bean.getUsertype());
-							Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
+							Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
 							Intent  intent =new Intent();
 							intent.setClass(LoginActivity.this, MainActivity.class);
 							LoginActivity.this.startActivity(intent);
 							LoginActivity.this.finish();
 						}else if(data.getCode() == 0){
-							Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
 						}else if(data.getCode() == -1){
-							Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+							Toast.makeText(LoginActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
@@ -170,7 +170,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 			LoginUserBean user_bean = user_dao.select(str_login_name);
 			if(user_bean.getUsername() != null && str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
 				dialog.dismiss();
-				Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
+				Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
 				myApp.setU_name(user_bean.getUsername());
 				myApp.setUser_id(user_bean.getId());
 				myApp.setU_type(user_bean.getUsertype());
@@ -181,7 +181,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 				return ;
 			}else if(user_bean.getUsername() != null && !str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
 				dialog.dismiss();
-				Toast.makeText(LoginActivity.this, "登录失败,用户名或者密码错误", Toast.LENGTH_SHORT).show();
+				Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
 				return ;
 			}
 			
@@ -214,15 +214,15 @@ public class LoginActivity extends Activity implements OnClickListener{
 						myApp.setUser_id(user_bean.getId());
 						myApp.setU_name(user_bean.getUsername());
 						myApp.setU_type(user_bean.getUsertype());
-						Toast.makeText(LoginActivity.this,"恭喜你，登录成功", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
 						Intent  intent =new Intent();
 						intent.setClass(LoginActivity.this, MainActivity.class);
 						LoginActivity.this.startActivity(intent);
 						LoginActivity.this.finish();
 					}else if(data.getCode() == 0){
-						Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
 					}else if(data.getCode() == -1){
-						Toast.makeText(LoginActivity.this, "服务器出错", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});

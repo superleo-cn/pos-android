@@ -108,6 +108,7 @@
                     android:textStyle="bold"
                     android:background="#E51212"
                     android:padding="5dip"
+                    android:visibility="gone"
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
