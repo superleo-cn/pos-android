@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -465,10 +467,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	this.search_date=date;
 	    	/*提交每日支付金额*/	    	
 	    	for(int i=0;i<detail_classList.size();i++){
-	    		if(hashMap_detail.get(i)==null){
-	    			detail_price="0.00";
+	    		DailyPayDetailBean bean = detail_classList.get(i);
+	    		if(bean != null && StringUtils.isNotEmpty(bean.getPrice())){
+	    			detail_price=bean.getPrice();
 	    		}else{
-	    			detail_price=hashMap_detail.get(i);
+	    			detail_price="0.00";
 	    		} 
 	    /*参数*/		
 	    //Sandroid_id,Sconsumption_id,shop_id,user_id,date,type,price
@@ -485,11 +488,12 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	   /*提交带回总数接口*/
 	    	String take_num;
 	    	for(int j=0;j<number_classList.size();j++){
-	    		if(hashMap_detail.get(j)==null){
-    				take_num="0";
-    			}else{
-    				take_num=hashMap_num.get(j);
-    			}
+	    		TakeNumberBean bean = number_classList.get(j);
+	    		if(bean != null && StringUtils.isNotEmpty(bean.getText1())){
+	    			take_num=bean.getText1();
+	    		}else{
+	    			take_num="0.00";
+	    		} 
 	   /*参数*/
 	   //android_id,cash_id,shop_id,user_id,date,type,quantity
 	    		NumListDao.getInatance(DailyPayActivity.this).save(String.valueOf(j+1),
@@ -753,8 +757,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			Log.e("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
 			params.put("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
 			Log.e("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-			params.put("consumeTransactions["+i+"].price", datas.get(i).get("type"));
-			Log.e("consumeTransactions["+i+"].price", datas.get(i).get("type"));
+			params.put("consumeTransactions["+i+"].price", datas.get(i).get("price"));
+			Log.e("consumeTransactions["+i+"].price", datas.get(i).get("price"));
 			}
 		}
 		}
