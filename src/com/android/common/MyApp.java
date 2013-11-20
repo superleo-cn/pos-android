@@ -8,12 +8,16 @@
  */
 package com.android.common;
 
-import com.android.dao.FoodOrderDao;
-import com.android.dao.UserDao;
+import java.io.File;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Environment;
+import android.widget.Toast;
+
+import com.android.dao.FoodOrderDao;
+import com.android.dao.UserDao;
 
 /**
  * Author:hjgang
@@ -38,6 +42,7 @@ public class MyApp extends Application{
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		createCacheDir();
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
 		discount= sysInitSharedPreferences.getString("discount", "0.5");
@@ -133,7 +138,47 @@ public class MyApp extends Application{
 	public void setFood_order_dao(FoodOrderDao food_order_dao) {
 		this.food_order_dao = food_order_dao;
 	}
+	// 创建SD卡缓存目录
+		private void createCacheDir() {
 
+			if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+				File f = new File(Constants.CACHE_DIR);
+
+				if (f.exists()) {
+					System.out.println("SD卡缓存目录:已存在!");
+				} else {
+					if (f.mkdirs()) {
+						System.out.println("SD卡缓存目录:" + f.getAbsolutePath()+ "已创建!");
+					} else {
+						System.out.println("SD卡缓存目录:创建失败!");
+					}
+				}
+
+				File ff = new File(Constants.CACHE_IMAGE);
+				if (ff.exists()) {
+					System.out.println("SD卡照片缓存目录:已存在!");
+				} else {
+					if (ff.mkdirs()) {
+						System.out.println("SD卡照片缓存目录:" + ff.getAbsolutePath()+ "已创建!");
+					} else {
+						System.out.println("SD卡照片缓存目录:创建失败!");
+					}
+				}
+
+				File ffff = new File(Constants.CACHE_DIR_UPLOADING_IMG);
+				if (ffff.exists()) {
+					System.out.println("SD卡上传缓存目录:已存在!");
+				} else {
+					if (ffff.mkdirs()) {
+						System.out.println("SD卡上传缓存目录:" + ffff.getAbsolutePath()+ "已创建!");
+					} else {
+						System.out.println("SD卡上传缓存目录:创建失败!");
+					}
+				}
+			} else {
+				Toast.makeText(MyApp.this, "亲，您的SD不在了，可能有的功能不能用奥，赶快看看吧。",Toast.LENGTH_SHORT).show();
+			}
+		}
 	/**
 	 * 获取系统初始化文件操作器
 	 * @return

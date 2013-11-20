@@ -1,5 +1,8 @@
 package com.android.singaporeanorderingsystem;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -11,7 +14,9 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,8 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.R;
+import com.android.bean.FoodHttpBean;
+import com.android.common.Constants;
+import com.android.common.HttpHelper;
 import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
+import com.android.handler.RemoteDataHandler;
+import com.android.handler.RemoteDataHandler.Callback;
+import com.android.model.ResponseData;
 
 public class SettingActivity extends Activity {
 
@@ -53,6 +64,17 @@ public class SettingActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+   	 .detectDiskReads()
+   	 .detectDiskWrites()
+   	 .detectNetwork() // 这里可以替换为detectAll() 就包括了磁盘读写和网络I/O
+   	 .penaltyLog() //打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
+   	 .build());
+   	 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+   	 .detectLeakedSqlLiteObjects() //探测SQLite数据库操作
+   	.penaltyLog() //打印logcat
+   	 .penaltyDeath()
+   	 .build());
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();
@@ -136,6 +158,35 @@ public class SettingActivity extends Activity {
 						.show();
 			}
 		});
+		synchronization_menu.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String url = Constants.URL_FOODSLIST_PATH+myApp.getSettingShopId();
+				RemoteDataHandler.asyncGet(url, new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if(data.getCode() == 1){
+							String json =data.getJson();
+							ArrayList<FoodHttpBean> datas=FoodHttpBean.newInstanceList(json);
+							for(int i=0 ; i< datas.size() ; i ++){
+								FoodHttpBean food_h_bean=datas.get(i);
+								System.out.println("f-->"+food_h_bean.getPicture()+",i--->"+i);
+								try {
+									System.out.println("11111111111111");
+									HttpHelper.download(food_h_bean.getPicture(),new File( Constants.CACHE_IMAGE+"/"
+											+"food_image_"+i+".png"));
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+								
+							}
+						}else if(data.getCode() == -1){
+							
+						}
+					}
+				});
+			}
+		});
 
 		// 语言设置
 		language_set.setOnClickListener(new OnClickListener(){
@@ -176,7 +227,6 @@ public class SettingActivity extends Activity {
 				
 			}});
 	}
-
 	public void initPopupWindow() {
 		if (popupWindow == null) {
 			view = this.getLayoutInflater().inflate(R.layout.popupwindow, null);
@@ -300,4 +350,37 @@ public class SettingActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+}
+class MyAsynaTask extends AsyncTask<String,Void,String>{
+	private String dates;
+	private int i;
+
+	public MyAsynaTask(String dates,int i){
+		this.dates=dates;
+		this.i=i;
+	}
+	@Override
+	protected String doInBackground(String... params) {
+		if(dates!=null){
+		if(dates!=null && !"".equals(dates) && !"null".equals(dates)){
+			return dates;
+		}
+		}
+		return null;
+	}
+
+	@Override
+	protected void onPostExecute(String result) {
+		super.onPostExecute(result);
+		if(result!=null && !"".equals(result)){
+			//加载远程图片
+			try {
+				System.out.println("1->"+result);
+				HttpHelper.download(result,new File( Constants.CACHE_IMAGE+"/"
+						+"food_image_"+i+".png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

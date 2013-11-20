@@ -77,11 +77,11 @@ public class HttpHelper {
 			HttpProtocolParams.setUseExpectContinue(httpParams, true);
 			
 			// 设置最大连接数  
-	        ConnManagerParams.setMaxTotalConnections(httpParams, 10);  
+	        ConnManagerParams.setMaxTotalConnections(httpParams, 100);  
 	        // 设置获取连接的最大等待时间  
 	        ConnManagerParams.setTimeout(httpParams, 60000);  
 	        // 设置每个路由最大连接数  
-	        ConnPerRouteBean connPerRoute = new ConnPerRouteBean(8);
+	        ConnPerRouteBean connPerRoute = new ConnPerRouteBean(80);
 	        ConnManagerParams.setMaxConnectionsPerRoute(httpParams,connPerRoute);  
 	        // 设置连接超时时间  
 	        HttpConnectionParams.setConnectionTimeout(httpParams, 20000);
