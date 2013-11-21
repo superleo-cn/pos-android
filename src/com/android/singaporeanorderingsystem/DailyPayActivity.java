@@ -50,7 +50,6 @@ import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
-import com.android.common.SystemHelper;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
