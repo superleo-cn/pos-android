@@ -3,7 +3,7 @@
 public class FoodListBean {
 	private String food_id;
 	private String title;
-	private int imageID;
+	private String imageID;
 	private String price;
 	private String type;
 	private String daping_id;
@@ -25,10 +25,10 @@ public class FoodListBean {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public int getImageID() {
+	public String getImageID() {
 		return imageID;
 	}
-	public void setImageID(int imageID) {
+	public void setImageID(String imageID) {
 		this.imageID = imageID;
 	}
 	public String getDaping_id() {

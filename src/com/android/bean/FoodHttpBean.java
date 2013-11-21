@@ -29,21 +29,23 @@ public class FoodHttpBean {
 		public static final String NAMEZH = "nameZh";
 		public static final String TYPE = "type";
 		public static final String PICTURE = "picture";
+		public static final String RETAILPRICE= "retailPrice";
 	}
 	private String id;
-	private String sn;//用户名
-	private String name;//密码
-	private String nameZh;//真实姓名
-	private String type;//用户组
-	private String picture;//用户状态
+	private String sn;
+	private String name;
+	private String nameZh;
+	private String type;
+	private String picture;
+	private String retailPrice;
 	public FoodHttpBean() {}
 	public FoodHttpBean(String username, String realname, String usertype,
 			String status) {
 		super();
 	}
-	
+
 	public FoodHttpBean(String id, String sn, String name, String nameZh,
-			String type, String picture) {
+			String type, String picture, String retailPrice) {
 		super();
 		this.id = id;
 		this.sn = sn;
@@ -51,6 +53,7 @@ public class FoodHttpBean {
 		this.nameZh = nameZh;
 		this.type = type;
 		this.picture = picture;
+		this.retailPrice = retailPrice;
 	}
 	public static ArrayList<FoodHttpBean> newInstanceList(String jsonDatas){
 		ArrayList<FoodHttpBean> login_bean = new ArrayList<FoodHttpBean>();
@@ -66,7 +69,8 @@ public class FoodHttpBean {
 				String namezh = obj.optString(Attr.NAMEZH);
 				String type = obj.optString(Attr.TYPE);
 				String picture = obj.optString(Attr.PICTURE);
-				login_bean.add(new FoodHttpBean(id, sn, name, namezh, type, picture)) ;
+				String retailPrice =obj.optString(Attr.RETAILPRICE);
+				login_bean.add(new FoodHttpBean(id, sn, name, namezh, type, picture,retailPrice)) ;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -109,10 +113,17 @@ public class FoodHttpBean {
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
+	public String getRetailPrice() {
+		return retailPrice;
+	}
+	public void setRetailPrice(String retailPrice) {
+		this.retailPrice = retailPrice;
+	}
 	@Override
 	public String toString() {
 		return "FoodHttpBean [id=" + id + ", sn=" + sn + ", name=" + name
 				+ ", nameZh=" + nameZh + ", type=" + type + ", picture="
-				+ picture + "]";
+				+ picture + ", retailPrice=" + retailPrice + "]";
 	}
+	
 }

@@ -3,6 +3,9 @@
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -31,8 +34,7 @@ public class FoodListAdapter extends BaseAdapter {
 			Handler handler) {
 		this.context = context;
 		this.classList = list;
-		inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.handler = handler;
 	}
 
@@ -55,12 +57,9 @@ public class FoodListAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.foot_list_item, null);
 			viewHolder = new ViewHolder();
 			myListener = new MyListener(position);
-			viewHolder.titleTextView = (TextView) convertView
-					.findViewById(R.id.food_title);
-			viewHolder.food_image = (ImageView) convertView
-					.findViewById(R.id.food_image);
-			viewHolder.food_btn = (ImageView) convertView
-					.findViewById(R.id.food_btn);
+			viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.food_title);
+			viewHolder.food_image = (ImageView) convertView.findViewById(R.id.food_image);
+			viewHolder.food_btn = (ImageView) convertView.findViewById(R.id.food_btn);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -68,7 +67,8 @@ public class FoodListAdapter extends BaseAdapter {
 
 		bean = classList.get(position);
 		viewHolder.titleTextView.setText(bean.getTitle());
-		viewHolder.food_image.setImageResource(bean.getImageID());
+		Bitmap bitmap = BitmapFactory.decodeFile(bean.getImageID());
+		viewHolder.food_image.setImageDrawable(new BitmapDrawable(bitmap));
 		viewHolder.food_btn.setOnClickListener(myListener);
 		return convertView;
 	}

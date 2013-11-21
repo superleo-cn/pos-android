@@ -30,7 +30,8 @@ public class FoodHttpBeanDao extends SQLiteOpenHelper {
 		+ "name" + " varchar,"
 		+ "nameZh" + " varchar,"
 		+ "type" + " varchar,"
-		+ "picture" + " varchar"
+		+ "picture" + " varchar,"
+		+ "retailPrice" + " varchar"
 	    + " ) ";
 	private FoodHttpBeanDao(Context context) {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -64,6 +65,7 @@ public class FoodHttpBeanDao extends SQLiteOpenHelper {
 		values.put("nameZh", fhb.getNameZh());
 		values.put("type", fhb.getType());
 		values.put("picture", fhb.getPicture());
+		values.put("retailPrice", fhb.getRetailPrice());
 		long result=db.insert(TABLE_NAME, null, values);
 		db.close();
 		return result;
@@ -84,6 +86,7 @@ public class FoodHttpBeanDao extends SQLiteOpenHelper {
 			fhb.setNameZh(c.getString(c.getColumnIndex("nameZh")));
 			fhb.setType(c.getString(c.getColumnIndex("type")));
 			fhb.setPicture(c.getString(c.getColumnIndex("picture")));
+			fhb.setRetailPrice(c.getString(c.getColumnIndex("retailPrice")));
 			map.add(fhb);
 		}
 		c.close();

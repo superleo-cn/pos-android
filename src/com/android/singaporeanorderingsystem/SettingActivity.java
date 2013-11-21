@@ -171,6 +171,7 @@ public class SettingActivity extends Activity {
 							String json =data.getJson();
 							ArrayList<FoodHttpBean> datas=FoodHttpBean.newInstanceList(json);
 							fhb_dao =FoodHttpBeanDao.getInatance(SettingActivity.this);
+							fhb_dao.delete();
 							for(int i=0 ; i< datas.size() ; i ++){
 								FoodHttpBean food_h_bean=datas.get(i);
 								System.out.println("f-->"+food_h_bean.getPicture()+",i--->"+i);

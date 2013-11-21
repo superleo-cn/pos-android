@@ -170,11 +170,6 @@ public class MainActivity extends Activity implements OnClickListener{
     /*初始化数据*/
     public void initData(){
 //        sbuff.append(0);
-    	FoodHttpBeanDao fhb_dao =FoodHttpBeanDao.getInatance(MainActivity.this);
-    	ArrayList<FoodHttpBean> datas=fhb_dao.getList();
-    	for(int i = 0 ; i<datas.size() ;i++){
-    		System.out.println("data--toString->"+datas.get(i));;
-    	}
     	init_foodView();
     	init_giditNum_view();
     	onclick_foodView();
@@ -241,34 +236,36 @@ public class MainActivity extends Activity implements OnClickListener{
 	}
     public void init_foodView(){
     	food_dataList=new ArrayList<FoodListBean>();   
-    	Resources res =getResources();
-    	String[] food_name=res.getStringArray(R.array.food_name);
-    	String[] food_dayin_code=res.getStringArray(R.array.food_dayin_code);
-    	String[] food_type=res.getStringArray(R.array.food_type);
-    	String[] food_price=res.getStringArray(R.array.food_price);
-    	String[] food_id =res.getStringArray(R.array.food_id);
-    	for(int i=0;i<food_name.length;i++){
-    		FoodListBean bean=new FoodListBean();
-    		bean.setTitle(food_name[i]+"");
-    		bean.setDaping_id(food_dayin_code[i]+"");
-    		bean.setImageID(food_image[i]);  
-    		bean.setType(food_type[i]+"");
-    		bean.setFood_id(food_id[i]);
-    		bean.setPrice(food_price[i]+"");
-    		food_dataList.add(bean);
-//    		if(i>=5){
-//    			bean.setType("0"); //主食
-//    			String main_food=String.valueOf(R.string.main_food);
-//    			bean.setTitle("food"+i);
-//    		}else{
-//    			bean.setType("1"); //菜品
-//    			String vegetable=String.valueOf(R.string.vegetable);
-//    			bean.setTitle("caipin"+i);
-//    		}
-//    		String price=i+".00";
-//    		bean.setPrice(String.valueOf(price));
+//    	Resources res =getResources();
+//    	String[] food_name=res.getStringArray(R.array.food_name);
+//    	String[] food_dayin_code=res.getStringArray(R.array.food_dayin_code);
+//    	String[] food_type=res.getStringArray(R.array.food_type);
+//    	String[] food_price=res.getStringArray(R.array.food_price);
+//    	String[] food_id =res.getStringArray(R.array.food_id);
+//    	for(int i=0;i<food_name.length;i++){
+//    		FoodListBean bean=new FoodListBean();
+//    		bean.setTitle(food_name[i]+"");
+//    		bean.setDaping_id(food_dayin_code[i]+"");
+//    		bean.setImageID(food_image[i]);  
+//    		bean.setType(food_type[i]+"");
+//    		bean.setFood_id(food_id[i]);
+//    		bean.setPrice(food_price[i]+"");
 //    		food_dataList.add(bean);
+//    	}
+    	FoodHttpBeanDao fhb_dao =FoodHttpBeanDao.getInatance(MainActivity.this);
+    	ArrayList<FoodHttpBean> datas=fhb_dao.getList();
+    	for(int i = 0 ; i<datas.size() ;i++){
+    		FoodHttpBean fhb=datas.get(i);
+    		FoodListBean bean=new FoodListBean();
+    		bean.setTitle(fhb.getNameZh());
+    		bean.setDaping_id(fhb.getSn());
+    		bean.setImageID(fhb.getPicture());  
+    		bean.setType(fhb.getType());
+    		bean.setFood_id(fhb.getId());
+    		bean.setPrice(fhb.getRetailPrice()+"");
+    		food_dataList.add(bean);
     	}
+    	
     	FoodListAdapter adapter=new FoodListAdapter(this,food_dataList,handler);
     	foodView.setAdapter(adapter);
     }
@@ -304,6 +301,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
 					bean.setFood_id(food_dataList.get(arg2).getFood_id());
 					//show_totalPrice=save_foc_price;
+					System.out.println("food_dataList:"+food_dataList.get(arg2).getPrice());
 					show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
 					if(is_foc){
 						save_foc_price=show_totalPrice;
