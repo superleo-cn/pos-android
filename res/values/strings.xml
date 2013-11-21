@@ -35,6 +35,7 @@
 	<string name="take_number">Daily Collections</string>
 	<string name="cash_register">C:Cash register</string>
 	<string name="today_turnover">D:Daily_turnover</string>
+	<string name="setting_tanwei_id">您还没有设置摊位ID，请先设置</string>
 	<string name="noon_time">Lunch Time</string>
 	<string name="noon_turnover">Lunch Sales</string>
 	<string name="time">Time</string>
