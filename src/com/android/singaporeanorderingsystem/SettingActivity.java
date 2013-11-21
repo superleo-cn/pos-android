@@ -35,6 +35,7 @@ import com.android.bean.FoodHttpBean;
 import com.android.common.Constants;
 import com.android.common.HttpHelper;
 import com.android.common.MyApp;
+import com.android.dao.FoodHttpBeanDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -61,6 +62,7 @@ public class SettingActivity extends Activity {
 	private RelativeLayout r_set_admin_lay;
 	private RelativeLayout layout_exit;
 	private SharedPreferences spf;
+	private FoodHttpBeanDao fhb_dao;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,13 +170,16 @@ public class SettingActivity extends Activity {
 						if(data.getCode() == 1){
 							String json =data.getJson();
 							ArrayList<FoodHttpBean> datas=FoodHttpBean.newInstanceList(json);
+							fhb_dao =FoodHttpBeanDao.getInatance(SettingActivity.this);
 							for(int i=0 ; i< datas.size() ; i ++){
 								FoodHttpBean food_h_bean=datas.get(i);
 								System.out.println("f-->"+food_h_bean.getPicture()+",i--->"+i);
 								try {
 									System.out.println("11111111111111");
-									HttpHelper.download(food_h_bean.getPicture(),new File( Constants.CACHE_IMAGE+"/"
-											+"food_image_"+i+".png"));
+									String image_file=Constants.CACHE_IMAGE+"/"+"food_image_"+i+".png";
+									HttpHelper.download(food_h_bean.getPicture(),new File(image_file));
+									food_h_bean.setPicture(image_file);
+									fhb_dao.save(food_h_bean);
 								} catch (IOException e) {
 									e.printStackTrace();
 								}

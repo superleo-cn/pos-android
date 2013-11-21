@@ -43,12 +43,14 @@ import com.android.R;
 import com.android.adapter.FoodListAdapter;
 import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
+import com.android.bean.FoodHttpBean;
 import com.android.bean.FoodListBean;
 import com.android.bean.FoodOrder;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
+import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.FoodOrderDao2;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
@@ -168,6 +170,11 @@ public class MainActivity extends Activity implements OnClickListener{
     /*初始化数据*/
     public void initData(){
 //        sbuff.append(0);
+    	FoodHttpBeanDao fhb_dao =FoodHttpBeanDao.getInatance(MainActivity.this);
+    	ArrayList<FoodHttpBean> datas=fhb_dao.getList();
+    	for(int i = 0 ; i<datas.size() ;i++){
+    		System.out.println("data--toString->"+datas.get(i));;
+    	}
     	init_foodView();
     	init_giditNum_view();
     	onclick_foodView();

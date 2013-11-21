@@ -134,7 +134,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 						if(data.getCode() == 1){
 							String json=data.getJson();
 							ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
-							LoginUserBean user_bean=datas.get(0);
+				    			LoginUserBean user_bean=datas.get(0);
 							if(!user_bean.getUsertype().equals("SUPERADMIN")){
 								Toast.makeText(LoginActivity.this,getString(R.string.login_quanxian), Toast.LENGTH_SHORT).show();
 								return;
