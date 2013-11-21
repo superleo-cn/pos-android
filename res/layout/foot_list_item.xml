@@ -24,7 +24,7 @@
         <ImageView
             android:id="@+id/food_image"
             android:layout_width="fill_parent"
-            android:layout_height="182dip"
+            android:layout_height="175dip"
             android:layout_gravity="bottom"
             android:layout_marginBottom="10dip"
             android:background="#00000000"
