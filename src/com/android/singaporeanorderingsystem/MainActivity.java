@@ -301,44 +301,8 @@ public class MainActivity extends Activity implements OnClickListener{
 					bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
 					bean.setFood_id(food_dataList.get(arg2).getFood_id());
 					//show_totalPrice=save_foc_price;
-					System.out.println("food_dataList:"+food_dataList.get(arg2).getPrice());
 					show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
-					if(is_foc){
-						save_foc_price=show_totalPrice;
-						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("STAPLE")){
-								
-							}else{
-							save_foc_price=show_totalPrice-save_discount_price;
-							}
-							
-						}
-						if(is_takePackage){
-							if(food_dataList.get(arg2).getType().equals("STAPLE")){
-								
-							}else{
-							save_foc_price=show_totalPrice+package_money;
-							}
-						}
-						
-						show_totalPrice=0;
-					}else{
-						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("STAPLE")){
-								
-							}else{
-							show_totalPrice=show_totalPrice-save_discount_price;
-							}
-						}
-						if(is_takePackage){
-							if(food_dataList.get(arg2).getType().equals("STAPLE")){
-								
-							}else{
-							show_totalPrice=show_totalPrice+package_money;
-							}
-						}
-						save_foc_price=show_totalPrice;
-					}
+					
 					bean.setFood_num("1");
 					select_dataList.add(bean);
 					new Thread() 
@@ -368,41 +332,7 @@ public class MainActivity extends Activity implements OnClickListener{
 							select_dataList.get(i).setFood_num(String.valueOf(num));
 							select_dataList.get(i).setFood_price(df.format(price));
 							show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
-							if(is_foc){
-								save_foc_price=show_totalPrice;
-								if(is_discount){
-									if(food_dataList.get(arg2).getType().equals("STAPLE")){
-										
-									}else{
-									save_foc_price=show_totalPrice-save_discount_price;
-									}
-								}
-								if(is_takePackage){
-									if(food_dataList.get(arg2).getType().equals("STAPLE")){
-										
-									}else{
-									save_foc_price=show_totalPrice+package_money;
-									}
-								}
-								
-								show_totalPrice=0;
-							}else{
-								if(is_discount){
-									if(food_dataList.get(arg2).getType().equals("STAPLE")){
-										
-									}else{
-									show_totalPrice=show_totalPrice-save_discount_price;
-									}
-								}
-								if(is_takePackage){
-									if(food_dataList.get(arg2).getType().equals("STAPLE")){
-										
-									}else{
-									show_totalPrice=show_totalPrice+package_money;
-									}
-								}
-								save_foc_price=show_totalPrice;
-							}
+						
 							select_adapter.notifyDataSetChanged();
 							total_price.setText(df.format(show_totalPrice));
 							break;
@@ -413,45 +343,13 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(!is_moreClick){
 					bean.setFood_price(food_dataList.get(arg2).getPrice());
 					show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
-					if(is_foc){
-						save_foc_price=show_totalPrice;
-						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("STAPLE")){
-								
-							}else{
-							save_foc_price=show_totalPrice-save_discount_price;
-							}
-						}
-						if(is_takePackage){if(food_dataList.get(arg2).getType().equals("STAPLE")){
-							
-						}else{
-							
-							save_foc_price=show_totalPrice+package_money;
-						}
-						}
-						show_totalPrice=0;
-					}else{
-						if(is_discount){
-							if(food_dataList.get(arg2).getType().equals("STAPLE")){
-								
-							}else{
-							show_totalPrice=show_totalPrice-save_discount_price;
-							}
-						}
-						if(is_takePackage){
-							if(food_dataList.get(arg2).getType().equals("STAPLE")){
-								
-							}else{
-							show_totalPrice=show_totalPrice+package_money;
-							}
-						}
-						save_foc_price=show_totalPrice;
-					}
 					bean.setFood_num("1");
 					select_dataList.add(bean);
 					select_adapter.notifyDataSetChanged();
 					total_price.setText(df.format(show_totalPrice));
 					}
+					//计算总金额
+					add();
 				}
 			}});
     }
@@ -529,7 +427,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					select_dataList=(List<SelectFoodBean>) msg.obj;
 					select_adapter=new SelectListAdapter(MainActivity.this,select_dataList);
 					select_list.setAdapter(select_adapter);
-					total_price.setText(df.format(show_totalPrice));
+					add();
 					frist=false;
 				}
 				
@@ -563,42 +461,8 @@ public class MainActivity extends Activity implements OnClickListener{
 							if(number==0){
 								select_dataList.remove(i);
 								show_totalPrice-=Double.parseDouble(food_dataList.get(num).getPrice());
-								if(is_foc){
-									save_foc_price=show_totalPrice;
-									if(is_discount){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										save_foc_price=show_totalPrice-save_discount_price;
-										}
-									}
-									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										save_foc_price=show_totalPrice+package_money;
-										}
-									}
-									show_totalPrice=0;
-								}else{
-									if(is_discount){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										show_totalPrice=show_totalPrice+save_discount_price;
-										}
-									}
-									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										show_totalPrice=show_totalPrice-package_money;
-										}
-									}
-									save_foc_price=show_totalPrice;
-								}
 								select_adapter.notifyDataSetChanged();
-								total_price.setText(df.format(show_totalPrice));
+								//total_price.setText("0.00");
 								if(select_dataList.size()==0){
 									frist=true;
 								}
@@ -608,42 +472,8 @@ public class MainActivity extends Activity implements OnClickListener{
 								price=price-Double.parseDouble(food_dataList.get(num).getPrice());
 								select_dataList.get(i).setFood_price(df.format(price));
 								show_totalPrice-=Double.parseDouble(food_dataList.get(num).getPrice());
-								if(is_foc){
-									save_foc_price=show_totalPrice;
-									if(is_discount){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										save_foc_price=show_totalPrice-save_discount_price;
-										}
-									}
-									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										save_foc_price=show_totalPrice+package_money;
-										}
-									}
-									show_totalPrice=0;
-								}else{
-									if(is_discount){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										show_totalPrice=show_totalPrice+save_discount_price;
-										}
-									}
-									if(is_takePackage){
-										if(food_dataList.get(num).getType().equals("STAPLE")){
-											
-										}else{
-										show_totalPrice=show_totalPrice-package_money;
-										}
-									}
-									save_foc_price=show_totalPrice;
-								}
 								select_adapter.notifyDataSetChanged();
-								total_price.setText(df.format(show_totalPrice));
+								//total_price.setText(df.format(show_totalPrice));
 							}
 							
 							break;
@@ -651,6 +481,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					}
 					
 				}
+				add();
 				break;
 			}
 			
@@ -672,6 +503,11 @@ public class MainActivity extends Activity implements OnClickListener{
 			
 			break;
 		case R.id.r_lay_id_take_package:
+			if(is_foc){
+				take_package.setImageResource(R.drawable.package_not_select);
+				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
+				is_takePackage=false;
+			}else{
 			if(select_dataList.size()==0){
 				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
@@ -679,33 +515,14 @@ public class MainActivity extends Activity implements OnClickListener{
 								take_package.setImageResource(R.drawable.package_seclect);
 				//Toast.makeText(this, "全部打包", Toast.LENGTH_SHORT).show();				
 				is_takePackage=true;
-				//判断是否免单
-				if(is_foc){
-					save_foc_price=save_foc_price+save_selectNum*package_money;
-					dabao_price="0";
-				//	Toast.makeText(this, "打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
-				}else{
-					show_totalPrice=show_totalPrice+save_selectNum*package_money;
-					save_foc_price=show_totalPrice;
-					total_price.setText(df.format(show_totalPrice));
-					dabao_price=df.format(show_totalPrice);
-				}
+				add();
 			}else{
 				
 				take_package.setImageResource(R.drawable.package_not_select);
 				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
 				is_takePackage=false;
-				//判断是否免单
-				if(is_foc){
-					save_foc_price=save_foc_price-save_selectNum*package_money;
-					dabao_price="";
-				//	Toast.makeText(this, "取消打包后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
-				}else{
-					show_totalPrice=show_totalPrice-save_selectNum*package_money;
-					save_foc_price=show_totalPrice;
-					total_price.setText(df.format(show_totalPrice));
-					dabao_price=df.format(show_totalPrice);
-				}
+				add();
+			}
 			}
 			}
 			break;
@@ -718,20 +535,25 @@ public class MainActivity extends Activity implements OnClickListener{
 				foc.setImageResource(R.drawable.package_seclect);
 				//Toast.makeText(this, "免单", Toast.LENGTH_SHORT).show();
 				is_foc=true;
-				if(!is_discount&&!is_takePackage){
-				save_foc_price=show_totalPrice;
-				}
-				total_price.setText("0.00");
+				is_discount=false;
+				discount.setImageResource(R.drawable.package_not_select);
+				take_package.setImageResource(R.drawable.package_not_select);
+				is_takePackage=false;
+				add();
 			}else{
 				foc.setImageResource(R.drawable.package_not_select);
 				//Toast.makeText(this, "不免单", Toast.LENGTH_SHORT).show();
 				is_foc=false;
-				show_totalPrice=save_foc_price;
-				total_price.setText(df.format(save_foc_price));
+				add();
 			}
 			}
 			break;
 		case R.id.r_lay_id_discount:
+			if(is_foc){
+				take_package.setImageResource(R.drawable.package_not_select);
+				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
+				is_takePackage=false;
+			}else{
 			if(select_dataList.size()==0){
 				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 			}else{
@@ -739,31 +561,13 @@ public class MainActivity extends Activity implements OnClickListener{
 				discount.setImageResource(R.drawable.package_seclect);
 				//Toast.makeText(this, "打折", Toast.LENGTH_SHORT).show();
 				is_discount=true;
-				//save_discount_price=Double.parseDouble(total_price.getText().toString());
-				if(is_foc){
-					save_foc_price=save_foc_price-save_selectNum*save_discount_price;
-					dazhe_price = "0";
-					//Toast.makeText(this, "打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
-				}else{
-					show_totalPrice=show_totalPrice-save_selectNum*save_discount_price;
-					save_foc_price=show_totalPrice;
-					total_price.setText(df.format(show_totalPrice));
-					dazhe_price = df.format(show_totalPrice);
-				}
+				add();
 			}else{
 				discount.setImageResource(R.drawable.package_not_select);
 				//Toast.makeText(this, "不打折", Toast.LENGTH_SHORT).show();
 				is_discount=false;
-				if(is_foc){
-					save_foc_price=save_foc_price+save_selectNum*save_discount_price;
-					dazhe_price = "0";
-				//	Toast.makeText(this, "取消打折后价格："+save_foc_price, Toast.LENGTH_SHORT).show();
-				}else{
-					show_totalPrice=show_totalPrice+save_selectNum*save_discount_price;
-					save_foc_price=show_totalPrice;
-					total_price.setText(df.format(show_totalPrice));
-					dazhe_price = df.format(show_totalPrice);
-				}
+				add();
+			}
 			}
 			}
 			break;
@@ -1089,6 +893,32 @@ public class MainActivity extends Activity implements OnClickListener{
 		//	unregisterReceiver(wifi_myReceiver);
 			super.onDestroy();
 		}
+	public void add(){
+		show_totalPrice=0;
+		if(select_dataList.size()==0){
+			total_price.setText(df.format(show_totalPrice));
+		}else{
+		for(int i=0;i<select_dataList.size();i++){
+			int num=Integer.parseInt(select_dataList.get(i).getFood_num());
+			Double price=Double.parseDouble(select_dataList.get(i).getFood_price());
+			show_totalPrice+=price;
+			if(is_foc){
+				show_totalPrice=0;
+			}else{
+				if(!is_discount&&is_takePackage){
+					show_totalPrice=show_totalPrice+num*package_money;
+				}else if(is_discount&&!is_takePackage){
+					show_totalPrice=show_totalPrice-num*save_discount_price;
+				}else if(!is_discount&&!is_takePackage){
+					show_totalPrice=show_totalPrice;
+				}else if(is_discount&&is_takePackage){
+					show_totalPrice=show_totalPrice+num*package_money-num*save_discount_price;
+				}
+			}
+		}
+		total_price.setText(df.format(show_totalPrice));
+		}
+	}
 	
 }
 
