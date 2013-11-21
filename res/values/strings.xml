@@ -21,6 +21,10 @@
 	<string name="err_price">ERROR PRICE</string>
 	<string name="message_ok">OK</string>
 	<string name="message_login">LOGIN</string>
+	<string name="add_package">+包</string>
+	<string name="lessen_package">-包</string>
+	<string name="synchronize_btn2">确认</string>
+	<string name="synchronize_btn3">重置</string>
 	<string name="message_cancle">CANCEL</string>
 	<string name="login_name">Username：</string>
 	<string name="login_password">Password：</string>
