@@ -59,15 +59,26 @@ public class DbHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
+//	public SQLiteDatabase getSQLiteDatabase(){
+//		 synchronized(Lock) {
+//			SQLiteDatabase db = null;
+//			try{
+//				db = this.getWritableDatabase();
+//			}catch (Exception e) {
+//				db = this.getReadableDatabase();
+//			}
+//			return db;
+//		}
+//	}
 	public SQLiteDatabase getSQLiteDatabase(){
-		 synchronized(Lock) {
-			SQLiteDatabase db = null;
-			try{
-				db = this.getWritableDatabase();
-			}catch (Exception e) {
-				db = this.getReadableDatabase();
-			}
-			return db;
+		SQLiteDatabase db = null;
+		
+		try{
+			db = this.getWritableDatabase();
+		}catch (Exception e) {
+			db = this.getReadableDatabase();
 		}
+		
+		return db;
 	}
 }
