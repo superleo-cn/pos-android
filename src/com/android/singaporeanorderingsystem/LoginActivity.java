@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -25,8 +26,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -77,9 +81,36 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private ImageView image_logo_ico;
 	private MyProcessDialog dialog;
 	private MyUpdateDialog myUpdateDialog;
+	private MyOrientationDetector m;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+	   	 .detectDiskReads()
+	   	 .detectDiskWrites()
+	   	 .detectNetwork() // 这里可以替换为detectAll() 就包括了磁盘读写和网络I/O
+	   	 .penaltyLog() //打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
+	   	 .build());
+	   	 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+	   	 .detectLeakedSqlLiteObjects() //探测SQLite数据库操作
+	   	.penaltyLog() //打印logcat
+	   	 .penaltyDeath()
+	   	 .build());
 		super.onCreate(savedInstanceState);
+		m=new MyOrientationDetector(LoginActivity.this);
+//		//横屏正方向
+//
+//		if(getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+//		{
+//
+//		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+//		}
+//		//横屏反方向
+//		else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE)
+//		{
+//
+//		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//		}
 		UpdateAPP();
 		dialog =new MyProcessDialog(LoginActivity.this,getResources().getString(R.string.login_wait));
 		myUpdateDialog =new MyUpdateDialog(LoginActivity.this);
@@ -260,8 +291,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 		public void run() {
 			try {
 				URL url = new URL(apkUrl);
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 				conn.connect();
 				int length = conn.getContentLength();
 				InputStream is = conn.getInputStream();
@@ -326,6 +356,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 			final String str_login_password=login_password.getText().toString();
 			final UserDao user_dao=myApp.getUserdao();
 			LoginUserBean user_bean = user_dao.select(str_login_name);
+			System.out.println("user_bean-->"+user_bean.toString());
 			if(user_bean.getUsername() != null && str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
 				dialog.dismiss();
 				Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
@@ -363,8 +394,10 @@ public class LoginActivity extends Activity implements OnClickListener{
 					dialog.dismiss();
 					if(data.getCode() == 1){
 						String json=data.getJson();
+						System.out.println("json-->"+json);
 						ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
 						LoginUserBean user_bean=datas.get(0);
+						System.out.println("user_bean2-->"+user_bean.toString());
 //						InfolabPasswordGen pass = new InfolabPasswordGen();
 //						pass.generatePassword();
 			            user_bean.setPasswrod(str_login_password);
@@ -415,6 +448,48 @@ public class LoginActivity extends Activity implements OnClickListener{
 			 imm.hideSoftInputFromWindow(login_name.getWindowToken(), 0); //强制隐藏键盘 
 			return super.onTouchEvent(event);
 		}
+		@Override
+		protected void onResume() {
+			super.onResume();
+			m.enable();
+		}
+		@Override
+		protected void onPause() {
+			super.onPause();
+			m.disable();
+		}
 		
-		
+}
+
+class MyOrientationDetector extends OrientationEventListener{
+	private Context context;
+    public MyOrientationDetector( Context context ) {
+        super(context );
+        this.context=context;
+    }
+    @Override
+    public void onOrientationChanged(int orientation) {
+    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+    	    return;  //手机平放时，检测不到有效的角度
+    	}
+    	//只检测是否有四个角度的改变
+    	if( orientation > 350 || orientation< 10 ) { //0度
+    	     orientation = 0;
+    	}  
+    	else if( orientation > 80 &&orientation < 100 ) { //90度
+    	    orientation= 90;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+    	}
+    	else if( orientation > 170 &&orientation < 190 ) { //180度
+    	    orientation= 180;
+    	}
+    	else if( orientation > 260 &&orientation < 280  ) { //270度
+    	    orientation= 270;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    	}
+    	else {
+    	    return;
+    	}
+    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
+    }
 }

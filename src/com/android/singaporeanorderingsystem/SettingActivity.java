@@ -20,9 +20,11 @@ import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -419,7 +421,15 @@ public class SettingActivity extends Activity {
 		updateActivity();
 
 	}
-
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		 InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		 imm.hideSoftInputFromWindow(print_one_edit.getWindowToken(), 0); //强制隐藏键盘 
+		 imm.hideSoftInputFromWindow(shop_set.getWindowToken(), 0); //强制隐藏键盘 
+		 imm.hideSoftInputFromWindow(take_price_edit.getWindowToken(), 0); //强制隐藏键盘 
+		return super.onTouchEvent(event);
+	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -456,7 +466,6 @@ class MyAsynaTask extends AsyncTask<String,Void,String>{
 		}
 		return null;
 	}
-
 	@Override
 	protected void onPostExecute(String result) {
 		super.onPostExecute(result);

@@ -75,9 +75,6 @@
 	<string name="take_all_price">带回总金额</string>
 	<string name="message_shop">你要修改摊位ID吗？</string>
 	
-	<string name="btu_queren">确认</string>
-	<string name="btn_quxiao">取消</string>
-	
 	<string name="login_quanxian">你不是管理员无权登录</string>
 	<string name="login_succ">恭喜你，登录成功</string>
 	<string name="login_fail">登录失败,用户名或者密码错误</string>
@@ -88,7 +85,9 @@
 	<string name="toast_submmit_err">提交成功</string>
 	<string name="toast_setting_succ">设置成功</string>
 	<string name="toast_setting_language_succ">点击了设置语言</string>
-	 <string name="dialog_set">同步中...</string>
+	<string name="btu_queren">确定</string>
+	<string name="btn_quxiao">取消</string>
+	<string name="dialog_set">同步中...</string>
 	
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>
