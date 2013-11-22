@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,10 +33,12 @@ import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.FoodHttpBean;
+import com.android.bean.GetPayDetailBean;
 import com.android.common.Constants;
 import com.android.common.HttpHelper;
 import com.android.common.MyApp;
 import com.android.dao.FoodHttpBeanDao;
+import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -55,6 +58,7 @@ public class SettingActivity extends Activity {
 	private Button synchronization_menu;
 	private Button synchronization_shop;
 	private Button btu_discount;
+	private Button synchronization_pay;
 	public static String type;
 	private Button print_one_btu;
 	private MyApp myApp;
@@ -63,6 +67,7 @@ public class SettingActivity extends Activity {
 	private RelativeLayout layout_exit;
 	private SharedPreferences spf;
 	private FoodHttpBeanDao fhb_dao;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,7 @@ public class SettingActivity extends Activity {
 		btu_discount = (Button) findViewById(R.id.btu_discount);
 		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
 		synchronization_shop = (Button) findViewById(R.id.synchronization_shop_brn);
+		synchronization_pay=(Button) this.findViewById(R.id.synchronization_pay_brn);
 		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type = sharedPrefs.getString("type", "");
 		if(myApp.getU_type().equals("SUPERADMIN")){
@@ -231,6 +237,34 @@ public class SettingActivity extends Activity {
 					}});
 				builder.create().show();
 				
+			}});
+		
+		synchronization_pay.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				getDetailPayListDao.getInatance(SettingActivity.this).delete();
+				RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL+myApp.getSettingShopId(),new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if(data.getCode() == 1){
+							String json=data.getJson();
+							Log.e("返回数据", json);
+							ArrayList<GetPayDetailBean> datas=GetPayDetailBean.newInstanceList(json,is_chinese);
+							Log.e("支付页详情数据", datas.size()+"");
+							for(int i=0;i<datas.size();i++){
+								GetPayDetailBean bean=datas.get(i);
+								getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName());
+							}
+							
+						}else if(data.getCode() == 0){
+							Toast.makeText(SettingActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+						}else if(data.getCode() == -1){
+							Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 			}});
 	}
 	public void initPopupWindow() {

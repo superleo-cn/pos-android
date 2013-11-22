@@ -12,6 +12,7 @@ public class GetPayDetailBean {
 		public static class Attr{
 			public static final String ID = "id";
 			public static final String NAME = "name";
+			public static final String NAME_ZH = "name_zh";
 		}
 		private String id;//编号
 		private String name;//名称
@@ -23,7 +24,7 @@ public class GetPayDetailBean {
 		}
 		
 		
-		public static ArrayList<GetPayDetailBean> newInstanceList(String jsonDatas){
+		public static ArrayList<GetPayDetailBean> newInstanceList(String jsonDatas,boolean is_chinese){
 			ArrayList<GetPayDetailBean> pay_detail = new ArrayList<GetPayDetailBean>();
 			
 			try {
@@ -32,7 +33,12 @@ public class GetPayDetailBean {
 				for(int i = 0; i < size; i++){
 					JSONObject obj = arr.getJSONObject(i);
 					String id = obj.optString(Attr.ID);
-					String name = obj.optString(Attr.NAME);
+					String name;
+					if(is_chinese){
+					 name = obj.optString(Attr.NAME_ZH);
+					}else{
+					 name = obj.optString(Attr.NAME);
+					}
 					pay_detail.add(new GetPayDetailBean(id, name)) ;
 				}
 			} catch (JSONException e) {
