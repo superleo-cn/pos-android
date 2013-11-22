@@ -51,8 +51,10 @@ import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.dao.DailyMoneyDao;
+import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
+import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -122,8 +124,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			daily_list = (ListView) findViewById(R.id.daily_detail_list);
 			num_list = (ListView) findViewById(R.id.daily_num_list);
 			text_id_all_price = (TextView) findViewById(R.id.text_id_all_price);
-			btu_id_sbumit = (Button) findViewById(R.id.btu_id_sbumit);
-			
+			btu_id_sbumit = (Button) findViewById(R.id.btu_id_sbumit);			
 			cash_register=(EditText) this.findViewById(R.id.cash_register);
 			today_turnover=(EditText) this.findViewById(R.id.today_turnover);
 			noon_time=(EditText) this.findViewById(R.id.noon_time);
@@ -145,15 +146,13 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 
 				@Override
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
-					
+					// TODO Auto-generated method stub					
 				}
 
 				@Override
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-					
+					// TODO Auto-generated method stub					
 				}
 
 				@Override
@@ -168,15 +167,13 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 
 				@Override
 				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
-					
+					// TODO Auto-generated method stub					
 				}
 
 				@Override
 				public void beforeTextChanged(CharSequence s, int start,
 						int count, int after) {
-					// TODO Auto-generated method stub
-					
+					// TODO Auto-generated method stub					
 				}
 
 				@Override
@@ -191,40 +188,48 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 public void initData(){
 		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList();
 		Double price=0.00;
-		Resources res =getResources();
-		String[] pay_list=res.getStringArray(R.array.pay_list);
-    	String[] take_number=res.getStringArray(R.array.take_number);
 		for(int i=0;i<priceList.size();i++){
 			price+=Double.parseDouble(priceList.get(i));
 		}
+		
 		cash_register.setText(df.format(price));
 			detail_classList = new ArrayList<DailyPayDetailBean>();
 			number_classList = new ArrayList<TakeNumberBean>();
 			
-			for(int i=0 ; i < pay_list.length ; i++){
+
+			List<Map<String,String>> datas=getDetailPayListDao.getInatance(DailyPayActivity.this).getList();
+			if(datas==null){
+				
+			}else{
+			for(int i=0 ; i < datas.size() ; i++){
 				DailyPayDetailBean bean=new DailyPayDetailBean();
-				bean.setName(pay_list[i]);
+				bean.setName(datas.get(i).get("name"));
+				bean.setId(datas.get(i).get("number_id"));
 				bean.setPrice("0");
 				detail_classList.add(bean);
+			}
 			}
 			detail_adapter= new DailyPayDetailAdapter(this,detail_classList,handler);
 			daily_list.setAdapter(detail_adapter);
 			text_id_all_price.setText(df.format(count));
 			 compute();
 			 
-			 for(int j=0 ; j < take_number.length ; j++){
-				//num_count+=(2*i);
+			 List<Map<String,String>> datas_num=GetTakeNumDao.getInatance(DailyPayActivity.this).getList(); 
+			 Log.e("查询带回数据库", datas_num.size()+"");
+			 for(int j=0 ; j < datas_num.size() ; j++){
 				 TakeNumberBean bean=new TakeNumberBean();
-				 bean.setText1(take_number[j]);
-				 bean.setText2("0");
+				 bean.setPrice(datas_num.get(j).get("price"));;
+				 bean.setId(datas_num.get(j).get("number_id"));
+				 bean.setNum("0");
 					number_classList.add(bean);
 				}
-				number_adapter=new TakeNumerAdapter(this,number_classList,handler);;
+			 Log.e("打包带走", number_classList.size()+"");
+				number_adapter=new TakeNumerAdapter(this,number_classList,handler);
 				num_list.setAdapter(number_adapter);
 				try{
 					for(int i=0;i<number_classList.size();i++){
-						Double sigle_price=Double.parseDouble(number_classList.get(i).getText1());
-						int num=Integer.parseInt(number_classList.get(i).getText2());
+						Double sigle_price=Double.parseDouble(number_classList.get(i).getPrice());
+						int num=Integer.parseInt(number_classList.get(i).getNum());
 						Double total_price=0.00;
 						total_price=num*sigle_price;
 						all_num_price.add(total_price);
@@ -442,6 +447,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					intent.addCategory(Intent.CATEGORY_HOME);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
+					DailyPayActivity.this.finish();
 					System.exit(0);
 				}});
 			builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
@@ -475,7 +481,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    /*参数*/		
 	    //Sandroid_id,Sconsumption_id,shop_id,user_id,date,type,price
 		    	PayListDao.getInatance(DailyPayActivity.this).save(String.valueOf(i+1),
-		    			String.valueOf(i+1),
+		    			bean.getId(),
 		    			myApp.getSettingShopId(),
 		    			myApp.getUser_id(),
 		    			date,
@@ -488,15 +494,15 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	String take_num;
 	    	for(int j=0;j<number_classList.size();j++){
 	    		TakeNumberBean bean = number_classList.get(j);
-	    		if(bean != null && StringUtils.isNotEmpty(bean.getText1())){
-	    			take_num=bean.getText1();
+	    		if(bean != null && StringUtils.isNotEmpty(bean.getNum())){
+	    			take_num=bean.getNum();
 	    		}else{
-	    			take_num="0.00";
+	    			take_num="0";
 	    		} 
 	   /*参数*/
 	   //android_id,cash_id,shop_id,user_id,date,type,quantity
 	    		NumListDao.getInatance(DailyPayActivity.this).save(String.valueOf(j+1),
-		    			String.valueOf(j+1),
+	    				bean.getId(),
 		    			myApp.getSettingShopId(),
 		    			myApp.getUser_id(),
 		    			date,
@@ -606,6 +612,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	post_payList();
 	    	post_numList(); 
 	    	post_dailyMoney();
+	    	
+
 	    }
 	    
 	    public void compute(){

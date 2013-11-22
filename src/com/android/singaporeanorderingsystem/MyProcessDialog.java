@@ -9,6 +9,7 @@ package com.android.singaporeanorderingsystem;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.widget.TextView;
 
 import com.android.R;
 
@@ -18,8 +19,10 @@ import com.android.R;
  * @author hjgang
  */
 public class MyProcessDialog extends Dialog {
-	public MyProcessDialog(Context context) {
+	public MyProcessDialog(Context context,String str) {
 		super(context, R.style.MyProgressDialog);
 		this.setContentView(R.layout.progress_dialog);
+		TextView text=(TextView) this.findViewById(R.id.txt_wait);
+		text.setText(str);
 	}
 }

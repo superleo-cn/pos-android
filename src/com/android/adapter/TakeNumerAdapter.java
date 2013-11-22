@@ -69,8 +69,8 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}
 
 		bean = classList.get(position);
-		viewHolder.num_id_name.setText(bean.getText1());
-		viewHolder.id_price.setText(bean.getText2());
+		viewHolder.num_id_name.setText(bean.getPrice());
+		viewHolder.id_price.setText(bean.getNum());
 		try{
 			Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
 			int num=Integer.parseInt(viewHolder.id_price.getText().toString());
@@ -97,7 +97,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
 				//viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
-				if(bean.getText2().equals(viewHolder.id_price.getText().toString())){
+				if(bean.getNum().equals(viewHolder.id_price.getText().toString())){
 					
 				}else{
 				

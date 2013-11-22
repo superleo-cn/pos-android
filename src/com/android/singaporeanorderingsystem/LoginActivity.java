@@ -81,7 +81,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		UpdateAPP();
-		dialog =new MyProcessDialog(LoginActivity.this);
+		dialog =new MyProcessDialog(LoginActivity.this,getResources().getString(R.string.login_wait));
 		myUpdateDialog =new MyUpdateDialog(LoginActivity.this);
 		sharedPrefs= getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type=sharedPrefs.getString("type", "");

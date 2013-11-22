@@ -84,7 +84,7 @@
 	<string name="toast_submmit_err">提交成功en</string>
 	<string name="toast_setting_succ">设置成功en</string>
 	<string name="toast_setting_language_succ">点击了设置语言en</string>
-	
+	<string name="dialog_set">同步中...</string>
 	<string name="btu_queren">确认</string>
 	<string name="btn_quxiao">取消</string>
 	

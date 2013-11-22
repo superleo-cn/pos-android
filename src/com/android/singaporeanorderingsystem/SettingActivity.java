@@ -33,11 +33,13 @@ import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.FoodHttpBean;
+import com.android.bean.GetPTakeNumBean;
 import com.android.bean.GetPayDetailBean;
 import com.android.common.Constants;
 import com.android.common.HttpHelper;
 import com.android.common.MyApp;
 import com.android.dao.FoodHttpBeanDao;
+import com.android.dao.GetTakeNumDao;
 import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
@@ -59,6 +61,7 @@ public class SettingActivity extends Activity {
 	private Button synchronization_shop;
 	private Button btu_discount;
 	private Button synchronization_pay;
+	private Button price_set_brn;
 	public static String type;
 	private Button print_one_btu;
 	private MyApp myApp;
@@ -67,7 +70,7 @@ public class SettingActivity extends Activity {
 	private RelativeLayout layout_exit;
 	private SharedPreferences spf;
 	private FoodHttpBeanDao fhb_dao;
-	
+	private MyProcessDialog dialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,7 @@ public class SettingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();
+		dialog=new MyProcessDialog(this,getResources().getString(R.string.dialog_set));
 		Intent intent = this.getIntent();
 		Bundle bundle = intent.getExtras();
 		type = bundle.getString("type");
@@ -101,6 +105,7 @@ public class SettingActivity extends Activity {
 		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
 		synchronization_shop = (Button) findViewById(R.id.synchronization_shop_brn);
 		synchronization_pay=(Button) this.findViewById(R.id.synchronization_pay_brn);
+		price_set_brn=(Button) this.findViewById(R.id.price_set_brn);
 		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type = sharedPrefs.getString("type", "");
 		if(myApp.getU_type().equals("SUPERADMIN")){
@@ -246,11 +251,13 @@ public class SettingActivity extends Activity {
 				
 			}});
 		
+		//支付款同步
 		synchronization_pay.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
+				dialog.show();
 				getDetailPayListDao.getInatance(SettingActivity.this).delete();
 				RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL+myApp.getSettingShopId(),new Callback() {
 					@Override
@@ -264,9 +271,43 @@ public class SettingActivity extends Activity {
 								GetPayDetailBean bean=datas.get(i);
 								getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName());
 							}
-							
+							dialog.cancel();
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT)
+							.show();	
 						}else if(data.getCode() == 0){
-							Toast.makeText(SettingActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(SettingActivity.this, "支付页失败", Toast.LENGTH_SHORT).show();
+						}else if(data.getCode() == -1){
+							Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
+			}});
+		
+		//现金配置
+		price_set_brn.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				dialog.show();
+				GetTakeNumDao.getInatance(SettingActivity.this).delete();
+				RemoteDataHandler.asyncGet(Constants.URL_TAKE_DNUM+myApp.getSettingShopId(),new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if(data.getCode() == 1){
+							String json=data.getJson();
+							Log.e("金额配置返回数据", json);
+							ArrayList<GetPTakeNumBean> datas=GetPTakeNumBean.newInstanceList(json,is_chinese);
+							Log.e("金额配置详情数据", datas.size()+"");
+							for(int i=0;i<datas.size();i++){
+								GetPTakeNumBean bean=datas.get(i);
+								GetTakeNumDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getPrice());
+							}
+							dialog.cancel();
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT)
+							.show();	
+						}else if(data.getCode() == 0){
+							Toast.makeText(SettingActivity.this, "金额配置失败", Toast.LENGTH_SHORT).show();
 						}else if(data.getCode() == -1){
 							Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
 						}

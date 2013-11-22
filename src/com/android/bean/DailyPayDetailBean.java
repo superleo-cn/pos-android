@@ -3,14 +3,23 @@ package com.android.bean;
 public class DailyPayDetailBean {
 	private String name;
 	private String price;
+	private String id;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public DailyPayDetailBean() {
 	}
 
-	public DailyPayDetailBean(String name, String price) {
+	public DailyPayDetailBean(String name, String price,String id) {
 		super();
 		this.name = name;
 		this.price = price;
+		this.id=id;
 	}
 
 	public String getName() {

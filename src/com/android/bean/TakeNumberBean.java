@@ -1,37 +1,44 @@
 package com.android.bean;
 
 public class TakeNumberBean {
-	private String text1;
-	private String text2;
-
+	private String id;
+	private String price;
+	private String num;
 	public TakeNumberBean() {
 	}
 
-	public TakeNumberBean(String text1, String text2) {
+	public TakeNumberBean(String  id, String price,String num) {
 		super();
-		this.text1 = text1;
-		this.text2 = text2;
+		this.id = id;
+		this.price = price;
+		this.num=num;
 	}
 
-	public String getText1() {
-		return text1;
+
+	public String getPrice() {
+		return price;
 	}
 
-	public void setText1(String text1) {
-		this.text1 = text1;
+	public void setPrice(String price) {
+		this.price = price;
 	}
 
-	public String getText2() {
-		return text2;
+	public String getId() {
+		return id;
 	}
 
-	public void setText2(String text2) {
-		this.text2 = text2;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	@Override
-	public String toString() {
-		return "RiChangListView01 [name=" + text1 + ", price=" + text2 + "]";
+	public String getNum() {
+		return num;
 	}
+
+	public void setNum(String num) {
+		this.num = num;
+	}
+
+	
 
 }
