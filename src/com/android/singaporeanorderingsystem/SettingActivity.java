@@ -169,6 +169,13 @@ public class SettingActivity extends Activity {
 		synchronization_menu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				System.out.println("myApp.getSettingShopId()-->"+myApp.getSettingShopId());
+				if(myApp.getSettingShopId() == null || myApp.getSettingShopId().equals("") ||
+						myApp.getSettingShopId().equals("null")||
+						myApp.getSettingShopId().equals("0")){
+					Toast.makeText(SettingActivity.this, getString(R.string.setting_tanwei_id), Toast.LENGTH_SHORT).show();
+				return ;
+				}
 				String url = Constants.URL_FOODSLIST_PATH+myApp.getSettingShopId();
 				RemoteDataHandler.asyncGet(url, new Callback() {
 					@Override
