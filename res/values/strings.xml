@@ -84,6 +84,10 @@
 	<string name="toast_submmit_err">提交成功en</string>
 	<string name="toast_setting_succ">设置成功en</string>
 	<string name="toast_setting_language_succ">点击了设置语言en</string>
+	
+	<string name="btu_queren">确认</string>
+	<string name="btn_quxiao">取消</string>
+	
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>
         <item>特制酿豆腐</item>

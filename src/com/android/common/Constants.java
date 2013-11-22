@@ -96,6 +96,11 @@ public final class Constants {
 	/** 点菜单提交*/
 	public static final String URL_FOOD_ORDER=URL_CONTEXTPATH+"/transactions/submit";
 	
+	/** 软件更新*/
+	public static final String URL_UPDATE_APP=URL_CONTEXTPATH+"/checkUpdate";
+	/** 软件下载*/
+	public static final String URL_UPDATE_APP_DOWN=URL_CONTEXTPATH+"/versions/";
+	
 	/*提交每日支付款*/
 	public static final String URL_POST_PAYLIST=URL_CONTEXTPATH+"/consumeTransactions/submit";	
 	/*带回总数接口*/
