@@ -85,7 +85,8 @@
 	<string name="toast_submmit_err">Submit Error</string>
 	<string name="toast_setting_succ">Configue Success</string>
 	<string name="toast_setting_language_succ">Language configuration success</string>
-	
+	<string name="btu_queren">Confirm</string>
+	<string name="btn_quxiao">Cancel</string>
 	 
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>
