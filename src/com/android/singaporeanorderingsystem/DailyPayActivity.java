@@ -187,14 +187,18 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 }
 	 
 	 public void initData(){
-		 SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-	    	String date=df.format(new Date());
-		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date);
+//		 SimpleDateFormat df_price=new SimpleDateFormat("yyyy-MM-dd");
+//	    	String date=df_price.format(new Date());
+		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),MainActivity.save_date);
 		//Double price=0.00;
 		if(priceList==null){
 			order_price=0.00;
 		}else{		
+			if(priceList.size()!=0){
 			order_price=Double.parseDouble(priceList.get(0));
+			}else{
+				order_price=0.00;
+			}
 
 		}
 		//cash_register.setText(df.format(order_price));
@@ -403,6 +407,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				}
 				
 				take_all_price.setText(df.format(num_count));
+				compute();
 				break;
 			}
 		}
@@ -647,11 +652,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    		
 				String all_price=text_id_all_price.getText().toString();
 				Double price_f=Double.parseDouble(take_all_price.getText().toString());
-				cash_register.setText(df.format(order_price+Double.parseDouble(shop_money_text)-price_f));
+				cash_register.setText(df.format(order_price+Double.parseDouble(shop_money_text)-Double.parseDouble(all_price)));
 				Double price_b=Double.parseDouble(all_price);
 				Double price_c=Double.parseDouble(cash_register.getText().toString());
 				Double price_today=price_b+price_c;
-				Double price_d=price_b+price_c;
+				Double price_d=order_price;
 				today_turnover.setText(df.format(price_today));
 				
 				Double price_a=Double.parseDouble(shop_money_text);

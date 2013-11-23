@@ -118,6 +118,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private String dabao_price="0";
 	private String dazhe_price="0";
 	private FoodOrderDao2 f_dao;
+	public static String save_date="2013-11-24";
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -630,8 +631,9 @@ public class MainActivity extends Activity implements OnClickListener{
 //					}
 //				}
 //			}
-			 SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		    	String date=df.format(new Date());
+			 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		    	String date=df_save.format(new Date());
+		    	save_date=date;
 			long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString());
 			if(result_price==-1){
 				Log.e("保存价格失败", "");

@@ -210,12 +210,13 @@ public class SettingActivity extends Activity {
 									HttpHelper.download(food_h_bean.getPicture(),new File(image_file));
 									food_h_bean.setPicture(image_file);
 									fhb_dao.save(food_h_bean);
-									dialog.cancel();
+									
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
 								
 							}
+							dialog.cancel();
 						}else if(data.getCode() == -1){
 							
 						}

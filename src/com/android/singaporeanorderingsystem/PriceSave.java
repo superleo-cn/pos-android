@@ -67,7 +67,7 @@ public class PriceSave extends SQLiteOpenHelper {
 	
 	public ArrayList<String> getList(String username,String date){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		Cursor cursor=db.query(TABLE_NAME, null, "username=? and date kile?",new String[]{username,date}, null, null, null, null);
+		Cursor cursor=db.query(TABLE_NAME, null, "username=? and date =?",new String[]{username,date}, null, null, null, null);
 		
 		ArrayList<String>  list=new ArrayList<String> ();
 		while(cursor.moveToNext()){
