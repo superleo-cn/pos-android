@@ -63,6 +63,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 			viewHolder.num_id_name = (TextView) convertView.findViewById(R.id.num_id_name);
 			viewHolder.id_price = (EditText) convertView.findViewById(R.id.num_id_price);
 			viewHolder.num_price=(TextView) convertView.findViewById(R.id.num_price);
+			viewHolder.danwei=(TextView) convertView.findViewById(R.id.danwei);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -71,6 +72,13 @@ public class TakeNumerAdapter extends BaseAdapter {
 		bean = classList.get(position);
 		viewHolder.num_id_name.setText(bean.getPrice());
 		viewHolder.id_price.setText(bean.getNum());
+		Double is_price=Double.parseDouble(bean.getPrice());
+		Log.e("adpter的价格", is_price+"");
+		if(is_price>1){
+			viewHolder.danwei.setText("张");
+		}else{
+			viewHolder.danwei.setText("个");
+		}
 		try{
 			Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
 			int num=Integer.parseInt(viewHolder.id_price.getText().toString());
@@ -80,15 +88,15 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}catch(Exception e){
 			Log.e("err", "");
 		}
-//		viewHolder.id_price.setOnTouchListener(new OnTouchListener(){
-//
-//			@Override
-//			public boolean onTouch(View arg0, MotionEvent arg1) {
-//				// TODO Auto-generated method stub
-//				viewHolder.id_price.setFocusable(true);
-//				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
-//				return false;
-//			}});
+		viewHolder.id_price.setOnTouchListener(new OnTouchListener(){
+
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				// TODO Auto-generated method stub
+				viewHolder.id_price.setFocusable(true);
+				viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+				return false;
+			}});
 		
 		
 		viewHolder.id_price.addTextChangedListener(new TextWatcher(){
@@ -104,6 +112,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 					try{
 						Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
 						String num_tv=viewHolder.id_price.getText().toString();
+						bean.setNum(num_tv);
 						int num=Integer.parseInt(num_tv);
 						Double total_price=price*num;
 						DecimalFormat df=new DecimalFormat("0.00");
@@ -168,12 +177,12 @@ public class TakeNumerAdapter extends BaseAdapter {
 // 
 //        }); 
 
-		  if(DailyPayActivity.hashMap_num.get(position) != null){  
-			  viewHolder.id_price.setText(DailyPayActivity.hashMap_num.get(position)); 	            
-		  }  
-		  if(DailyPayActivity.hashMap_numprice.get(position) != null){  
-			  viewHolder.num_price.setText(DailyPayActivity.hashMap_numprice.get(position));
-		  }
+//		  if(DailyPayActivity.hashMap_num.get(position) != null){  
+//			  viewHolder.id_price.setText(DailyPayActivity.hashMap_num.get(position)); 	            
+//		  }  
+//		  if(DailyPayActivity.hashMap_numprice.get(position) != null){  
+//			  viewHolder.num_price.setText(DailyPayActivity.hashMap_numprice.get(position));
+//		  }
 		return convertView;
 	}
 
@@ -181,6 +190,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 		TextView num_id_name;
 		EditText id_price;
 		TextView num_price;
+		TextView danwei;
 	}
 	
 
