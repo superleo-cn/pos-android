@@ -66,6 +66,7 @@ public class SettingActivity extends Activity {
 	private Button price_set_brn;
 	public static String type;
 	private Button print_one_btu;
+	private Button btu_setting_all_tong;
 	private MyApp myApp;
 	private TextView admin_set;
 	private RelativeLayout r_set_admin_lay;
@@ -107,6 +108,7 @@ public class SettingActivity extends Activity {
 		synchronization_menu = (Button) findViewById(R.id.synchronization_menu_brn);
 		synchronization_shop = (Button) findViewById(R.id.synchronization_shop_brn);
 		synchronization_pay=(Button) this.findViewById(R.id.synchronization_pay_brn);
+		btu_setting_all_tong =(Button) this.findViewById(R.id.btu_setting_all_tong);
 		price_set_brn=(Button) this.findViewById(R.id.price_set_brn);
 		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type = sharedPrefs.getString("type", "");
@@ -114,6 +116,12 @@ public class SettingActivity extends Activity {
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
 		}
+		btu_setting_all_tong.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+			}
+		});
 		menu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

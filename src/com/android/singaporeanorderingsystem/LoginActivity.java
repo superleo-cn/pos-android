@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -45,9 +44,10 @@ import com.android.R;
 import com.android.bean.LoginUserBean;
 import com.android.bean.VersionBean;
 import com.android.common.Constants;
+import com.android.common.CrashHandler;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
-import com.android.dao.UserDao;
+import com.android.dao.UserDao2;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
@@ -85,19 +85,21 @@ public class LoginActivity extends Activity implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-	   	 .detectDiskReads()
-	   	 .detectDiskWrites()
-	   	 .detectNetwork() // 这里可以替换为detectAll() 就包括了磁盘读写和网络I/O
-	   	 .penaltyLog() //打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
-	   	 .build());
-	   	 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-	   	 .detectLeakedSqlLiteObjects() //探测SQLite数据库操作
-	   	.penaltyLog() //打印logcat
-	   	 .penaltyDeath()
-	   	 .build());
+//		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+//	   	 .detectDiskReads()
+//	   	 .detectDiskWrites()
+//	   	 .detectNetwork() // 这里可以替换为detectAll() 就包括了磁盘读写和网络I/O
+//	   	 .penaltyLog() //打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
+//	   	 .build());
+//	   	 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//	   	 .detectLeakedSqlLiteObjects() //探测SQLite数据库操作
+//	   	.penaltyLog() //打印logcat
+//	   	 .penaltyDeath()
+//	   	 .build());
 		super.onCreate(savedInstanceState);
 		m=new MyOrientationDetector(LoginActivity.this);
+		CrashHandler crashHandler = CrashHandler.getInstance();   //错误监听 
+        crashHandler.init(LoginActivity.this);  //传入参数必须为Activity，否则AlertDialog将不显示。  
 //		//横屏正方向
 //
 //		if(getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
@@ -219,7 +221,6 @@ public class LoginActivity extends Activity implements OnClickListener{
 				return false;
 			}
 		});
-
 	}
 	/**
 	 * 登录前检测版本更新
@@ -354,9 +355,14 @@ public class LoginActivity extends Activity implements OnClickListener{
 			dialog.show();
 			String str_login_name=login_name.getText().toString();
 			final String str_login_password=login_password.getText().toString();
-			final UserDao user_dao=myApp.getUserdao();
-			LoginUserBean user_bean = user_dao.select(str_login_name);
-			System.out.println("user_bean-->"+user_bean.toString());
+//			final UserDao user_dao=myApp.getUserdao();
+//			LoginUserBean user_bean = user_dao.select(str_login_name);
+			final UserDao2 u_dao=UserDao2.getInatance(LoginActivity.this);
+			ArrayList<LoginUserBean> u_datas=u_dao.getList(str_login_name);
+			LoginUserBean user_bean = new LoginUserBean();
+			if(u_datas != null && u_datas.size() !=0){
+				user_bean = u_datas.get(0);
+			}
 			if(user_bean.getUsername() != null && str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
 				dialog.dismiss();
 				Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
@@ -394,14 +400,13 @@ public class LoginActivity extends Activity implements OnClickListener{
 					dialog.dismiss();
 					if(data.getCode() == 1){
 						String json=data.getJson();
-						System.out.println("json-->"+json);
 						ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
 						LoginUserBean user_bean=datas.get(0);
-						System.out.println("user_bean2-->"+user_bean.toString());
 //						InfolabPasswordGen pass = new InfolabPasswordGen();
 //						pass.generatePassword();
 			            user_bean.setPasswrod(str_login_password);
-						user_dao.insert(user_bean);
+//						user_dao.insert(user_bean);
+						u_dao.save(user_bean);
 						myApp.setUser_id(user_bean.getId());
 						myApp.setU_name(user_bean.getUsername());
 						myApp.setU_type(user_bean.getUsertype());
