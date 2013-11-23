@@ -44,6 +44,7 @@ import com.android.R;
 import com.android.bean.LoginUserBean;
 import com.android.bean.VersionBean;
 import com.android.common.Constants;
+import com.android.common.CrashHandler;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
 import com.android.dao.UserDao2;
@@ -97,6 +98,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 //	   	 .build());
 		super.onCreate(savedInstanceState);
 		m=new MyOrientationDetector(LoginActivity.this);
+		CrashHandler crashHandler = CrashHandler.getInstance();   //错误监听 
+        crashHandler.init(LoginActivity.this);  //传入参数必须为Activity，否则AlertDialog将不显示。  
 //		//横屏正方向
 //
 //		if(getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
@@ -218,7 +221,6 @@ public class LoginActivity extends Activity implements OnClickListener{
 				return false;
 			}
 		});
-
 	}
 	/**
 	 * 登录前检测版本更新

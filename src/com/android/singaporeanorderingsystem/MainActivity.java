@@ -753,6 +753,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialog, int which) {
+				clear_data();
 				long result=PriceSave.getInatance(MainActivity.this).save(total_price.getText().toString());
 				if(result==-1){
 					Log.e("保存价格失败", "");
