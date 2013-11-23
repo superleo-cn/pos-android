@@ -37,9 +37,9 @@
 	<string name="noon_time">中午计算时间</string>
 	<string name="noon_turnover">中午业绩</string>
 	<string name="time">计算时间</string>
-	<string name="total">总数(A+B+C)</string>
+	<string name="total">总数(B+C)</string>
 	<string name="tomorrow_money">E:明日本钱 </string>
-	<string name="total_take_num">带回总数(D-F)</string>
+	<string name="total_take_num">带回总数(D-E)</string>
 	<string name="send_person">送款人</string>
 	<string name="other">其他事宜</string>
 	<string name="message_zhifu">你确认提交数据吗？</string>

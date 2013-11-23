@@ -103,6 +103,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	public static  HashMap<Integer, String> hashMap_num = new HashMap<Integer, String>();  
 	public static  HashMap<Integer, String> hashMap_numprice = new HashMap<Integer, String>(); 
 	private String search_date;
+	private Double order_price=0.00;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -189,14 +190,14 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		 SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
 	    	String date=df.format(new Date());
 		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date);
-		Double price=0.00;
+		//Double price=0.00;
 		if(priceList==null){
-			price=0.00;
+			order_price=0.00;
 		}else{		
-			price=Double.parseDouble(priceList.get(0));
+			order_price=Double.parseDouble(priceList.get(0));
 
 		}
-		cash_register.setText(df.format(price));
+		//cash_register.setText(df.format(order_price));
 			detail_classList = new ArrayList<DailyPayDetailBean>();
 			number_classList = new ArrayList<TakeNumberBean>();
 			
@@ -212,14 +213,17 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				bean.setPrice("0");
 				detail_classList.add(bean);
 			}
-			}
+			
 			detail_adapter= new DailyPayDetailAdapter(this,detail_classList,handler);
 			daily_list.setAdapter(detail_adapter);
+			
+			}
 			text_id_all_price.setText(df.format(count));
-			 compute();
-			 
 			 List<Map<String,String>> datas_num=GetTakeNumDao.getInatance(DailyPayActivity.this).getList(); 
 			 Log.e("查询带回数据库", datas_num.size()+"");
+			 if(datas_num==null){
+				 
+			 }else{
 			 for(int j=0 ; j < datas_num.size() ; j++){
 				 TakeNumberBean bean=new TakeNumberBean();
 				 bean.setPrice(datas_num.get(j).get("price"));;
@@ -239,10 +243,14 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						all_num_price.add(total_price);
 						num_count=num_count+total_price;					
 					}
-					take_all_price.setText(df.format(num_count));
+					
+					
 				}catch(Exception e){
 					
 				}
+			 }
+			 take_all_price.setText(df.format(num_count));
+			 compute();
 	 }
 	 
 	 public void initPopupWindow() {
@@ -638,6 +646,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				}
 	    		
 				String all_price=text_id_all_price.getText().toString();
+				Double price_f=Double.parseDouble(take_all_price.getText().toString());
+				cash_register.setText(df.format(order_price+Double.parseDouble(shop_money_text)-price_f));
 				Double price_b=Double.parseDouble(all_price);
 				Double price_c=Double.parseDouble(cash_register.getText().toString());
 				Double price_today=price_b+price_c;
@@ -645,7 +655,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				today_turnover.setText(df.format(price_today));
 				
 				Double price_a=Double.parseDouble(shop_money_text);
-				Double total_t=price_a+price_b+price_c;
+				Double total_t=price_b+price_c;
 				total.setText(df.format(total_t));
 				
 				Double price_e=Double.parseDouble(tomorrow_money_text);

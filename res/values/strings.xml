@@ -37,7 +37,7 @@
 	<string name="noon_time">Lunch Time</string>
 	<string name="noon_turnover">Lunch Sales</string>
 	<string name="time">Time</string>
-	<string name="total">Total (A+B+C)</string>
+	<string name="total">Total (B+C)</string>
 	<string name="tomorrow_money">E:Next Open Balance</string>
 	<string name="total_take_num">Total Collection(D-E)</string>
 	<string name="send_person">Cashier</string>
