@@ -609,10 +609,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	other.setText("");
 	    	shop_money.setText("");
 	    	//text_id_all_price.setText("");
+	    	
 	    	post_payList();
 	    	post_numList(); 
 	    	post_dailyMoney();
-	    	
+	    	DailyPayActivity.this.finish();
 
 	    }
 	    
