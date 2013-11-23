@@ -186,12 +186,16 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 }
 	 
 	 public void initData(){
-		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList();
+		 SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+	    	String date=df.format(new Date());
+		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date);
 		Double price=0.00;
-		for(int i=0;i<priceList.size();i++){
-			price+=Double.parseDouble(priceList.get(i));
+		if(priceList==null){
+			price=0.00;
+		}else{		
+			price=Double.parseDouble(priceList.get(0));
+
 		}
-		
 		cash_register.setText(df.format(price));
 			detail_classList = new ArrayList<DailyPayDetailBean>();
 			number_classList = new ArrayList<TakeNumberBean>();
@@ -753,7 +757,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	public void post_payList(){
 		try{
 		HashMap<String, String> params= new HashMap<String,String>();
-		List<Map<String,String>> datas=PayListDao.getInatance(this).getList();
+		List<Map<String,String>> datas=PayListDao.getInatance(this).getList(search_date);
 		if(!datas.isEmpty()){
 		for(int i=0;i<datas.size();i++){
 			if(datas.get(i).get("type").equals("0")){
@@ -806,7 +810,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	public void post_numList(){
 		try{
 			HashMap<String, String> params= new HashMap<String,String>();
-			List<Map<String,String>> datas=NumListDao.getInatance(this).getList();
+			List<Map<String,String>> datas=NumListDao.getInatance(this).getList(search_date);
 			if(!datas.isEmpty()){
 			for(int i=0;i<datas.size();i++){
 				if(datas.get(i).get("type").equals("0")){

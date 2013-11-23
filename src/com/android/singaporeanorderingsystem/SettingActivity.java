@@ -185,6 +185,7 @@ public class SettingActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				System.out.println("myApp.getSettingShopId()-->"+myApp.getSettingShopId());
+				dialog.show();
 				if(myApp.getSettingShopId() == null || myApp.getSettingShopId().equals("") ||
 						myApp.getSettingShopId().equals("null")||
 						myApp.getSettingShopId().equals("0")){
@@ -209,6 +210,7 @@ public class SettingActivity extends Activity {
 									HttpHelper.download(food_h_bean.getPicture(),new File(image_file));
 									food_h_bean.setPicture(image_file);
 									fhb_dao.save(food_h_bean);
+									dialog.cancel();
 								} catch (IOException e) {
 									e.printStackTrace();
 								}

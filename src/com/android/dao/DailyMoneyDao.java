@@ -139,6 +139,37 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		
 	}
 	
+	public HashMap<String,String> getList(String date,String type){
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		Cursor cursor=db.query(TABLE_NAME, null, "date=? and type=?",new String[]{date,type}, null, null, null, null);
+		
+		HashMap<String,String> map=new HashMap<String,String> ();
+		while(cursor.moveToNext()){
+			map.put("dailySummary.android.id", cursor.getString(cursor.getColumnIndex("android_id")));
+			map.put("dailySummary.shop.id", cursor.getString(cursor.getColumnIndex("shop_id")));
+			map.put("dailySummary.user.id", cursor.getString(cursor.getColumnIndex("user_id")));
+			map.put("dailySummary.aOpenBalance", cursor.getString(cursor.getColumnIndex("aOpenBalance")));
+			map.put("dailySummary.bExpenses", cursor.getString(cursor.getColumnIndex("bExpenses")));
+			map.put("dailySummary.cCashCollected", cursor.getString(cursor.getColumnIndex("cCashCollected")));
+			map.put("dailySummary.dDailyTurnover", cursor.getString(cursor.getColumnIndex("dDailyTurnover")));
+			map.put("dailySummary.eNextOpenBalance", cursor.getString(cursor.getColumnIndex("eNextOpenBalance")));
+			map.put("dailySummary.fBringBackCash", cursor.getString(cursor.getColumnIndex("fBringBackCash")));
+			map.put("dailySummary.gTotalBalance", cursor.getString(cursor.getColumnIndex("gTotalBalance")));
+			map.put("dailySummary.middleCalculateTime", cursor.getString(cursor.getColumnIndex("middleCalculateTime")));
+			map.put("dailySummary.middleCalculateBalance", cursor.getString(cursor.getColumnIndex("middleCalculateBalance")));
+			map.put("dailySummary.calculateTime", cursor.getString(cursor.getColumnIndex("calculateTime")));
+			map.put("dailySummary.others", cursor.getString(cursor.getColumnIndex("others")));
+			map.put("dailySummary.courier", cursor.getString(cursor.getColumnIndex("courier")));
+			map.put("dailySummary.type", cursor.getString(cursor.getColumnIndex("type")));
+			map.put("dailySummary.date", cursor.getString(cursor.getColumnIndex("date")));
+		}
+		cursor.close();
+		db.close();
+		
+		return map;
+		
+	}
+	
 	public void delete(){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		db.delete(TABLE_NAME, null, null);

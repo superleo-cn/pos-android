@@ -74,9 +74,32 @@ public class PayListDao extends SQLiteOpenHelper {
 		
 	}
 	
-	public List<Map<String,String>> getList(){
+	public List<Map<String,String>> getList(String date){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		Cursor cursor=db.query(TABLE_NAME, null, null,null, null, null, null, null);
+		Cursor cursor=db.query(TABLE_NAME, null, "date=?",new String[]{date}, null, null, null, null);
+		
+		List<Map<String,String>>  list=new ArrayList<Map<String,String>> ();
+		while(cursor.moveToNext()){
+			Map<String,String> map=new HashMap<String,String>();
+			map.put("android_id", cursor.getString(cursor.getColumnIndex("_ID")));
+			map.put("consumption_id", cursor.getString(cursor.getColumnIndex("consumption_id")));
+			map.put("shop_id", cursor.getString(cursor.getColumnIndex("shop_id")));
+			map.put("user_id", cursor.getString(cursor.getColumnIndex("user_id")));
+			map.put("date", cursor.getString(cursor.getColumnIndex("date")));
+			map.put("type", cursor.getString(cursor.getColumnIndex("type")));
+			map.put("price", cursor.getString(cursor.getColumnIndex("price")));
+			list.add(map);
+		}
+		cursor.close();
+		db.close();
+		
+		return list;
+		
+	}
+	
+	public List<Map<String,String>> getList(String date,String type){
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		Cursor cursor=db.query(TABLE_NAME, null, "date=? and type=?",new String[]{date,type}, null, null, null, null);
 		
 		List<Map<String,String>>  list=new ArrayList<Map<String,String>> ();
 		while(cursor.moveToNext()){

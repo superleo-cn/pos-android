@@ -630,6 +630,14 @@ public class MainActivity extends Activity implements OnClickListener{
 //					}
 //				}
 //			}
+			 SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		    	String date=df.format(new Date());
+			long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString());
+			if(result_price==-1){
+				Log.e("保存价格失败", "");
+			}else{
+				Log.e("保存价格成功", "");
+			}
 			f_dao = FoodOrderDao2.getInatance(MainActivity.this);
 			for(int i = 0 ; i < select_dataList.size() ; i ++){
 				SelectFoodBean  bean=select_dataList.get(i);
@@ -753,13 +761,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialog, int which) {
+				
 				clear_data();
-				long result=PriceSave.getInatance(MainActivity.this).save(total_price.getText().toString());
-				if(result==-1){
-					Log.e("保存价格失败", "");
-				}else{
-					Log.e("保存价格成功", "");
-				}
 				String placeholder = "%-40s%-20s";
 				StringBuffer sb=new StringBuffer();
 				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm");

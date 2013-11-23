@@ -25,6 +25,8 @@ public class PriceSave extends SQLiteOpenHelper {
 		+ TABLE_NAME
 		+ " ( " 
 		+ "_ID"+ " INTEGER PRIMARY KEY, "
+		+ "username"+ " TEXT, "
+		+ "date"+ " TEXT, "
 		+ "price" + " TEXT "
 	    + " ) ";
 	private PriceSave(Context context) {
@@ -51,19 +53,21 @@ public class PriceSave extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public long save(String price){
+	public long save(String username,String date,String price){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		ContentValues values=new ContentValues();
 		values.put("price", price);
+		values.put("username", username);
+		values.put("date", date);
 		long result=db.insert(TABLE_NAME, null, values);
 		db.close();
 		return result;
 		
 	}
 	
-	public ArrayList<String> getList(){
+	public ArrayList<String> getList(String username,String date){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		Cursor cursor=db.query(TABLE_NAME, null, null,null, null, null, null, null);
+		Cursor cursor=db.query(TABLE_NAME, null, "username=? and date kile?",new String[]{username,date}, null, null, null, null);
 		
 		ArrayList<String>  list=new ArrayList<String> ();
 		while(cursor.moveToNext()){
