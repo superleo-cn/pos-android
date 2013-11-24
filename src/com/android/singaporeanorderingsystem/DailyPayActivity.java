@@ -189,7 +189,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 public void initData(){
 //		 SimpleDateFormat df_price=new SimpleDateFormat("yyyy-MM-dd");
 //	    	String date=df_price.format(new Date());
-		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),MainActivity.save_date);
+		 String shopId=myApp.getSettingShopId();
+		 if(shopId==null){
+			 shopId="0";
+		 }
+		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),MainActivity.save_date,myApp.getSettingShopId());
 		//Double price=0.00;
 		if(priceList==null){
 			order_price=0.00;
@@ -664,7 +668,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				total.setText(df.format(total_t));
 				
 				Double price_e=Double.parseDouble(tomorrow_money_text);
-				Double take_price=price_d-price_e;
+				Double take_price=Double.parseDouble(cash_register.getText().toString())-price_e;
 				total_take_num.setText(df.format(take_price));
 			}catch(Exception e){
 				e.getMessage();

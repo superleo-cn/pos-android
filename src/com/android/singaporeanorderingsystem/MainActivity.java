@@ -634,7 +634,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		    	String date=df_save.format(new Date());
 		    	save_date=date;
-			long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString());
+			long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString(),myApp.getSettingShopId());
 			if(result_price==-1){
 				Log.e("保存价格失败", "");
 			}else{
