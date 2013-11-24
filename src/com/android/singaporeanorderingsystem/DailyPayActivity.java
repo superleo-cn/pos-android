@@ -104,6 +104,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	public static  HashMap<Integer, String> hashMap_numprice = new HashMap<Integer, String>(); 
 	private String search_date;
 	private Double order_price=0.00;
+	private TextView write_name;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,6 +117,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 
 	 public void initView(){
 		 take_all_price=(TextView) this.findViewById(R.id.take_all_price);
+		 write_name=(TextView) this.findViewById(R.id.write_name);
 		 	menu=(ImageView) this.findViewById(R.id.menu_btn);
 			menu.setOnClickListener(this);
 			login_name=(TextView) this.findViewById(R.id.login_name);
@@ -190,6 +192,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 //		 SimpleDateFormat df_price=new SimpleDateFormat("yyyy-MM-dd");
 //	    	String date=df_price.format(new Date());
 		 login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
+		 write_name.setText(myApp.getU_name());
 		 String shopId=myApp.getSettingShopId();
 		 if(shopId==null){
 			 shopId="0";
