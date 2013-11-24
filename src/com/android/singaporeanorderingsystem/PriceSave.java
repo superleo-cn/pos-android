@@ -82,10 +82,5 @@ public class PriceSave extends SQLiteOpenHelper {
 		
 	}
 	
-	public void delete(){
-		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		db.delete(TABLE_NAME, null, null);
-		db.close();
-	}
 
 }
