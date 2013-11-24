@@ -189,6 +189,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 public void initData(){
 //		 SimpleDateFormat df_price=new SimpleDateFormat("yyyy-MM-dd");
 //	    	String date=df_price.format(new Date());
+		 login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
 		 String shopId=myApp.getSettingShopId();
 		 if(shopId==null){
 			 shopId="0";
