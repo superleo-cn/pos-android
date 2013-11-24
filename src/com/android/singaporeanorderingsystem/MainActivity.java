@@ -115,8 +115,8 @@ public class MainActivity extends Activity implements OnClickListener{
 			R.drawable.food_image11,
 	};
 	
-	private String dabao_price="0";
-	private String dazhe_price="0";
+	private double dabao_price=0;
+	private double dazhe_price=0;
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
 	/*主菜单activity*/
@@ -656,7 +656,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			for(int i = 0 ; i < select_dataList.size() ; i ++){
 				SelectFoodBean  bean=select_dataList.get(i);
 				FoodOrder food_order=new FoodOrder();
-				food_order.setDiscount(dazhe_price);//打折钱数
+				food_order.setDiscount(dazhe_price+"");//打折钱数
 				if(is_foc){
 					food_order.setFoc("1");//是否免费 1是 0否
 				}else{
@@ -665,7 +665,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				food_order.setFood_flag("0");//是否成功 1是 0否
 				food_order.setShop_id(myApp.getSettingShopId());//店idmyApp.getShopid()
 
-				food_order.setTotalpackage(dabao_price);//打包钱数
+				food_order.setTotalpackage(dabao_price+"");//打包钱数
 				food_order.setUser_id(myApp.getUser_id());//用户id
 				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
@@ -913,6 +913,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	public void add(){
 		show_totalPrice=0;
+		dabao_price=0;
+		dazhe_price=0;
 		if(select_dataList.size()==0){
 			total_price.setText(df.format(show_totalPrice));
 		}else{
@@ -922,15 +924,29 @@ public class MainActivity extends Activity implements OnClickListener{
 			show_totalPrice+=price;
 			if(is_foc){
 				show_totalPrice=0;
+				dabao_price=0;
+				dazhe_price=0;
 			}else{
 				if(!is_discount&&is_takePackage){
-					show_totalPrice=show_totalPrice+num*package_money;
+					double dabao=num*package_money;
+					show_totalPrice=show_totalPrice+dabao;
+					dabao_price+=dabao;
+					dazhe_price=0;
 				}else if(is_discount&&!is_takePackage){
-					show_totalPrice=show_totalPrice-num*save_discount_price;
+					double dazhe=num*save_discount_price;
+					show_totalPrice=show_totalPrice-dazhe;
+					dabao_price=0;
+					dazhe_price+=dazhe;
 				}else if(!is_discount&&!is_takePackage){
 					show_totalPrice=show_totalPrice;
+					dabao_price=0;
+					dazhe_price=0;
 				}else if(is_discount&&is_takePackage){
-					show_totalPrice=show_totalPrice+num*package_money-num*save_discount_price;
+					double dabao=num*package_money;
+					double dazhe=num*save_discount_price;
+					show_totalPrice=show_totalPrice+dabao-dazhe;
+					dabao_price+=dabao;
+					dazhe_price+=dazhe;
 				}
 			}
 		}
