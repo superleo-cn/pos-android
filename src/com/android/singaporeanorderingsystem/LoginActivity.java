@@ -135,10 +135,10 @@ public class LoginActivity extends Activity implements OnClickListener{
 		save_month=sharedPrefs.getInt("month", 0);
 		save_day=sharedPrefs.getInt("day", 0);
 		
-		if(year>=save_year&&month>=save_month&&day>=save_day){
-			PriceSave.getInatance(LoginActivity.this).delete();
-			//Toast.makeText(LoginActivity.this, "清空数据", Toast.LENGTH_SHORT).show();
-		}
+//		if(year>=save_year&&month>=save_month&&day>=save_day){
+//			PriceSave.getInatance(LoginActivity.this).delete();
+//			//Toast.makeText(LoginActivity.this, "清空数据", Toast.LENGTH_SHORT).show();
+//		}
 
 
 		Editor editor = sharedPrefs.edit();

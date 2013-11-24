@@ -195,6 +195,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		 }
 		 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
 	    	String date=df_save.format(new Date());
+	    	Log.e("今天日期", date);
 		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date,myApp.getSettingShopId());
 		//Double price=0.00;
 		if(priceList==null){
@@ -638,6 +639,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	post_payList();
 	    	post_numList(); 
 	    	post_dailyMoney();
+	    	Intent intent=new Intent(DailyPayActivity.this,LoginActivity.class);
+	    	startActivity(intent);
 	    	DailyPayActivity.this.finish();
 
 	    }
