@@ -764,7 +764,6 @@ public class MainActivity extends Activity implements OnClickListener{
 
 			public void onClick(DialogInterface dialog, int which) {
 				
-				clear_data();
 				String placeholder = "%-40s%-20s";
 				StringBuffer sb=new StringBuffer();
 				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -781,6 +780,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				}
 				myApp.getPrinter().setIp(myApp.getIp_str());
 				myApp.getPrinter().print(sb.toString());
+				clear_data();
 			}});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
 

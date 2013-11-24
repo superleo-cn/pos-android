@@ -358,7 +358,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 //			final UserDao user_dao=myApp.getUserdao();
 //			LoginUserBean user_bean = user_dao.select(str_login_name);
 			final UserDao2 u_dao=UserDao2.getInatance(LoginActivity.this);
-			ArrayList<LoginUserBean> u_datas=u_dao.getList(str_login_name);
+			ArrayList<LoginUserBean> u_datas=u_dao.getList(str_login_name,myApp.getSettingShopId());
 			LoginUserBean user_bean = new LoginUserBean();
 			if(u_datas != null && u_datas.size() !=0){
 				user_bean = u_datas.get(0);
