@@ -935,6 +935,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 		}
 		total_price.setText(df.format(show_totalPrice));
+		if(Double.parseDouble(gathering.getText().toString())>0){
+		compute_surplus();
+		}
 		}
 	}
 	
