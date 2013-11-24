@@ -365,52 +365,64 @@ public class MainActivity extends Activity implements OnClickListener{
 				case 0:
 					sbuff.append(7);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 1:
 					sbuff.append(8);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 2:
 					sbuff.append(9);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 3:
 					sbuff.append(4);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 4:
 					sbuff.append(5);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 5:
 					sbuff.append(6);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 6:
 					sbuff.append(1);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 7:
 					sbuff.append(2);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 8:
 					sbuff.append(3);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 9:
 					sbuff.append(0);
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 10:
 					sbuff.append(".");
 					gathering.setText(sbuff.toString().trim());
+					compute_surplus();
 					break;
 				case 11:
 					int sb_length=sbuff.length();
 					sbuff.delete(0, sb_length);
 					gathering.setText("0.00");
 					surplus.setText("0.00");
+					compute_surplus();
 					break;
 				}
 			}});
@@ -714,9 +726,9 @@ public class MainActivity extends Activity implements OnClickListener{
 				show_gathering=Double.parseDouble(sbuff.toString().trim());
 				gathering.setText(df.format(show_gathering));
 				double result=show_totalPrice;
-				if(result == 0.00){
-					Toast.makeText(this,R.string.selec_not_food, Toast.LENGTH_SHORT).show();
-				}else{
+//				if(result == 0.00){
+//					Toast.makeText(this,R.string.selec_not_food, Toast.LENGTH_SHORT).show();
+//				}else{
 					if(sbuff.toString().trim().equals("0") || sbuff.toString().trim().equals("0.0")){
 						surplus.setText(df.format(show_surplus));
 					}else{
@@ -727,7 +739,7 @@ public class MainActivity extends Activity implements OnClickListener{
 //					sbuff.delete(0, sb_length);
 					}
 					Show_print().create().show();
-				}
+//				}
 			}catch(Exception e){
 				Toast.makeText(this, R.string.err_price, Toast.LENGTH_SHORT).show();
 			}
@@ -926,5 +938,15 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	}
 	
+	public void compute_surplus(){
+		try{
+		Double get_gathering=Double.parseDouble(gathering.getText().toString());
+		Double get_total_price=Double.parseDouble(total_price.getText().toString());
+		surplus.setText(df.format(get_gathering-get_total_price));
+		}catch(Exception e){
+			Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+		}
+
+	}
 }
 
