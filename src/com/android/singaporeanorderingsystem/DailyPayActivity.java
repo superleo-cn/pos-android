@@ -193,13 +193,17 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		 if(shopId==null){
 			 shopId="0";
 		 }
-		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),MainActivity.save_date,myApp.getSettingShopId());
+		 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
+	    	String date=df_save.format(new Date());
+		List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date,myApp.getSettingShopId());
 		//Double price=0.00;
 		if(priceList==null){
 			order_price=0.00;
 		}else{		
 			if(priceList.size()!=0){
-			order_price=Double.parseDouble(priceList.get(0));
+				for(int i=0;i<priceList.size();i++){
+			order_price+=Double.parseDouble(priceList.get(i));
+				}
 			}else{
 				order_price=0.00;
 			}
