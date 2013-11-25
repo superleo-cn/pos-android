@@ -85,10 +85,10 @@ public class MainActivity extends Activity implements OnClickListener{
 	private SelectListAdapter select_adapter;
 	private PopupWindow popupWindow;
 	private View view;
-	private double show_totalPrice;
+	private double show_totalPrice=0.00;
 	private StringBuffer sbuff;
-	private double show_gathering;
-	private double show_surplus;
+	private double show_gathering=0.00;
+	private double show_surplus=0.00;
 	private boolean is_takePackage;
 	private boolean is_discount;
 	private boolean is_foc;
@@ -723,12 +723,16 @@ public class MainActivity extends Activity implements OnClickListener{
 			});
 			try{
 				Log.e("输入的金额", sbuff.toString().trim());
+				if(sbuff==null||sbuff.toString().trim().equals("") ){
+					sbuff.append("0");
+				}
 				show_gathering=Double.parseDouble(sbuff.toString().trim());
 				gathering.setText(df.format(show_gathering));
 				double result=show_totalPrice;
 //				if(result == 0.00){
 //					Toast.makeText(this,R.string.selec_not_food, Toast.LENGTH_SHORT).show();
 //				}else{
+				
 					if(sbuff.toString().trim().equals("0") || sbuff.toString().trim().equals("0.0")){
 						surplus.setText(df.format(show_surplus));
 					}else{
@@ -951,6 +955,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			}
 		}
 		total_price.setText(df.format(show_totalPrice));
+		if(Double.parseDouble(gathering.getText().toString())>0){
+		compute_surplus();
+		}
 		}
 	}
 	

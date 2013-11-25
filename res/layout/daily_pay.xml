@@ -168,7 +168,8 @@
                         android:text="A BEN"
                         android:textColor="#FBFB05"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold" 
+                        android:id="@+id/write_name"/>
                 </LinearLayout>
 
                 <LinearLayout
