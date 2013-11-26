@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,6 +26,7 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -101,24 +103,11 @@ public class MainActivity extends Activity implements OnClickListener{
 	public static boolean main_isRever;
 	private MyApp myApp;
 	private double package_money;
-	private Integer[] food_image={
-			R.drawable.food_image01,
-			R.drawable.food_image02,
-			R.drawable.food_image03,
-			R.drawable.food_image04,
-			R.drawable.food_image05,
-			R.drawable.food_image06,
-			R.drawable.food_image07,
-			R.drawable.food_image08,
-			R.drawable.food_image09,
-			R.drawable.food_image10,
-			R.drawable.food_image11,
-	};
-	
 	private double dabao_price=0;
 	private double dazhe_price=0;
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
+	private MyOrientationDetector m;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,6 +125,7 @@ public class MainActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
+        m=new MyOrientationDetector(MainActivity.this);
     }
     
     /*初始化控件*/
@@ -879,8 +869,7 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
-		
+		m.enable();
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
 	        initView();
@@ -971,5 +960,9 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 
 	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		m.disable();
+	}
 }
-

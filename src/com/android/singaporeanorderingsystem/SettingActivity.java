@@ -83,6 +83,7 @@ public class SettingActivity extends Activity {
 	private FoodHttpBeanDao fhb_dao;
 	private MyProcessDialog dialog;
 	private String search_date;
+	private MyOrientationDetector m;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -96,6 +97,7 @@ public class SettingActivity extends Activity {
    	.penaltyLog() //打印logcat
    	 .penaltyDeath()
    	 .build());
+   	m=new MyOrientationDetector(SettingActivity.this);
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();
@@ -626,37 +628,14 @@ public class SettingActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
-}
-class MyAsynaTask extends AsyncTask<String,Void,String>{
-	private String dates;
-	private int i;
-
-	public MyAsynaTask(String dates,int i){
-		this.dates=dates;
-		this.i=i;
+	@Override
+	protected void onResume() {
+		super.onResume();
+		m.enable();
 	}
 	@Override
-	protected String doInBackground(String... params) {
-		if(dates!=null){
-		if(dates!=null && !"".equals(dates) && !"null".equals(dates)){
-			return dates;
-		}
-		}
-		return null;
-	}
-	@Override
-	protected void onPostExecute(String result) {
-		super.onPostExecute(result);
-		if(result!=null && !"".equals(result)){
-			//加载远程图片
-			try {
-				System.out.println("1->"+result);
-				HttpHelper.download(result,new File( Constants.CACHE_IMAGE+"/"
-						+"food_image_"+i+".png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	protected void onPause() {
+		super.onPause();
+		m.disable();
 	}
 }

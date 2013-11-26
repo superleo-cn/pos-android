@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
@@ -30,6 +31,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -105,11 +107,13 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private String search_date;
 	private Double order_price=0.00;
 	private TextView write_name;
+	private MyOrientationDetector m;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
 		//init_wifiReceiver();
+		m=new MyOrientationDetector(DailyPayActivity.this);
 		all_num_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
 	//onload_payDetail("1");
@@ -688,7 +692,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 
 		@Override
 		protected void onResume() {
-			// TODO Auto-generated method stub
+			m.enable();
 			df=new DecimalFormat("0.00");
 			initView();
 			
@@ -932,5 +936,9 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				e.getMessage();
 			}
 	}
-		
+	@Override
+	protected void onPause() {
+		super.onPause();
+		m.disable();
+	}
 }
