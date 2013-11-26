@@ -44,7 +44,7 @@
 	<string name="other">其他事宜</string>
 	<string name="message_zhifu">你确认提交数据吗？</string>
 	<string name="message_2">你确认切换语言吗？</string>
-	<string name="open_print">启动设备？</string>
+	<string name="open_print">是否打印单据？</string>
 	<string name="set_title">设置</string>
 	<string name="synchronize">同步配置</string>
 	<string name="content">今天的数据还没有同步到云上，请检查您的网络后，点击同步按钮，/您的数据已经完成同步。</string>

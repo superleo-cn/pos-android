@@ -771,15 +771,15 @@ public class MainActivity extends Activity implements OnClickListener{
 
 			public void onClick(DialogInterface dialog, int which) {
 				
-				String placeholder = "%-30s%-10s";
+				String placeholder = "%-40s%-20s";
 				StringBuffer sb=new StringBuffer();
 				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				String time = sdf.format(new Date());
-				sb.append(time+" \n\n");
+				sb.append(time+"\n\n");
 				for(int i = 0 ; i < select_dataList.size() ;i ++){
 					SelectFoodBean bean=select_dataList.get(i);
 					String foodName = bean.getFood_dayin_code()+" / "+bean.getFood_name();
-					String qty = "X"+bean.getFood_num()+" \n\n";
+					String qty = "X"+bean.getFood_num()+"\n\n";
 					if(is_takePackage){
 						foodName+="(包)";
 					}

@@ -676,7 +676,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				Double price_c=Double.parseDouble(cash_register.getText().toString());
 				Double price_today=price_b+price_c;
 				Double price_d=order_price;
-				today_turnover.setText(df.format(price_today));
+				today_turnover.setText(df.format(price_d));
 				
 				Double price_a=Double.parseDouble(shop_money_text);
 				Double total_t=price_b+price_c;

@@ -228,12 +228,13 @@ public class SettingActivity extends Activity {
 									HttpHelper.download(food_h_bean.getPicture(),new File(image_file));
 									food_h_bean.setPicture(image_file);
 									fhb_dao.save(food_h_bean);
-									
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
 								
 							}
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT)
+							.show();
 							dialog.cancel();
 						}else if(data.getCode() == -1){
 							
@@ -272,6 +273,27 @@ public class SettingActivity extends Activity {
 							editor.commit();
 							is_chinese=false;
 						}
+						getDetailPayListDao.getInatance(SettingActivity.this).delete();
+						RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL+myApp.getSettingShopId(),new Callback() {
+							@Override
+							public void dataLoaded(ResponseData data) {
+								if(data.getCode() == 1){
+									String json=data.getJson();
+									Log.e("返回数据", json);
+									Log.e("中英文",is_chinese+"" );
+									ArrayList<GetPayDetailBean> datas=GetPayDetailBean.newInstanceList(json,is_chinese);
+									Log.e("支付页详情数据", datas.size()+"");
+									for(int i=0;i<datas.size();i++){
+										GetPayDetailBean bean=datas.get(i);
+										getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName());
+									}
+								}else if(data.getCode() == 0){
+									Toast.makeText(SettingActivity.this, "支付页失败", Toast.LENGTH_SHORT).show();
+								}else if(data.getCode() == -1){
+									Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+								}
+							}
+						});
 					}});
 				builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
 
@@ -296,6 +318,7 @@ public class SettingActivity extends Activity {
 						if(data.getCode() == 1){
 							String json=data.getJson();
 							Log.e("返回数据", json);
+							Log.e("中英文",is_chinese+"" );
 							ArrayList<GetPayDetailBean> datas=GetPayDetailBean.newInstanceList(json,is_chinese);
 							Log.e("支付页详情数据", datas.size()+"");
 							for(int i=0;i<datas.size();i++){
