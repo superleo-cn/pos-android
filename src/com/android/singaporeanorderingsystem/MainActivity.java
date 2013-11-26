@@ -774,7 +774,6 @@ public class MainActivity extends Activity implements OnClickListener{
 
 			public void onClick(DialogInterface dialog, int which) {
 				
-				String placeholder = "%-40s%-20s";
 				StringBuffer sb=new StringBuffer();
 				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				String time = sdf.format(new Date());
@@ -786,7 +785,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_takePackage){
 						foodName+="(包)";
 					}
-					sb.append(String.format(placeholder, foodName, qty));
+					sb.append(foodName + "     " + qty);
 				}
 				myApp.getPrinter().setIp(myApp.getIp_str());
 				myApp.getPrinter().print(sb.toString());
