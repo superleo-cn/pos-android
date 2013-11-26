@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
@@ -30,6 +31,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -105,11 +107,13 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private String search_date;
 	private Double order_price=0.00;
 	private TextView write_name;
+	private MyOrientationDetector1 m;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
 		//init_wifiReceiver();
+		m=new MyOrientationDetector1(DailyPayActivity.this);
 		all_num_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
 	//onload_payDetail("1");
@@ -688,7 +692,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 
 		@Override
 		protected void onResume() {
-			// TODO Auto-generated method stub
+			m.enable();
 			df=new DecimalFormat("0.00");
 			initView();
 			
@@ -932,5 +936,41 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				e.getMessage();
 			}
 	}
-		
+	@Override
+	protected void onPause() {
+		super.onPause();
+		m.disable();
+	}
+}
+class MyOrientationDetector1 extends OrientationEventListener{
+	private Context context;
+    public MyOrientationDetector1( Context context ) {
+        super(context );
+        this.context=context;
+    }
+    @Override
+    public void onOrientationChanged(int orientation) {
+    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+    	    return;  //手机平放时，检测不到有效的角度
+    	}
+    	//只检测是否有四个角度的改变
+    	if( orientation > 350 || orientation< 10 ) { //0度
+    	     orientation = 0;
+    	}  
+    	else if( orientation > 80 &&orientation < 100 ) { //90度
+    	    orientation= 90;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+    	}
+    	else if( orientation > 170 &&orientation < 190 ) { //180度
+    	    orientation= 180;
+    	}
+    	else if( orientation > 260 &&orientation < 280  ) { //270度
+    	    orientation= 270;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    	}
+    	else {
+    	    return;
+    	}
+    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
+    }
 }

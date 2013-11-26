@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
@@ -25,6 +26,7 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -101,24 +103,11 @@ public class MainActivity extends Activity implements OnClickListener{
 	public static boolean main_isRever;
 	private MyApp myApp;
 	private double package_money;
-	private Integer[] food_image={
-			R.drawable.food_image01,
-			R.drawable.food_image02,
-			R.drawable.food_image03,
-			R.drawable.food_image04,
-			R.drawable.food_image05,
-			R.drawable.food_image06,
-			R.drawable.food_image07,
-			R.drawable.food_image08,
-			R.drawable.food_image09,
-			R.drawable.food_image10,
-			R.drawable.food_image11,
-	};
-	
-	private String dabao_price="0";
-	private String dazhe_price="0";
+	private double dabao_price=0;
+	private double dazhe_price=0;
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
+	private MyOrientationDetector2 m;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,6 +125,7 @@ public class MainActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
+        m=new MyOrientationDetector2(MainActivity.this);
     }
     
     /*初始化控件*/
@@ -656,7 +646,7 @@ public class MainActivity extends Activity implements OnClickListener{
 			for(int i = 0 ; i < select_dataList.size() ; i ++){
 				SelectFoodBean  bean=select_dataList.get(i);
 				FoodOrder food_order=new FoodOrder();
-				food_order.setDiscount(dazhe_price);//打折钱数
+				food_order.setDiscount(dazhe_price+"");//打折钱数
 				if(is_foc){
 					food_order.setFoc("1");//是否免费 1是 0否
 				}else{
@@ -665,7 +655,7 @@ public class MainActivity extends Activity implements OnClickListener{
 				food_order.setFood_flag("0");//是否成功 1是 0否
 				food_order.setShop_id(myApp.getSettingShopId());//店idmyApp.getShopid()
 
-				food_order.setTotalpackage(dabao_price);//打包钱数
+				food_order.setTotalpackage(dabao_price+"");//打包钱数
 				food_order.setUser_id(myApp.getUser_id());//用户id
 				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
@@ -879,8 +869,7 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
-		
+		m.enable();
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
 	        initView();
@@ -917,6 +906,8 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	public void add(){
 		show_totalPrice=0;
+		dabao_price=0;
+		dazhe_price=0;
 		if(select_dataList.size()==0){
 			total_price.setText(df.format(show_totalPrice));
 		}else{
@@ -926,15 +917,29 @@ public class MainActivity extends Activity implements OnClickListener{
 			show_totalPrice+=price;
 			if(is_foc){
 				show_totalPrice=0;
+				dabao_price=0;
+				dazhe_price=0;
 			}else{
 				if(!is_discount&&is_takePackage){
-					show_totalPrice=show_totalPrice+num*package_money;
+					double dabao=num*package_money;
+					show_totalPrice=show_totalPrice+dabao;
+					dabao_price+=dabao;
+					dazhe_price=0;
 				}else if(is_discount&&!is_takePackage){
-					show_totalPrice=show_totalPrice-num*save_discount_price;
+					double dazhe=num*save_discount_price;
+					show_totalPrice=show_totalPrice-dazhe;
+					dabao_price=0;
+					dazhe_price+=dazhe;
 				}else if(!is_discount&&!is_takePackage){
 					show_totalPrice=show_totalPrice;
+					dabao_price=0;
+					dazhe_price=0;
 				}else if(is_discount&&is_takePackage){
-					show_totalPrice=show_totalPrice+num*package_money-num*save_discount_price;
+					double dabao=num*package_money;
+					double dazhe=num*save_discount_price;
+					show_totalPrice=show_totalPrice+dabao-dazhe;
+					dabao_price+=dabao;
+					dazhe_price+=dazhe;
 				}
 			}
 		}
@@ -955,5 +960,41 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 
 	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		m.disable();
+	}
 }
-
+class MyOrientationDetector2 extends OrientationEventListener{
+	private Context context;
+    public MyOrientationDetector2( Context context ) {
+        super(context );
+        this.context=context;
+    }
+    @Override
+    public void onOrientationChanged(int orientation) {
+    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+    	    return;  //手机平放时，检测不到有效的角度
+    	}
+    	//只检测是否有四个角度的改变
+    	if( orientation > 350 || orientation< 10 ) { //0度
+    	     orientation = 0;
+    	}  
+    	else if( orientation > 80 &&orientation < 100 ) { //90度
+    	    orientation= 90;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+    	}
+    	else if( orientation > 170 &&orientation < 190 ) { //180度
+    	    orientation= 180;
+    	}
+    	else if( orientation > 260 &&orientation < 280  ) { //270度
+    	    orientation= 270;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    	}
+    	else {
+    	    return;
+    	}
+    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
+    }
+}

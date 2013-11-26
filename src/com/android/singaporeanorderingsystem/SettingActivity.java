@@ -2,8 +2,13 @@ package com.android.singaporeanorderingsystem;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +16,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
@@ -21,6 +27,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -40,8 +47,11 @@ import com.android.bean.GetPayDetailBean;
 import com.android.common.Constants;
 import com.android.common.HttpHelper;
 import com.android.common.MyApp;
+import com.android.dao.DailyMoneyDao;
 import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.GetTakeNumDao;
+import com.android.dao.NumListDao;
+import com.android.dao.PayListDao;
 import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
@@ -74,7 +84,8 @@ public class SettingActivity extends Activity {
 	private SharedPreferences spf;
 	private FoodHttpBeanDao fhb_dao;
 	private MyProcessDialog dialog;
-	
+	private String search_date;
+	private MyOrientationDetector3 m;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -88,6 +99,7 @@ public class SettingActivity extends Activity {
    	.penaltyLog() //打印logcat
    	 .penaltyDeath()
    	 .build());
+   	m=new MyOrientationDetector3(SettingActivity.this);
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();
@@ -120,6 +132,12 @@ public class SettingActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				
+				SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		    	String date=df.format(new Date());
+		    	SettingActivity.this.search_date=date;
+		    	post_payList();
+		    	post_numList(); 
+		    	post_dailyMoney();
 			}
 		});
 		menu.setOnClickListener(new OnClickListener() {
@@ -328,6 +346,160 @@ public class SettingActivity extends Activity {
 				});
 			}});
 	}
+	/***********************************************************************************/
+	
+	/*提交每日支付*/
+	public void post_payList(){
+		try{
+		HashMap<String, String> params= new HashMap<String,String>();
+		List<Map<String,String>> datas=PayListDao.getInatance(this).getList(search_date);
+		if(!datas.isEmpty()){
+		for(int i=0;i<datas.size();i++){
+			if(datas.get(i).get("type").equals("0")){
+			params.put("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+			Log.e("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+			params.put("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
+			Log.e("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
+			params.put("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+			Log.e("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+			params.put("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+			Log.e("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+			params.put("consumeTransactions["+i+"].price", datas.get(i).get("price"));
+			Log.e("consumeTransactions["+i+"].price", datas.get(i).get("price"));
+			}
+		}
+		}
+		RemoteDataHandler.asyncPost(Constants.URL_POST_PAYLIST, params, new Callback() {
+			@Override
+			public void dataLoaded(ResponseData data) {
+				if(data.getCode() == 1){
+					String json=data.getJson();
+					Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+				String str=json.substring(1,json.length()-1);
+				String []array=str.split(",");
+				if(array.length!=0){
+					for(int i=0;i<array.length;i++){
+						Log.e("数据组",array[i]+"");
+					int result=	PayListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
+					if(result==-1){
+						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
+					}else{
+						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
+					}
+						
+					}
+				}
+				}else if(data.getCode() == 0){
+					Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+				}else if(data.getCode() == -1){
+					Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		}catch(Exception e){
+			e.getMessage();
+		}
+	}
+	
+	/*提交带回总数*/
+	public void post_numList(){
+		try{
+			HashMap<String, String> params= new HashMap<String,String>();
+			List<Map<String,String>> datas=NumListDao.getInatance(this).getList(search_date);
+			if(!datas.isEmpty()){
+			for(int i=0;i<datas.size();i++){
+				if(datas.get(i).get("type").equals("0")){
+				params.put("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+				Log.e("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+				params.put("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
+				Log.e("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
+				params.put("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+				Log.e("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+				params.put("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+				Log.e("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+				params.put("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
+				Log.e("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
+				}
+			}
+			}
+			RemoteDataHandler.asyncPost(Constants.URL_POST_TAKENUM, params, new Callback() {
+				@Override
+				public void dataLoaded(ResponseData data) {
+					if(data.getCode() == 1){
+						String json=data.getJson();
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+					String str=json.substring(1,json.length()-1);
+					String []array=str.split(",");
+					if(array.length!=0){
+						for(int i=0;i<array.length;i++){
+							Log.e("数据组",array[i]+"");
+						int result=	NumListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
+						if(result==-1){
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
+						}else{
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
+						}
+							
+						}
+					}
+					}else if(data.getCode() == 0){
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+					}else if(data.getCode() == -1){
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			}catch(Exception e){
+				e.getMessage();
+			}
+	}
+	
+	/*提交每日营业额*/
+	public void post_dailyMoney(){
+		try{
+			HashMap<String, String> params= DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
+//			HashMap<String, String> map=new HashMap<String,String>();
+//			map.put("dailySummary.android.id", "1");
+//			map.put("dailySummary.shop.id", "2");
+//			map.put("dailySummary.user.id", "1");
+//			map.put("dailySummary.aOpenBalance", "0");
+//			map.put("dailySummary.bExpenses", "0");
+//			map.put("dailySummary.cCashCollected", "0");
+//			map.put("dailySummary.dDailyTurnover", "0");
+//			map.put("dailySummary.eNextOpenBalance", "0");
+//			map.put("dailySummary.fBringBackCash", "0");
+//			map.put("dailySummary.gTotalBalance", "0");
+//			map.put("dailySummary.middleCalculateTime", "0");
+//			map.put("dailySummary.middleCalculateBalance", "0");
+//			map.put("dailySummary.calculateTime", "0");
+//			map.put("dailySummary.others", "0");
+//			map.put("dailySummary.courier", "0");
+			RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, params, new Callback() {
+				@Override
+				public void dataLoaded(ResponseData data) {
+					if(data.getCode() == 1){
+						String json=data.getJson();
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+						int result=DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
+						if(result==-1){
+							Toast.makeText(SettingActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(SettingActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
+						}
+					}else if(data.getCode() == 0){
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+					}else if(data.getCode() == -1){
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+			}catch(Exception e){
+				e.getMessage();
+			}
+	}
+	
+	/*********************************************************************************/
+	
 	public void initPopupWindow() {
 		if (popupWindow == null) {
 			view = this.getLayoutInflater().inflate(R.layout.popupwindow, null);
@@ -458,37 +630,46 @@ public class SettingActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
+	@Override
+	protected void onResume() {
+		super.onResume();
+		m.enable();
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		m.disable();
+	}
 }
-class MyAsynaTask extends AsyncTask<String,Void,String>{
-	private String dates;
-	private int i;
-
-	public MyAsynaTask(String dates,int i){
-		this.dates=dates;
-		this.i=i;
-	}
-	@Override
-	protected String doInBackground(String... params) {
-		if(dates!=null){
-		if(dates!=null && !"".equals(dates) && !"null".equals(dates)){
-			return dates;
-		}
-		}
-		return null;
-	}
-	@Override
-	protected void onPostExecute(String result) {
-		super.onPostExecute(result);
-		if(result!=null && !"".equals(result)){
-			//加载远程图片
-			try {
-				System.out.println("1->"+result);
-				HttpHelper.download(result,new File( Constants.CACHE_IMAGE+"/"
-						+"food_image_"+i+".png"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+class MyOrientationDetector3 extends OrientationEventListener{
+	private Context context;
+    public MyOrientationDetector3( Context context ) {
+        super(context );
+        this.context=context;
+    }
+    @Override
+    public void onOrientationChanged(int orientation) {
+    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+    	    return;  //手机平放时，检测不到有效的角度
+    	}
+    	//只检测是否有四个角度的改变
+    	if( orientation > 350 || orientation< 10 ) { //0度
+    	     orientation = 0;
+    	}  
+    	else if( orientation > 80 &&orientation < 100 ) { //90度
+    	    orientation= 90;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+    	}
+    	else if( orientation > 170 &&orientation < 190 ) { //180度
+    	    orientation= 180;
+    	}
+    	else if( orientation > 260 &&orientation < 280  ) { //270度
+    	    orientation= 270;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    	}
+    	else {
+    	    return;
+    	}
+    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
+    }
 }

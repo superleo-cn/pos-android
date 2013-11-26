@@ -95,6 +95,29 @@ public class UserDao2 extends SQLiteOpenHelper {
 		return map;
 		
 	}
+	public ArrayList<LoginUserBean> getList(String login_name,String shop_id){
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		Cursor c=db.query(TABLE_NAME, null, "username=? and shop_id=?",new String[]{login_name.toLowerCase(),shop_id}, null, null, null, null);
+//		Cursor c = db.rawQuery("select * from u_dao where username=?;", new String[]{login_name});
+		ArrayList<LoginUserBean> map=new ArrayList<LoginUserBean>();
+		while(c.moveToNext()){
+			//android_id,user_id,shop_id,quantity,foodid,discount,totalretailprice,totalpackage,foc,food_flag
+			LoginUserBean login_user_bean = new LoginUserBean();
+			login_user_bean.setId(c.getString(c.getColumnIndex("u_id")));
+			login_user_bean.setUsername(c.getString(c.getColumnIndex("username")));
+			login_user_bean.setPasswrod(c.getString(c.getColumnIndex("password")));
+			login_user_bean.setRealname(c.getString(c.getColumnIndex("realname")));
+			login_user_bean.setUsertype(c.getString(c.getColumnIndex("usertype")));
+			login_user_bean.setStatus(c.getString(c.getColumnIndex("status")));
+			login_user_bean.setShop_id(c.getString(c.getColumnIndex("shop_id")));
+			map.add(login_user_bean);
+		}
+		c.close();
+		db.close();
+		
+		return map;
+		
+	}
 	
 	public void delete(){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
