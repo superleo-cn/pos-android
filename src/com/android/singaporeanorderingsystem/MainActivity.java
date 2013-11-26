@@ -107,7 +107,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double dazhe_price=0;
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
-	private MyOrientationDetector m;
+	private MyOrientationDetector2 m;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class MainActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
-        m=new MyOrientationDetector(MainActivity.this);
+        m=new MyOrientationDetector2(MainActivity.this);
     }
     
     /*初始化控件*/
@@ -965,4 +965,36 @@ public class MainActivity extends Activity implements OnClickListener{
 		super.onPause();
 		m.disable();
 	}
+}
+class MyOrientationDetector2 extends OrientationEventListener{
+	private Context context;
+    public MyOrientationDetector2( Context context ) {
+        super(context );
+        this.context=context;
+    }
+    @Override
+    public void onOrientationChanged(int orientation) {
+    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
+    	    return;  //手机平放时，检测不到有效的角度
+    	}
+    	//只检测是否有四个角度的改变
+    	if( orientation > 350 || orientation< 10 ) { //0度
+    	     orientation = 0;
+    	}  
+    	else if( orientation > 80 &&orientation < 100 ) { //90度
+    	    orientation= 90;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+    	}
+    	else if( orientation > 170 &&orientation < 190 ) { //180度
+    	    orientation= 180;
+    	}
+    	else if( orientation > 260 &&orientation < 280  ) { //270度
+    	    orientation= 270;
+    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    	}
+    	else {
+    	    return;
+    	}
+    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
+    }
 }
