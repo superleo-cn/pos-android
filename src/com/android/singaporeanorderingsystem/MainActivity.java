@@ -646,19 +646,22 @@ public class MainActivity extends Activity implements OnClickListener{
 			for(int i = 0 ; i < select_dataList.size() ; i ++){
 				SelectFoodBean  bean=select_dataList.get(i);
 				FoodOrder food_order=new FoodOrder();
-				food_order.setDiscount(dazhe_price+"");//打折钱数
-				if(is_foc){
-					food_order.setFoc("1");//是否免费 1是 0否
-				}else{
-					food_order.setFoc("0");//是否免费 1是 0否
-				}
+				//food_order.setDiscount(dazhe_price+"");//打折钱数
 				food_order.setFood_flag("0");//是否成功 1是 0否
 				food_order.setShop_id(myApp.getSettingShopId());//店idmyApp.getShopid()
 
-				food_order.setTotalpackage(dabao_price+"");//打包钱数
+				food_order.setTotalpackage(bean.getDabao_price() + "");//打包钱数
+				food_order.setDiscount(bean.getDazhe_price() + ""); //打折钱数
 				food_order.setUser_id(myApp.getUser_id());//用户id
 //				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
-				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())+"");//收钱数
+				double totalRetailPrice = Double.parseDouble( bean.getFood_price()) - bean.getDazhe_price() + bean.getDabao_price();
+				if(is_foc){
+					food_order.setFoc("1");//是否免费 1是 0否
+					totalRetailPrice = 0;
+				}else{
+					food_order.setFoc("0");//是否免费 1是 0否
+				}
+				food_order.setRetailprice(totalRetailPrice + "");//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
 				food_order.setQuantity(bean.getFood_num());//数量
 				f_dao.save(food_order);
@@ -771,7 +774,6 @@ public class MainActivity extends Activity implements OnClickListener{
 
 			public void onClick(DialogInterface dialog, int which) {
 				
-				String placeholder = "%-40s%-20s";
 				StringBuffer sb=new StringBuffer();
 				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				String time = sdf.format(new Date());
@@ -783,7 +785,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_takePackage){
 						foodName+="(包)";
 					}
-					sb.append(String.format(placeholder, foodName, qty));
+					sb.append(foodName + "     " + qty);
 				}
 				myApp.getPrinter().setIp(myApp.getIp_str());
 				myApp.getPrinter().print(sb.toString());

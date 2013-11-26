@@ -44,7 +44,7 @@
 	<string name="other">Remarks</string>
 	<string name="message_zhifu">Do you want to submit？</string>
 	<string name="message_2">Do you want to switch language？</string>
-	<string name="open_print">To Active Printer?</string>
+	<string name="open_print">To print receipt?</string>
 	<string name="set_title">Setting</string>
 	<string name="synchronize">Sync</string>
 	<string name="content">Uncommitted data is pending a synchronization to the Cloud. Please check Internet connection before clicking on the button, / All data committed to the Cloud </string>
