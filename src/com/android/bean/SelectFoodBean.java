@@ -6,6 +6,8 @@ public class SelectFoodBean {
 	private String food_price;
 	private String food_dayin_code;
 	private String food_id;
+	private String food_type;
+	
 	private double dabao_price;
 	private double dazhe_price;
 	
@@ -50,6 +52,12 @@ public class SelectFoodBean {
 	}
 	public void setDazhe_price(double dazhe_price) {
 		this.dazhe_price = dazhe_price;
+	}
+	public String getFood_type() {
+		return food_type;
+	}
+	public void setFood_type(String food_type) {
+		this.food_type = food_type;
 	}
 	@Override
 	public String toString() {

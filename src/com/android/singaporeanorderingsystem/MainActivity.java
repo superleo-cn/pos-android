@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -285,12 +287,13 @@ public class MainActivity extends Activity implements OnClickListener{
 				}else{
 				save_selectNum++;
 				}
+				SelectFoodBean bean=new SelectFoodBean();
+				bean.setFood_name(food_dataList.get(arg2).getTitle());
+				bean.setFood_price(food_dataList.get(arg2).getPrice());
+				bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
+				bean.setFood_id(food_dataList.get(arg2).getFood_id());
+				bean.setFood_type(food_dataList.get(arg2).getType());
 				if(frist){
-					SelectFoodBean bean=new SelectFoodBean();
-					bean.setFood_name(food_dataList.get(arg2).getTitle());
-					bean.setFood_price(food_dataList.get(arg2).getPrice());
-					bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
-					bean.setFood_id(food_dataList.get(arg2).getFood_id());
 					//show_totalPrice=save_foc_price;
 					show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
 					
@@ -307,11 +310,6 @@ public class MainActivity extends Activity implements OnClickListener{
 						}
 					}.start();
 				}else{
-					SelectFoodBean bean=new SelectFoodBean();
-					bean.setFood_name(food_dataList.get(arg2).getTitle());
-					bean.setFood_price(food_dataList.get(arg2).getPrice());
-					bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
-					bean.setFood_id(food_dataList.get(arg2).getFood_id());
 					for(int i=select_dataList.size()-1;i>=0;i--){
 						SelectFoodBean add_bean=select_dataList.get(i);
 						if(add_bean.getFood_name().equals(bean.getFood_name())){
@@ -928,7 +926,11 @@ public class MainActivity extends Activity implements OnClickListener{
 				select_dataList.get(i).setDazhe_price(0);
 			}else{
 				if(!is_discount&&is_takePackage){
-					double dabao=num*package_money;
+					double dabao= 0;
+					String type = select_dataList.get(i).getFood_type();
+					if(!StringUtils.equalsIgnoreCase(type, "STAPLE")){
+						dabao=num*package_money;
+					}
 					show_totalPrice=show_totalPrice+dabao;
 					dabao_price+=dabao;
 					dazhe_price=0;
@@ -948,7 +950,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					select_dataList.get(i).setDabao_price(0);
 					select_dataList.get(i).setDazhe_price(0);
 				}else if(is_discount&&is_takePackage){
-					double dabao=num*package_money;
+					double dabao= 0;
+					String type = select_dataList.get(i).getFood_type();
+					if(!StringUtils.equalsIgnoreCase(type, "STAPLE")){
+						dabao=num*package_money;
+					}
 					double dazhe=num*save_discount_price;
 					show_totalPrice=show_totalPrice+dabao-dazhe;
 					dabao_price+=dabao;
