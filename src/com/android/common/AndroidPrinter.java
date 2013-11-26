@@ -110,7 +110,7 @@ public class AndroidPrinter {
 			tcmd[1] = 0x04;
 			tcmd[2] = 0x00;
 			wfComm.sndByte(tcmd);
-			wfComm.sendMsg(message + "\n\n" , "gbk");
+			wfComm.sendMsg(message, "gbk");
 			Log.d("WIFI Printer", "Print message is: " + message);
 
 			byte[] bytecmd = new byte[5];
