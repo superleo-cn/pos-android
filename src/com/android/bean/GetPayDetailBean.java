@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 
 public class GetPayDetailBean {
 	
@@ -36,8 +38,10 @@ public class GetPayDetailBean {
 					String name;
 					if(is_chinese){
 					 name = obj.optString(Attr.NAME_ZH);
+					 Log.e("解析中文", name);
 					}else{
 					 name = obj.optString(Attr.NAME);
+					 Log.e("解析英文", name);
 					}
 					pay_detail.add(new GetPayDetailBean(id, name)) ;
 				}
