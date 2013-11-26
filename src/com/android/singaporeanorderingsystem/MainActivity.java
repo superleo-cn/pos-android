@@ -657,7 +657,8 @@ public class MainActivity extends Activity implements OnClickListener{
 
 				food_order.setTotalpackage(dabao_price+"");//打包钱数
 				food_order.setUser_id(myApp.getUser_id());//用户id
-				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
+//				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
+				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())+"");//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
 				food_order.setQuantity(bean.getFood_num());//数量
 				f_dao.save(food_order);
@@ -914,32 +915,44 @@ public class MainActivity extends Activity implements OnClickListener{
 		for(int i=0;i<select_dataList.size();i++){
 			int num=Integer.parseInt(select_dataList.get(i).getFood_num());
 			Double price=Double.parseDouble(select_dataList.get(i).getFood_price());
+			select_dataList.get(i).setDabao_price(0);
+			select_dataList.get(i).setDazhe_price(0);
 			show_totalPrice+=price;
 			if(is_foc){
 				show_totalPrice=0;
 				dabao_price=0;
 				dazhe_price=0;
+				select_dataList.get(i).setDabao_price(0);
+				select_dataList.get(i).setDazhe_price(0);
 			}else{
 				if(!is_discount&&is_takePackage){
 					double dabao=num*package_money;
 					show_totalPrice=show_totalPrice+dabao;
 					dabao_price+=dabao;
 					dazhe_price=0;
+					select_dataList.get(i).setDabao_price(dabao);
+					select_dataList.get(i).setDazhe_price(0);
 				}else if(is_discount&&!is_takePackage){
 					double dazhe=num*save_discount_price;
 					show_totalPrice=show_totalPrice-dazhe;
 					dabao_price=0;
 					dazhe_price+=dazhe;
+					select_dataList.get(i).setDabao_price(0);
+					select_dataList.get(i).setDazhe_price(dazhe);
 				}else if(!is_discount&&!is_takePackage){
 					show_totalPrice=show_totalPrice;
 					dabao_price=0;
 					dazhe_price=0;
+					select_dataList.get(i).setDabao_price(0);
+					select_dataList.get(i).setDazhe_price(0);
 				}else if(is_discount&&is_takePackage){
 					double dabao=num*package_money;
 					double dazhe=num*save_discount_price;
 					show_totalPrice=show_totalPrice+dabao-dazhe;
 					dabao_price+=dabao;
 					dazhe_price+=dazhe;
+					select_dataList.get(i).setDabao_price(dabao);
+					select_dataList.get(i).setDazhe_price(dazhe);
 				}
 			}
 		}

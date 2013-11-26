@@ -6,6 +6,8 @@ public class SelectFoodBean {
 	private String food_price;
 	private String food_dayin_code;
 	private String food_id;
+	private double dabao_price;
+	private double dazhe_price;
 	
 	public String getFood_id() {
 		return food_id;
@@ -37,12 +39,25 @@ public class SelectFoodBean {
 	public void setFood_dayin_code(String food_dayin_code) {
 		this.food_dayin_code = food_dayin_code;
 	}
+	public double getDabao_price() {
+		return dabao_price;
+	}
+	public void setDabao_price(double dabao_price) {
+		this.dabao_price = dabao_price;
+	}
+	public double getDazhe_price() {
+		return dazhe_price;
+	}
+	public void setDazhe_price(double dazhe_price) {
+		this.dazhe_price = dazhe_price;
+	}
 	@Override
 	public String toString() {
 		return "SelectFoodBean [food_name=" + food_name + ", food_num="
 				+ food_num + ", food_price=" + food_price
 				+ ", food_dayin_code=" + food_dayin_code + ", food_id="
-				+ food_id + "]";
+				+ food_id + ", dabao_price=" + dabao_price + ", dazhe_price="
+				+ dazhe_price + "]";
 	}
 	
 }
