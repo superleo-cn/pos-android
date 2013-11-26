@@ -643,7 +643,7 @@ public class MainActivity extends Activity implements OnClickListener{
 //					}
 //				}
 //			}
-			 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
 		    	String date=df_save.format(new Date());
 		    	save_date=date;
 			long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString(),myApp.getSettingShopId());
