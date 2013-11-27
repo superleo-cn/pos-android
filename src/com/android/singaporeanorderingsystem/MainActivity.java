@@ -831,14 +831,21 @@ public class MainActivity extends Activity implements OnClickListener{
 				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				String time = sdf.format(new Date());
 				sb.append(time+"\n\n");
-				for(int i = 0 ; i < select_dataList.size() ;i ++){
-					SelectFoodBean bean=select_dataList.get(i);
-					String foodName = bean.getFood_dayin_code()+" / "+bean.getFood_name();
-					String qty = "X"+bean.getFood_num()+"\n\n";
-					if(is_takePackage){
-						foodName+="(包)";
+				FoodHttpBeanDao fhb_dao =FoodHttpBeanDao.getInatance(MainActivity.this);
+		    	int fixSize = fhb_dao.getList().size();
+				int size = select_dataList.size();
+				for(int i = 0 ; i < fixSize ; i++){
+					if(i < size){
+						SelectFoodBean bean=select_dataList.get(i);
+						String foodName = bean.getFood_dayin_code()+" / "+bean.getFood_name();
+						String qty = "X"+bean.getFood_num()+"\n\n";
+						if(is_takePackage){
+							foodName+="(包)";
+						}
+						sb.append(foodName + "     " + qty);
+					}else{
+						sb.append(" \n\n");
 					}
-					sb.append(foodName + "     " + qty);
 				}
 				myApp.getPrinter().setIp(myApp.getIp_str());
 				myApp.getPrinter().print(sb.toString());
