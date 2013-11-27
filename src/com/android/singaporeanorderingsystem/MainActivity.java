@@ -352,57 +352,101 @@ public class MainActivity extends Activity implements OnClickListener{
 				switch(arg2){
 				case 0:
 					sbuff.append(7);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 1:
 					sbuff.append(8);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 2:
 					sbuff.append(9);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 3:
 					sbuff.append(4);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 4:
 					sbuff.append(5);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 5:
 					sbuff.append(6);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 6:
 					sbuff.append(1);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 7:
 					sbuff.append(2);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 8:
 					sbuff.append(3);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 9:
 					sbuff.append(0);
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 10:
 					sbuff.append(".");
+					if(is_maxPrice()){
+						gathering.setText("9999.99");
+					}else{
 					gathering.setText(sbuff.toString().trim());
+					}
 					compute_surplus();
 					break;
 				case 11:
@@ -531,10 +575,11 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.r_lay_id_foc:
 
-			if(select_dataList.size()==0){
-				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
-			}else{
+			
 			if(!is_foc){
+				if(select_dataList.size()==0){
+					Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
+				}else{
 				foc.setImageResource(R.drawable.package_seclect);
 				//Toast.makeText(this, "免单", Toast.LENGTH_SHORT).show();
 				is_foc=true;
@@ -543,12 +588,13 @@ public class MainActivity extends Activity implements OnClickListener{
 				take_package.setImageResource(R.drawable.package_not_select);
 				is_takePackage=false;
 				add();
+				}
 			}else{
 				foc.setImageResource(R.drawable.package_not_select);
 				//Toast.makeText(this, "不免单", Toast.LENGTH_SHORT).show();
 				is_foc=false;
 				add();
-			}
+			
 			}
 			break;
 		case R.id.r_lay_id_discount:
@@ -971,6 +1017,19 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 
 	}
+	 public boolean is_maxPrice(){
+		 try{
+	    	Double now_price=Double.parseDouble(sbuff.toString().trim());
+	    	if(now_price>9999.99){
+	    		return true;
+	    	}
+		 }catch (Exception e){
+			 Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+			 return false;
+		 }
+	    	return false;
+		
+	    }
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -1008,4 +1067,5 @@ class MyOrientationDetector2 extends OrientationEventListener{
     	}
     	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
     }
+   
 }
