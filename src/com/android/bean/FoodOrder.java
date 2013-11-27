@@ -11,6 +11,7 @@ public class FoodOrder {
 	private String totalpackage;
 	private String foc;
 	private String food_flag;
+	private String date;
 	public String getAndroid_id() {
 		return android_id;
 	}
@@ -71,13 +72,19 @@ public class FoodOrder {
 	public void setFood_flag(String food_flag) {
 		this.food_flag = food_flag;
 	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	@Override
 	public String toString() {
 		return "FoodOrder [android_id=" + android_id + ", user_id=" + user_id
 				+ ", shop_id=" + shop_id + ", retailprice=" + retailprice
 				+ ", quantity=" + quantity + ", foodid=" + foodid
 				+ ", discount=" + discount + ", totalpackage=" + totalpackage
-				+ ", foc=" + foc + ", food_flag=" + food_flag + "]";
+				+ ", foc=" + foc + ", food_flag=" + food_flag + ", date " + date + "]";
 	}
 	
 }

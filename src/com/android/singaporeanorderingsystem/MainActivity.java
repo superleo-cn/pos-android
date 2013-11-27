@@ -1,5 +1,6 @@
 package com.android.singaporeanorderingsystem;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -712,6 +713,8 @@ public class MainActivity extends Activity implements OnClickListener{
 				food_order.setRetailprice(totalRetailPrice + "");//收钱数
 				food_order.setFoodid(bean.getFood_id());//食物id
 				food_order.setQuantity(bean.getFood_num());//数量
+				DateFormat timestamp =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				food_order.setDate(timestamp.format(new Date()));
 				f_dao.save(food_order);
 			}
 			
@@ -740,6 +743,8 @@ public class MainActivity extends Activity implements OnClickListener{
 						System.out.println("transactions["+i+"].totalPackage-->"+ f_order.getTotalpackage());
 						params.put("transactions["+i+"].freeOfCharge", f_order.getFoc());
 						System.out.println("transactions["+i+"].freeOfCharge-->"+ f_order.getFoc());
+						params.put("transactions["+i+"].orderDate", f_order.getDate());
+						System.out.println("transactions["+i+"].orderDate-->"+ f_order.getDate());
 				}
 			}
 			RemoteDataHandler.asyncPost(Constants.URL_FOOD_ORDER, params, new Callback() {
@@ -756,7 +761,7 @@ public class MainActivity extends Activity implements OnClickListener{
 						String [] str=json.split(",");
 						for(int i = 0; i<str.length;i++){
 							System.out.println("-----333>>>>>>"+str[i]);
-							f_dao.update_type("0");
+							f_dao.update_type(str[i]);
 						}
 					}else if(data.getCode() == -1){
 						

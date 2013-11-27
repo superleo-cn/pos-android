@@ -34,7 +34,8 @@ public class FoodOrderDao2 extends SQLiteOpenHelper {
 		+ "totalretailprice" + " varchar,"
 		+ "totalpackage" + " varchar,"
 		+ "foc" + " varchar,"
-		+ "food_flag" + " varchar"
+		+ "food_flag" + " varchar,"
+		+ "date" + " varchar"
 	    + " ) ";
 	private FoodOrderDao2(Context context) {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -71,6 +72,7 @@ public class FoodOrderDao2 extends SQLiteOpenHelper {
 		values.put("totalpackage", fo.getTotalpackage());
 		values.put("foc", fo.getFoc());
 		values.put("food_flag", fo.getFood_flag());
+		values.put("date", fo.getDate());
 		long result=db.insert(TABLE_NAME, null, values);
 		db.close();
 		return result;
@@ -95,6 +97,7 @@ public class FoodOrderDao2 extends SQLiteOpenHelper {
 			user_bean.setTotalpackage(c.getString(c.getColumnIndex("totalpackage")));
 			user_bean.setFoc(c.getString(c.getColumnIndex("foc")));
 			user_bean.setFood_flag(c.getString(c.getColumnIndex("food_flag")));
+			user_bean.setDate(c.getString(c.getColumnIndex("date")));
 			map.add(user_bean);
 		}
 		c.close();
@@ -124,7 +127,7 @@ public class FoodOrderDao2 extends SQLiteOpenHelper {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		ContentValues values=new ContentValues();
 		values.put("food_flag", "1");
-		int result=db.update(TABLE_NAME, values, "food_id=?", new String[]{food_id});
+		int result=db.update(TABLE_NAME, values, "foodid=?", new String[]{food_id});
 		System.err.print("更新了数据库");
 		db.close();
 		return result;
