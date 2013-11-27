@@ -91,6 +91,8 @@
 	<string name="dialog_set">Sync...</string>
 	<string name="money_coin">coins</string>
 	<string name="money_piece">pcs</string>
+	<string name="dialy_submit_error1">[带回总数] 和 [开店金额] 都不允许为空。</string>
+	<string name="dialy_submit_error2">带回总数金额不一致，请重新确认。</string>
 	
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>

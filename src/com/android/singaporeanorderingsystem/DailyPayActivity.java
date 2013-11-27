@@ -347,9 +347,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 
 				public void onClick(DialogInterface dialog, int which) {
 					//Toast.makeText(DailyPayActivity.this, "你点击了确定", Toast.LENGTH_SHORT).show();
-					clear_data();
-					myApp.setDaily_pay_submit_flag("0");
-					btu_id_sbumit.setVisibility(View.GONE);
+					if(doValidation()){
+						clear_data();
+						myApp.setDaily_pay_submit_flag("0");
+						btu_id_sbumit.setVisibility(View.GONE);
+					}
 				}});
 			builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
 
@@ -505,6 +507,32 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 	    	registerReceiver(myReceiver,filter);
 	    	is_recer=true;
+	    }
+	    
+	    public boolean doValidation(){
+	    	// 带回总数 和 开店金额 不能为0
+	    	String txtTotal = StringUtils.defaultIfEmpty(total_take_num.getText().toString(), "0");
+			Double totalTakeNum = Double.parseDouble(txtTotal);
+			
+			String txtShopMoney = StringUtils.defaultIfEmpty(shop_money.getText().toString(), "0");
+			Double shopMoney  = Double.parseDouble(txtShopMoney);
+			
+			if(totalTakeNum.doubleValue() == 0 || shopMoney.doubleValue() == 0){
+				Toast.makeText(DailyPayActivity.this, getString(R.string.dialy_submit_error1), Toast.LENGTH_SHORT).show();
+				return false;
+			}
+			
+			//带回总数金额不一致
+			Double sigle_price=0.00;
+			for(int i=0;i<all_num_price.size();i++){	
+				sigle_price += all_num_price.get(i).doubleValue();
+			}
+			
+			if(sigle_price.doubleValue() != totalTakeNum.doubleValue()){
+				Toast.makeText(DailyPayActivity.this, getString(R.string.dialy_submit_error2), Toast.LENGTH_SHORT).show();
+				return false;
+			}
+	    	return true;
 	    }
 	    
 	    public void  clear_data(){
