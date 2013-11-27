@@ -509,21 +509,23 @@ public class MainActivity extends Activity implements OnClickListener{
 				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
 				is_takePackage=false;
 			}else{
-			if(select_dataList.size()==0){
-				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
-			}else{
+			
 			if(!is_takePackage){
+				if(select_dataList.size()==0){
+					Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
+				}else{
 								take_package.setImageResource(R.drawable.package_seclect);
 				//Toast.makeText(this, "全部打包", Toast.LENGTH_SHORT).show();				
 				is_takePackage=true;
 				add();
+				}
 			}else{
 				
 				take_package.setImageResource(R.drawable.package_not_select);
 				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
 				is_takePackage=false;
 				add();
-			}
+			
 			}
 			}
 			break;
@@ -555,20 +557,22 @@ public class MainActivity extends Activity implements OnClickListener{
 				//Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
 				is_takePackage=false;
 			}else{
-			if(select_dataList.size()==0){
-				Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
-			}else{
+			
 			if(!is_discount){
+				if(select_dataList.size()==0){
+					Toast.makeText(this, R.string.selec_not_food, Toast.LENGTH_SHORT).show();
+				}else{
 				discount.setImageResource(R.drawable.package_seclect);
 				//Toast.makeText(this, "打折", Toast.LENGTH_SHORT).show();
 				is_discount=true;
 				add();
+				}
 			}else{
 				discount.setImageResource(R.drawable.package_not_select);
 				//Toast.makeText(this, "不打折", Toast.LENGTH_SHORT).show();
 				is_discount=false;
 				add();
-			}
+			
 			}
 			}
 			break;
