@@ -88,6 +88,8 @@
 	<string name="btu_queren">确定</string>
 	<string name="btn_quxiao">取消</string>
 	<string name="dialog_set">同步中...</string>
+	<string name="money_coin">个</string>
+	<string name="money_piece">张</string>
 	
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>

@@ -75,9 +75,9 @@ public class TakeNumerAdapter extends BaseAdapter {
 		Double is_price=Double.parseDouble(bean.getPrice());
 		Log.e("adpter的价格", is_price+"");
 		if(is_price>1){
-			viewHolder.danwei.setText("张");
+			viewHolder.danwei.setText(context.getString(R.string.money_piece));
 		}else{
-			viewHolder.danwei.setText("个");
+			viewHolder.danwei.setText(context.getString(R.string.money_coin));
 		}
 		try{
 			Double price=Double.parseDouble(viewHolder.num_id_name.getText().toString());
