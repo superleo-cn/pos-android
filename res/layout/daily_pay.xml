@@ -15,7 +15,7 @@
         android:layout_marginRight="10dip"
         android:layout_marginTop="5dip" >
 
-        <LinearLayout
+       <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1.5"
@@ -41,11 +41,11 @@
                 android:cacheColorHint="#00000000"
                 android:divider="@null"
                 android:listSelector="#00000000" />
-
+             
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="#EAE0DC"
                 android:orientation="vertical" >
 
                 <LinearLayout
@@ -58,7 +58,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="left|center_vertical"
+						android:layout_marginLeft="10dip"
                         android:singleLine="true"
                         android:text="@string/allcount"
                         android:textColor="#370E07"
@@ -67,9 +67,7 @@
                     <LinearLayout 
                          android:layout_width="fill_parent"
                          android:layout_height="wrap_content"
-                         android:layout_weight="1"
-                        
-                        >
+                         android:layout_weight="1">
                     
                     <TextView
                         android:layout_width="fill_parent"
@@ -95,7 +93,13 @@
                         android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
-
+            </LinearLayout>
+            
+			<LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE0DC"
+                android:orientation="vertical" >
                 <Button
                     android:id="@+id/btu_id_sbumit"
                     android:layout_width="fill_parent"
@@ -111,6 +115,7 @@
                     android:visibility="gone"
                     android:textSize="18sp" />
             </LinearLayout>
+          
         </LinearLayout>
 
         <LinearLayout
@@ -120,10 +125,11 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
+            <!-- android:background="#E0102C" -->
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#E0102C"
+                android:background="#7C3F2C"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
@@ -132,19 +138,23 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dip"
+                    android:layout_marginTop="5dip"
+                    android:layout_marginBottom="5dip"
                     android:drawablePadding="5dip"
                     android:drawableRight="@drawable/line"
                     android:gravity="center_vertical"
                     android:singleLine="true"
                     android:text="@string/shop_info"
                     android:textColor="#FFFFFF"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dip"
+                    android:layout_marginTop="5dip"
+                    android:layout_marginBottom="5dip"
                     android:gravity="center_vertical"
                     android:orientation="horizontal" >
 
@@ -176,6 +186,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dip"
+                    android:layout_marginTop="5dip"
+                    android:layout_marginBottom="5dip"
                     android:gravity="center_vertical"
                     android:orientation="horizontal" >
 
@@ -300,12 +312,13 @@
                     </RelativeLayout>
                 </LinearLayout>
 
+               <!--  android:background="#874530" -->
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="5dip"
                     android:layout_weight="1"
-                    android:background="#874530"
+                    android:background="#CC997C"
                     android:orientation="horizontal" >
 
                     <ScrollView
@@ -646,7 +659,7 @@
                                     android:textColor="#000000"
                                     android:textSize="16sp" 
                                     android:id="@+id/other"/>
-                            </LinearLayout>
+                            </LinearLayout>                         
                         </LinearLayout>
                     </ScrollView>
                 </LinearLayout>
