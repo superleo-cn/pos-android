@@ -285,7 +285,7 @@ public class SettingActivity extends Activity {
 									Log.e("支付页详情数据", datas.size()+"");
 									for(int i=0;i<datas.size();i++){
 										GetPayDetailBean bean=datas.get(i);
-										getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName());
+										getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName(), bean.getNameZh());
 									}
 								}else if(data.getCode() == 0){
 									Toast.makeText(SettingActivity.this, "支付页失败", Toast.LENGTH_SHORT).show();
@@ -323,7 +323,7 @@ public class SettingActivity extends Activity {
 							Log.e("支付页详情数据", datas.size()+"");
 							for(int i=0;i<datas.size();i++){
 								GetPayDetailBean bean=datas.get(i);
-								getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName());
+								getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName(), bean.getNameZh());
 							}
 							dialog.cancel();
 							Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT)

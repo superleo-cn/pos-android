@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
@@ -108,6 +109,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private Double order_price=0.00;
 	private TextView write_name;
 	private MyOrientationDetector1 m;
+	private SharedPreferences sharedPrefs;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -195,6 +197,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	 public void initData(){
 //		 SimpleDateFormat df_price=new SimpleDateFormat("yyyy-MM-dd");
 //	    	String date=df_price.format(new Date());
+		 sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
+	    String type = sharedPrefs.getString("type", "");
 		 login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
 		 write_name.setText(myApp.getU_name());
 		 String shopId=myApp.getSettingShopId();
@@ -230,6 +234,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			for(int i=0 ; i < datas.size() ; i++){
 				DailyPayDetailBean bean=new DailyPayDetailBean();
 				bean.setName(datas.get(i).get("name"));
+				if(StringUtils.equalsIgnoreCase("zh", type)){
+					bean.setName(datas.get(i).get("nameZh"));
+	    		}else{
+	    			bean.setName(datas.get(i).get("name"));
+	    		}
 				bean.setId(datas.get(i).get("number_id"));
 				bean.setPrice("0");
 				detail_classList.add(bean);

@@ -18,11 +18,13 @@ public class GetPayDetailBean {
 		}
 		private String id;//编号
 		private String name;//名称
+		private String nameZh;//中文名称
 		public GetPayDetailBean() {}
-		public GetPayDetailBean(String id, String name) {
+		public GetPayDetailBean(String id, String name, String nameZh) {
 			super();
 			this.id = id;
 			this.name = name;
+			this.nameZh = nameZh;
 		}
 		
 		
@@ -35,15 +37,11 @@ public class GetPayDetailBean {
 				for(int i = 0; i < size; i++){
 					JSONObject obj = arr.getJSONObject(i);
 					String id = obj.optString(Attr.ID);
-					String name;
-					if(is_chinese){
-					 name = obj.optString(Attr.NAME_ZH);
-					 Log.e("解析中文", name);
-					}else{
-					 name = obj.optString(Attr.NAME);
+					String nameZh = obj.optString(Attr.NAME_ZH);
+					String name = obj.optString(Attr.NAME);
+					 Log.e("解析中文", nameZh);
 					 Log.e("解析英文", name);
-					}
-					pay_detail.add(new GetPayDetailBean(id, name)) ;
+					pay_detail.add(new GetPayDetailBean(id, name, nameZh)) ;
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -61,6 +59,12 @@ public class GetPayDetailBean {
 		}
 		public void setName(String name) {
 			this.name = name;
+		}
+		public String getNameZh() {
+			return nameZh;
+		}
+		public void setNameZh(String nameZh) {
+			this.nameZh = nameZh;
 		}
 	
 }

@@ -26,8 +26,9 @@ public class getDetailPayListDao extends SQLiteOpenHelper {
 		+ TABLE_NAME
 		+ " ( " 
 		+ "_ID"+ " INTEGER PRIMARY KEY, "
-		+ "number_id" + " TEXT,"
-		+ "name" + " TEXT "
+		+ "number_id" + " varchar,"
+		+ "name" + " varchar,"
+		+ "nameZh" + " varchar "
 	    + " ) ";
 	private getDetailPayListDao(Context context) {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -53,11 +54,12 @@ public class getDetailPayListDao extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 
-	public long save(String number_id,String name){
+	public long save(String number_id,String name,String nameZh){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		ContentValues values=new ContentValues();
 		values.put("number_id", number_id);
 		values.put("name", name);
+		values.put("nameZh", nameZh);
 		long result=db.insert(TABLE_NAME, null, values);
 		db.close();
 		return result;
@@ -73,6 +75,7 @@ public class getDetailPayListDao extends SQLiteOpenHelper {
 			Map<String,String> map=new HashMap<String,String>();
 			map.put("number_id", cursor.getString(cursor.getColumnIndex("number_id")));
 			map.put("name", cursor.getString(cursor.getColumnIndex("name")));
+			map.put("nameZh", cursor.getString(cursor.getColumnIndex("nameZh")));
 			list.add(map);
 		}
 		cursor.close();

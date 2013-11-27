@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -111,6 +112,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
 	private MyOrientationDetector2 m;
+	private SharedPreferences sharedPrefs;
 	/*主菜单activity*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -246,12 +248,18 @@ public class MainActivity extends Activity implements OnClickListener{
 //    		bean.setPrice(food_price[i]+"");
 //    		food_dataList.add(bean);
 //    	}
+    	sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
+    	String type = sharedPrefs.getString("type", "");
     	FoodHttpBeanDao fhb_dao =FoodHttpBeanDao.getInatance(MainActivity.this);
     	ArrayList<FoodHttpBean> datas=fhb_dao.getList();
     	for(int i = 0 ; i<datas.size() ;i++){
     		FoodHttpBean fhb=datas.get(i);
     		FoodListBean bean=new FoodListBean();
-    		bean.setTitle(fhb.getNameZh());
+    		if(StringUtils.equalsIgnoreCase("zh", type)){
+    			bean.setTitle(fhb.getNameZh());
+    		}else{
+    			bean.setTitle(fhb.getName());
+    		}
     		bean.setDaping_id(fhb.getSn());
     		bean.setImageID(fhb.getPicture());  
     		bean.setType(fhb.getType());
