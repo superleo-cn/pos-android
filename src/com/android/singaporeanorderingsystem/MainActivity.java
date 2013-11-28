@@ -359,9 +359,14 @@ public class MainActivity extends Activity implements OnClickListener{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
+				String number = "";
 				switch(arg2){
 				case 0:
 					sbuff.append(7);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -375,6 +380,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 1:
 					sbuff.append(8);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -388,6 +397,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 2:
 					sbuff.append(9);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -401,6 +414,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 3:
 					sbuff.append(4);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -414,6 +431,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 4:
 					sbuff.append(5);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -427,6 +448,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 5:
 					sbuff.append(6);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -440,6 +465,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 6:
 					sbuff.append(1);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -453,6 +482,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 7:
 					sbuff.append(2);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -466,6 +499,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 8:
 					sbuff.append(3);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -479,6 +516,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 9:
 					sbuff.append(0);
+					number = sbuff.toString();
+					if(number.indexOf(".") > -1){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+					}
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
@@ -492,8 +533,9 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 10:
 					sbuff.append(".");
-					String number = sbuff.toString();
+					number = sbuff.toString();
 					if(NumberUtils.isNumber(number)){
+						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
 						if(is_maxPrice()){
 							gathering.setText("9999.99");
 						}else{
