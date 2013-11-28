@@ -100,6 +100,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private TextView take_all_price;
 	private Double num_count=0.00;
 	private List<Double> all_num_price;
+	private List<Double> all_pay_price;
 	public static boolean is_recer;
 	private MyApp myApp;
 	public static  HashMap<Integer, String> hashMap_detail = new HashMap<Integer, String>();  
@@ -117,6 +118,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		//init_wifiReceiver();
 		m=new MyOrientationDetector1(DailyPayActivity.this);
 		all_num_price=new ArrayList<Double>();
+		all_pay_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
 	//onload_payDetail("1");
 	}
@@ -145,12 +147,34 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			send_person=(EditText) this.findViewById(R.id.send_person);
 			other=(EditText) this.findViewById(R.id.other);
 			shop_money=(EditText) this.findViewById(R.id.shop_money);
-			initData();
+			
 			if(myApp.getDaily_pay_submit_flag().equals("1")){
 				btu_id_sbumit.setVisibility(View.VISIBLE);
+				 String shopId=myApp.getSettingShopId();
+				 if(shopId==null){
+					 shopId="0";
+				 }
+				 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
+			    	String date=df_save.format(new Date());
+			    	Log.e("今天日期", date);
+				List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date,myApp.getSettingShopId());
+				//Double price=0.00;
+				if(priceList==null){
+					order_price=0.00;
+				}else{		
+					if(priceList.size()!=0){
+						for(int i=0;i<priceList.size();i++){
+					order_price+=Double.parseDouble(priceList.get(i));
+						}
+					}else{
+						order_price=0.00;
+					}
+
+				}
 			}else if(myApp.getDaily_pay_submit_flag().equals("0")){
 				btu_id_sbumit.setVisibility(View.GONE);
 			}
+			initData();
 			shop_money.addTextChangedListener(new TextWatcher(){
 
 				@Override
@@ -201,7 +225,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    String type = sharedPrefs.getString("type", "");
 		 login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
 		 write_name.setText(myApp.getU_name());
-		 String shopId=myApp.getSettingShopId();
+		 
+		/* String shopId=myApp.getSettingShopId();
 		 if(shopId==null){
 			 shopId="0";
 		 }
@@ -221,7 +246,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				order_price=0.00;
 			}
 
-		}
+		}*/
 		//cash_register.setText(df.format(order_price));
 			detail_classList = new ArrayList<DailyPayDetailBean>();
 			number_classList = new ArrayList<TakeNumberBean>();
@@ -240,7 +265,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	    			bean.setName(datas.get(i).get("name"));
 	    		}
 				bean.setId(datas.get(i).get("number_id"));
-				bean.setPrice("0");
+				bean.setPrice("");
 				detail_classList.add(bean);
 			}
 			
@@ -258,7 +283,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				 TakeNumberBean bean=new TakeNumberBean();
 				 bean.setPrice(datas_num.get(j).get("price"));;
 				 bean.setId(datas_num.get(j).get("number_id"));
-				 bean.setNum("0");
+				 bean.setNum("");
+				 all_pay_price.add(0.00);
 					number_classList.add(bean);
 				}
 			 Log.e("打包带走", number_classList.size()+"");
@@ -266,8 +292,16 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				num_list.setAdapter(number_adapter);
 				try{
 					for(int i=0;i<number_classList.size();i++){
-						Double sigle_price=Double.parseDouble(number_classList.get(i).getPrice());
-						int num=Integer.parseInt(number_classList.get(i).getNum());
+						String price_tv=number_classList.get(i).getPrice();
+						if(price_tv.equals("")){
+							price_tv="0.00";
+						}
+						Double sigle_price=Double.parseDouble(price_tv);
+						String num_tv=number_classList.get(i).getNum();
+						if(num_tv.equals("")){
+							num_tv="0";
+						}
+						int num=Integer.parseInt(num_tv);
 						Double total_price=0.00;
 						total_price=num*sigle_price;
 						all_num_price.add(total_price);
@@ -408,25 +442,31 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				try{
 				count=0.00;
 				String str=(String) msg.obj;
+				Log.e("改变支付款价格", str);
 				int num=Integer.parseInt(str.substring(0,1));
-				String price=str.substring(1,str.length());
-				detail_classList.get(num).setPrice(price);
-				
-				for(int i=0;i<detail_classList.size();i++){
-					count+=Double.parseDouble(detail_classList.get(i).getPrice());
+				String price=str.substring(2,str.length());
+				Log.e("截取的价格",price );
+				all_pay_price.set(num, Double.parseDouble(price));
+				Double sigle_price=0.00;
+				for(int i=0;i<all_pay_price.size();i++){
+					sigle_price=all_pay_price.get(i).doubleValue();
+					count=count+sigle_price;
 				}
 				text_id_all_price.setText(df.format(count));
 				
 				compute();
 				}catch(Exception e){
+					Log.e("支付款计算报错信息", e.getMessage());
 					Toast.makeText(DailyPayActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
 				}
 				break;
 			case TakeNumerAdapter.SET_NUM:
 				num_count=0.00;
 				String str=(String) msg.obj;
+				Log.e("改变带回总数价格", str);
 				int num=Integer.parseInt(str.substring(0,1));
-				String price=str.substring(1,str.length());
+				String price=str.substring(2,str.length());
+				Log.e("截取带回的价格",price );
 				all_num_price.set(num, Double.parseDouble(price));
 				Double sigle_price=0.00;
 				for(int i=0;i<all_num_price.size();i++){	
@@ -723,7 +763,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				Double take_price=Double.parseDouble(cash_register.getText().toString())-price_e;
 				total_take_num.setText(df.format(take_price));
 			}catch(Exception e){
-				e.getMessage();
+				Log.e("总计算", e.getMessage());
+				//e.getMessage();
 			}
 	    }
 

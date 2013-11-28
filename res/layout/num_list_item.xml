@@ -42,10 +42,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="12"
-            android:numeric="integer"
             android:singleLine="true"
             android:textColor="#000000"
+            android:numeric="integer|signed"
             android:textSize="18sp"/>
 
         <TextView
