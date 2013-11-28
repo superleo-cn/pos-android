@@ -1050,13 +1050,17 @@ public class MainActivity extends Activity implements OnClickListener{
 						show_totalPrice=show_totalPrice+dabao;
 						dabao_price+=dabao;
 						dazhe_price=0;
+						dazhe=0;
 					}else if(is_discount&&!is_takePackage){
 						show_totalPrice=show_totalPrice-dazhe;
 						dabao_price=0;
 						dazhe_price+=dazhe;
+						dabao=0;
 					}else if(!is_discount&&!is_takePackage){
 						dabao_price=0;
 						dazhe_price=0;
+						dabao = 0;
+						dazhe = 0;
 					}else if(is_discount&&is_takePackage){
 						show_totalPrice=show_totalPrice+dabao-dazhe;
 						dabao_price+=dabao;
