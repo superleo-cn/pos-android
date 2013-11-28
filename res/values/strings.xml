@@ -6,7 +6,7 @@
 	<string name="mainTitle_txt">Welcome</string>
 	<string name="layoutLeft_title">来一碗</string>
 	<string name="total_prie">Total:</string>
-	<string name="gathering">Collection:</string>
+	<string name="gathering">Pay:</string>
 	<string name="surplus">Change:</string>
 	<string name="take_package">Pack</string>
 	<string name="add_package">Pack Added</string>
@@ -89,7 +89,7 @@
 	<string name="btu_queren">Confirm</string>
 	<string name="btn_quxiao">Cancel</string>
 	<string name="dialog_set">Sync...</string>
-	<string name="money_coin">coins</string>
+	<string name="money_coin">cos</string>
 	<string name="money_piece">pcs</string>
 	<string name="dialy_submit_error1">[带回总数] 和 [开店金额] 都不允许为空。</string>
 	<string name="dialy_submit_error2">带回总数金额不一致，请重新确认。</string>
