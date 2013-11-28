@@ -364,7 +364,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -373,7 +377,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -382,7 +390,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -391,7 +403,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -400,7 +416,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -409,7 +429,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -418,7 +442,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -427,7 +455,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+						gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+					}catch(Exception e){
+						Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+					}
 					}
 					compute_surplus();
 					break;
@@ -436,7 +468,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -445,7 +481,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						try{
+							gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+								}catch(Exception e){
+									Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+								}
 					}
 					compute_surplus();
 					break;
@@ -454,7 +494,11 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
+						try{
 					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+						}catch(Exception e){
+							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+						}
 					}
 					compute_surplus();
 					break;
