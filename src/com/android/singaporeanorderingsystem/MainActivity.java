@@ -364,7 +364,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -373,7 +373,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -382,7 +382,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -391,7 +391,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -400,7 +400,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -409,7 +409,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -418,7 +418,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -427,7 +427,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -436,7 +436,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -445,7 +445,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
@@ -454,7 +454,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					if(is_maxPrice()){
 						gathering.setText("9999.99");
 					}else{
-					gathering.setText(sbuff.toString().trim());
+					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
 					}
 					compute_surplus();
 					break;
