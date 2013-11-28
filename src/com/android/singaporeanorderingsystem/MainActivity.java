@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -491,16 +492,21 @@ public class MainActivity extends Activity implements OnClickListener{
 					break;
 				case 10:
 					sbuff.append(".");
-					if(is_maxPrice()){
-						gathering.setText("9999.99");
-					}else{
-						try{
-					gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
-						}catch(Exception e){
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+					String number = sbuff.toString();
+					if(NumberUtils.isNumber(number)){
+						if(is_maxPrice()){
+							gathering.setText("9999.99");
+						}else{
+							try{
+						gathering.setText(Double.parseDouble(sbuff.toString().trim())+"");
+							}catch(Exception e){
+								Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+							}
 						}
+						compute_surplus();
+					}else{
+						Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
 					}
-					compute_surplus();
 					break;
 				case 11:
 					int sb_length=sbuff.length();
