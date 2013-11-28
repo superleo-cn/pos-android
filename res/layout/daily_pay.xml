@@ -222,7 +222,7 @@
                         android:background="@drawable/edit_bg"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:numeric="integer"
+                        android:numeric="decimal"
                         android:textColor="#000000"
                         android:id="@+id/shop_money"
                         android:textSize="18sp" />
@@ -357,7 +357,7 @@
                                     android:background="@drawable/edit_bg"
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:textColor="#000000"
                                     android:textSize="16sp"
                                     android:editable="false"
@@ -391,7 +391,7 @@
                                     android:background="@drawable/edit_bg"
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:editable="false"
                                     android:enabled="false"
                                     android:textColor="#000000"
@@ -427,7 +427,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:textColor="#000000"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:id="@+id/noon_time"
                                     android:textSize="16sp" />
                             </LinearLayout>
@@ -460,7 +460,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:textColor="#000000"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:id="@+id/noon_turnover"
                                     android:textSize="16sp" />
                             </LinearLayout>
@@ -493,7 +493,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:textColor="#000000"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:id="@+id/time"
                                     android:textSize="16sp" />
                             </LinearLayout>
@@ -525,7 +525,7 @@
                                     android:background="@drawable/edit_bg"
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:textColor="#000000"
                                     android:textSize="16sp"
                                     android:editable="false"
@@ -562,7 +562,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:textColor="#000000"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:textSize="16sp"
                                     android:id="@+id/tomorrow_money" />
                             </LinearLayout>
@@ -595,7 +595,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:textColor="#000000"
-                                    android:numeric="integer"
+                                    android:numeric="decimal"
                                     android:editable="false"
                                     android:enabled="false"
                                     android:textSize="16sp"
