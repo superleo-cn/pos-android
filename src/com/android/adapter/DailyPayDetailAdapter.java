@@ -30,7 +30,6 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	private List<DailyPayDetailBean> classList;
 	private Handler handler;
 	public static final int CHAGE_NUM_DETAIL=1020;
-	private int index = -1;
 	public DailyPayDetailAdapter(Context context, List<DailyPayDetailBean> list,
 			Handler handler) {
 		this.context = context;
@@ -77,18 +76,6 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		viewHolder.text_id_price.setText(bean.getPrice());
 		final String now_str=viewHolder.text_id_price.getText().toString();
 		
-		viewHolder.text_id_price.setOnTouchListener(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getAction() == MotionEvent.ACTION_UP) {
-					 
-                    index= position;
-
-            }
-				return false;
-			}});
 		
 		viewHolder.text_id_price.addTextChangedListener(new TextWatcher(){
 
@@ -131,18 +118,11 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 				
 			}});
 		
-		viewHolder.text_id_price.clearFocus();
 		 
-        if(index!= -1 && index == position) {
- 
-               // 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
- 
-        	viewHolder.text_id_price.requestFocus();
-		   if(DailyPayActivity.hashMap_detail.get(position) != null){  
+		 if(DailyPayActivity.hashMap_detail.get(position) != null){  
 			   viewHolder.text_id_price.setText(DailyPayActivity.hashMap_detail.get(position));
 			   Log.e("改变值", "成功");
 			             }  
-        }
 		return convertView;
 	}
 
