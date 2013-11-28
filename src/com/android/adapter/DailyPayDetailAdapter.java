@@ -84,23 +84,26 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 				// TODO Auto-generated method stub
 				
 				if(now_str.equals(s.toString())){
+					Log.e("支付页数据相等", "");
 				}else{
 					//bean.setPrice(viewHolder.text_id_price.getText().toString());			
 					
 					String price=s.toString();
-					if(price==null){
+					if(s.length()==0){
 						price="0.00";
 					}else{
 						if(price.equals("")){
 							price="0.00";
 						}
 					}
-					DailyPayActivity.hashMap_detail.put(position, s.toString()); 
+					String now_price=price;
+					Log.e("变空后的价格", now_price);
+					DailyPayActivity.hashMap_detail.put(position, now_price); 
 							Message msg = new Message();
 							msg.what = CHAGE_NUM_DETAIL;
-							msg.obj=position+"+"+price;
+							msg.obj=position+"+"+now_price;
 							handler.sendMessage(msg);
-							Log.e("执行输入的价格", "价格");	
+							Log.e("执行输入的价格", now_price);	
 				}
 			}
 
@@ -115,7 +118,14 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 					int count) {
 				// TODO Auto-generated method stub
 			//	Log.e("输入改变完", "价格呢");
-				
+				if(viewHolder.text_id_price.getText().toString().isEmpty()){
+					DailyPayActivity.hashMap_detail.put(position, "0.00"); 
+					Message msg = new Message();
+					msg.what = CHAGE_NUM_DETAIL;
+					msg.obj=position+"+"+"0.00";
+					handler.sendMessage(msg);
+					Log.e("输入内同唯恐了", "0.00");	
+				}
 			}});
 		
 		 

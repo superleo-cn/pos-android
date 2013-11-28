@@ -811,6 +811,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		protected void onDestroy() {
 			// TODO Auto-generated method stub
 			//unregisterReceiver(myReceiver);
+			hashMap_detail.clear();
 			super.onDestroy();
 		}
 		
@@ -1020,6 +1021,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 		m.disable();
 	}
 }
+
 class MyOrientationDetector1 extends OrientationEventListener{
 	private Context context;
     public MyOrientationDetector1( Context context ) {
@@ -1051,4 +1053,5 @@ class MyOrientationDetector1 extends OrientationEventListener{
     	}
     	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
     }
+    
 }
