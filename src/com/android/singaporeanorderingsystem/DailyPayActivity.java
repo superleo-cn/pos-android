@@ -109,14 +109,15 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private String search_date;
 	private Double order_price=0.00;
 	private TextView write_name;
-	private MyOrientationDetector1 m;
+//	private MyOrientationDetector1 m;
 	private SharedPreferences sharedPrefs;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		//init_wifiReceiver();
-		m=new MyOrientationDetector1(DailyPayActivity.this);
+//		m=new MyOrientationDetector1(DailyPayActivity.this);
 		all_num_price=new ArrayList<Double>();
 		all_pay_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
@@ -770,7 +771,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 
 		@Override
 		protected void onResume() {
-			m.enable();
+//			m.enable();
 			df=new DecimalFormat("0.00");
 			initView();
 			
@@ -1015,11 +1016,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				e.getMessage();
 			}
 	}
-	@Override
-	protected void onPause() {
-		super.onPause();
-		m.disable();
-	}
+//	@Override
+//	protected void onPause() {
+//		super.onPause();
+//		m.disable();
+//	}
 }
 
 class MyOrientationDetector1 extends OrientationEventListener{

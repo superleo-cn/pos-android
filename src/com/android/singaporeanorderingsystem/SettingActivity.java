@@ -85,7 +85,7 @@ public class SettingActivity extends Activity {
 	private FoodHttpBeanDao fhb_dao;
 	private MyProcessDialog dialog;
 	private String search_date;
-	private MyOrientationDetector3 m;
+//	private MyOrientationDetector3 m;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -99,7 +99,8 @@ public class SettingActivity extends Activity {
    	.penaltyLog() //打印logcat
    	 .penaltyDeath()
    	 .build());
-   	m=new MyOrientationDetector3(SettingActivity.this);
+//   	m=new MyOrientationDetector3(SettingActivity.this);
+   	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();
@@ -653,16 +654,16 @@ public class SettingActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	@Override
-	protected void onResume() {
-		super.onResume();
-		m.enable();
-	}
-	@Override
-	protected void onPause() {
-		super.onPause();
-		m.disable();
-	}
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		m.enable();
+//	}
+//	@Override
+//	protected void onPause() {
+//		super.onPause();
+//		m.disable();
+//	}
 }
 class MyOrientationDetector3 extends OrientationEventListener{
 	private Context context;

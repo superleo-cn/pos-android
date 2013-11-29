@@ -83,7 +83,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 	private ImageView image_logo_ico;
 	private MyProcessDialog dialog;
 	private MyUpdateDialog myUpdateDialog;
-	private MyOrientationDetector m;
+//	private MyOrientationDetector m;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,8 @@ public class LoginActivity extends Activity implements OnClickListener{
 //	   	 .penaltyDeath()
 //	   	 .build());
 		super.onCreate(savedInstanceState);
-		m=new MyOrientationDetector(LoginActivity.this);
+//		m=new MyOrientationDetector(LoginActivity.this);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		//CrashHandler crashHandler = CrashHandler.getInstance();   //错误监听 
 //        crashHandler.init(LoginActivity.this);  //传入参数必须为Activity，否则AlertDialog将不显示。  
 //		//横屏正方向
@@ -508,16 +509,16 @@ public class LoginActivity extends Activity implements OnClickListener{
 			 imm.hideSoftInputFromWindow(login_name.getWindowToken(), 0); //强制隐藏键盘 
 			return super.onTouchEvent(event);
 		}
-		@Override
-		protected void onResume() {
-			super.onResume();
-			m.enable();
-		}
-		@Override
-		protected void onPause() {
-			super.onPause();
-			m.disable();
-		}
+//		@Override
+//		protected void onResume() {
+//			super.onResume();
+//			m.enable();
+//		}
+//		@Override
+//		protected void onPause() {
+//			super.onPause();
+//			m.disable();
+//		}
 		
 }
 

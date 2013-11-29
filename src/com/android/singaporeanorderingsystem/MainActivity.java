@@ -112,7 +112,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double dazhe_price=0;
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
-	private MyOrientationDetector2 m;
+//	private MyOrientationDetector2 m;
 	private SharedPreferences sharedPrefs;
 	/*主菜单activity*/
     @Override
@@ -131,7 +131,8 @@ public class MainActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
-        m=new MyOrientationDetector2(MainActivity.this);
+//        m=new MyOrientationDetector2(MainActivity.this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
     }
     
     /*初始化控件*/
@@ -1035,7 +1036,7 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onResume() {
-		m.enable();
+//		m.enable();
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
 	        initView();
@@ -1149,11 +1150,11 @@ public class MainActivity extends Activity implements OnClickListener{
 	    	return false;
 		
 	    }
-	@Override
-	protected void onPause() {
-		super.onPause();
-		m.disable();
-	}
+//	@Override
+//	protected void onPause() {
+//		super.onPause();
+//		m.disable();
+//	}
 }
 class MyOrientationDetector2 extends OrientationEventListener{
 	private Context context;
