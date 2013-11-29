@@ -178,6 +178,12 @@ public class LoginActivity extends Activity implements OnClickListener{
 			@Override
 			public boolean onLongClick(View v) {
 				dialog.show();
+				boolean wifi_flag=SystemHelper.isConnected(LoginActivity.this);
+				if(!wifi_flag){
+					dialog.dismiss();
+					Toast.makeText(LoginActivity.this,getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
+					return true;
+				}
 				String str_login_name=login_name.getText().toString();
 				String str_login_password=login_password.getText().toString();
 				String str_ip = "0";
@@ -429,6 +435,13 @@ public class LoginActivity extends Activity implements OnClickListener{
 				str_mac=SystemHelper.getLocalMacAddress(LoginActivity.this)== null ? "0":SystemHelper.getLocalMacAddress(LoginActivity.this);
 			} catch (SocketException e) {
 				e.printStackTrace();
+			}
+			
+			boolean wifi_flag=SystemHelper.isConnected(LoginActivity.this);
+			if(!wifi_flag){
+				dialog.dismiss();
+				Toast.makeText(LoginActivity.this,getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
+				return;
 			}
 			HashMap<String, String> params =new HashMap<String, String>();
 			params.put("user.username", str_login_name);
