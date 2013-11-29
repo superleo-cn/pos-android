@@ -41,12 +41,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.R;
+import com.android.bean.LoginAuditBean;
 import com.android.bean.LoginUserBean;
 import com.android.bean.VersionBean;
 import com.android.common.Constants;
 import com.android.common.CrashHandler;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
+import com.android.dao.LoginAuditDao;
 import com.android.dao.UserDao2;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -203,6 +205,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 								Toast.makeText(LoginActivity.this,getString(R.string.login_quanxian), Toast.LENGTH_SHORT).show();
 								return;
 							}
+//							login_audit(user_bean);
 							myApp.setU_name(user_bean.getUsername());
 							myApp.setUser_id(user_bean.getId());
 							myApp.setU_type(user_bean.getUsertype());
@@ -221,6 +224,45 @@ public class LoginActivity extends Activity implements OnClickListener{
 				return false;
 			}
 		});
+	}
+	public void login_audit(LoginUserBean login_user){
+		final LoginAuditDao dao =LoginAuditDao.getInatance(LoginActivity.this);
+		LoginAuditBean login_audit=new LoginAuditBean();
+		login_audit.setUser_id(login_user.getId());
+		login_audit.setShop_id(login_user.getShop_id());
+		login_audit.setAction("1");
+		login_audit.setFood_flag("0");
+		dao.save(login_audit);
+		ArrayList<LoginAuditBean> u_datas=dao.getList("0");
+		if(u_datas != null && u_datas.size() !=0){
+			HashMap<String, String> params =new HashMap<String, String>();
+			for(int i=0;i<u_datas.size();i++){
+				LoginAuditBean login_a_bean = u_datas.get(i);
+				params.put("audits["+i+"].androidId", login_a_bean.getAndroid_id());
+				params.put("audits["+i+"].shop.id", login_a_bean.getShop_id());
+				params.put("audits["+i+"].user.id", login_a_bean.getUser_id());
+				params.put("audits["+i+"].actionDate", login_a_bean.getActionDate());
+				params.put("audits["+i+"].action", login_a_bean.getAction());
+			}
+			RemoteDataHandler.asyncPost(Constants.URL_LOGIN_AUDIT,params,new Callback() {
+				@Override
+				public void dataLoaded(ResponseData data) {
+					if(data.getCode() == 1){
+						dao.update_all_type("0");
+					}else if(data.getCode() == 0){
+						String json = data.getJson();
+						json=json.replaceAll("\\[", "");
+						json=json.replaceAll("\\]", "");
+						String [] str=json.split(",");
+						for(int i = 0; i<str.length;i++){
+							dao.update_type(str[i]);
+						}
+					}else if(data.getCode() == -1){
+						
+					}
+				}
+			});
+		}
 	}
 	/**
 	 * 登录前检测版本更新
