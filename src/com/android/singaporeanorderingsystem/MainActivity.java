@@ -895,9 +895,22 @@ public class MainActivity extends Activity implements OnClickListener{
 			}catch(Exception e){
 				Toast.makeText(this, R.string.err_price, Toast.LENGTH_SHORT).show();
 			}
-//			if(select_dataList!=null && select_dataList.size() !=0){
+			if(select_dataList!=null && select_dataList.size() !=0){
 //				Show_print().create().show();
-//			}
+				if(sbuff==null||sbuff.toString().trim().equals("") ){
+					sbuff.append("0");
+				}
+				show_gathering=Double.parseDouble(sbuff.toString().trim());
+				gathering.setText(df.format(show_gathering));
+				double result=show_totalPrice;
+					if(sbuff.toString().trim().equals("0") || sbuff.toString().trim().equals("0.0")){
+						surplus.setText(df.format(show_surplus));
+					}else{
+					Log.e("最后金额", show_totalPrice+"");
+					show_surplus=show_gathering-result;
+					surplus.setText(df.format(show_surplus));
+					}
+			}
 		
 			break;
 		}
