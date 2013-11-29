@@ -895,9 +895,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			}catch(Exception e){
 				Toast.makeText(this, R.string.err_price, Toast.LENGTH_SHORT).show();
 			}
-			if(select_dataList!=null && select_dataList.size() !=0){
-				Show_print().create().show();
-			}
+//			if(select_dataList!=null && select_dataList.size() !=0){
+//				Show_print().create().show();
+//			}
 		
 			break;
 		}
