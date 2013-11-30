@@ -112,8 +112,8 @@ public class BasicActivity extends Activity {
 					}
 				}
 				login_audit(user_bean, "Logout");
-				Intent intent = new Intent(Intent.ACTION_MAIN);
-				intent.addCategory(Intent.CATEGORY_HOME);
+				Intent intent = new Intent();
+				intent.setClass(getApplicationContext(), LoginActivity.class);// 当前Activity重新打开
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				System.exit(0);

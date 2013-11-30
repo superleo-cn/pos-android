@@ -221,7 +221,6 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 					MainActivity.this.startActivity(intent);
 					MainActivity.this.finish();
 					overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-					//MainActivity.this.finish();
 				}});
 			popu_exit.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
