@@ -8,12 +8,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,9 +29,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -45,7 +45,6 @@ import com.android.bean.LoginAuditBean;
 import com.android.bean.LoginUserBean;
 import com.android.bean.VersionBean;
 import com.android.common.Constants;
-import com.android.common.CrashHandler;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
 import com.android.dao.LoginAuditDao;
@@ -54,7 +53,7 @@ import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
 
-public class LoginActivity extends Activity implements OnClickListener{
+public class LoginActivity extends BasicActivity implements OnClickListener{
 	// 返回的安装包url
 	private String apkUrl = new String();
 	/* 下载包安装路径 */
@@ -86,7 +85,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 //	private MyOrientationDetector m;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 //		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
 //	   	 .detectDiskReads()
 //	   	 .detectDiskWrites()
@@ -212,7 +211,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 								Toast.makeText(LoginActivity.this,getString(R.string.login_quanxian), Toast.LENGTH_SHORT).show();
 								return;
 							}
-//							login_audit(user_bean);
+							login_audit(user_bean, "Login");
 							myApp.setU_name(user_bean.getUsername());
 							myApp.setUser_id(user_bean.getId());
 							myApp.setU_type(user_bean.getUsertype());
@@ -232,45 +231,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 			}
 		});
 	}
-	public void login_audit(LoginUserBean login_user){
-		final LoginAuditDao dao =LoginAuditDao.getInatance(LoginActivity.this);
-		LoginAuditBean login_audit=new LoginAuditBean();
-		login_audit.setUser_id(login_user.getId());
-		login_audit.setShop_id(login_user.getShop_id());
-		login_audit.setAction("1");
-		login_audit.setFood_flag("0");
-		dao.save(login_audit);
-		ArrayList<LoginAuditBean> u_datas=dao.getList("0");
-		if(u_datas != null && u_datas.size() !=0){
-			HashMap<String, String> params =new HashMap<String, String>();
-			for(int i=0;i<u_datas.size();i++){
-				LoginAuditBean login_a_bean = u_datas.get(i);
-				params.put("audits["+i+"].androidId", login_a_bean.getAndroid_id());
-				params.put("audits["+i+"].shop.id", login_a_bean.getShop_id());
-				params.put("audits["+i+"].user.id", login_a_bean.getUser_id());
-				params.put("audits["+i+"].actionDate", login_a_bean.getActionDate());
-				params.put("audits["+i+"].action", login_a_bean.getAction());
-			}
-			RemoteDataHandler.asyncPost(Constants.URL_LOGIN_AUDIT,params,new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						dao.update_all_type("0");
-					}else if(data.getCode() == 0){
-						String json = data.getJson();
-						json=json.replaceAll("\\[", "");
-						json=json.replaceAll("\\]", "");
-						String [] str=json.split(",");
-						for(int i = 0; i<str.length;i++){
-							dao.update_type(str[i]);
-						}
-					}else if(data.getCode() == -1){
-						
-					}
-				}
-			});
-		}
-	}
+	
 	/**
 	 * 登录前检测版本更新
 	 * */
@@ -418,6 +379,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 				myApp.setU_name(user_bean.getUsername());
 				myApp.setUser_id(user_bean.getId());
 				myApp.setU_type(user_bean.getUsertype());
+				login_audit(user_bean, "Login");
 				Intent  intent =new Intent();
 				intent.setClass(LoginActivity.this, MainActivity.class);
 				LoginActivity.this.startActivity(intent);
@@ -462,6 +424,7 @@ public class LoginActivity extends Activity implements OnClickListener{
 //						pass.generatePassword();
 			            user_bean.setPasswrod(str_login_password);
 //						user_dao.insert(user_bean);
+			            login_audit(user_bean, "Login");
 						u_dao.save(user_bean);
 						myApp.setUser_id(user_bean.getId());
 						myApp.setU_name(user_bean.getUsername());
@@ -522,35 +485,3 @@ public class LoginActivity extends Activity implements OnClickListener{
 		
 }
 
-class MyOrientationDetector extends OrientationEventListener{
-	private Context context;
-    public MyOrientationDetector( Context context ) {
-        super(context );
-        this.context=context;
-    }
-    @Override
-    public void onOrientationChanged(int orientation) {
-    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-    	    return;  //手机平放时，检测不到有效的角度
-    	}
-    	//只检测是否有四个角度的改变
-    	if( orientation > 350 || orientation< 10 ) { //0度
-    	     orientation = 0;
-    	}  
-    	else if( orientation > 80 &&orientation < 100 ) { //90度
-    	    orientation= 90;
-    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-    	}
-    	else if( orientation > 170 &&orientation < 190 ) { //180度
-    	    orientation= 180;
-    	}
-    	else if( orientation > 260 &&orientation < 280  ) { //270度
-    	    orientation= 270;
-    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    	}
-    	else {
-    	    return;
-    	}
-    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
-    }
-}

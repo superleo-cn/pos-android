@@ -58,7 +58,7 @@ import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
 
-public class SettingActivity extends Activity {
+public class SettingActivity extends BasicActivity {
 
 	private EditText language_set;
 	private EditText print_one_edit;
@@ -87,7 +87,7 @@ public class SettingActivity extends Activity {
 	private String search_date;
 //	private MyOrientationDetector3 m;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
    	 .detectDiskReads()
    	 .detectDiskWrites()
@@ -591,30 +591,6 @@ public class SettingActivity extends Activity {
 		startActivity(intent);
 		this.finish();
 
-	}
-
-	public DialogBuilder CreatedDialog() {
-		DialogBuilder builder = new DialogBuilder(this);
-		builder.setTitle(R.string.message_title);
-		builder.setMessage(R.string.message_exit);
-		builder.setPositiveButton(R.string.message_ok,
-				new android.content.DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(Intent.ACTION_MAIN);
-						intent.addCategory(Intent.CATEGORY_HOME);
-						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(intent);
-						System.exit(0);
-					}
-				});
-		builder.setNegativeButton(R.string.message_cancle,
-				new android.content.DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				});
-		return builder;
 	}
 
 	private void updateLange(Locale locale) {
