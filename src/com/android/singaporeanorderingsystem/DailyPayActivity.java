@@ -415,6 +415,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 					intent.addCategory(Intent.CATEGORY_HOME);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
+					DailyPayActivity.this.finish();
 					System.exit(0);
 				}});
 			builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
