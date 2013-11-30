@@ -429,33 +429,29 @@ public class SettingActivity extends BasicActivity {
 				}
 			}
 			
-			RemoteDataHandler.asyncPost(Constants.URL_POST_PAYLIST, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						String json=data.getJson();
-						//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-						String str=json.substring(1,json.length()-1);
-						String []array=str.split(",");
-						if(array.length!=0){
-							for(int i=0;i<array.length;i++){
-								Log.e("数据组",array[i]+"");
-							int result=	PayListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
-							if(result==-1){
-								//Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
-							}else{
-								//Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
-							}
-								
-							}
-						}
-					}else if(data.getCode() == 0){
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-					}else if(data.getCode() == -1){
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
-					}
+			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_PAYLIST, params);
+			if(data.getCode() == 1){
+				String json=data.getJson();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+			String str=json.substring(1,json.length()-1);
+			String []array=str.split(",");
+			if(array.length!=0){
+				for(int i=0;i<array.length;i++){
+					Log.e("数据组",array[i]+"");
+				int result=	PayListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
+				if(result==-1){
+					//Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
+				}else{
+					//Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
 				}
-			});
+					
+				}
+			}
+			}else if(data.getCode() == 0){
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+			}else if(data.getCode() == -1){
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+			}
 		}
 		
 		}catch(Exception e){
@@ -483,37 +479,34 @@ public class SettingActivity extends BasicActivity {
 					Log.e("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
 					}
 				}
-				
-				RemoteDataHandler.asyncPost(Constants.URL_POST_TAKENUM, params, new Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
-						if(data.getCode() == 1){
-							String json=data.getJson();
-							//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-							String str=json.substring(1,json.length()-1);
-							String []array=str.split(",");
-							if(array.length!=0){
-								for(int i=0;i<array.length;i++){
-									Log.e("数据组",array[i]+"");
-								int result=	NumListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
-								if(result==-1){
-									//Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
-								}else{
-									//Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
-								}
-									
-								}
-							}
-						}else if(data.getCode() == 0){
-							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-						}else if(data.getCode() == -1){
-							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
 			}
 			
-		}catch(Exception e){
+			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_TAKENUM, params);
+			
+			if(data.getCode() == 1){
+				String json=data.getJson();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+				String str=json.substring(1,json.length()-1);
+				String []array=str.split(",");
+				if(array.length!=0){
+					for(int i=0;i<array.length;i++){
+						Log.e("数据组",array[i]+"");
+						int result=	NumListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
+						if(result==-1){
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
+						}else{
+							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
+						}
+					}
+				}
+			}else if(data.getCode() == 0){
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+			}else if(data.getCode() == -1){
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+			}
+		
+			
+			}catch(Exception e){
 			e.getMessage();
 		}
 	}
@@ -522,27 +515,22 @@ public class SettingActivity extends BasicActivity {
 	public void post_dailyMoney(){
 		try{
 			HashMap<String, String> params= DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
-			if(!params.isEmpty()){
-				RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, params, new Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
-						if(data.getCode() == 1){
-							//String json=data.getJson();
-							//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-							int result=DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
-							if(result==-1){
-								Toast.makeText(SettingActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
-							}else{
-								Toast.makeText(SettingActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
-							}
-						}else if(data.getCode() == 0){
-							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-						}else if(data.getCode() == -1){
-							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
+			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_DAILY_MONEY, params);
+			if(data.getCode() == 1){
+				String json=data.getJson();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+				int result=DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
+				if(result==-1){
+					Toast.makeText(SettingActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(SettingActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
+				}
+			}else if(data.getCode() == 0){
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+			}else if(data.getCode() == -1){
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
 			}
+		
 		}catch(Exception e){
 			e.getMessage();
 		}
