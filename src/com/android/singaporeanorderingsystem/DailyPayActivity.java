@@ -374,7 +374,8 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				popupWindow.dismiss();
 			}
 		}
-	 public DialogBuilder CreatedDialog(){
+	 // 提交数据窗口
+	 public DialogBuilder CreatedSubmitDialog(){
 			DialogBuilder builder=new DialogBuilder(this);
 			builder.setTitle(R.string.message_title);
 			builder.setMessage(R.string.message_zhifu);
@@ -746,7 +747,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 //					shop_money.setText("100");
 //					tomorrow_money.setText("100");
 					//compute();
-					CreatedDialog().create().show();
+					CreatedSubmitDialog().create().show();
 				}
 			});
 			
