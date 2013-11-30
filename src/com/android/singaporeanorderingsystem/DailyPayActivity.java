@@ -50,6 +50,7 @@ import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
+import com.android.bean.LoginUserBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
@@ -57,6 +58,7 @@ import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
+import com.android.dao.UserDao2;
 import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
@@ -689,9 +691,9 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	    	post_payList();
 	    	post_numList(); 
 	    	post_dailyMoney();
-	    	Intent intent=new Intent(DailyPayActivity.this,LoginActivity.class);
-	    	startActivity(intent);
-	    	DailyPayActivity.this.finish();
+	    	
+	    	//记录退出日志，退出系统
+	    	logUserAction();
 
 	    }
 	    

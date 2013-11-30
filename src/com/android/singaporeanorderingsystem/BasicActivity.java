@@ -100,23 +100,7 @@ public class BasicActivity extends Activity {
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
-				final UserDao2 u_dao = UserDao2.getInatance(BasicActivity.this);
-				LoginUserBean user_bean = new LoginUserBean();
-				ArrayList<LoginUserBean> u_datas = null;
-				if (StringUtils.equalsIgnoreCase("SUPERADMIN", myApp.getU_type())) {
-					user_bean.setId(myApp.getUser_id());
-				} else {
-					u_datas = u_dao.getList(myApp.getU_name(), myApp.getSettingShopId());
-					if (u_datas != null && u_datas.size() != 0) {
-						user_bean = u_datas.get(0);
-					}
-				}
-				login_audit(user_bean, "Logout");
-				Intent intent = new Intent();
-				intent.setClass(getApplicationContext(), LoginActivity.class);// 当前Activity重新打开
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				System.exit(0);
+				logUserAction();
 			}
 		});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
@@ -125,6 +109,28 @@ public class BasicActivity extends Activity {
 			}
 		});
 		return builder;
+	}
+	
+	public void logUserAction(){
+		final UserDao2 u_dao = UserDao2.getInatance(BasicActivity.this);
+		LoginUserBean user_bean = new LoginUserBean();
+		ArrayList<LoginUserBean> u_datas = null;
+		if (StringUtils.equalsIgnoreCase("SUPERADMIN", myApp.getU_type())) {
+			user_bean.setId(myApp.getUser_id());
+		} else {
+			u_datas = u_dao.getList(myApp.getU_name(), myApp.getSettingShopId());
+			if (u_datas != null && u_datas.size() != 0) {
+				user_bean = u_datas.get(0);
+			}
+		}
+		login_audit(user_bean, "Logout");
+		Intent intent = new Intent();
+		intent.setClass(getApplicationContext(), LoginActivity.class);// 当前Activity重新打开
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(intent);
+		System.exit(0);
+	
+		
 	}
 
 }
