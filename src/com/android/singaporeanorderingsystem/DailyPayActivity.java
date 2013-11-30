@@ -268,6 +268,8 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				bean.setId(datas.get(i).get("number_id"));
 				bean.setPrice("");
 				detail_classList.add(bean);
+				all_pay_price.add(0.00);
+				//hashMap_detail.put(i, "");
 			}
 			
 			detail_adapter= new DailyPayDetailAdapter(this,detail_classList,handler);
@@ -275,6 +277,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			
 			}
 			text_id_all_price.setText(df.format(count));
+			
 			 List<Map<String,String>> datas_num=GetTakeNumDao.getInatance(DailyPayActivity.this).getList(); 
 			 Log.e("查询带回数据库", datas_num.size()+"");
 			 if(datas_num==null){
@@ -285,7 +288,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				 bean.setPrice(datas_num.get(j).get("price"));;
 				 bean.setId(datas_num.get(j).get("number_id"));
 				 bean.setNum("");
-				 all_pay_price.add(0.00);
+				// hashMap_num.put(j, "");
 					number_classList.add(bean);
 				}
 			 Log.e("打包带走", number_classList.size()+"");
@@ -306,6 +309,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 						Double total_price=0.00;
 						total_price=num*sigle_price;
 						all_num_price.add(total_price);
+						//hashMap_numprice.put(i, String.valueOf(total_price));
 						num_count=num_count+total_price;					
 					}
 					

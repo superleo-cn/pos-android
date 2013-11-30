@@ -136,6 +136,12 @@ public class MainActivity extends BasicActivity implements OnClickListener{
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
 //        m=new MyOrientationDetector2(MainActivity.this);
+        select_dataList=new ArrayList<SelectFoodBean>();
+        sbuff=new StringBuffer();
+        initView();
+        df=new DecimalFormat("0.00");
+        save_discount_price=Double.parseDouble(myApp.getDiscount());
+        package_money=0.2;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
     }
     
@@ -1021,12 +1027,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 	@Override
 	protected void onResume() {
 //		m.enable();
-		 select_dataList=new ArrayList<SelectFoodBean>();
-	        sbuff=new StringBuffer();
-	        initView();
-	        df=new DecimalFormat("0.00");
-	        save_discount_price=Double.parseDouble(myApp.getDiscount());
-	        package_money=0.2;
+		
 		super.onResume();
 	}
 	 

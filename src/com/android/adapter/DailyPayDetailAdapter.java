@@ -30,6 +30,8 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	private List<DailyPayDetailBean> classList;
 	private Handler handler;
 	public static final int CHAGE_NUM_DETAIL=1020;
+	private DailyPayDetailBean detailBean;
+	
 	public DailyPayDetailAdapter(Context context, List<DailyPayDetailBean> list,
 			Handler handler) {
 		this.context = context;
@@ -66,9 +68,97 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.text_id_name = (TextView) convertView.findViewById(R.id.text_id_name);
 			viewHolder.text_id_price = (EditText) convertView.findViewById(R.id.text_id_price);
+			viewHolder.text_id_price.setTag(position);
+			
+/*			viewHolder.text_id_price.addTextChangedListener(new TextWatcher(){
+
+				@Override
+				public void afterTextChanged(Editable s) {
+					// TODO Auto-generated method stub
+					
+					if(viewHolder.text_id_price.getText().toString().isEmpty()){
+						DailyPayActivity.hashMap_detail.put(position, ""); 
+						Message msg = new Message();
+						msg.what = CHAGE_NUM_DETAIL;
+						msg.obj=position+"+"+"0.00";
+						handler.sendMessage(msg);
+						Log.e("输入内同唯恐了", "0.00");	
+					}else{
+						//bean.setPrice(viewHolder.text_id_price.getText().toString());			
+						
+						String price=s.toString();
+						if(s.length()==0){
+							price="0.00";
+						}else{
+							if(price.equals("")){
+								price="0.00";
+							}
+						}
+						String now_price=price;
+						Log.e("变空后的价格", now_price);
+						DailyPayActivity.hashMap_detail.put(position, now_price); 
+								Message msg = new Message();
+								msg.what = CHAGE_NUM_DETAIL;
+								msg.obj=position+"+"+now_price;
+								handler.sendMessage(msg);
+								Log.e("执行输入的价格", now_price);	
+					}
+				}
+
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count,
+						int after) {
+					// TODO Auto-generated method stub
+					
+				}
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before,
+						int count) {
+					// TODO Auto-generated method stub
+				//	Log.e("输入改变完", "价格呢");
+					
+				}});*/
+			
+			viewHolder.text_id_price.addTextChangedListener(new CustTextWatch(viewHolder){
+
+				@Override
+				public void afterTextChanged(Editable s,ViewHolder holder) {
+					int p = (Integer) viewHolder.text_id_price.getTag();
+					cacheData(s.toString(), p);
+					if(viewHolder.text_id_price.getText().toString().isEmpty()){
+						DailyPayActivity.hashMap_detail.put(p, ""); 
+						Message msg = new Message();
+						msg.what = CHAGE_NUM_DETAIL;
+						msg.obj=p+"+"+"0.00";
+						handler.sendMessage(msg);
+						Log.e("输入内同唯恐了", "0.00");	
+					}else{
+						//bean.setPrice(viewHolder.text_id_price.getText().toString());			
+						
+						String price=s.toString();
+						if(s.length()==0){
+							price="0.00";
+						}else{
+							if(price.equals("")){
+								price="0.00";
+							}
+						}
+						String now_price=price;
+						Log.e("变空后的价格", now_price);
+						DailyPayActivity.hashMap_detail.put(p, now_price); 
+								Message msg = new Message();
+								msg.what = CHAGE_NUM_DETAIL;
+								msg.obj=p+"+"+now_price;
+								handler.sendMessage(msg);
+								Log.e("执行输入的价格", now_price);	
+					}
+				}
+				
+			});
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
+			viewHolder.text_id_price.setTag(position);
 		}
 
 		bean = classList.get(position);
@@ -77,56 +167,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		final String now_str=viewHolder.text_id_price.getText().toString();
 		
 		
-		viewHolder.text_id_price.addTextChangedListener(new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
-				
-				if(now_str.equals(s.toString())){
-					Log.e("支付页数据相等", "");
-				}else{
-					//bean.setPrice(viewHolder.text_id_price.getText().toString());			
-					
-					String price=s.toString();
-					if(s.length()==0){
-						price="0.00";
-					}else{
-						if(price.equals("")){
-							price="0.00";
-						}
-					}
-					String now_price=price;
-					Log.e("变空后的价格", now_price);
-					DailyPayActivity.hashMap_detail.put(position, now_price); 
-							Message msg = new Message();
-							msg.what = CHAGE_NUM_DETAIL;
-							msg.obj=position+"+"+now_price;
-							handler.sendMessage(msg);
-							Log.e("执行输入的价格", now_price);	
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-				
-			}
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-			//	Log.e("输入改变完", "价格呢");
-				if(viewHolder.text_id_price.getText().toString().isEmpty()){
-					DailyPayActivity.hashMap_detail.put(position, "0.00"); 
-					Message msg = new Message();
-					msg.what = CHAGE_NUM_DETAIL;
-					msg.obj=position+"+"+"0.00";
-					handler.sendMessage(msg);
-					Log.e("输入内同唯恐了", "0.00");	
-				}
-			}});
+		
 		
 		 
 		 if(DailyPayActivity.hashMap_detail.get(position) != null){  
@@ -141,4 +182,35 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		EditText text_id_price;
 	}
 	
+	public void cacheData(String price,int p){
+		Log.d(">>>>>>>>>>>>>>>>>>>>>", price+"  "+p);
+		if(p>classList.size())
+			return;
+		detailBean = classList.get(p);
+		detailBean.setPrice(price);
+		classList.set(p, detailBean);
+	}
+	private abstract class CustTextWatch implements TextWatcher{
+		private ViewHolder mViewHolder;
+		public CustTextWatch(ViewHolder holder){
+			this.mViewHolder = holder;
+		}
+		@Override
+		public void afterTextChanged(Editable s) {
+			afterTextChanged(s,mViewHolder);
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+		}
+		
+		public abstract void afterTextChanged(Editable s,ViewHolder holder);
+	}
 }
