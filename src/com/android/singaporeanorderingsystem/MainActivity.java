@@ -884,7 +884,16 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 					sbuff.append("0");
 				}
 				show_gathering=Double.parseDouble(sbuff.toString().trim());
+				if(is_maxPrice()){
+					gathering.setText("9999.99");
+				}else{
+					try{
 				gathering.setText(df.format(show_gathering));
+					}catch(Exception e){
+						Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+					}
+				}
+	//			gathering.setText(df.format(show_gathering));
 				double result=show_totalPrice;
 //				if(result == 0.00){
 //					Toast.makeText(this,R.string.selec_not_food, Toast.LENGTH_SHORT).show();
