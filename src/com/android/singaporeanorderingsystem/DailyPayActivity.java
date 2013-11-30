@@ -67,7 +67,7 @@ import com.android.model.ResponseData;
  * @author jingang
  *
  */
-public class DailyPayActivity extends Activity implements OnClickListener{
+public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	private ListView daily_list;
 	private ListView num_list;
 	private List<DailyPayDetailBean> detail_classList;
@@ -112,7 +112,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 //	private MyOrientationDetector1 m;
 	private SharedPreferences sharedPrefs;
 	 @Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
@@ -984,38 +984,4 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 //		super.onPause();
 //		m.disable();
 //	}
-}
-
-class MyOrientationDetector1 extends OrientationEventListener{
-	private Context context;
-    public MyOrientationDetector1( Context context ) {
-        super(context );
-        this.context=context;
-    }
-    @Override
-    public void onOrientationChanged(int orientation) {
-    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-    	    return;  //手机平放时，检测不到有效的角度
-    	}
-    	//只检测是否有四个角度的改变
-    	if( orientation > 350 || orientation< 10 ) { //0度
-    	     orientation = 0;
-    	}  
-    	else if( orientation > 80 &&orientation < 100 ) { //90度
-    	    orientation= 90;
-    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-    	}
-    	else if( orientation > 170 &&orientation < 190 ) { //180度
-    	    orientation= 180;
-    	}
-    	else if( orientation > 260 &&orientation < 280  ) { //270度
-    	    orientation= 270;
-    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    	}
-    	else {
-    	    return;
-    	}
-    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
-    }
-    
 }
