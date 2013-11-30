@@ -110,7 +110,7 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 
 	public HashMap<String,String> getList(String date){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		Cursor cursor=db.query(TABLE_NAME, null, "date=?",new String[]{date}, null, null, null, null);
+		Cursor cursor=db.query(TABLE_NAME, null, "date >= ?  and type='0' ",new String[]{date}, null, null, null, null);
 		
 		HashMap<String,String> map=new HashMap<String,String> ();
 		while(cursor.moveToNext()){
@@ -180,7 +180,7 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		ContentValues values=new ContentValues();
 		values.put("type", "1");
-		int result=db.update(TABLE_NAME, values, "date=?", new String[]{date});
+		int result=db.update(TABLE_NAME, values, " date>= ?", new String[]{date});
 		System.err.print("更新了数据库");
 		db.close();
 		return result;

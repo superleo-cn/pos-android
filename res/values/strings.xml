@@ -47,7 +47,7 @@
 	<string name="open_print">To print receipt?</string>
 	<string name="set_title">Setting</string>
 	<string name="synchronize">Sync</string>
-	<string name="content">Uncommitted data is pending a synchronization to the Cloud. Please check Internet connection before clicking on the button, / All data committed to the Cloud </string>
+	<string name="content">Error / All data committed to the Cloud </string>
 	<string name="synchronize_btn">Sync</string>
 	<string name="synchronize_btn2">Confirm</string>
 	<string name="synchronize_btn3">Reset</string>
@@ -94,6 +94,9 @@
 	<string name="money_piece">pcs</string>
 	<string name="dialy_submit_error1">[带回总数] 和 [开店金额] 都不允许为空。</string>
 	<string name="dialy_submit_error2">带回总数金额不一致，请重新确认。</string>
+	<string name="no_need_sync">No need update</string>
+	<string name="sync_succ">All the data is up-to-date</string>
+	<string name="sync_err">Uncommitted data is pending a synchronization to the Cloud. Please check Internet connection before clicking on the button.</string>
 	
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>

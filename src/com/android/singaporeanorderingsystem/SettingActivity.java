@@ -69,6 +69,7 @@ public class SettingActivity extends BasicActivity {
 	private PopupWindow popupWindow;
 	private View view;
 	private ImageView menu;
+	private TextView synchronize;
 	private Button synchronization_menu;
 	private Button synchronization_shop;
 	private Button btu_discount;
@@ -122,6 +123,17 @@ public class SettingActivity extends BasicActivity {
 		synchronization_shop = (Button) findViewById(R.id.synchronization_shop_brn);
 		synchronization_pay=(Button) this.findViewById(R.id.synchronization_pay_brn);
 		btu_setting_all_tong =(Button) this.findViewById(R.id.btu_setting_all_tong);
+		synchronize = (TextView)this.findViewById(R.id.synchronizeText);
+		/** 判断今天是否是最新的*/
+		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+    	String date=df.format(new Date());
+    	SettingActivity.this.search_date=date;
+    	if(!isLatestData()){
+    		synchronize.setText(getString(R.string.sync_err));
+    	}else{
+    		synchronize.setText(getString(R.string.sync_succ));
+    	}
+		/***/
 		price_set_brn=(Button) this.findViewById(R.id.price_set_brn);
 		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 		String type = sharedPrefs.getString("type", "");
@@ -132,13 +144,20 @@ public class SettingActivity extends BasicActivity {
 		btu_setting_all_tong.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
-				SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		    	String date=df.format(new Date());
-		    	SettingActivity.this.search_date=date;
-		    	post_payList();
-		    	post_numList(); 
-		    	post_dailyMoney();
+		    	if(!isLatestData()){
+		    		dialog.show();
+		    		post_payList();
+			    	post_numList(); 
+			    	post_dailyMoney();
+			    	dialog.cancel();
+			    	if(!isLatestData()){
+			    		synchronize.setText(getString(R.string.sync_err));
+			    	}else{
+			    		synchronize.setText(getString(R.string.sync_succ));
+			    	}
+		    	}else{
+		    		Toast.makeText(SettingActivity.this, getString(R.string.no_need_sync), Toast.LENGTH_SHORT).show();
+		    	}
 			}
 		});
 		menu.setOnClickListener(new OnClickListener() {
@@ -372,54 +391,73 @@ public class SettingActivity extends BasicActivity {
 	}
 	/***********************************************************************************/
 	
+	/* 判断今天是否已经是最新数据 */
+	public boolean isLatestData(){
+		List<Map<String,String>> pays=PayListDao.getInatance(this).getList(search_date);
+		if(!pays.isEmpty()){
+			return false;
+		}
+		List<Map<String,String>> nums=NumListDao.getInatance(this).getList(search_date);
+		if(!nums.isEmpty()){
+			return false;
+		}
+		HashMap<String, String> params= DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
+		if(!params.isEmpty()){
+			return false;
+		}
+		return true;
+	}
+	
 	/*提交每日支付*/
 	public void post_payList(){
 		try{
 		HashMap<String, String> params= new HashMap<String,String>();
 		List<Map<String,String>> datas=PayListDao.getInatance(this).getList(search_date);
 		if(!datas.isEmpty()){
-		for(int i=0;i<datas.size();i++){
-			if(datas.get(i).get("type").equals("0")){
-			params.put("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-			Log.e("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-			params.put("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
-			Log.e("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
-			params.put("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-			Log.e("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-			params.put("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-			Log.e("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-			params.put("consumeTransactions["+i+"].price", datas.get(i).get("price"));
-			Log.e("consumeTransactions["+i+"].price", datas.get(i).get("price"));
-			}
-		}
-		}
-		RemoteDataHandler.asyncPost(Constants.URL_POST_PAYLIST, params, new Callback() {
-			@Override
-			public void dataLoaded(ResponseData data) {
-				if(data.getCode() == 1){
-					String json=data.getJson();
-					Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-				String str=json.substring(1,json.length()-1);
-				String []array=str.split(",");
-				if(array.length!=0){
-					for(int i=0;i<array.length;i++){
-						Log.e("数据组",array[i]+"");
-					int result=	PayListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
-					if(result==-1){
-						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
-					}else{
-						//Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
-					}
-						
-					}
-				}
-				}else if(data.getCode() == 0){
-					Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-				}else if(data.getCode() == -1){
-					Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+			for(int i=0;i<datas.size();i++){
+				if(datas.get(i).get("type").equals("0")){
+				params.put("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+				Log.e("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+				params.put("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
+				Log.e("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
+				params.put("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+				Log.e("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+				params.put("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+				Log.e("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+				params.put("consumeTransactions["+i+"].price", datas.get(i).get("price"));
+				Log.e("consumeTransactions["+i+"].price", datas.get(i).get("price"));
 				}
 			}
-		});
+			
+			RemoteDataHandler.asyncPost(Constants.URL_POST_PAYLIST, params, new Callback() {
+				@Override
+				public void dataLoaded(ResponseData data) {
+					if(data.getCode() == 1){
+						String json=data.getJson();
+						//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+						String str=json.substring(1,json.length()-1);
+						String []array=str.split(",");
+						if(array.length!=0){
+							for(int i=0;i<array.length;i++){
+								Log.e("数据组",array[i]+"");
+							int result=	PayListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
+							if(result==-1){
+								//Toast.makeText(DailyPayActivity.this, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
+							}else{
+								//Toast.makeText(DailyPayActivity.this, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
+							}
+								
+							}
+						}
+					}else if(data.getCode() == 0){
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+					}else if(data.getCode() == -1){
+						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		}
+		
 		}catch(Exception e){
 			e.getMessage();
 		}
@@ -431,95 +469,83 @@ public class SettingActivity extends BasicActivity {
 			HashMap<String, String> params= new HashMap<String,String>();
 			List<Map<String,String>> datas=NumListDao.getInatance(this).getList(search_date);
 			if(!datas.isEmpty()){
-			for(int i=0;i<datas.size();i++){
-				if(datas.get(i).get("type").equals("0")){
-				params.put("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-				Log.e("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-				params.put("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
-				Log.e("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
-				params.put("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-				Log.e("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-				params.put("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-				Log.e("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-				params.put("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
-				Log.e("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
-				}
-			}
-			}
-			RemoteDataHandler.asyncPost(Constants.URL_POST_TAKENUM, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						String json=data.getJson();
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-					String str=json.substring(1,json.length()-1);
-					String []array=str.split(",");
-					if(array.length!=0){
-						for(int i=0;i<array.length;i++){
-							Log.e("数据组",array[i]+"");
-						int result=	NumListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
-						if(result==-1){
-							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
-						}else{
-							//Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
-						}
-							
-						}
-					}
-					}else if(data.getCode() == 0){
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-					}else if(data.getCode() == -1){
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+				for(int i=0;i<datas.size();i++){
+					if(datas.get(i).get("type").equals("0")){
+					params.put("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+					Log.e("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
+					params.put("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
+					Log.e("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
+					params.put("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+					Log.e("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
+					params.put("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+					Log.e("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
+					params.put("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
+					Log.e("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
 					}
 				}
-			});
-			}catch(Exception e){
-				e.getMessage();
+				
+				RemoteDataHandler.asyncPost(Constants.URL_POST_TAKENUM, params, new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if(data.getCode() == 1){
+							String json=data.getJson();
+							//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+							String str=json.substring(1,json.length()-1);
+							String []array=str.split(",");
+							if(array.length!=0){
+								for(int i=0;i<array.length;i++){
+									Log.e("数据组",array[i]+"");
+								int result=	NumListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
+								if(result==-1){
+									//Toast.makeText(DailyPayActivity.this, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
+								}else{
+									//Toast.makeText(DailyPayActivity.this, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
+								}
+									
+								}
+							}
+						}else if(data.getCode() == 0){
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+						}else if(data.getCode() == -1){
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 			}
+			
+		}catch(Exception e){
+			e.getMessage();
+		}
 	}
 	
 	/*提交每日营业额*/
 	public void post_dailyMoney(){
 		try{
 			HashMap<String, String> params= DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
-//			HashMap<String, String> map=new HashMap<String,String>();
-//			map.put("dailySummary.android.id", "1");
-//			map.put("dailySummary.shop.id", "2");
-//			map.put("dailySummary.user.id", "1");
-//			map.put("dailySummary.aOpenBalance", "0");
-//			map.put("dailySummary.bExpenses", "0");
-//			map.put("dailySummary.cCashCollected", "0");
-//			map.put("dailySummary.dDailyTurnover", "0");
-//			map.put("dailySummary.eNextOpenBalance", "0");
-//			map.put("dailySummary.fBringBackCash", "0");
-//			map.put("dailySummary.gTotalBalance", "0");
-//			map.put("dailySummary.middleCalculateTime", "0");
-//			map.put("dailySummary.middleCalculateBalance", "0");
-//			map.put("dailySummary.calculateTime", "0");
-//			map.put("dailySummary.others", "0");
-//			map.put("dailySummary.courier", "0");
-			RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						String json=data.getJson();
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-						int result=DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
-						if(result==-1){
-							Toast.makeText(SettingActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
-						}else{
-							Toast.makeText(SettingActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
+			if(!params.isEmpty()){
+				RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, params, new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if(data.getCode() == 1){
+							//String json=data.getJson();
+							//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+							int result=DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
+							if(result==-1){
+								Toast.makeText(SettingActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
+							}else{
+								Toast.makeText(SettingActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
+							}
+						}else if(data.getCode() == 0){
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+						}else if(data.getCode() == -1){
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
 						}
-					}else if(data.getCode() == 0){
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-					}else if(data.getCode() == -1){
-						Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
 					}
-				}
-			});
-			}catch(Exception e){
-				e.getMessage();
+				});
 			}
+		}catch(Exception e){
+			e.getMessage();
+		}
 	}
 	
 	/*********************************************************************************/

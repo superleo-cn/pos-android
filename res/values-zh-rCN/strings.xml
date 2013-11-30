@@ -93,6 +93,9 @@
 	<string name="money_piece">张</string>
 	<string name="dialy_submit_error1">[带回总数] 和 [开店金额] 都不允许为空。</string>
 	<string name="dialy_submit_error2">带回总数金额不一致，请重新确认。</string>
+	<string name="no_need_sync">不需要更新了。</string>
+	<string name="sync_succ">所以数据都已更新成功。</string>
+	<string name="sync_err">还有数据没有更新到云上，请单击右侧按钮同步数据。</string>
 	
 	<string-array name="food_name">
         <item>八宝酿豆腐</item>

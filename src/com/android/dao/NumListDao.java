@@ -76,7 +76,7 @@ public class NumListDao extends SQLiteOpenHelper {
 	
 	public List<Map<String,String>> getList(String date){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-		Cursor cursor=db.query(TABLE_NAME, null, "date=?",new String[]{date}, null, null, null, null);
+		Cursor cursor=db.query(TABLE_NAME, null, "date >= ?  and type='0' ",new String[]{date}, null, null, null, null);
 		
 		List<Map<String,String>>  list=new ArrayList<Map<String,String>> ();
 		while(cursor.moveToNext()){
