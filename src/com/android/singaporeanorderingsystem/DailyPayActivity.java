@@ -544,6 +544,15 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				Toast.makeText(DailyPayActivity.this, getString(R.string.dialy_submit_error2), Toast.LENGTH_SHORT).show();
 				return false;
 			}
+			
+			// 收银机不能为负数
+	    	String txtCashRegister = StringUtils.defaultIfEmpty(cash_register.getText().toString(), "0");
+			Double cashRegister = Double.parseDouble(txtCashRegister);
+			if(cashRegister < 0){
+				Toast.makeText(DailyPayActivity.this, getString(R.string.dialy_submit_error3), Toast.LENGTH_SHORT).show();
+				return false;
+			}
+			
 	    	return true;
 	    }
 	    
