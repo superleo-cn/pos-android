@@ -734,67 +734,9 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 			}
 			break;
 		case R.id.ok_btn:
-//			FoodOrder food_order=new FoodOrder();
-//			food_order.setDiscount(dazhe_price);//打折钱数
-//			if(is_foc){
-//				food_order.setFoc("1");//是否免费 1是 0否
-//			}else{
-//				food_order.setFoc("0");//是否免费 1是 0否
-//			}
-//			food_order.setFood_flag("0");//是否成功 1是 0否
-//			food_order.setShop_id("1");//店idmyApp.getShopid()
-//			food_order.setTotalpackage(dabao_price);//打包钱数
-//			food_order.setUser_id(myApp.getUser_id());//用户id
-//			food_order.setRetailprice(df.format(show_totalPrice));//收钱数
-//			String Foodid = "0";
-//			String Quantity = "0";
-//			for(int i = 0 ; i < select_dataList.size() ; i ++){
-//				SelectFoodBean  bean=select_dataList.get(i);
-//				if(i == select_dataList.size()-1){
-//					Foodid+=bean.getFood_id();
-//					Quantity+=bean.getFood_num();
-//				}else{
-//					Foodid+=bean.getFood_id()+",";
-//					Quantity+=bean.getFood_num()+",";
-//				}
-//			}
-//			food_order.setFoodid(Foodid);//食物id
-//			food_order.setQuantity(Quantity);//数量
-//			System.out.println("-->"+food_order.toString());
-//			food_dao.insert(food_order);
-//			HashMap<String, String> params= new HashMap<String,String>();
-//			ArrayList<FoodOrder> datas=food_dao.findall();
-//			System.out.println("-->"+datas.size());
-//			for(int i = 0 ; i<datas.size() ; i++){
-//				FoodOrder f_order =  datas.get(i);
-//				if(f_order.getFood_flag().equals("0")){
-//					String [] foodid=f_order.getFoodid().split(",");
-//					String [] Food_num=f_order.getQuantity().split(",");
-//					for(int j = 0; j<foodid.length ;j++){
-//						params.put("transactions["+j+"].androidId", f_order.getAndroid_id());
-//						System.out.println("transactions["+j+"].androidId-->"+f_order.getAndroid_id());
-//						params.put("transactions["+j+"].user.id", f_order.getUser_id());
-//						System.out.println("transactions["+j+"].user.id-->"+f_order.getUser_id());
-//						params.put("transactions["+j+"].shop.id", f_order.getShop_id());
-//						System.out.println("transactions["+j+"].shop.id-->"+ f_order.getShop_id());
-//						params.put("transactions["+j+"].quantity", Food_num[i]);
-//						System.out.println("transactions["+j+"].quantity-->"+ Food_num[i]);
-//						params.put("transactions["+j+"].food.id", foodid[i]);
-//						System.out.println("transactions["+j+"].food.id-->"+ foodid[i]);
-//						params.put("transactions["+j+"].totalDiscount", f_order.getDiscount());
-//						System.out.println("transactions["+j+"].totalDiscount-->"+ f_order.getDiscount());
-//						params.put("transactions["+j+"].totalRetailPrice", f_order.getRetailprice());
-//						System.out.println("transactions["+j+"].totalRetailPrice-->"+f_order.getRetailprice());
-//						params.put("transactions["+j+"].totalPackage", f_order.getTotalpackage());
-//						System.out.println("transactions["+j+"].totalPackage-->"+ f_order.getTotalpackage());
-//						params.put("transactions["+j+"].freeOfCharge", f_order.getFoc());
-//						System.out.println("transactions["+j+"].freeOfCharge-->"+ f_order.getFoc());
-//					}
-//				}
-//			}
-			 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
-		    	String date=df_save.format(new Date());
-		    	save_date=date;
+			SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
+	    	String date=df_save.format(new Date());
+	    	save_date=date;
 			long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString(),myApp.getSettingShopId());
 			if(result_price==-1){
 				Log.e("保存价格失败", "");
@@ -888,7 +830,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 					gathering.setText("9999.99");
 				}else{
 					try{
-				gathering.setText(df.format(show_gathering));
+						gathering.setText(df.format(show_gathering));
 					}catch(Exception e){
 						Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
 					}
@@ -902,11 +844,12 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 					if(sbuff.toString().trim().equals("0") || sbuff.toString().trim().equals("0.0")){
 						surplus.setText(df.format(show_surplus));
 					}else{
-					Log.e("最后金额", show_totalPrice+"");
-					show_surplus=show_gathering-result;
-					surplus.setText(df.format(show_surplus));
-//					int sb_length=sbuff.length();
-//					sbuff.delete(0, sb_length);
+						Log.e("最后金额", show_totalPrice+"");
+						if(show_gathering > 9999.99){
+							show_gathering = 9999.99;
+						}
+						show_surplus=show_gathering-result;
+						surplus.setText(df.format(show_surplus));
 					}
 //					Show_print().create().show();
 //				}
@@ -1122,9 +1065,9 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 	
 	public void compute_surplus(){
 		try{
-		Double get_gathering=Double.parseDouble(gathering.getText().toString());
-		Double get_total_price=Double.parseDouble(total_price.getText().toString());
-		surplus.setText(df.format(get_gathering-get_total_price));
+			Double get_gathering=Double.parseDouble(gathering.getText().toString());
+			Double get_total_price=Double.parseDouble(total_price.getText().toString());
+			surplus.setText(df.format(get_gathering-get_total_price));
 		}catch(Exception e){
 			Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
 		}
