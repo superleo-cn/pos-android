@@ -734,92 +734,6 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 			}
 			break;
 		case R.id.ok_btn:
-			SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
-	    	String date=df_save.format(new Date());
-	    	save_date=date;
-			long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString(),myApp.getSettingShopId());
-			if(result_price==-1){
-				Log.e("保存价格失败", "");
-			}else{
-				Log.e("保存价格成功", "");
-			}
-			f_dao = FoodOrderDao2.getInatance(MainActivity.this);
-			for(int i = 0 ; i < select_dataList.size() ; i ++){
-				SelectFoodBean  bean=select_dataList.get(i);
-				FoodOrder food_order=new FoodOrder();
-				//food_order.setDiscount(dazhe_price+"");//打折钱数
-				food_order.setFood_flag("0");//是否成功 1是 0否
-				food_order.setShop_id(myApp.getSettingShopId());//店idmyApp.getShopid()
-
-				food_order.setTotalpackage(bean.getDabao_price() + "");//打包钱数
-				food_order.setDiscount(bean.getDazhe_price() + ""); //打折钱数
-				food_order.setUser_id(myApp.getUser_id());//用户id
-//				food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
-				double totalRetailPrice = Double.parseDouble( bean.getFood_price()) - bean.getDazhe_price() + bean.getDabao_price();
-				if(is_foc){
-					food_order.setFoc("1");//是否免费 1是 0否
-					totalRetailPrice = 0;
-				}else{
-					food_order.setFoc("0");//是否免费 1是 0否
-				}
-				food_order.setRetailprice(totalRetailPrice + "");//收钱数
-				food_order.setFoodid(bean.getFood_id());//食物id
-				food_order.setQuantity(bean.getFood_num());//数量
-				DateFormat timestamp =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				food_order.setDate(timestamp.format(new Date()));
-				f_dao.save(food_order);
-			}
-			
-			HashMap<String, String> params= new HashMap<String,String>();
-			ArrayList<FoodOrder> datas=f_dao.getList("0");
-			System.out.println("-->"+datas.size());
-			for(int i = 0 ; i<datas.size() ; i++){
-				FoodOrder f_order =  datas.get(i);
-				if(f_order.getFood_flag().equals("0")){
-					System.out.println("f_order.getFood_flag()-->"+f_order.getFood_flag());
-						params.put("transactions["+i+"].androidId", f_order.getAndroid_id());
-						System.out.println("transactions["+i+"].androidId-->"+f_order.getAndroid_id());
-						params.put("transactions["+i+"].user.id", f_order.getUser_id());
-						System.out.println("transactions["+i+"].user.id-->"+f_order.getUser_id());
-						params.put("transactions["+i+"].shop.id", f_order.getShop_id());
-						System.out.println("transactions["+i+"].shop.id-->"+ f_order.getShop_id());
-						params.put("transactions["+i+"].quantity", f_order.getQuantity());
-						System.out.println("transactions["+i+"].quantity-->"+ f_order.getQuantity());
-						params.put("transactions["+i+"].food.id", f_order.getFoodid());
-						System.out.println("transactions["+i+"].food.id-->"+ f_order.getFoodid());
-						params.put("transactions["+i+"].totalDiscount", f_order.getDiscount());
-						System.out.println("transactions["+i+"].totalDiscount-->"+ f_order.getDiscount());
-						params.put("transactions["+i+"].totalRetailPrice", f_order.getRetailprice());
-						System.out.println("transactions["+i+"].totalRetailPrice-->"+f_order.getRetailprice());
-						params.put("transactions["+i+"].totalPackage", f_order.getTotalpackage());
-						System.out.println("transactions["+i+"].totalPackage-->"+ f_order.getTotalpackage());
-						params.put("transactions["+i+"].freeOfCharge", f_order.getFoc());
-						System.out.println("transactions["+i+"].freeOfCharge-->"+ f_order.getFoc());
-						params.put("transactions["+i+"].orderDate", f_order.getDate());
-						System.out.println("transactions["+i+"].orderDate-->"+ f_order.getDate());
-				}
-			}
-			RemoteDataHandler.asyncPost(Constants.URL_FOOD_ORDER, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						f_dao.update_all_type("0");
-					}else if(data.getCode() == 0){
-						String json = data.getJson();
-						System.out.println("-----111>>>>>>"+json);
-						json=json.replaceAll("\\[", "");
-						json=json.replaceAll("\\]", "");
-						System.out.println("-----222>>>>>>"+json);
-						String [] str=json.split(",");
-						for(int i = 0; i<str.length;i++){
-							System.out.println("-----333>>>>>>"+str[i]);
-							f_dao.update_type(str[i]);
-						}
-					}else if(data.getCode() == -1){
-						
-					}
-				}
-			});
 			try{
 				Log.e("输入的金额", sbuff.toString().trim());
 				if(sbuff==null||sbuff.toString().trim().equals("") ){
@@ -871,7 +785,94 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialog, int which) {
+				///--------------------------
+				SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
+		    	String date=df_save.format(new Date());
+		    	save_date=date;
+				long result_price=PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),date,total_price.getText().toString(),myApp.getSettingShopId());
+				if(result_price==-1){
+					Log.e("保存价格失败", "");
+				}else{
+					Log.e("保存价格成功", "");
+				}
+				f_dao = FoodOrderDao2.getInatance(MainActivity.this);
+				for(int i = 0 ; i < select_dataList.size() ; i ++){
+					SelectFoodBean  bean=select_dataList.get(i);
+					FoodOrder food_order=new FoodOrder();
+					//food_order.setDiscount(dazhe_price+"");//打折钱数
+					food_order.setFood_flag("0");//是否成功 1是 0否
+					food_order.setShop_id(myApp.getSettingShopId());//店idmyApp.getShopid()
+
+					food_order.setTotalpackage(bean.getDabao_price() + "");//打包钱数
+					food_order.setDiscount(bean.getDazhe_price() + ""); //打折钱数
+					food_order.setUser_id(myApp.getUser_id());//用户id
+//					food_order.setRetailprice(Double.parseDouble( bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
+					double totalRetailPrice = Double.parseDouble( bean.getFood_price()) - bean.getDazhe_price() + bean.getDabao_price();
+					if(is_foc){
+						food_order.setFoc("1");//是否免费 1是 0否
+						totalRetailPrice = 0;
+					}else{
+						food_order.setFoc("0");//是否免费 1是 0否
+					}
+					food_order.setRetailprice(totalRetailPrice + "");//收钱数
+					food_order.setFoodid(bean.getFood_id());//食物id
+					food_order.setQuantity(bean.getFood_num());//数量
+					DateFormat timestamp =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					food_order.setDate(timestamp.format(new Date()));
+					f_dao.save(food_order);
+				}
 				
+				HashMap<String, String> params= new HashMap<String,String>();
+				ArrayList<FoodOrder> datas=f_dao.getList("0");
+				System.out.println("-->"+datas.size());
+				for(int i = 0 ; i<datas.size() ; i++){
+					FoodOrder f_order =  datas.get(i);
+					if(f_order.getFood_flag().equals("0")){
+						System.out.println("f_order.getFood_flag()-->"+f_order.getFood_flag());
+							params.put("transactions["+i+"].androidId", f_order.getAndroid_id());
+							System.out.println("transactions["+i+"].androidId-->"+f_order.getAndroid_id());
+							params.put("transactions["+i+"].user.id", f_order.getUser_id());
+							System.out.println("transactions["+i+"].user.id-->"+f_order.getUser_id());
+							params.put("transactions["+i+"].shop.id", f_order.getShop_id());
+							System.out.println("transactions["+i+"].shop.id-->"+ f_order.getShop_id());
+							params.put("transactions["+i+"].quantity", f_order.getQuantity());
+							System.out.println("transactions["+i+"].quantity-->"+ f_order.getQuantity());
+							params.put("transactions["+i+"].food.id", f_order.getFoodid());
+							System.out.println("transactions["+i+"].food.id-->"+ f_order.getFoodid());
+							params.put("transactions["+i+"].totalDiscount", f_order.getDiscount());
+							System.out.println("transactions["+i+"].totalDiscount-->"+ f_order.getDiscount());
+							params.put("transactions["+i+"].totalRetailPrice", f_order.getRetailprice());
+							System.out.println("transactions["+i+"].totalRetailPrice-->"+f_order.getRetailprice());
+							params.put("transactions["+i+"].totalPackage", f_order.getTotalpackage());
+							System.out.println("transactions["+i+"].totalPackage-->"+ f_order.getTotalpackage());
+							params.put("transactions["+i+"].freeOfCharge", f_order.getFoc());
+							System.out.println("transactions["+i+"].freeOfCharge-->"+ f_order.getFoc());
+							params.put("transactions["+i+"].orderDate", f_order.getDate());
+							System.out.println("transactions["+i+"].orderDate-->"+ f_order.getDate());
+					}
+				}
+				RemoteDataHandler.asyncPost(Constants.URL_FOOD_ORDER, params, new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if(data.getCode() == 1){
+							f_dao.update_all_type("0");
+						}else if(data.getCode() == 0){
+							String json = data.getJson();
+							System.out.println("-----111>>>>>>"+json);
+							json=json.replaceAll("\\[", "");
+							json=json.replaceAll("\\]", "");
+							System.out.println("-----222>>>>>>"+json);
+							String [] str=json.split(",");
+							for(int i = 0; i<str.length;i++){
+								System.out.println("-----333>>>>>>"+str[i]);
+								f_dao.update_type(str[i]);
+							}
+						}else if(data.getCode() == -1){
+							
+						}
+					}
+				});
+				//----------------------------
 				StringBuffer sb=new StringBuffer();
 				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
 				String time = sdf.format(new Date());
