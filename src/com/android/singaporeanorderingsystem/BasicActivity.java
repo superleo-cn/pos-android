@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -70,24 +72,24 @@ public class BasicActivity extends Activity {
 				params.put("audits[" + i + "].actionDate", login_a_bean.getActionDate());
 				params.put("audits[" + i + "].action", login_a_bean.getAction());
 			}
-			RemoteDataHandler.asyncPost(Constants.URL_LOGIN_AUDIT, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if (data.getCode() == 1) {
-						dao.update_all_type("0");
-					} else if (data.getCode() == 0) {
-						String json = data.getJson();
-						json = json.replaceAll("\\[", "");
-						json = json.replaceAll("\\]", "");
-						String[] str = json.split(",");
-						for (int i = 0; i < str.length; i++) {
-							dao.update_type(str[i]);
-						}
-					} else if (data.getCode() == -1) {
-
+			try {
+				ResponseData data = RemoteDataHandler.post(Constants.URL_LOGIN_AUDIT, params);
+				if (data.getCode() == 1) {
+					dao.update_all_type("0");
+				} else if (data.getCode() == 0) {
+					String json = data.getJson();
+					json = json.replaceAll("\\[", "");
+					json = json.replaceAll("\\]", "");
+					String[] str = json.split(",");
+					for (int i = 0; i < str.length; i++) {
+						dao.update_type(str[i]);
 					}
+				} else if (data.getCode() == -1) {
+
 				}
-			});
+			} catch (Exception e) {
+				Log.e("error", "LogMessage", e);
+			}
 		}
 	}
 
@@ -99,17 +101,17 @@ public class BasicActivity extends Activity {
 
 			public void onClick(DialogInterface dialog, int which) {
 				final UserDao2 u_dao = UserDao2.getInatance(BasicActivity.this);
-				ArrayList<LoginUserBean> u_datas = u_dao.getList(myApp.getU_name(), myApp.getSettingShopId());
 				LoginUserBean user_bean = new LoginUserBean();
-				if (u_datas != null && u_datas.size() != 0) {
-					user_bean = u_datas.get(0);
+				ArrayList<LoginUserBean> u_datas = null;
+				if (StringUtils.equalsIgnoreCase("SUPERADMIN", myApp.getU_type())) {
+					user_bean.setId(myApp.getUser_id());
+				} else {
+					u_datas = u_dao.getList(myApp.getU_name(), myApp.getSettingShopId());
+					if (u_datas != null && u_datas.size() != 0) {
+						user_bean = u_datas.get(0);
+					}
 				}
 				login_audit(user_bean, "Logout");
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				Intent intent = new Intent(Intent.ACTION_MAIN);
 				intent.addCategory(Intent.CATEGORY_HOME);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

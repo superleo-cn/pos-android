@@ -113,7 +113,7 @@ public class LoginAuditDao extends SQLiteOpenHelper {
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		ContentValues values=new ContentValues();
 		values.put("food_flag", "1");
-		int result=db.update(TABLE_NAME, values, "foodid=?", new String[]{food_id});
+		int result=db.update(TABLE_NAME, values, "food_flag=?", new String[]{food_id});
 		System.err.print("更新了数据库");
 		db.close();
 		return result;
