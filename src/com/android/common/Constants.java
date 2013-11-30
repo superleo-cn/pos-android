@@ -100,6 +100,8 @@ public final class Constants {
 	public static final String URL_UPDATE_APP=URL_CONTEXTPATH+"/checkUpdate";
 	/** 软件下载*/
 	public static final String URL_UPDATE_APP_DOWN=URL_CONTEXTPATH+"/versions/";
+	/** 服务器登录记录*/
+	public static final String URL_LOGIN_AUDIT=URL_CONTEXTPATH+"/audits/submit ";
 	
 	/*提交每日支付款*/
 	public static final String URL_POST_PAYLIST=URL_CONTEXTPATH+"/consumeTransactions/submit";	

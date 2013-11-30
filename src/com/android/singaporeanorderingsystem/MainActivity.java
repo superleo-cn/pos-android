@@ -54,17 +54,21 @@ import com.android.bean.FoodHttpBean;
 import com.android.bean.FoodListBean;
 import com.android.bean.FoodOrder;
 import com.android.bean.GiditNumberBean;
+import com.android.bean.LoginAuditBean;
+import com.android.bean.LoginUserBean;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.FoodOrderDao2;
+import com.android.dao.LoginAuditDao;
+import com.android.dao.UserDao2;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
 
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends BasicActivity implements OnClickListener{
 	
 	private ImageView menu; //menu按钮
 	private TextView login_name; //用户名字
@@ -112,7 +116,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private double dazhe_price=0;
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
-	private MyOrientationDetector2 m;
+//	private MyOrientationDetector2 m;
 	private SharedPreferences sharedPrefs;
 	/*主菜单activity*/
     @Override
@@ -131,7 +135,8 @@ public class MainActivity extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //init_wifiReceiver();
-        m=new MyOrientationDetector2(MainActivity.this);
+//        m=new MyOrientationDetector2(MainActivity.this);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
     }
     
     /*初始化控件*/
@@ -902,26 +907,6 @@ public class MainActivity extends Activity implements OnClickListener{
 		}
 	}
 	
-	public DialogBuilder CreatedDialog(){
-		DialogBuilder builder=new DialogBuilder(this);
-		builder.setTitle(R.string.message_title);
-		builder.setMessage(R.string.message_exit);
-		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
-
-			public void onClick(DialogInterface dialog, int which) {
-				Intent intent = new Intent(Intent.ACTION_MAIN);
-				intent.addCategory(Intent.CATEGORY_HOME);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				System.exit(0);
-			}});
-		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
-
-			public void onClick(DialogInterface dialog, int which) {
-			}});
-		return builder;
-	}
-	
 	public DialogBuilder Show_print(){
 		DialogBuilder builder=new DialogBuilder(this);
 		builder.setTitle(R.string.message_title);
@@ -1035,7 +1020,7 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	@Override
 	protected void onResume() {
-		m.enable();
+//		m.enable();
 		 select_dataList=new ArrayList<SelectFoodBean>();
 	        sbuff=new StringBuffer();
 	        initView();
@@ -1149,42 +1134,13 @@ public class MainActivity extends Activity implements OnClickListener{
 	    	return false;
 		
 	    }
-	@Override
-	protected void onPause() {
-		super.onPause();
-		m.disable();
-	}
+	 
+	 	
+//	@Override
+//	protected void onPause() {
+//		super.onPause();
+//		m.disable();
+//	}
 }
-class MyOrientationDetector2 extends OrientationEventListener{
-	private Context context;
-    public MyOrientationDetector2( Context context ) {
-        super(context );
-        this.context=context;
-    }
-    @Override
-    public void onOrientationChanged(int orientation) {
-    	if(orientation == OrientationEventListener.ORIENTATION_UNKNOWN) {
-    	    return;  //手机平放时，检测不到有效的角度
-    	}
-    	//只检测是否有四个角度的改变
-    	if( orientation > 350 || orientation< 10 ) { //0度
-    	     orientation = 0;
-    	}  
-    	else if( orientation > 80 &&orientation < 100 ) { //90度
-    	    orientation= 90;
-    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-    	}
-    	else if( orientation > 170 &&orientation < 190 ) { //180度
-    	    orientation= 180;
-    	}
-    	else if( orientation > 260 &&orientation < 280  ) { //270度
-    	    orientation= 270;
-    	    ((Activity) context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-    	}
-    	else {
-    	    return;
-    	}
-    	Log.i("MyOrientationDetector ","onOrientationChanged:"+orientation);
-    }
-   
-}
+
+

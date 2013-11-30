@@ -109,14 +109,15 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 	private String search_date;
 	private Double order_price=0.00;
 	private TextView write_name;
-	private MyOrientationDetector1 m;
+//	private MyOrientationDetector1 m;
 	private SharedPreferences sharedPrefs;
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		//init_wifiReceiver();
-		m=new MyOrientationDetector1(DailyPayActivity.this);
+//		m=new MyOrientationDetector1(DailyPayActivity.this);
 		all_num_price=new ArrayList<Double>();
 		all_pay_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
@@ -365,7 +366,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 						if (popupWindow.isShowing()) {
 							popupWindow.dismiss();
 						}
-						CreatedDialog2().create().show();
+						CreatedDialog().create().show();
 					}
 				});
 			}
@@ -404,26 +405,8 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			popupWindow.showAsDropDown(menu, 0, -5);
 			break;
 		case R.id.layout_exit:
-			DialogBuilder builder=new DialogBuilder(DailyPayActivity.this);
-			builder.setTitle(R.string.message_title);
-			builder.setMessage(R.string.message_exit);
-			builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
 
-				public void onClick(DialogInterface dialog, int which) {
-					// TODO Auto-generated method stub
-					Intent intent = new Intent(Intent.ACTION_MAIN);
-					intent.addCategory(Intent.CATEGORY_HOME);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					DailyPayActivity.this.finish();
-					System.exit(0);
-				}});
-			builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
-
-				public void onClick(DialogInterface dialog, int which) {
-				}});
-			builder.create().show();
-			
+			CreatedDialog().create().show();
 			break;
 		}
 	}
@@ -522,26 +505,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 			}
 			}
 	    };
-	    public DialogBuilder CreatedDialog2(){
-			DialogBuilder builder=new DialogBuilder(this);
-			builder.setTitle(R.string.message_title);
-			builder.setMessage(R.string.message_exit);
-			builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
-
-				public void onClick(DialogInterface dialog, int which) {
-					Intent intent = new Intent(Intent.ACTION_MAIN);
-					intent.addCategory(Intent.CATEGORY_HOME);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-					DailyPayActivity.this.finish();
-					System.exit(0);
-				}});
-			builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
-
-				public void onClick(DialogInterface dialog, int which) {
-				}});
-			return builder;
-		}
+	    
 	    private void init_wifiReceiver()
 	    {
 	    	IntentFilter filter=new IntentFilter();
@@ -771,7 +735,7 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 
 		@Override
 		protected void onResume() {
-			m.enable();
+//			m.enable();
 			df=new DecimalFormat("0.00");
 			initView();
 			
@@ -1016,11 +980,11 @@ public class DailyPayActivity extends Activity implements OnClickListener{
 				e.getMessage();
 			}
 	}
-	@Override
-	protected void onPause() {
-		super.onPause();
-		m.disable();
-	}
+//	@Override
+//	protected void onPause() {
+//		super.onPause();
+//		m.disable();
+//	}
 }
 
 class MyOrientationDetector1 extends OrientationEventListener{

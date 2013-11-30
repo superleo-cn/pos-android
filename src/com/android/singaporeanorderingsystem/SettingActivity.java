@@ -58,7 +58,7 @@ import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
 
-public class SettingActivity extends Activity {
+public class SettingActivity extends BasicActivity {
 
 	private EditText language_set;
 	private EditText print_one_edit;
@@ -85,9 +85,9 @@ public class SettingActivity extends Activity {
 	private FoodHttpBeanDao fhb_dao;
 	private MyProcessDialog dialog;
 	private String search_date;
-	private MyOrientationDetector3 m;
+//	private MyOrientationDetector3 m;
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
    	 .detectDiskReads()
    	 .detectDiskWrites()
@@ -99,7 +99,8 @@ public class SettingActivity extends Activity {
    	.penaltyLog() //打印logcat
    	 .penaltyDeath()
    	 .build());
-   	m=new MyOrientationDetector3(SettingActivity.this);
+//   	m=new MyOrientationDetector3(SettingActivity.this);
+   	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();
@@ -592,30 +593,6 @@ public class SettingActivity extends Activity {
 
 	}
 
-	public DialogBuilder CreatedDialog() {
-		DialogBuilder builder = new DialogBuilder(this);
-		builder.setTitle(R.string.message_title);
-		builder.setMessage(R.string.message_exit);
-		builder.setPositiveButton(R.string.message_ok,
-				new android.content.DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						Intent intent = new Intent(Intent.ACTION_MAIN);
-						intent.addCategory(Intent.CATEGORY_HOME);
-						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(intent);
-						System.exit(0);
-					}
-				});
-		builder.setNegativeButton(R.string.message_cancle,
-				new android.content.DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				});
-		return builder;
-	}
-
 	private void updateLange(Locale locale) {
 		Resources res = getResources();
 		Configuration config = res.getConfiguration();
@@ -653,16 +630,16 @@ public class SettingActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	@Override
-	protected void onResume() {
-		super.onResume();
-		m.enable();
-	}
-	@Override
-	protected void onPause() {
-		super.onPause();
-		m.disable();
-	}
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		m.enable();
+//	}
+//	@Override
+//	protected void onPause() {
+//		super.onPause();
+//		m.disable();
+//	}
 }
 class MyOrientationDetector3 extends OrientationEventListener{
 	private Context context;
