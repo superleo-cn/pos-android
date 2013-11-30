@@ -123,6 +123,19 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		all_num_price=new ArrayList<Double>();
 		all_pay_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
+		df=new DecimalFormat("0.00");
+		initView();
+		
+		btu_id_sbumit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//text_id_all_price.setText(count+R.string.rmb);
+//				shop_money.setText("100");
+//				tomorrow_money.setText("100");
+				//compute();
+				CreatedSubmitDialog().create().show();
+			}
+		});
 	//onload_payDetail("1");
 	}
 	 
@@ -752,19 +765,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		@Override
 		protected void onResume() {
 //			m.enable();
-			df=new DecimalFormat("0.00");
-			initView();
-			
-			btu_id_sbumit.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					//text_id_all_price.setText(count+R.string.rmb);
-//					shop_money.setText("100");
-//					tomorrow_money.setText("100");
-					//compute();
-					CreatedSubmitDialog().create().show();
-				}
-			});
+		
 			
 			super.onResume();
 		}
