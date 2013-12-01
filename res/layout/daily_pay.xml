@@ -425,7 +425,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:textColor="#000000"
-                                    android:numeric="decimal"
+                                    android:inputType="text"
                                     android:id="@+id/noon_time"
                                     android:textSize="16sp" />
                             </LinearLayout>
@@ -491,7 +491,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:textColor="#000000"
-                                    android:numeric="decimal"
+                                    android:inputType="text"
                                     android:id="@+id/time"
                                     android:textSize="16sp" />
                             </LinearLayout>
