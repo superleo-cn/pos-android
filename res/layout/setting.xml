@@ -193,14 +193,24 @@
                         android:id="@+id/take_price_edit"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dip"
-                        android:layout_marginRight="20dip"
+                        android:layout_marginLeft="30dip"
+                        android:layout_toLeftOf="@+id/btu_discount"
                         android:background="@drawable/edit_bg"
+                        android:layout_marginRight="20dip"
                         android:padding="2dip"
                         android:layout_toRightOf="@+id/take_price" />
+                     <Button
+                        android:id="@+id/btu_discount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/tong_btu_bg"
+                        android:text="@string/synchronize_btn2"
+                        android:layout_marginRight="20dip"
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
-                <RelativeLayout
+                <!-- <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/take_price"
@@ -217,7 +227,7 @@
                         android:background="@drawable/tong_btu_bg"
                         android:text="@string/synchronize_btn2"
                         android:textSize="15sp" />
-                </RelativeLayout>
+                </RelativeLayout> -->
             </RelativeLayout>
 
             <TextView
