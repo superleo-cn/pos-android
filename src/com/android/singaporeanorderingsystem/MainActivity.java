@@ -785,6 +785,25 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialog, int which) {
+				//先打印数据，不耽误正常使用----------------------------
+				StringBuffer sb=new StringBuffer();
+				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				String time = sdf.format(new Date());
+				sb.append(time+"\n\n");
+//				FoodHttpBeanDao fhb_dao =FoodHttpBeanDao.getInatance(MainActivity.this);
+//		    	int fixSize = fhb_dao.getList().size();
+//				int size = select_dataList.size();
+				for(int i = 0 ; i <  select_dataList.size() ; i++){
+					SelectFoodBean bean=select_dataList.get(i);
+					String foodName = bean.getFood_dayin_code()+" / "+bean.getFood_name();
+					String qty = "X"+bean.getFood_num()+"\n\n";
+					if(is_takePackage){
+						foodName+="(包)";
+					}
+					sb.append(foodName + "     " + qty);
+				}
+				myApp.getPrinter().setIp(myApp.getIp_str());
+				myApp.getPrinter().print(sb.toString());
 				///--------------------------
 				SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
 		    	String date=df_save.format(new Date());
@@ -821,7 +840,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 					food_order.setDate(timestamp.format(new Date()));
 					f_dao.save(food_order);
 				}
-				
+				// 准备发送数据
 				HashMap<String, String> params= new HashMap<String,String>();
 				ArrayList<FoodOrder> datas=f_dao.getList("0");
 				System.out.println("-->"+datas.size());
@@ -851,6 +870,8 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 							System.out.println("transactions["+i+"].orderDate-->"+ f_order.getDate());
 					}
 				}
+				
+				// 异步请求数据
 				RemoteDataHandler.asyncPost(Constants.URL_FOOD_ORDER, params, new Callback() {
 					@Override
 					public void dataLoaded(ResponseData data) {
@@ -872,25 +893,8 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 						}
 					}
 				});
-				//----------------------------
-				StringBuffer sb=new StringBuffer();
-				SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy HH:mm");
-				String time = sdf.format(new Date());
-				sb.append(time+"\n\n");
-//				FoodHttpBeanDao fhb_dao =FoodHttpBeanDao.getInatance(MainActivity.this);
-//		    	int fixSize = fhb_dao.getList().size();
-//				int size = select_dataList.size();
-				for(int i = 0 ; i <  select_dataList.size() ; i++){
-					SelectFoodBean bean=select_dataList.get(i);
-					String foodName = bean.getFood_dayin_code()+" / "+bean.getFood_name();
-					String qty = "X"+bean.getFood_num()+"\n\n";
-					if(is_takePackage){
-						foodName+="(包)";
-					}
-					sb.append(foodName + "     " + qty);
-				}
-				myApp.getPrinter().setIp(myApp.getIp_str());
-				myApp.getPrinter().print(sb.toString());
+			
+				//清空数据
 				clear_data();
 			}});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
