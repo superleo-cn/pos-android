@@ -166,8 +166,8 @@ public class AndroidPrinter {
 				break;
 			case WifiCommunication.WFPRINTER_CONNECTEDERR:
 				connFlag = 0;
-				Toast.makeText(context, "Connect the WIFI printer get error",
-						Toast.LENGTH_SHORT).show();
+//				Toast.makeText(context, "Connect the WIFI printer get error",
+//						Toast.LENGTH_SHORT).show();
 				if (wfComm != null && revThred != null) {
 					revThred.interrupt();
 				}
