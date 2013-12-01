@@ -101,7 +101,6 @@ public class SettingActivity extends BasicActivity {
    	 .penaltyDeath()
    	 .build());
 //   	m=new MyOrientationDetector3(SettingActivity.this);
-   	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.setting);	
 		myApp = (MyApp) SettingActivity.this.getApplication();

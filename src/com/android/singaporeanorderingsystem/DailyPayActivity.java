@@ -117,7 +117,6 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.daily_pay);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		//init_wifiReceiver();
 //		m=new MyOrientationDetector1(DailyPayActivity.this);
 		all_num_price=new ArrayList<Double>();
