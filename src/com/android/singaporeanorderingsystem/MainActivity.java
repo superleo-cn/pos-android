@@ -330,25 +330,26 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 						}
 					}.start();
 				}else{
-					for(int i=select_dataList.size()-1;i>=0;i--){
-						SelectFoodBean add_bean=select_dataList.get(i);
-						if(add_bean.getFood_name().equals(bean.getFood_name())){
-							is_moreClick=true;
-							int num=Integer.parseInt(add_bean.getFood_num());
-							num=num+1;
-							double price=Double.parseDouble(select_dataList.get(i).getFood_price());
-							price=price+Double.parseDouble(food_dataList.get(arg2).getPrice());
-							select_dataList.get(i).setFood_num(String.valueOf(num));
-							select_dataList.get(i).setFood_price(df.format(price));
-							show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
-						
-							select_adapter.notifyDataSetChanged();
-							total_price.setText(df.format(show_totalPrice));
-							break;
-						}else{
-							is_moreClick=false;
-						}
-					}
+//					for(int i=select_dataList.size()-1;i>=0;i--){
+//						SelectFoodBean add_bean=select_dataList.get(i);
+//						if(add_bean.getFood_name().equals(bean.getFood_name())){
+//							is_moreClick=true;
+//							int num=Integer.parseInt(add_bean.getFood_num());
+//							num=num+1;
+//							double price=Double.parseDouble(select_dataList.get(i).getFood_price());
+//							price=price+Double.parseDouble(food_dataList.get(arg2).getPrice());
+//							select_dataList.get(i).setFood_num(String.valueOf(num));
+//							select_dataList.get(i).setFood_price(df.format(price));
+//							show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
+//						
+//							select_adapter.notifyDataSetChanged();
+//							total_price.setText(df.format(show_totalPrice));
+//							break;
+//						}else{
+//							is_moreClick=false;
+//						}
+//					}
+					is_moreClick=false;
 					if(!is_moreClick){
 					bean.setFood_price(food_dataList.get(arg2).getPrice());
 					show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
