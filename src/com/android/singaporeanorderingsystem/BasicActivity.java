@@ -47,7 +47,7 @@ public class BasicActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		// init_wifiReceiver();
 		// m=new MyOrientationDetector2(MainActivity.this);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		myApp = (MyApp) BasicActivity.this.getApplication();
 	}
 

@@ -99,7 +99,6 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 //	   	 .build());
 		super.onCreate(savedInstanceState);
 //		m=new MyOrientationDetector(LoginActivity.this);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
 		//CrashHandler crashHandler = CrashHandler.getInstance();   //错误监听 
 //        crashHandler.init(LoginActivity.this);  //传入参数必须为Activity，否则AlertDialog将不显示。  
 //		//横屏正方向
