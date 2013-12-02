@@ -97,5 +97,5 @@
 	<string name="no_need_sync">不需要更新了。</string>
 	<string name="sync_succ">所以数据都已更新成功。</string>
 	<string name="sync_err">还有数据没有更新到云上，请单击右侧按钮同步数据。</string>
-	
+	<string name="register_name_digits">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>  
 </resources>

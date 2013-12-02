@@ -98,7 +98,7 @@
 	<string name="no_need_sync">No need update</string>
 	<string name="sync_succ">All the data is up-to-date</string>
 	<string name="sync_err">Uncommitted data is pending a synchronization to the Cloud. Please check Internet connection before clicking on the button.</string>
-	
+	<string name="register_name_digits">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>  
 </resources>
 
 
