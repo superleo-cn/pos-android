@@ -37,21 +37,26 @@ public class LoginUserBean {
 	private String usertype;//用户组
 	private String status;//用户状态
 	private String shop_id;//店铺ID
+	private String shop_name;
+	private String shop_code;
 	public LoginUserBean() {}
 	public LoginUserBean(String username, String realname, String usertype,
 			String status) {
 		super();
 	}
 	
-	public LoginUserBean(String id, String username, String realname, String usertype, String status,
-			String shop_id) {
+	
+	public LoginUserBean(String id,String username,String realname,String usertype,String status
+			,String shop,String shop_name,String shop_code) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.realname = realname;
 		this.usertype = usertype;
 		this.status = status;
-		this.shop_id = shop_id;
+		this.shop_id = shop;
+		this.shop_name = shop_name;
+		this.shop_code = shop_code;
 	}
 	public static ArrayList<LoginUserBean> newInstanceList(String jsonDatas){
 		ArrayList<LoginUserBean> login_bean = new ArrayList<LoginUserBean>();
@@ -68,34 +73,38 @@ public class LoginUserBean {
 				String status = obj.optString(Attr.STATUS);
 				String shop_id = obj.optString(Attr.SHOP_ID);
 				String shop = null;
+				String shop_name = null;
+				String  shop_code = null;
 				if(shop_id!=null && !shop_id.equals("")){
 					JSONObject json_obj=new JSONObject(shop_id);
 					shop = json_obj.optString("id");
+					shop_name = json_obj.optString("name");
+					shop_code = json_obj.optString("code");
 				}
-				login_bean.add(new LoginUserBean(id, username, realname, usertype, status, shop)) ;
+				login_bean.add(new LoginUserBean(id, username, realname, usertype, status, shop,shop_name,shop_code)) ;
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return login_bean;
 	}
-	public String getShop_id() {
-		return shop_id;
+	public String getId() {
+		return id;
 	}
-	public void setShop_id(String shop_id) {
-		this.shop_id = shop_id;
-	}
-	public String getPasswrod() {
-		return passwrod;
-	}
-	public void setPasswrod(String passwrod) {
-		this.passwrod = passwrod;
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public String getPasswrod() {
+		return passwrod;
+	}
+	public void setPasswrod(String passwrod) {
+		this.passwrod = passwrod;
 	}
 	public String getRealname() {
 		return realname;
@@ -115,18 +124,30 @@ public class LoginUserBean {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getId() {
-		return id;
+	public String getShop_id() {
+		return shop_id;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setShop_id(String shop_id) {
+		this.shop_id = shop_id;
+	}
+	public String getShop_name() {
+		return shop_name;
+	}
+	public void setShop_name(String shop_name) {
+		this.shop_name = shop_name;
+	}
+	public String getShop_code() {
+		return shop_code;
+	}
+	public void setShop_code(String shop_code) {
+		this.shop_code = shop_code;
 	}
 	@Override
 	public String toString() {
 		return "LoginUserBean [id=" + id + ", username=" + username
 				+ ", passwrod=" + passwrod + ", realname=" + realname
 				+ ", usertype=" + usertype + ", status=" + status
-				+ ", shop_id=" + shop_id + "]";
+				+ ", shop_id=" + shop_id + ", shop_name=" + shop_name
+				+ ", shop_code=" + shop_code + "]";
 	}
-	
 }

@@ -31,7 +31,9 @@ public class UserDao2 extends SQLiteOpenHelper {
 		+ "realname" + " varchar,"
 		+ "usertype" + " varchar,"
 		+ "status" + " varchar,"
-		+ "shop_id" + " varchar"
+		+ "shop_id" + " varchar,"
+		+ "shop_name" + " varchar,"
+		+ "shop_code" + " varchar"
 	    + " ) ";
 	private UserDao2(Context context) {
 		super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -65,6 +67,8 @@ public class UserDao2 extends SQLiteOpenHelper {
 		values.put("usertype", user_bean.getUsertype());
 		values.put("status", user_bean.getStatus());
 		values.put("shop_id", user_bean.getShop_id());
+		values.put("shop_name", user_bean.getShop_name());
+		values.put("shop_code", user_bean.getShop_code());
 		
 		long result=db.insert(TABLE_NAME, null, values);
 		db.close();
@@ -87,6 +91,8 @@ public class UserDao2 extends SQLiteOpenHelper {
 			login_user_bean.setUsertype(c.getString(c.getColumnIndex("usertype")));
 			login_user_bean.setStatus(c.getString(c.getColumnIndex("status")));
 			login_user_bean.setShop_id(c.getString(c.getColumnIndex("shop_id")));
+			login_user_bean.setShop_name(c.getString(c.getColumnIndex("shop_name")));
+			login_user_bean.setShop_code(c.getString(c.getColumnIndex("shop_code")));
 			map.add(login_user_bean);
 		}
 		c.close();
@@ -110,6 +116,8 @@ public class UserDao2 extends SQLiteOpenHelper {
 			login_user_bean.setUsertype(c.getString(c.getColumnIndex("usertype")));
 			login_user_bean.setStatus(c.getString(c.getColumnIndex("status")));
 			login_user_bean.setShop_id(c.getString(c.getColumnIndex("shop_id")));
+			login_user_bean.setShop_name(c.getString(c.getColumnIndex("shop_name")));
+			login_user_bean.setShop_code(c.getString(c.getColumnIndex("shop_code")));
 			map.add(login_user_bean);
 		}
 		c.close();
