@@ -25,6 +25,31 @@
             android:text="@string/layoutLeft_title"
             android:textColor="#FFFFFF"
             android:textSize="21sp" />
+        
+           <TextView
+                	android:layout_toRightOf="@+id/food_menu_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dip"
+                    android:drawablePadding="5dip"
+                    android:drawableRight="@drawable/line"
+                     android:layout_centerVertical="true"
+                    android:singleLine="true"
+                    android:id="@+id/letout_name_tv"
+                    android:text="@string/shop_info"
+                    android:textColor="#FFFFFF"
+                    android:textSize="21sp"
+                    android:textStyle="bold" /> 
+            <TextView
+            android:id="@+id/shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:layout_toRightOf="@+id/letout_name_tv"
+            android:text="@string/layoutLeft_title"
+            android:textColor="#FFFFFF"
+            android:textSize="21sp" />         
 
         <ImageView
             android:id="@+id/line"
@@ -32,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="40dip"
-            android:layout_toRightOf="@+id/food_menu_txt"
+            android:layout_toRightOf="@+id/shop_name"
             android:background="#00000000"
             android:scaleType="centerInside"
             android:src="@drawable/line"
