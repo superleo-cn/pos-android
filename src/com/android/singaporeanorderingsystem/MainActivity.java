@@ -116,7 +116,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 	private double dazhe_price=0;
 	private FoodOrderDao2 f_dao;
 	public static String save_date="2013-11-24";
-	private TextView shop_name;
+	private TextView shop_name1234;
 //	private MyOrientationDetector2 m;
 	private SharedPreferences sharedPrefs;
 	/*主菜单activity*/
@@ -162,7 +162,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
     	take_package=(ImageView) this.findViewById(R.id.take_package);
     	foc=(ImageView) this.findViewById(R.id.foc);
     	discount=(ImageView) this.findViewById(R.id.discount);
-    	shop_name=(TextView) this.findViewById(R.id.shop_name);
+    	shop_name1234=(TextView) this.findViewById(R.id.shop_name1234);
     	r_lay_id_take_package=(RelativeLayout) this.findViewById(R.id.r_lay_id_take_package);
     	r_lay_id_foc=(RelativeLayout) this.findViewById(R.id.r_lay_id_foc);
     	r_lay_id_discount=(RelativeLayout) this.findViewById(R.id.r_lay_id_discount);
@@ -174,7 +174,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
     	ok_btn.setOnClickListener(this);
     	initData();
     	login_name.setText(getString(R.string.mainTitle_txt)+" "+myApp.getU_name()+",");
-    	shop_name.setText(myApp.getShop_name());
+    	shop_name1234.setText(myApp.getShop_name()+"");
     }
     
     /*初始化数据*/

@@ -111,7 +111,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	private String search_date;
 	private Double order_price=0.00;
 	private TextView write_name;
-	private TextView shop_name;
+	private TextView shop_name1234;
 //	private MyOrientationDetector1 m;
 	private SharedPreferences sharedPrefs;
 	 @Override
@@ -163,7 +163,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			send_person=(EditText) this.findViewById(R.id.send_person);
 			other=(EditText) this.findViewById(R.id.other);
 			shop_money=(EditText) this.findViewById(R.id.shop_money);
-			shop_name=(TextView) this.findViewById(R.id.shop_name);
+			shop_name1234=(TextView) this.findViewById(R.id.shop_name1234);
 			if(myApp.getDaily_pay_submit_flag().equals("1")){
 				btu_id_sbumit.setVisibility(View.VISIBLE);
 				 String shopId=myApp.getSettingShopId();
@@ -240,7 +240,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		 sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 	    String type = sharedPrefs.getString("type", "");
 		 login_name.setText(getString(R.string.mainTitle_txt)+" "+myApp.getU_name()+",");
-		 shop_name.setText(myApp.getShop_name());
+		 shop_name1234.setText(myApp.getShop_name());
 		 write_name.setText(myApp.getU_name());
 		 
 		/* String shopId=myApp.getSettingShopId();
