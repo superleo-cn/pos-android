@@ -29,6 +29,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -481,6 +482,6 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 //			super.onPause();
 //			m.disable();
 //		}
-		
+
 }
 
