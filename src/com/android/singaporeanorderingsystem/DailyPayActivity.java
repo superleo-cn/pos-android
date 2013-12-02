@@ -240,7 +240,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		 sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 	    String type = sharedPrefs.getString("type", "");
 		 login_name.setText(getString(R.string.mainTitle_txt)+" "+myApp.getU_name()+",");
-		 shop_name1234.setText(myApp.getShop_name());
+		 shop_name1234.setText(myApp.getShop_name()+"-"+myApp.getShop_code());
 		 write_name.setText(myApp.getU_name());
 		 
 		/* String shopId=myApp.getSettingShopId();

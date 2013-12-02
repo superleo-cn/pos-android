@@ -26,7 +26,7 @@
 	<string name="login_name">Username：</string>
 	<string name="login_password">Password：</string>
 	<string name="dail_detail">Expenses</string>
-	<string name="shop_info">Outlet Name:</string>
+	<string name="shop_info">Outlet:</string>
 	<string name="shop_money">Cash Float</string>
 	<string name="login_wait">Loading...</string>
 	<string name="write_name">Cashier:</string>

@@ -174,7 +174,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
     	ok_btn.setOnClickListener(this);
     	initData();
     	login_name.setText(getString(R.string.mainTitle_txt)+" "+myApp.getU_name()+",");
-    	shop_name1234.setText(myApp.getShop_name()+"");
+    	shop_name1234.setText(myApp.getShop_name()+"-"+myApp.getShop_code());
     }
     
     /*初始化数据*/

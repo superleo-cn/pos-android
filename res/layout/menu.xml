@@ -56,7 +56,8 @@
         android:layout_marginLeft="5dip"
         android:layout_toRightOf="@+id/login_image"
         android:text="@string/mainTitle_txt"
-        android:textColor="#000000" />
+        android:textSize="18sp"
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/letout_name_tv"
@@ -66,7 +67,6 @@
         android:layout_marginLeft="20dip"
         android:layout_toRightOf="@+id/login_name"
         android:drawablePadding="5dip"
-        android:drawableRight="@drawable/line"
         android:singleLine="true"
         android:text="@string/shop_info"
         android:textColor="#FFFFFF"
