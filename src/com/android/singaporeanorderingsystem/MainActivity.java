@@ -171,7 +171,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
     	ok_btn=(Button) this.findViewById(R.id.ok_btn);
     	ok_btn.setOnClickListener(this);
     	initData();
-    	login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
+    	login_name.setText(getString(R.string.mainTitle_txt)+myApp.getU_name());
     }
     
     /*初始化数据*/
@@ -780,7 +780,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 	
 	public DialogBuilder Show_print(){
 		DialogBuilder builder=new DialogBuilder(this);
-		builder.setTitle(R.string.message_title);
+		//builder.setTitle(R.string.message_title);
 		builder.setMessage(R.string.open_print);
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener(){
 

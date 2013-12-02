@@ -3,7 +3,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 	<string name="exit_txt">Exit</string>
-	<string name="mainTitle_txt">Welcome</string>
+	<string name="mainTitle_txt">Welcome </string>
 	<string name="layoutLeft_title">来一碗</string>
 	<string name="total_prie">Total:</string>
 	<string name="gathering">Pay:</string>
@@ -37,7 +37,7 @@
 	<string name="noon_time">Lunch Time</string>
 	<string name="noon_turnover">Lunch Sales</string>
 	<string name="time">Time</string>
-	<string name="total">Total (B+C)</string>
+	<string name="total">Total (C-B)</string>
 	<string name="tomorrow_money">E:Next Open Balance</string>
 	<string name="total_take_num">Total Collection(D-E)</string>
 	<string name="send_person">Cashier</string>

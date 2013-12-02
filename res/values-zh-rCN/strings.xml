@@ -3,7 +3,7 @@
     <string name="menu_settings">配置页面</string>
     <string name="title_activity_main">收款页面</string>
 	<string name="exit_txt">退出</string>
-	<string name="mainTitle_txt">你好，欢迎你</string>
+	<string name="mainTitle_txt">你好，欢迎你  </string>
 	<string name="layoutLeft_title">来一碗</string>
 	<string name="total_prie">应收款:</string>
 	<string name="gathering">收款:</string>
@@ -37,7 +37,7 @@
 	<string name="noon_time">中午计算时间</string>
 	<string name="noon_turnover">中午业绩</string>
 	<string name="time">计算时间</string>
-	<string name="total">总数(B+C)</string>
+	<string name="total">总数(C-B)</string>
 	<string name="tomorrow_money">E:明日本钱 </string>
 	<string name="total_take_num">带回总数(D-E)</string>
 	<string name="send_person">送款人</string>
