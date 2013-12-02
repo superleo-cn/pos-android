@@ -238,7 +238,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 //	    	String date=df_price.format(new Date());
 		 sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
 	    String type = sharedPrefs.getString("type", "");
-		 login_name.setText(myApp.getU_name()+getString(R.string.mainTitle_txt));
+		 login_name.setText(getString(R.string.mainTitle_txt)+myApp.getU_name());
 		 write_name.setText(myApp.getU_name());
 		 
 		/* String shopId=myApp.getSettingShopId();
@@ -749,7 +749,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				today_turnover.setText(df.format(price_d));
 				
 				Double price_a=Double.parseDouble(shop_money_text);
-				Double total_t=price_b+price_c;
+				Double total_t=price_c-price_b;
 				total.setText(df.format(total_t));
 				
 				Double price_e=Double.parseDouble(tomorrow_money_text);

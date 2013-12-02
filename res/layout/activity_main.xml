@@ -68,6 +68,7 @@
                             android:cacheColorHint="#00000000"
                             android:divider="#00000000"
                             android:fadingEdge="none"
+                            android:transcriptMode="alwaysScroll" 
                             android:scrollingCache="false" >
                         </ListView>
                     </RelativeLayout>
@@ -294,8 +295,29 @@
                                         android:numColumns="3"
                                         android:stretchMode="columnWidth"
                                         android:verticalSpacing="5dp" />
-
+									<LinearLayout 
+									    android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+									    android:layout_weight="2"
+									    android:orientation="vertical"
+									    
+									    >
                                     <Button
+                                        android:id="@+id/clear_btn"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_marginBottom="5dip"
+                                        android:layout_marginLeft="5dip"
+                                        android:layout_marginRight="5dip"
+                                        android:layout_marginTop="5dip"
+                                        android:layout_weight="1"
+                                        android:background="#E3313E"
+                                        android:gravity="center"
+                                        android:text="@string/message_cancle"
+                                        android:textColor="#ffffff"
+                                        android:textSize="30sp" 
+                                        android:textStyle="bold"/>
+                                     <Button
                                         android:id="@+id/ok_btn"
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
@@ -303,13 +325,14 @@
                                         android:layout_marginLeft="5dip"
                                         android:layout_marginRight="5dip"
                                         android:layout_marginTop="5dip"
-                                        android:layout_weight="2"
+                                        android:layout_weight="1"
                                         android:background="#E3313E"
                                         android:gravity="center"
                                         android:text="@string/ok"
                                         android:textColor="#ffffff"
                                         android:textSize="30sp" 
                                         android:textStyle="bold"/>
+                                    </LinearLayout>
                                 </LinearLayout>
                             </RelativeLayout>
                         </RelativeLayout>

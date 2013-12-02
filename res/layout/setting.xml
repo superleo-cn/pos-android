@@ -113,7 +113,7 @@
                     android:text="@string/print_set"
                     android:textColor="#ffffff"
                     android:textSize="15sp" />
- <LinearLayout
+ 				<LinearLayout
                     android:id="@+id/print_set_one"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:background="@drawable/tong_btu_bg2"
-                        android:text="@string/synchronize_btn2"
+                        android:text="@string/set_title"
                         android:layout_marginRight="20dip"
                         android:textSize="15sp" />
                 </RelativeLayout>
