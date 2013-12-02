@@ -379,6 +379,8 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 				myApp.setU_name(user_bean.getUsername());
 				myApp.setUser_id(user_bean.getId());
 				myApp.setU_type(user_bean.getUsertype());
+				myApp.setShop_name(user_bean.getShop_name());
+				myApp.setShop_code(user_bean.getShop_code());
 				login_audit(user_bean, "Login");
 				Intent  intent =new Intent();
 				intent.setClass(LoginActivity.this, MainActivity.class);
@@ -429,6 +431,8 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 						myApp.setUser_id(user_bean.getId());
 						myApp.setU_name(user_bean.getUsername());
 						myApp.setU_type(user_bean.getUsertype());
+						myApp.setShop_name(user_bean.getShop_name());
+						myApp.setShop_code(user_bean.getShop_code());
 						Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
 						Intent  intent =new Intent();
 						intent.setClass(LoginActivity.this, MainActivity.class);

@@ -38,6 +38,8 @@ public class MyApp extends Application{
 	private String discount="0.5";
 	private String u_type = "CACHIER";
 	private String daily_pay_submit_flag="1";
+	private String shop_name = "";;
+	private String shop_code = "";;
 
 	@Override
 	public void onCreate() {
@@ -138,7 +140,24 @@ public class MyApp extends Application{
 	public void setFood_order_dao(FoodOrderDao food_order_dao) {
 		this.food_order_dao = food_order_dao;
 	}
-	// 创建SD卡缓存目录
+	
+	public String getShop_name() {
+		return shop_name;
+	}
+
+	public void setShop_name(String shop_name) {
+		this.shop_name = shop_name;
+	}
+
+	public String getShop_code() {
+		return shop_code;
+	}
+
+	public void setShop_code(String shop_code) {
+		this.shop_code = shop_code;
+	}
+
+		// 创建SD卡缓存目录
 		private void createCacheDir() {
 
 			if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
