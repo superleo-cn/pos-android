@@ -543,7 +543,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			String txtShopMoney = StringUtils.defaultIfEmpty(shop_money.getText().toString(), "0");
 			Double shopMoney  = Double.parseDouble(txtShopMoney);
 			
-			if(totalTakeNum.doubleValue() == 0 || shopMoney.doubleValue() == 0){
+			if(totalTakeNum.doubleValue() <= 0 || shopMoney.doubleValue() <= 0){
 				Toast.makeText(DailyPayActivity.this, getString(R.string.dialy_submit_error1), Toast.LENGTH_SHORT).show();
 				return false;
 			}
