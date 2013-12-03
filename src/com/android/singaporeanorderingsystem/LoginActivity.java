@@ -8,11 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -20,16 +17,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,13 +38,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.R;
-import com.android.bean.LoginAuditBean;
 import com.android.bean.LoginUserBean;
 import com.android.bean.VersionBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
-import com.android.dao.LoginAuditDao;
 import com.android.dao.UserDao2;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
@@ -358,11 +352,12 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 		LoginActivity.this.startActivity(i);
 
 	}
-	@Override
-	public void onClick(View v) {
-		switch(v.getId()){
-		case R.id.login_ok :
-			dialog.show();
+	
+	
+	private class LoginOperation extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... objs) {
 			String str_login_name=login_name.getText().toString();
 			final String str_login_password=login_password.getText().toString();
 //			final UserDao user_dao=myApp.getUserdao();
@@ -374,8 +369,7 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 				user_bean = u_datas.get(0);
 			}
 			if(user_bean.getUsername() != null && str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
-				dialog.dismiss();
-				Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
+				// dialog.dismiss();
 				myApp.setU_name(user_bean.getUsername());
 				myApp.setUser_id(user_bean.getId());
 				myApp.setU_type(user_bean.getUsertype());
@@ -386,11 +380,11 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 				intent.setClass(LoginActivity.this, MainActivity.class);
 				LoginActivity.this.startActivity(intent);
 				LoginActivity.this.finish();
-				return ;
+				return  1;
 			}else if(user_bean.getUsername() != null && !str_login_password.equalsIgnoreCase(user_bean.getPasswrod())){
-				dialog.dismiss();
-				Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
-				return ;
+				//dialog.dismiss();
+				//Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+				return  0;
 			}
 			
 			String str_ip = "0";
@@ -404,9 +398,9 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 			
 			boolean wifi_flag=SystemHelper.isConnected(LoginActivity.this);
 			if(!wifi_flag){
-				dialog.dismiss();
-				Toast.makeText(LoginActivity.this,getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
-				return;
+				//dialog.dismiss();
+				//Toast.makeText(LoginActivity.this,getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
+				return -2;
 			}
 			HashMap<String, String> params =new HashMap<String, String>();
 			params.put("user.username", str_login_name);
@@ -417,7 +411,7 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 			RemoteDataHandler.asyncPost(Constants.URL_LOGIN_PATH, params, new Callback() {
 				@Override
 				public void dataLoaded(ResponseData data) {
-					dialog.dismiss();
+					
 					if(data.getCode() == 1){
 						String json=data.getJson();
 						ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
@@ -433,7 +427,7 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 						myApp.setU_type(user_bean.getUsertype());
 						myApp.setShop_name(user_bean.getShop_name());
 						myApp.setShop_code(user_bean.getShop_code());
-						Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
+						//Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
 						Intent  intent =new Intent();
 						intent.setClass(LoginActivity.this, MainActivity.class);
 						LoginActivity.this.startActivity(intent);
@@ -445,7 +439,45 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 					}
 				}
 			});
-			
+			return 1;
+        }        
+
+        @Override
+        protected void onPostExecute(Integer result) {   
+        	dialog.dismiss();         
+        	switch(result){
+        	case 0:
+        		Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+        		break;
+        	case 1:
+        		Toast.makeText(LoginActivity.this, getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
+        		break;
+        	case -1:
+        		Toast.makeText(LoginActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+        		break;
+        	case -2:
+        		Toast.makeText(LoginActivity.this,getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
+        		break;
+        	}
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+        	dialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+	
+	
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.login_ok :
+			new LoginOperation().execute("");
 			break;
 		}
 	}
