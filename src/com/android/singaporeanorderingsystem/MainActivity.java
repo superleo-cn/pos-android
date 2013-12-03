@@ -140,7 +140,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
         select_dataList=new ArrayList<SelectFoodBean>();
         sbuff=new StringBuffer();
         initView();
-        df=new DecimalFormat("0.00");
+        df=new DecimalFormat("###.00");
         save_discount_price=Double.parseDouble(myApp.getDiscount());
         package_money=0.2;
     }
