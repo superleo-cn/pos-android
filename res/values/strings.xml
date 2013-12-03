@@ -92,8 +92,8 @@
 	<string name="dialog_set">Sync...</string>
 	<string name="money_coin">cos</string>
 	<string name="money_piece">pcs</string>
-	<string name="dialy_submit_error1">'Cash Register' and 'Cash Float' can not be empty.</string>
-	<string name="dialy_submit_error2">'Total Collection' amounts are inconsistency，please re-confirm。</string>
+	<string name="dialy_submit_error1">\'Cash Register\' and \'Cash Float\' can not be empty.</string>
+	<string name="dialy_submit_error2">\'Total Collection\' amounts are inconsistency，please re-confirm。</string>
 	<string name="dialy_submit_error3">Cash Register value cannot be negative.</string>
 	<string name="no_need_sync">No need update</string>
 	<string name="sync_succ">All the data is up-to-date</string>
