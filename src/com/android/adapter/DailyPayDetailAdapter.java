@@ -70,55 +70,10 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder.text_id_price = (EditText) convertView.findViewById(R.id.text_id_price);
 			viewHolder.text_id_price.setTag(position);
 			
-/*			viewHolder.text_id_price.addTextChangedListener(new TextWatcher(){
-
-				@Override
-				public void afterTextChanged(Editable s) {
-					// TODO Auto-generated method stub
-					
-					if(viewHolder.text_id_price.getText().toString().isEmpty()){
-						DailyPayActivity.hashMap_detail.put(position, ""); 
-						Message msg = new Message();
-						msg.what = CHAGE_NUM_DETAIL;
-						msg.obj=position+"+"+"0.00";
-						handler.sendMessage(msg);
-						Log.e("输入内同唯恐了", "0.00");	
-					}else{
-						//bean.setPrice(viewHolder.text_id_price.getText().toString());			
-						
-						String price=s.toString();
-						if(s.length()==0){
-							price="0.00";
-						}else{
-							if(price.equals("")){
-								price="0.00";
-							}
-						}
-						String now_price=price;
-						Log.e("变空后的价格", now_price);
-						DailyPayActivity.hashMap_detail.put(position, now_price); 
-								Message msg = new Message();
-								msg.what = CHAGE_NUM_DETAIL;
-								msg.obj=position+"+"+now_price;
-								handler.sendMessage(msg);
-								Log.e("执行输入的价格", now_price);	
-					}
-				}
-
-				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count,
-						int after) {
-					// TODO Auto-generated method stub
-					
-				}
-				@Override
-				public void onTextChanged(CharSequence s, int start, int before,
-						int count) {
-					// TODO Auto-generated method stub
-				//	Log.e("输入改变完", "价格呢");
-					
-				}});*/
-			
+			viewHolder.text_id_price.setFocusable(true);
+			viewHolder.text_id_price.setFocusableInTouchMode(true);
+			viewHolder.text_id_price.setClickable(true);
+			viewHolder.text_id_price.requestFocus();
 			viewHolder.text_id_price.addTextChangedListener(new CustTextWatch(viewHolder){
 
 				@Override
