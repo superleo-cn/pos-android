@@ -1,5 +1,6 @@
 package com.android.singaporeanorderingsystem;
 
+import java.net.SocketException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,16 +14,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.OrientationEventListener;
+import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.LoginAuditBean;
 import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
+import com.android.common.SystemHelper;
 import com.android.dao.LoginAuditDao;
 import com.android.dao.UserDao2;
 import com.android.dialog.DialogBuilder;
@@ -33,6 +37,8 @@ import com.android.model.ResponseData;
 public class BasicActivity extends Activity {
 
 	private MyApp myApp;
+	
+	private MyProcessDialog dialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class BasicActivity extends Activity {
 		// init_wifiReceiver();
 		// m=new MyOrientationDetector2(MainActivity.this);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		dialog =new MyProcessDialog(BasicActivity.this,getResources().getString(R.string.logout_wait));
 		myApp = (MyApp) BasicActivity.this.getApplication();
 	}
 
@@ -100,7 +107,7 @@ public class BasicActivity extends Activity {
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
-				logUserAction();
+				new LogoutOperation().execute("");
 			}
 		});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
@@ -128,10 +135,32 @@ public class BasicActivity extends Activity {
 		intent.setClass(getApplicationContext(), LoginActivity.class);// 当前Activity重新打开
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		System.exit(0);
-	
 		
 	}
+	
+	
+	private class LogoutOperation extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... objs) {
+        	logUserAction();
+        	return 1;
+        }        
+
+        @Override
+        protected void onPostExecute(Integer result) {   
+        	dialog.dismiss();         
+        }
+
+        @Override
+        protected void onPreExecute() {
+        	dialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
 
 }
 

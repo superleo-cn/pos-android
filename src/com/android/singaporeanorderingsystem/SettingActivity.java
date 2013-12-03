@@ -87,6 +87,56 @@ public class SettingActivity extends BasicActivity {
 	private MyProcessDialog dialog;
 	private String search_date;
 //	private MyOrientationDetector3 m;
+	
+	
+	private class SyncALlOperation extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... objs) {
+        	if(!isLatestData()){
+	    		dialog.show();
+	    		post_payList();
+		    	post_numList(); 
+		    	post_dailyMoney();
+		    	dialog.cancel();
+		    	if(!isLatestData()){
+		    		synchronize.setText(getString(R.string.sync_err));
+		    		return -1;
+		    	}else{
+		    		synchronize.setText(getString(R.string.sync_succ));
+		    		return 1;
+		    	}
+	    	}
+        	return 0;
+        }        
+
+        @Override
+        protected void onPostExecute(Integer result) {   
+        	dialog.dismiss();    
+        	switch(result){
+        	case 0:
+        		Toast.makeText(SettingActivity.this, getString(R.string.no_need_sync), Toast.LENGTH_SHORT).show();
+        		break;
+        	case 1:
+        		Toast.makeText(SettingActivity.this, getString(R.string.sync_succ), Toast.LENGTH_SHORT).show();
+        		break;
+        	case -1:
+        		Toast.makeText(SettingActivity.this, getString(R.string.sync_err), Toast.LENGTH_SHORT).show();
+        		break;
+        	}
+        }
+
+        @Override
+        protected void onPreExecute() {
+        	dialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
+    }
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -143,22 +193,11 @@ public class SettingActivity extends BasicActivity {
 		btu_setting_all_tong.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-		    	if(!isLatestData()){
-		    		dialog.show();
-		    		post_payList();
-			    	post_numList(); 
-			    	post_dailyMoney();
-			    	dialog.cancel();
-			    	if(!isLatestData()){
-			    		synchronize.setText(getString(R.string.sync_err));
-			    	}else{
-			    		synchronize.setText(getString(R.string.sync_succ));
-			    	}
-		    	}else{
-		    		Toast.makeText(SettingActivity.this, getString(R.string.no_need_sync), Toast.LENGTH_SHORT).show();
-		    	}
+		    	new SyncALlOperation().execute("");
 			}
 		});
+		
+		
 		menu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

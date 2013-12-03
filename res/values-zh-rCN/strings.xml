@@ -29,6 +29,7 @@
 	<string name="shop_info">开店信息</string>
 	<string name="shop_money">开店本钱</string>
 	<string name="login_wait">登陆中...</string>
+	<string name="logout_wait">退出中...</string>
 	<string name="write_name">款项记录人:</string>
 	<string name="take_number">带回总数</string>
 	<string name="cash_register">C:收银机</string>

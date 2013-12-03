@@ -28,7 +28,8 @@
 	<string name="dail_detail">Expenses</string>
 	<string name="shop_info">Outlet:</string>
 	<string name="shop_money">Cash Float</string>
-	<string name="login_wait">Loading...</string>
+	<string name="login_wait">Login...</string>
+	<string name="logout_wait">Logout...</string>
 	<string name="write_name">Cashier:</string>
 	<string name="take_number">Daily Collections</string>
 	<string name="cash_register">C:Cash Register</string>
