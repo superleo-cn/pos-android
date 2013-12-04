@@ -405,7 +405,6 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 					//Toast.makeText(DailyPayActivity.this, "你点击了确定", Toast.LENGTH_SHORT).show();
 					if(doValidation()){
 						clear_data();
-						myApp.setDaily_pay_submit_flag("0");
 						btu_id_sbumit.setVisibility(View.GONE);
 					}
 				}});
@@ -722,7 +721,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	    	
 	    	//记录退出日志，退出系统
 	    	logUserAction();
-
+	    	
 	    }
 	    
 	    public void compute(){
@@ -875,7 +874,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			public void dataLoaded(ResponseData data) {
 				if(data.getCode() == 1){
 					String json=data.getJson();
-					Toast.makeText(DailyPayActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(DailyPayActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
 				String str=json.substring(1,json.length()-1);
 				String []array=str.split(",");
 				if(array.length!=0){
@@ -928,7 +927,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				public void dataLoaded(ResponseData data) {
 					if(data.getCode() == 1){
 						String json=data.getJson();
-						Toast.makeText(DailyPayActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+						//Toast.makeText(DailyPayActivity.this, getString(R.string.toast_submmit_succ)/, Toast.LENGTH_SHORT).show();
 					String str=json.substring(1,json.length()-1);
 					String []array=str.split(",");
 					if(array.length!=0){
@@ -980,7 +979,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				public void dataLoaded(ResponseData data) {
 					if(data.getCode() == 1){
 						String json=data.getJson();
-						Toast.makeText(DailyPayActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+						//Toast.makeText(DailyPayActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
 						int result=DailyMoneyDao.getInatance(DailyPayActivity.this).update_type(search_date);
 						if(result==-1){
 							Toast.makeText(DailyPayActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();

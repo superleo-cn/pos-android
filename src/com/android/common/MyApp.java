@@ -67,11 +67,8 @@ public class MyApp extends Application{
 	}
 
 	public String getDaily_pay_submit_flag() {
+		//daily_pay_submit_flag = sysInitSharedPreferences.getString("daily_pay_submit_flag", "1");
 		return daily_pay_submit_flag;
-	}
-
-	public void setDaily_pay_submit_flag(String daily_pay_submit_flag) {
-		this.daily_pay_submit_flag = daily_pay_submit_flag;
 	}
 
 	public void setDiscount(String discount) {
