@@ -14,7 +14,6 @@
 	<string name="ok">OK</string>
 	<string name="diancai_name">Point of Sales</string>
 	<string name="foc">FOC</string>
-	<string name="synchronize_btn3">Query</string>
 	<string name="discount">Discount</string>
 	<string name="setting">Setting</string>
 	<string name="exitApp">Exit</string>
@@ -52,7 +51,8 @@
 	<string name="content">Error / All data committed to the Cloud </string>
 	<string name="synchronize_btn">Sync</string>
 	<string name="synchronize_btn2">Confirm</string>
-	<string name="synchronize_btn3">Reset</string>
+	<string name="synchronize_btn3">Query</string>
+	<string name="synchronize_btn4">Reset</string>
 	<string name="message_login">Login</string>
 	<string name="set_txt">Configuration</string>
 	<string name="language">Language</string>

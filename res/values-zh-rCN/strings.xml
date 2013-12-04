@@ -52,7 +52,7 @@
 	<string name="synchronize_btn">同步</string>
 	<string name="synchronize_btn2">确认</string>
 	<string name="synchronize_btn3">查询</string>
-	<string name="synchronize_btn3">重置</string>
+	<string name="synchronize_btn4">重置</string>
 	<string name="message_login">LOGIN</string>
 	<string name="set_txt">配置设置</string>
 	<string name="language">语言</string>
