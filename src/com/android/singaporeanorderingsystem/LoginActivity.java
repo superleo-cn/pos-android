@@ -408,37 +408,34 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 			params.put("user.shop.id", myApp.getSettingShopId());
 			params.put("user.userIp", str_ip);
 			params.put("user.userMac", str_mac);
-			RemoteDataHandler.asyncPost(Constants.URL_LOGIN_PATH, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					
-					if(data.getCode() == 1){
-						String json=data.getJson();
-						ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
-						LoginUserBean user_bean=datas.get(0);
-//						InfolabPasswordGen pass = new InfolabPasswordGen();
-//						pass.generatePassword();
-			            user_bean.setPasswrod(str_login_password);
-//						user_dao.insert(user_bean);
-			            login_audit(user_bean, "Login");
-						u_dao.save(user_bean);
-						myApp.setUser_id(user_bean.getId());
-						myApp.setU_name(user_bean.getUsername());
-						myApp.setU_type(user_bean.getUsertype());
-						myApp.setShop_name(user_bean.getShop_name());
-						myApp.setShop_code(user_bean.getShop_code());
-						//Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
-						Intent  intent =new Intent();
-						intent.setClass(LoginActivity.this, MainActivity.class);
-						LoginActivity.this.startActivity(intent);
-						LoginActivity.this.finish();
-					}else if(data.getCode() == 0){
-						Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
-					}else if(data.getCode() == -1){
-						Toast.makeText(LoginActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
-					}
+			ResponseData data = RemoteDataHandler.post(Constants.URL_LOGIN_PATH, params);
+			if(data != null){	
+				if(data.getCode() == 1){
+					String json=data.getJson();
+					ArrayList<LoginUserBean> datas=LoginUserBean.newInstanceList(json);
+					user_bean=datas.get(0);
+//					InfolabPasswordGen pass = new InfolabPasswordGen();
+//					pass.generatePassword();
+		            user_bean.setPasswrod(str_login_password);
+//					user_dao.insert(user_bean);
+		            login_audit(user_bean, "Login");
+					u_dao.save(user_bean);
+					myApp.setUser_id(user_bean.getId());
+					myApp.setU_name(user_bean.getUsername());
+					myApp.setU_type(user_bean.getUsertype());
+					myApp.setShop_name(user_bean.getShop_name());
+					myApp.setShop_code(user_bean.getShop_code());
+					//Toast.makeText(LoginActivity.this,getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
+					Intent  intent =new Intent();
+					intent.setClass(LoginActivity.this, MainActivity.class);
+					LoginActivity.this.startActivity(intent);
+					LoginActivity.this.finish();
+				}else if(data.getCode() == 0){
+					Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+				}else if(data.getCode() == -1){
+					Toast.makeText(LoginActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
 				}
-			});
+			}
 			return 1;
         }        
 
