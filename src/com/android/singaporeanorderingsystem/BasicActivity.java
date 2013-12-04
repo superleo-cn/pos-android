@@ -135,7 +135,7 @@ public class BasicActivity extends Activity {
 		intent.setClass(getApplicationContext(), LoginActivity.class);// 当前Activity重新打开
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		
+		System.exit(0);
 	}
 	
 	
