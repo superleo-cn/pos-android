@@ -44,6 +44,7 @@ import com.android.R;
 import com.android.bean.FoodHttpBean;
 import com.android.bean.GetPTakeNumBean;
 import com.android.bean.GetPayDetailBean;
+import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
 import com.android.common.HttpHelper;
 import com.android.common.MyApp;
@@ -52,6 +53,7 @@ import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
+import com.android.dao.UserDao2;
 import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
@@ -87,6 +89,10 @@ public class SettingActivity extends BasicActivity {
 	private MyProcessDialog dialog;
 	private String search_date;
 //	private MyOrientationDetector3 m;
+	private EditText edit_setting_chongzhi_login_name;
+	private Button btu_setting_login_name;
+	private EditText edit_setting_chongzhi_login_password;
+	private Button btu_setting_login_password;
 	
 	
 	private class SyncALlOperation extends AsyncTask<String, Void, Integer> {
@@ -173,6 +179,11 @@ public class SettingActivity extends BasicActivity {
 		synchronization_pay=(Button) this.findViewById(R.id.synchronization_pay_brn);
 		btu_setting_all_tong =(Button) this.findViewById(R.id.btu_setting_all_tong);
 		synchronize = (TextView)this.findViewById(R.id.synchronizeText);
+		edit_setting_chongzhi_login_name = (EditText) findViewById(R.id.edit_setting_chongzhi_login_name);
+		edit_setting_chongzhi_login_password = (EditText) findViewById(R.id.edit_setting_chongzhi_login_password);
+		btu_setting_login_name =(Button) findViewById(R.id.btu_setting_login_name);
+		btu_setting_login_password =(Button) findViewById(R.id.btu_setting_login_password);
+		
 		/** 判断今天是否是最新的*/
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
     	String date=df.format(new Date());
@@ -190,6 +201,49 @@ public class SettingActivity extends BasicActivity {
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
 		}
+		
+		btu_setting_login_name.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String login_name=edit_setting_chongzhi_login_name.getText().toString();
+				UserDao2 dao=UserDao2.getInatance(SettingActivity.this);
+				ArrayList<LoginUserBean> datas = dao.getList(login_name);
+				LoginUserBean user=new LoginUserBean();
+				if(datas !=null && datas.size() !=0){
+					user=datas.get(0);
+					edit_setting_chongzhi_login_password.setText(user.getPasswrod());
+					Toast.makeText(SettingActivity.this, "该用户确认成功", 1).show();
+				}else{
+					Toast.makeText(SettingActivity.this, "该用户不存在，请输入正确的用户", 1).show();
+				}
+			}
+		});
+		
+		btu_setting_login_password.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String login_password=edit_setting_chongzhi_login_password.getText().toString();
+				String login_name=edit_setting_chongzhi_login_name.getText().toString();
+				if(login_name!=null && !login_name.equals("")){
+					if(login_password!=null && !login_name.equals("")){
+						UserDao2 dao=UserDao2.getInatance(SettingActivity.this);
+						int reuslt=dao.update_password(login_name, login_password);
+						if(reuslt == 1){
+							Toast.makeText(SettingActivity.this, "修改密码成功", 1).show();
+						}else {
+							Toast.makeText(SettingActivity.this, "修改密码失败，稍后重试", 1).show();
+						}
+					}else{
+						Toast.makeText(SettingActivity.this, "密码不能为空", 1).show();
+					}
+				}else{
+					Toast.makeText(SettingActivity.this, "用户名不能为空", 1).show();
+				}
+			}
+		});
+		
+		
+		
 		btu_setting_all_tong.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

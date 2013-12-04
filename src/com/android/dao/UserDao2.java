@@ -101,6 +101,31 @@ public class UserDao2 extends SQLiteOpenHelper {
 		return map;
 		
 	}
+	public ArrayList<LoginUserBean> getList2(String login_name,String password){
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		Cursor c=db.query(TABLE_NAME, null, "username=? and password=?",new String[]{login_name.toLowerCase(),password}, null, null, null, null);
+//		Cursor c = db.rawQuery("select * from u_dao where username=?;", new String[]{login_name});
+		ArrayList<LoginUserBean> map=new ArrayList<LoginUserBean>();
+		while(c.moveToNext()){
+			//android_id,user_id,shop_id,quantity,foodid,discount,totalretailprice,totalpackage,foc,food_flag
+			LoginUserBean login_user_bean = new LoginUserBean();
+			login_user_bean.setId(c.getString(c.getColumnIndex("u_id")));
+			login_user_bean.setUsername(c.getString(c.getColumnIndex("username")));
+			login_user_bean.setPasswrod(c.getString(c.getColumnIndex("password")));
+			login_user_bean.setRealname(c.getString(c.getColumnIndex("realname")));
+			login_user_bean.setUsertype(c.getString(c.getColumnIndex("usertype")));
+			login_user_bean.setStatus(c.getString(c.getColumnIndex("status")));
+			login_user_bean.setShop_id(c.getString(c.getColumnIndex("shop_id")));
+			login_user_bean.setShop_name(c.getString(c.getColumnIndex("shop_name")));
+			login_user_bean.setShop_code(c.getString(c.getColumnIndex("shop_code")));
+			map.add(login_user_bean);
+		}
+		c.close();
+		db.close();
+		
+		return map;
+		
+	}
 	public ArrayList<LoginUserBean> getList(String login_name,String shop_id){
 		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
 		Cursor c=db.query(TABLE_NAME, null, "username=? and shop_id=?",new String[]{login_name.toLowerCase(),shop_id}, null, null, null, null);
@@ -143,15 +168,15 @@ public class UserDao2 extends SQLiteOpenHelper {
 //		return result;
 //	}
 //	
-//	public int update_type(String food_id){
-//		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-//		ContentValues values=new ContentValues();
-//		values.put("food_flag", "1");
-//		int result=db.update(TABLE_NAME, values, "food_id=?", new String[]{food_id});
-//		System.err.print("更新了数据库");
-//		db.close();
-//		return result;
-//		
-//	}
+	public int update_password(String loginname,String password){
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		ContentValues values=new ContentValues();
+		values.put("password", password);
+		int result=db.update(TABLE_NAME, values, "username=?", new String[]{loginname});
+		System.err.print("更新了数据库");
+		db.close();
+		return result;
+		
+	}
 	
 }

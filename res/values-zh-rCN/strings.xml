@@ -64,7 +64,7 @@
 	<string name="synchronization_shop">摊位ID</string>
 	<string name="synchronization_pay">支付款同步</string>
 	<string name="price_set">现金配置</string>
-	<string name="pass_set">重置密码</string>
+	<string name="pass_set">密    码</string>
 	<string name="user_name">登录名</string>
 	<string name="daily_pay">收银员结算</string>
 	<string name="main_food">主食</string>

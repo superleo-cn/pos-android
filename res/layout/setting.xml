@@ -369,21 +369,35 @@
                         android:text="@string/synchronize_btn" />
                 </RelativeLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/pass_set_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/price_set_layout"
+                     android:orientation="horizontal"
                     android:layout_marginTop="10dip" >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/pass_set"
+                        android:text="@string/user_name"
                         android:textColor="#ffffff"
                         android:textSize="15sp" />
-                </RelativeLayout>
+                    <EditText
+                        android:id="@+id/edit_setting_chongzhi_login_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="85dip"
+                        android:layout_marginRight="20dip"/>
+                    <Button
+                        android:id="@+id/btu_setting_login_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/tong_btu_bg2"
+                        android:text="@string/synchronize_btn2" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/user_name_layout"
@@ -397,27 +411,25 @@
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="@string/user_name"
+                        android:text="@string/pass_set"
                         android:textColor="#ffffff"
                         android:textSize="15sp" />
 
                     <EditText
-                        android:id="@+id/user_name_edit"
+                        android:id="@+id/edit_setting_chongzhi_login_password"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginLeft="85dip"
-                        android:layout_marginRight="20dip"
-                        android:layout_toRightOf="@+id/user_name" />
+                        android:layout_marginLeft="115dip"
+                        android:layout_marginRight="20dip" />
 
                     <Button
+                        android:id="@+id/btu_setting_login_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_marginRight="20dip"
                         android:background="@drawable/tong_btu_bg2"
-                        android:text="@string/synchronize_btn" />
+                        android:text="@string/synchronize_btn2" />
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
