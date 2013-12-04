@@ -20,10 +20,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.TakeNumberBean;
 import com.android.singaporeanorderingsystem.DailyPayActivity;
+import com.android.singaporeanorderingsystem.MainActivity;
 
 
 public class TakeNumerAdapter extends BaseAdapter {
@@ -118,6 +120,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
 				//viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
+				is_maxPrice(s.toString());
 				if(bean.getNum().equals(s.toString())){
 					
 				}else{
@@ -187,6 +190,20 @@ public class TakeNumerAdapter extends BaseAdapter {
 		
 		return convertView;
 	}
+	
+	public boolean is_maxPrice(String zhi){
+		 try{
+	    	Double now_price=Double.parseDouble(zhi);
+	    	if(now_price>9999.99){
+	    		return true;
+	    	}
+		 }catch (Exception e){
+			 Toast.makeText(context, R.string.err_price, Toast.LENGTH_SHORT).show();
+			 return false;
+		 }
+	    	return false;
+		
+	    }
 
 	public final class ViewHolder {
 		TextView num_id_name;

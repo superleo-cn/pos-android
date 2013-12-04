@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.DailyPayDetailBean;
@@ -94,6 +95,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 
 				@Override
 				public void afterTextChanged(Editable s,ViewHolder holder) {
+					is_maxPrice(s.toString());
 					int p = (Integer) viewHolder.text_id_price.getTag();
 					cacheData(s.toString(), p);
 					if(viewHolder.text_id_price.getText().toString().isEmpty()){
@@ -155,6 +157,20 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			             }  
 		return convertView;
 	}
+	
+	public boolean is_maxPrice(String zhi){
+		 try{
+	    	Double now_price=Double.parseDouble(zhi);
+	    	if(now_price>9999.99){
+	    		return true;
+	    	}
+		 }catch (Exception e){
+			 Toast.makeText(context, R.string.err_price, Toast.LENGTH_SHORT).show();
+			 return false;
+		 }
+	    	return false;
+		
+	    }
 
 	private final class ViewHolder {
 		TextView text_id_name;
