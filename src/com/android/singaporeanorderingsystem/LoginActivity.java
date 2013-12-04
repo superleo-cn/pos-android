@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -358,6 +359,7 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 
         @Override
         protected Integer doInBackground(String... objs) {
+        	Looper.prepare(); 
 			String str_login_name=login_name.getText().toString();
 			final String str_login_password=login_password.getText().toString();
 //			final UserDao user_dao=myApp.getUserdao();
@@ -459,7 +461,7 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
         		Toast.makeText(LoginActivity.this,getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
         		break;
         	}
-
+        	Looper.loop();
         }
 
         @Override
