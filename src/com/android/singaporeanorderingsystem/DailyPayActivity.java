@@ -123,7 +123,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		all_num_price=new ArrayList<Double>();
 		all_pay_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
-		df=new DecimalFormat("###.00");
+		df=new DecimalFormat("0.00");
 		initView();
 		
 		btu_id_sbumit.setOnClickListener(new OnClickListener() {
