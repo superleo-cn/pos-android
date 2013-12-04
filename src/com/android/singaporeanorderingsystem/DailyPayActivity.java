@@ -242,7 +242,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		 login_name.setText(getString(R.string.mainTitle_txt)+" "+myApp.getU_name()+",");
 		 shop_name1234.setText(myApp.getShop_name()+"-"+myApp.getShop_code());
 		 write_name.setText(myApp.getU_name());
-		 
+		 send_person.setText(myApp.getU_name());
 		/* String shopId=myApp.getSettingShopId();
 		 if(shopId==null){
 			 shopId="0";
