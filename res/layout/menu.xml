@@ -70,7 +70,7 @@
         android:singleLine="true"
         android:text="@string/shop_info"
         android:textColor="#FFFFFF"
-        android:textSize="21sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -82,7 +82,7 @@
         android:layout_toRightOf="@+id/letout_name_tv"
         android:text="@string/layoutLeft_title"
         android:textColor="#FFFFFF"
-        android:textSize="21sp" />
+        android:textSize="18sp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
