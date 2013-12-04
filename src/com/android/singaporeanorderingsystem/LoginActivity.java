@@ -26,6 +26,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -502,6 +504,20 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 			 imm.hideSoftInputFromWindow(login_name.getWindowToken(), 0); //强制隐藏键盘 
 			return super.onTouchEvent(event);
 		}
+		
+		@Override
+        public boolean onKeyDown(int keyCode, KeyEvent event)  {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                onBackPressed();
+            }
+
+            return super.onKeyDown(keyCode, event);
+        }
+
+        public void onBackPressed() {
+            return;
+        }   
+		
 //		@Override
 //		protected void onResume() {
 //			super.onResume();
