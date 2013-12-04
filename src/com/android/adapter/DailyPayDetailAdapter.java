@@ -95,7 +95,9 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 
 				@Override
 				public void afterTextChanged(Editable s,ViewHolder holder) {
-					is_maxPrice(s.toString());
+					if(is_maxPrice(s.toString())){
+						return ;
+					}
 					int p = (Integer) viewHolder.text_id_price.getTag();
 					cacheData(s.toString(), p);
 					if(viewHolder.text_id_price.getText().toString().isEmpty()){

@@ -120,7 +120,9 @@ public class TakeNumerAdapter extends BaseAdapter {
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
 				//viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
-				is_maxPrice(s.toString());
+				if(is_maxPrice(s.toString())){
+					return ;
+				}
 				if(bean.getNum().equals(s.toString())){
 					
 				}else{
