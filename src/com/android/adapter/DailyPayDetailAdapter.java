@@ -29,6 +29,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private List<DailyPayDetailBean> classList;
 	private Handler handler;
+	private int index = -1;
 	public static final int CHAGE_NUM_DETAIL=1020;
 	private DailyPayDetailBean detailBean;
 	
@@ -70,10 +71,25 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder.text_id_price = (EditText) convertView.findViewById(R.id.text_id_price);
 			viewHolder.text_id_price.setTag(position);
 			
-			viewHolder.text_id_price.setFocusable(true);
-			viewHolder.text_id_price.setFocusableInTouchMode(true);
-			viewHolder.text_id_price.setClickable(true);
-			viewHolder.text_id_price.requestFocus();
+//			viewHolder.text_id_price.setFocusable(true);
+//			viewHolder.text_id_price.setFocusableInTouchMode(true);
+//			viewHolder.text_id_price.setClickable(true);
+//			viewHolder.text_id_price.requestFocus();
+			
+			viewHolder.text_id_price.setOnTouchListener(new OnTouchListener(){
+
+				@Override
+				public boolean onTouch(View view, MotionEvent event) {
+					// TODO Auto-generated method stub
+					 if(event.getAction() == MotionEvent.ACTION_UP) {
+						 
+	                     index= position;
+
+	             }
+
+					return false;
+				}});
+			
 			viewHolder.text_id_price.addTextChangedListener(new CustTextWatch(viewHolder){
 
 				@Override
@@ -123,6 +139,14 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		
 		
 		
+		viewHolder.text_id_price.clearFocus();
+		 
+	    if(index!= -1 && index == position) {
+	
+	    	// 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
+	
+	    	viewHolder.text_id_price.requestFocus();
+	    }
 		
 		 
 		 if(DailyPayActivity.hashMap_detail.get(position) != null){  
