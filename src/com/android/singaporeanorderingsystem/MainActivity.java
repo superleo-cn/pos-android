@@ -140,7 +140,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
         select_dataList=new ArrayList<SelectFoodBean>();
         sbuff=new StringBuffer();
         initView();
-        df=new DecimalFormat("###.00");
+        df=new DecimalFormat("0.00");
         save_discount_price=Double.parseDouble(myApp.getDiscount());
         package_money=0.2;
     }
@@ -903,10 +903,12 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener(){
 
 			public void onClick(DialogInterface dialog, int which) {
-//				int sb_length=sbuff.length();
-//				sbuff.delete(0, sb_length);
-//				gathering.setText("0.00");
-//				surplus.setText("0.00");
+				int sb_length=sbuff.length();
+				sbuff.delete(0, sb_length);
+				gathering.setText("0.00");
+				surplus.setText("0.00");
+				show_gathering=0.00;
+				show_surplus=0.00;
 			}});
 		return builder;
 	}
