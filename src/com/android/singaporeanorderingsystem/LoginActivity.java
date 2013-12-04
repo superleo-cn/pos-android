@@ -522,4 +522,3 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 //		}
 
 }
-
