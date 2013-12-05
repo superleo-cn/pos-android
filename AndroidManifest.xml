@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
     <application
         android:name=".common.MyApp"
         android:icon="@drawable/ic_launcher"
@@ -43,6 +44,7 @@
             android:name=".singaporeanorderingsystem.SettingActivity"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
+        <service android:name=".service.MyService"></service>
     </application>
 
 </manifest>

@@ -12,14 +12,15 @@ import java.util.Locale;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
-import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,7 +32,6 @@ import android.os.Message;
 import android.os.StrictMode;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -54,19 +54,16 @@ import com.android.bean.FoodHttpBean;
 import com.android.bean.FoodListBean;
 import com.android.bean.FoodOrder;
 import com.android.bean.GiditNumberBean;
-import com.android.bean.LoginAuditBean;
-import com.android.bean.LoginUserBean;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.FoodOrderDao2;
-import com.android.dao.LoginAuditDao;
-import com.android.dao.UserDao2;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
+import com.android.service.MyService;
 
 public class MainActivity extends BasicActivity implements OnClickListener{
 	
@@ -143,6 +140,20 @@ public class MainActivity extends BasicActivity implements OnClickListener{
         df=new DecimalFormat("0.00");
         save_discount_price=Double.parseDouble(myApp.getDiscount());
         package_money=0.2;
+    }
+    
+    @Override
+    protected void onStart() {
+    	super.onStart();
+    	AlarmManager aManager = (AlarmManager) getSystemService(Service.ALARM_SERVICE);  
+         // 指定启动ChangeService组件  
+         Intent intent = new Intent(MainActivity.this,  
+                 MyService.class);  
+    	// 创建PendingIntent对象  
+        final PendingIntent pi = PendingIntent.getService(  
+        		MainActivity.this, 0, intent, 0);  
+    	 // 设置每５秒执行pi代表的组件一次  
+        aManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 5000, pi);  
     }
     
     /*初始化控件*/
