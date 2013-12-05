@@ -96,6 +96,7 @@ public class SettingActivity extends BasicActivity {
 	
 	private EditText edit_setting_time;
 	private Button btu_setting_time;
+	private RelativeLayout setting_time;
 	
 	
 	private class SyncALlOperation extends AsyncTask<String, Void, Integer> {
@@ -188,6 +189,7 @@ public class SettingActivity extends BasicActivity {
 		btu_setting_login_password =(Button) findViewById(R.id.btu_setting_login_password);
 		btu_setting_time = (Button) findViewById(R.id.btu_setting_time);
 		edit_setting_time = (EditText) findViewById(R.id.edit_setting_time);
+		setting_time = (RelativeLayout) findViewById(R.id.setting_time);
 		
 		edit_setting_time.setText(myApp.getSetting_time()/(60*1000)+"");
 		
@@ -218,6 +220,7 @@ public class SettingActivity extends BasicActivity {
 		if(myApp.getU_type().equals("SUPERADMIN")){
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
+			setting_time.setVisibility(View.VISIBLE);
 		}
 		
 		btu_setting_login_name.setOnClickListener(new OnClickListener() {

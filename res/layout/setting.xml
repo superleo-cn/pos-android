@@ -214,6 +214,7 @@
                     android:id="@+id/setting_time"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_below="@+id/take_price" >
 
                     <TextView
