@@ -170,10 +170,18 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 				 if(shopId==null){
 					 shopId="0";
 				 }
+				 String userId=myApp.getUser_id();
 				 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
 			    	String date=df_save.format(new Date());
 			    	Log.e("今天日期", date);
-				List<String> priceList= PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date,myApp.getSettingShopId());
+			    boolean flag = DailyMoneyDao.getInatance(DailyPayActivity.this).isCompleted(shopId, userId, date, "1");
+				List<String> priceList= null;
+				if(!flag){
+					priceList = PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date,myApp.getSettingShopId());
+				}else{
+					btu_id_sbumit.setVisibility(View.GONE);
+				}
+
 				//Double price=0.00;
 				if(priceList==null){
 					order_price=0.00;

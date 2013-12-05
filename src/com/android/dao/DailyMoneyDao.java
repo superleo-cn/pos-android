@@ -187,4 +187,17 @@ public class DailyMoneyDao extends SQLiteOpenHelper {
 		
 	}
 	
+	public boolean isCompleted(String shopId, String userId, String date, String type){
+		boolean flag = false;
+		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+		Cursor cursor=db.query(TABLE_NAME, null, "shop_id=? and user_id =? and date >= ? and type=?",new String[]{shopId, userId, date, type}, null, null, null, null);
+		if(cursor.getCount() > 0){
+			flag = true;
+		}
+		cursor.close();
+		db.close();
+		return flag;
+		
+	}
+	
 }
