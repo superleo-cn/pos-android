@@ -40,6 +40,7 @@ public class MyApp extends Application{
 	private String daily_pay_submit_flag="1";
 	private String shop_name = "";;
 	private String shop_code = "";;
+	private long setting_time=0;
 
 	@Override
 	public void onCreate() {
@@ -48,6 +49,7 @@ public class MyApp extends Application{
 		sysInitSharedPreferences = getSharedPreferences(
 				Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
 		discount= sysInitSharedPreferences.getString("discount", "0.5");
+		setting_time = sysInitSharedPreferences.getLong("setting_time", 30*60*1000 );
 		userdao = new UserDao(this);
 		food_order_dao = new FoodOrderDao(this);
 		printer = new AndroidPrinter(this);
@@ -74,6 +76,17 @@ public class MyApp extends Application{
 	public void setDiscount(String discount) {
 		this.discount = discount;
 		sysInitSharedPreferences.edit().putString("discount", discount).commit();
+	}
+
+	
+	
+	public long getSetting_time() {
+		return setting_time;
+	}
+
+	public void setSetting_time(long setting_time) {
+		this.setting_time = setting_time;
+		sysInitSharedPreferences.edit().putLong("setting_time", setting_time).commit();
 	}
 
 	public String getIp_str() {

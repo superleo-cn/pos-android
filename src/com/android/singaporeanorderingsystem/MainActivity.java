@@ -152,8 +152,8 @@ public class MainActivity extends BasicActivity implements OnClickListener{
     	// 创建PendingIntent对象  
         final PendingIntent pi = PendingIntent.getService(  
         		MainActivity.this, 0, intent, 0);  
-    	 // 设置每５秒执行pi代表的组件一次  
-        aManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 5000, pi);  
+    	 // 设置每30分钟执行pi代表的组件一次  
+        aManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, myApp.getSetting_time(), pi);  
     }
     
     /*初始化控件*/

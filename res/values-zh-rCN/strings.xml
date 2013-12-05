@@ -60,6 +60,7 @@
 	<string name="print_one">打印机</string>
 	<string name="print_two">2号打印机</string>
 	<string name="take_price">打折</string>
+	<string name="setting_time">设置时间</string>
 	<string name="admin_set">超级管理员配置</string>
 	<string name="synchronization_menu">点菜单同步</string>
 	<string name="synchronization_shop">摊位ID</string>
