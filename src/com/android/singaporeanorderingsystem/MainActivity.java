@@ -140,6 +140,7 @@ public class MainActivity extends BasicActivity implements OnClickListener{
         df=new DecimalFormat("0.00");
         save_discount_price=Double.parseDouble(myApp.getDiscount());
         package_money=0.2;
+        init_wifiReceiver();
     }
     
     @Override
