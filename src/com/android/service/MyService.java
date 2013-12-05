@@ -113,30 +113,28 @@ public class MyService extends Service {
 			}
 			
 			// 异步请求数据
-			RemoteDataHandler.asyncPost(Constants.URL_FOOD_ORDER, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						f_dao.update_all_type("0");
-					}else if(data.getCode() == 0){
-						String json = data.getJson();
-						System.out.println("-----111>>>>>>"+json);
-						json=json.replaceAll("\\[", "");
-						json=json.replaceAll("\\]", "");
-						System.out.println("-----222>>>>>>"+json);
-						String [] str=json.split(",");
-						for(int i = 0; i<str.length;i++){
-							System.out.println("-----333>>>>>>"+str[i]);
-							f_dao.update_type(str[i]);
-						}
-					}else if(data.getCode() == -1){
-						
+			ResponseData data = RemoteDataHandler.post(Constants.URL_FOOD_ORDER, params);
+			if(data != null){
+				if(data.getCode() == 1){
+					f_dao.update_all_type("0");
+				}else if(data.getCode() == 0){
+					String json = data.getJson();
+					System.out.println("-----111>>>>>>"+json);
+					json=json.replaceAll("\\[", "");
+					json=json.replaceAll("\\]", "");
+					System.out.println("-----222>>>>>>"+json);
+					String [] str=json.split(",");
+					for(int i = 0; i<str.length;i++){
+						System.out.println("-----333>>>>>>"+str[i]);
+						f_dao.update_type(str[i]);
 					}
+				}else if(data.getCode() == -1){
+					
 				}
-			});
-			}catch(Exception e){
-				e.getMessage();
 			}
+		}catch(Exception e){
+			e.getMessage();
+		}
 	}
     /*提交每日支付*/
 	public void post_payList(){
