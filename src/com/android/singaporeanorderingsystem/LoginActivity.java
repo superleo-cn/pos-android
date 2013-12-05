@@ -432,9 +432,11 @@ public class LoginActivity extends BasicActivity implements OnClickListener{
 				LoginActivity.this.startActivity(intent);
 				LoginActivity.this.finish();
 			}else if(data.getCode() == 0){
-				Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+				// Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+				return 0;
 			}else if(data.getCode() == -1){
-				Toast.makeText(LoginActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+				// Toast.makeText(LoginActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+				return -1;
 			}
 			return 1;
         }        

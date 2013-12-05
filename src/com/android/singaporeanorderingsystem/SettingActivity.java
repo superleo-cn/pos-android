@@ -94,6 +94,10 @@ public class SettingActivity extends BasicActivity {
 	private EditText edit_setting_chongzhi_login_password;
 	private Button btu_setting_login_password;
 	
+	private EditText edit_setting_time;
+	private Button btu_setting_time;
+	private RelativeLayout setting_time;
+	
 	
 	private class SyncALlOperation extends AsyncTask<String, Void, Integer> {
 
@@ -183,6 +187,22 @@ public class SettingActivity extends BasicActivity {
 		edit_setting_chongzhi_login_password = (EditText) findViewById(R.id.edit_setting_chongzhi_login_password);
 		btu_setting_login_name =(Button) findViewById(R.id.btu_setting_login_name);
 		btu_setting_login_password =(Button) findViewById(R.id.btu_setting_login_password);
+		btu_setting_time = (Button) findViewById(R.id.btu_setting_time);
+		edit_setting_time = (EditText) findViewById(R.id.edit_setting_time);
+		setting_time = (RelativeLayout) findViewById(R.id.setting_time);
+		
+		edit_setting_time.setText(myApp.getSetting_time()/(60*1000)+"");
+		
+		btu_setting_time.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String set_time = edit_setting_time.getText().toString();
+				if(set_time!=null && !set_time.equals("") &&!set_time.equals("null")){
+					Toast.makeText(SettingActivity.this, "设置成功", 1).show();
+					myApp.setSetting_time(Long.parseLong(set_time)*60*1000);
+				}
+			}
+		});
 		
 		/** 判断今天是否是最新的*/
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
@@ -200,6 +220,7 @@ public class SettingActivity extends BasicActivity {
 		if(myApp.getU_type().equals("SUPERADMIN")){
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
+			setting_time.setVisibility(View.VISIBLE);
 		}
 		
 		btu_setting_login_name.setOnClickListener(new OnClickListener() {
