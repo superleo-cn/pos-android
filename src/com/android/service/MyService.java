@@ -38,7 +38,7 @@ public class MyService extends Service {
     @Override  
     public void onStart(Intent intent,int startId)  
     {  
-    	new UpdateOperation().execute("");
+    	//new UpdateOperation().execute("");
         super.onStart(intent, startId);  
     }  
     
