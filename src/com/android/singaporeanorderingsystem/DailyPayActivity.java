@@ -123,7 +123,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		all_num_price=new ArrayList<Double>();
 		all_pay_price=new ArrayList<Double>();
 		myApp=(MyApp) DailyPayActivity.this.getApplication();
-		df=new DecimalFormat("###.00");
+		df=new DecimalFormat("000.00");
 		initView();
 		
 		btu_id_sbumit.setOnClickListener(new OnClickListener() {
@@ -534,8 +534,8 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	    public void  clear_data(){
 	    	 InputMethodManager imm = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
 	    	String detail_price;
-	    	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-	    	String date=df.format(new Date());
+	    	SimpleDateFormat df_date=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	    	String date=df_date.format(new Date());
 	    	this.search_date=date;
 	    	/*提交每日支付金额*/	    	
 	    	for(int i=0;i<detail_classList.size();i++){
