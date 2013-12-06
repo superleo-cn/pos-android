@@ -501,6 +501,8 @@ public class SettingActivity extends BasicActivity {
 					}
 				});
 			}});
+		
+		init_wifiReceiver();
 	}
 	/***********************************************************************************/
 	

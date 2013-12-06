@@ -948,53 +948,9 @@ public class MainActivity extends BasicActivity implements OnClickListener{
 		save_foc_price=0.00;
 		save_selectNum=0;
 	}
-	 private BroadcastReceiver wifi_myReceiver=new BroadcastReceiver()
-	    {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				 String action = intent.getAction();
-		            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-				ConnectivityManager connectivityManager=(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo  mobInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-				NetworkInfo  wifiInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-				if(!mobInfo.isConnected()&&!wifiInfo.isConnected()){
-					new Thread(new Runnable(){
-
-						public void run() {
-							Message msg = new Message();
-							msg.what=CLOSE_WIFI;
-							handler.sendMessage(msg);
-						}
-						
-					}).start();
-				
-				}else{
-					new Thread(new Runnable(){
-
-						public void run() {
-							Message msg = new Message();
-							msg.what=OPEN_WIFI;
-							handler.sendMessage(msg);
-						}
-						
-					}).start();
-				}
-			}
-			}
-	    };
-	    
-	    private void init_wifiReceiver()
-	    {
-	    	IntentFilter filter1=new IntentFilter();
-	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(wifi_myReceiver,filter1);
-	    	main_isRever=true;
-	    }
-	    
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 //		m.enable();
 		
 		super.onResume();
