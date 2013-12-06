@@ -137,6 +137,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			}
 		});
 	//onload_payDetail("1");
+		init_wifiReceiver();
 	}
 	 
 	 public void initView(){
@@ -494,53 +495,6 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 		
 	};
 
-
-	 private BroadcastReceiver myReceiver=new BroadcastReceiver()
-	    {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				// TODO Auto-generated method stub
-				 String action = intent.getAction();
-		            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-				ConnectivityManager connectivityManager=(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-				NetworkInfo  mobInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-				NetworkInfo  wifiInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-				if(!mobInfo.isConnected()&&!wifiInfo.isConnected()){
-					new Thread(new Runnable(){
-
-						public void run() {
-							// TODO Auto-generated method stub
-							Message msg = new Message();
-							msg.what=CLOSE_WIFI;
-							handler.sendMessage(msg);
-						}
-						
-					}).start();
-				
-				}else{
-					new Thread(new Runnable(){
-
-						public void run() {
-							// TODO Auto-generated method stub
-							Message msg = new Message();
-							msg.what=OPEN_WIFI;
-							handler.sendMessage(msg);
-						}
-						
-					}).start();
-				}
-			}
-			}
-	    };
-	    
-	    private void init_wifiReceiver()
-	    {
-	    	IntentFilter filter=new IntentFilter();
-	    	 filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(myReceiver,filter);
-	    	is_recer=true;
-	    }
 	    
 	    public boolean doValidation(){
 	    	// 带回总数 和 开店金额 不能为0

@@ -6,24 +6,35 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.OrientationEventListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.R;
+import com.android.adapter.FoodListAdapter;
+import com.android.adapter.SelectListAdapter;
 import com.android.bean.LoginAuditBean;
 import com.android.bean.LoginUserBean;
+import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
@@ -39,6 +50,11 @@ public class BasicActivity extends Activity {
 	private MyApp myApp;
 	
 	private MyProcessDialog dialog;
+	
+	private final int OPEN_WIFI=1002;
+	private final int CLOSE_WIFI=1003;
+	private ImageView wifi_image; //wifi 图标
+	public static boolean main_isRever;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,7 @@ public class BasicActivity extends Activity {
 		dialog =new MyProcessDialog(BasicActivity.this,getResources().getString(R.string.logout_wait));
 		myApp = (MyApp) BasicActivity.this.getApplication();
 	}
-
+	
 	public void login_audit(LoginUserBean login_user, String action) {
 		final LoginAuditDao dao = LoginAuditDao.getInatance(BasicActivity.this);
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -161,6 +177,74 @@ public class BasicActivity extends Activity {
         protected void onProgressUpdate(Void... values) {
         }
     }
+	
+	
+	 Handler handler=new Handler(){
+
+			@Override
+			public void handleMessage(Message msg) {
+				// TODO Auto-generated method stub
+				switch(msg.what){
+	
+				case OPEN_WIFI:
+					wifi_image.setBackgroundResource(R.drawable.wifi_open);
+					break;
+				case CLOSE_WIFI:
+					wifi_image.setBackgroundResource(R.drawable.wifi_close);
+					break;
+				
+				}
+				
+				super.handleMessage(msg);
+			}
+	    	
+	    };
+	
+	 private BroadcastReceiver wifi_myReceiver=new BroadcastReceiver()
+	    {
+
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				 String action = intent.getAction();
+		            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+				ConnectivityManager connectivityManager=(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				NetworkInfo  mobInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+				NetworkInfo  wifiInfo=connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+				if(!mobInfo.isConnected()&&!wifiInfo.isConnected()){
+					new Thread(new Runnable(){
+
+						public void run() {
+							Message msg = new Message();
+							msg.what=CLOSE_WIFI;
+							handler.sendMessage(msg);
+						}
+						
+					}).start();
+				
+				}else{
+					new Thread(new Runnable(){
+
+						public void run() {
+							Message msg = new Message();
+							msg.what=OPEN_WIFI;
+							handler.sendMessage(msg);
+						}
+						
+					}).start();
+				}
+			}
+			}
+	    };
+	    
+	    
+	    protected void init_wifiReceiver()
+	    {
+	    	wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
+	    	IntentFilter filter1=new IntentFilter();
+	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    	registerReceiver(wifi_myReceiver,filter1);
+	    	main_isRever=true;
+	    }
 
 }
 
