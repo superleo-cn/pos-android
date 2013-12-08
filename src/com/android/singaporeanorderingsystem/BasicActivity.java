@@ -233,6 +233,7 @@ public class BasicActivity extends Activity {
 					}).start();
 				}
 			}
+		    unregisterReceiver(wifi_myReceiver);
 			}
 	    };
 	    

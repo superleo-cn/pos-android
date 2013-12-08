@@ -103,21 +103,20 @@ public class SettingActivity extends BasicActivity {
 
         @Override
         protected Integer doInBackground(String... objs) {
-        	if(!isLatestData()){
+        	//if(!isLatestData()){
 	    		dialog.show();
 	    		post_payList();
 		    	post_numList(); 
 		    	post_dailyMoney();
 		    	dialog.cancel();
 		    	if(!isLatestData()){
-		    		synchronize.setText(getString(R.string.sync_err));
 		    		return -1;
 		    	}else{
-		    		synchronize.setText(getString(R.string.sync_succ));
+		    		
 		    		return 1;
 		    	}
-	    	}
-        	return 0;
+	    	//}
+        	//return 0;
         }        
 
         @Override
@@ -128,9 +127,11 @@ public class SettingActivity extends BasicActivity {
         		Toast.makeText(SettingActivity.this, getString(R.string.no_need_sync), Toast.LENGTH_SHORT).show();
         		break;
         	case 1:
+        		synchronize.setText(getString(R.string.sync_succ));
         		Toast.makeText(SettingActivity.this, getString(R.string.sync_succ), Toast.LENGTH_SHORT).show();
         		break;
         	case -1:
+        		synchronize.setText(getString(R.string.sync_err));
         		Toast.makeText(SettingActivity.this, getString(R.string.sync_err), Toast.LENGTH_SHORT).show();
         		break;
         	}
@@ -547,7 +548,7 @@ public class SettingActivity extends BasicActivity {
 			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_PAYLIST, params);
 			if(data.getCode() == 1){
 				String json=data.getJson();
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
 			String str=json.substring(1,json.length()-1);
 			String []array=str.split(",");
 			if(array.length!=0){
@@ -563,9 +564,9 @@ public class SettingActivity extends BasicActivity {
 				}
 			}
 			}else if(data.getCode() == 0){
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
 			}else if(data.getCode() == -1){
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
 			}
 		}
 		
@@ -615,9 +616,9 @@ public class SettingActivity extends BasicActivity {
 					}
 				}
 			}else if(data.getCode() == 0){
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
 			}else if(data.getCode() == -1){
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
 			}
 		
 			
@@ -636,14 +637,14 @@ public class SettingActivity extends BasicActivity {
 				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
 				int result=DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
 				if(result==-1){
-					Toast.makeText(SettingActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(SettingActivity.this, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
 				}else{
-					Toast.makeText(SettingActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(SettingActivity.this, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
 				}
 			}else if(data.getCode() == 0){
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
 			}else if(data.getCode() == -1){
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SettingActivity.this, getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
 			}
 		
 		}catch(Exception e){
