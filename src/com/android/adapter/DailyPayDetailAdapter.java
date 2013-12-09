@@ -168,7 +168,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	    		return true;
 	    	}
 		 }catch (Exception e){
-			 Toast.makeText(context, R.string.err_price, Toast.LENGTH_SHORT).show();
+//			 Toast.makeText(context, R.string.err_price, Toast.LENGTH_SHORT).show();
 			 return false;
 		 }
 	    	return false;
