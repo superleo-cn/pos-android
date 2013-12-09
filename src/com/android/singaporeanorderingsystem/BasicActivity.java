@@ -66,7 +66,6 @@ public class BasicActivity extends Activity {
 				.penaltyLog() // 打印logcat
 				.penaltyDeath().build());
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 		// init_wifiReceiver();
 		// m=new MyOrientationDetector2(MainActivity.this);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -151,7 +150,7 @@ public class BasicActivity extends Activity {
 		intent.setClass(getApplicationContext(), LoginActivity.class);// 当前Activity重新打开
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		System.exit(0);
+		//System.exit(0);
 	}
 	
 	
@@ -240,10 +239,10 @@ public class BasicActivity extends Activity {
 	    
 	    protected void init_wifiReceiver()
 	    {
-//	    	wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
-//	    	IntentFilter filter1=new IntentFilter();
-//	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-//	    	registerReceiver(wifi_myReceiver,filter1);
+	    	wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
+	    	IntentFilter filter1=new IntentFilter();
+	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+	    	registerReceiver(wifi_myReceiver,filter1);
 	    	main_isRever=true;
 	    }
 

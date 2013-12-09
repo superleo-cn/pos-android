@@ -165,17 +165,18 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			other=(EditText) this.findViewById(R.id.other);
 			shop_money=(EditText) this.findViewById(R.id.shop_money);
 			shop_name1234=(TextView) this.findViewById(R.id.shop_name1234);
-			if(myApp.getDaily_pay_submit_flag().equals("1")){
+			 String userId=myApp.getUser_id();
+			 String shopId=myApp.getSettingShopId();
+			 if(shopId==null){
+				 shopId="0";
+			 }
+
+			 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
+		    	String date=df_save.format(new Date());
+		    	Log.e("今天日期", date);
+			 boolean flag = DailyMoneyDao.getInatance(DailyPayActivity.this).isCompleted(shopId, userId, date, "1");
+			 if(!flag){
 				btu_id_sbumit.setVisibility(View.VISIBLE);
-				 String shopId=myApp.getSettingShopId();
-				 if(shopId==null){
-					 shopId="0";
-				 }
-				 String userId=myApp.getUser_id();
-				 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
-			    	String date=df_save.format(new Date());
-			    	Log.e("今天日期", date);
-			    boolean flag = DailyMoneyDao.getInatance(DailyPayActivity.this).isCompleted(shopId, userId, date, "1");
 				List<String> priceList= null;
 				if(!flag){
 					priceList = PriceSave.getInatance(DailyPayActivity.this).getList(myApp.getUser_id(),date,myApp.getSettingShopId());
