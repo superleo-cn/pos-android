@@ -240,10 +240,10 @@ public class BasicActivity extends Activity {
 	    
 	    protected void init_wifiReceiver()
 	    {
-	    	wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
-	    	IntentFilter filter1=new IntentFilter();
-	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(wifi_myReceiver,filter1);
+//	    	wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
+//	    	IntentFilter filter1=new IntentFilter();
+//	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+//	    	registerReceiver(wifi_myReceiver,filter1);
 	    	main_isRever=true;
 	    }
 
