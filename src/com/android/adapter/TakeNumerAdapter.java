@@ -73,7 +73,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}
 
 		bean = classList.get(position);
-		viewHolder.num_id_name.setText(bean.getPrice());
+		viewHolder.num_id_name.setText(new DecimalFormat("0.00").format(Double.parseDouble(bean.getPrice() == "" ? "0" :bean.getPrice())).toString());
 		viewHolder.id_price.setText(bean.getNum());
 		Double is_price=Double.parseDouble(bean.getPrice());
 		if(is_price>1){
