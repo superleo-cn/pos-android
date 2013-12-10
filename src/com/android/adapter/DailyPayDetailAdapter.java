@@ -1,6 +1,5 @@
 package com.android.adapter;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import android.content.Context;
@@ -140,7 +139,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 
 		bean = classList.get(position);
 		viewHolder.text_id_name.setText(bean.getName());
-		viewHolder.text_id_price.setText(new DecimalFormat("0.00").format(Double.parseDouble(bean.getPrice())));
+		viewHolder.text_id_price.setText(bean.getPrice());
 		
 		
 		
