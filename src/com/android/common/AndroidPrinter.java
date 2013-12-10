@@ -106,9 +106,15 @@ public class AndroidPrinter {
 				+ "     http://www.zjiang.com\n\n";
 		if (message.length() > 0) {
 			byte[] tcmd = new byte[3];
-			tcmd[0] = 0x10;
-			tcmd[1] = 0x04;
-			tcmd[2] = 0x00;
+//			tcmd[0] = 0x10;
+//			tcmd[1] = 0x04;
+//			tcmd[2] = 0x00;
+			
+			 //set double height and double width mode
+			tcmd[0] = 0x1b;
+			tcmd[1] = 0x21;
+			tcmd[2] = 0x10;
+			
 			wfComm.sndByte(tcmd);
 			wfComm.sendMsg(message, "gbk");
 			Log.d("WIFI Printer", "Print message is: " + message);
