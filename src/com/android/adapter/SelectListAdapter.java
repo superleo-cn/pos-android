@@ -1,10 +1,12 @@
 ﻿package com.android.adapter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import com.android.R;
 import com.android.adapter.GiditNumberAdapter.ViewHolder;
 import com.android.bean.SelectFoodBean;
+
 
 
 
@@ -71,7 +73,7 @@ public class SelectListAdapter extends BaseAdapter {
 		}
 		viewHolder.food_name.setText(bean.getFood_name());
 		viewHolder.food_num.setText("x"+bean.getFood_num());
-		viewHolder.food_price.setText("S$"+bean.getFood_price());
+		viewHolder.food_price.setText("S$"+new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
 		return convertView;
 	}
 	
