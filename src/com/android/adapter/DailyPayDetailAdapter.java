@@ -139,7 +139,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 
 		bean = classList.get(position);
 		viewHolder.text_id_name.setText(bean.getName());
-		viewHolder.text_id_price.setText( new DecimalFormat("0.00").format(Double.parseDouble(bean.getPrice() == "" ? "0" :bean.getPrice())).toString());
+		viewHolder.text_id_price.setText(bean.getPrice());
 		
 		
 		
