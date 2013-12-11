@@ -13,16 +13,16 @@ import android.widget.TextView;
 
 import com.android.R;
 
-
 /**
  * 等待对话框
+ * 
  * @author hjgang
  */
 public class MyProcessDialog extends Dialog {
-	public MyProcessDialog(Context context,String str) {
+	public MyProcessDialog(Context context, String str) {
 		super(context, R.style.MyProgressDialog);
 		this.setContentView(R.layout.progress_dialog);
-		TextView text=(TextView) this.findViewById(R.id.txt_wait);
+		TextView text = (TextView) this.findViewById(R.id.txt_wait);
 		text.setText(str);
 	}
 }

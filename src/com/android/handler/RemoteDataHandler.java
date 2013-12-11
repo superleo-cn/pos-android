@@ -3,6 +3,7 @@ package com.android.handler;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -19,7 +20,6 @@ import android.util.Log;
 import com.android.common.HttpHelper;
 import com.android.model.ResponseData;
 
-
 /**
  * 用于发送HTTP请求并处理响应返回的数据的Handler
  * 
@@ -35,8 +35,7 @@ public class RemoteDataHandler {
 	private static final String _URL = "url";
 	// 线程池
 	// private ExecutorService pool = Executors.newCachedThreadPool();
-	private static ThreadPoolExecutor threadPool = new ThreadPoolExecutor(6,
-			30, 30L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
+	private static ThreadPoolExecutor threadPool = new ThreadPoolExecutor(6, 30, 30L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
 	private RemoteDataHandler() {
 	}
@@ -55,6 +54,7 @@ public class RemoteDataHandler {
 
 		public void dataLoaded(String str);
 	}
+
 	/**
 	 * 异步GET请求封装2
 	 * 
@@ -83,8 +83,7 @@ public class RemoteDataHandler {
 
 				try {
 					String json = HttpHelper.get(url);
-					if (json != null && !"".equals(json)
-							&& !"null".equalsIgnoreCase(json)) {
+					if (json != null && !"".equals(json) && !"null".equalsIgnoreCase(json)) {
 						// 注意:目前服务器返回的JSON数据串中会有特殊字符（换行、回车）。需要处理一下
 						json = json.replaceAll("\\x0a|\\x0d", "");
 						JSONObject obj = new JSONObject(json);
@@ -96,17 +95,14 @@ public class RemoteDataHandler {
 								msg.obj = array.toString();
 							}
 							if (obj.has(_HASMORE)) {
-								msg.getData().putBoolean(_HASMORE,
-										obj.getBoolean(_HASMORE));
+								msg.getData().putBoolean(_HASMORE, obj.getBoolean(_HASMORE));
 							}
 							if (obj.has(_COUNT)) {
-								msg.getData().putLong(_COUNT,
-										obj.getLong(_COUNT));
+								msg.getData().putLong(_COUNT, obj.getLong(_COUNT));
 							}
 
 							if (obj.has(_RESULT)) {
-								msg.getData().putString(_RESULT,
-										obj.getString(_RESULT));
+								msg.getData().putString(_RESULT, obj.getString(_RESULT));
 							}
 						}
 					} else {
@@ -153,8 +149,7 @@ public class RemoteDataHandler {
 
 				try {
 					String json = HttpHelper.get(url);
-					if (json != null && !"".equals(json)
-							&& !"null".equalsIgnoreCase(json)) {
+					if (json != null && !"".equals(json) && !"null".equalsIgnoreCase(json)) {
 						// 注意:目前服务器返回的JSON数据串中会有特殊字符（换行、回车）。需要处理一下
 						json = json.replaceAll("\\x0a|\\x0d", "");
 						JSONObject obj = new JSONObject(json);
@@ -166,17 +161,14 @@ public class RemoteDataHandler {
 								msg.obj = array.toString();
 							}
 							if (obj.has(_HASMORE)) {
-								msg.getData().putBoolean(_HASMORE,
-										obj.getBoolean(_HASMORE));
+								msg.getData().putBoolean(_HASMORE, obj.getBoolean(_HASMORE));
 							}
 							if (obj.has(_COUNT)) {
-								msg.getData().putLong(_COUNT,
-										obj.getLong(_COUNT));
+								msg.getData().putLong(_COUNT, obj.getLong(_COUNT));
 							}
 
 							if (obj.has(_RESULT)) {
-								msg.getData().putString(_RESULT,
-										obj.getString(_RESULT));
+								msg.getData().putString(_RESULT, obj.getString(_RESULT));
 							}
 						}
 					} else {
@@ -234,15 +226,14 @@ public class RemoteDataHandler {
 							msg.obj = array.toString();
 						}
 						if (obj.has(_HASMORE)) {
-							msg.getData().putBoolean(_HASMORE,
-									obj.getBoolean(_HASMORE));
+							msg.getData().putBoolean(_HASMORE, obj.getBoolean(_HASMORE));
 						}
 						if (obj.has(_COUNT)) {
 							msg.getData().putLong(_COUNT, obj.getLong(_COUNT));
 						}
 
 						if (obj.has(_RESULT)) {
-							msg.getData().putString(_RESULT,obj.getString(_RESULT));
+							msg.getData().putString(_RESULT, obj.getString(_RESULT));
 						}
 					}
 				} catch (IOException e) {
@@ -370,8 +361,7 @@ public class RemoteDataHandler {
 		return rd;
 	}
 
-	public static ResponseData post(final String url,
-			final HashMap<String, String> params) {
+	public static ResponseData post(final String url, final Map<String, String> params) {
 		ResponseData rd = new ResponseData();
 		try {
 			String json = HttpHelper.post(url, params);
@@ -417,8 +407,7 @@ public class RemoteDataHandler {
 	 * @param params
 	 * @param callback
 	 */
-	public static void asyncPost(final String url,
-			final HashMap<String, String> params, final Callback callback) {
+	public static void asyncPost(final String url, final Map<String, String> params, final Callback callback) {
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -428,7 +417,6 @@ public class RemoteDataHandler {
 				data.setJson((String) msg.obj);
 				data.setResult(msg.getData().getString(_RESULT));
 				data.setCount(msg.getData().getLong(_COUNT));
-
 
 				callback.dataLoaded(data);
 			}
@@ -440,7 +428,7 @@ public class RemoteDataHandler {
 				msg.getData().putBoolean("hasMore", false);
 				try {
 					String json = HttpHelper.post(url, params);
-					System.out.println("json-->"+json);
+					System.out.println("json-->" + json);
 					// 注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d", "");
 					JSONObject obj = new JSONObject(json);
@@ -453,8 +441,7 @@ public class RemoteDataHandler {
 						}
 
 						if (obj.has(_RESULT)) {
-							msg.getData().putString(_RESULT,
-									obj.getString(_RESULT));
+							msg.getData().putString(_RESULT, obj.getString(_RESULT));
 						}
 					}
 				} catch (IOException e) {
@@ -477,8 +464,7 @@ public class RemoteDataHandler {
 	 * @param params
 	 * @param callback
 	 */
-	public static void asyncPost2(final String url,
-			final HashMap<String, String> params, final Callback callback) {
+	public static void asyncPost2(final String url, final HashMap<String, String> params, final Callback callback) {
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -488,7 +474,6 @@ public class RemoteDataHandler {
 				data.setJson((String) msg.obj);
 				data.setResult(msg.getData().getString(_RESULT));
 				data.setCount(msg.getData().getLong(_COUNT));
-
 
 				callback.dataLoaded(data);
 			}
@@ -500,7 +485,7 @@ public class RemoteDataHandler {
 				msg.getData().putBoolean("hasMore", false);
 				try {
 					String json = HttpHelper.post(url, params);
-//					System.out.println("json-->"+json);
+					// System.out.println("json-->"+json);
 					// 注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d", "");
 					JSONObject obj = new JSONObject(json);
@@ -514,8 +499,7 @@ public class RemoteDataHandler {
 						}
 
 						if (obj.has(_RESULT)) {
-							msg.getData().putString(_RESULT,
-									obj.getString(_RESULT));
+							msg.getData().putString(_RESULT, obj.getString(_RESULT));
 						}
 					}
 				} catch (IOException e) {
@@ -539,9 +523,8 @@ public class RemoteDataHandler {
 	 * @param fileMap
 	 * @param callback
 	 */
-	public static void asyncMultipartPost(final String url,
-			final HashMap<String, String> params,
-			final HashMap<String, File> fileMap, final Callback callback) {
+	public static void asyncMultipartPost(final String url, final HashMap<String, String> params, final HashMap<String, File> fileMap,
+			final Callback callback) {
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -562,8 +545,7 @@ public class RemoteDataHandler {
 				Message msg = handler.obtainMessage(HttpStatus.SC_OK);
 				msg.getData().putBoolean("hasMore", false);
 				try {
-					String json = HttpHelper
-							.multipartPost(url, params, fileMap);
+					String json = HttpHelper.multipartPost(url, params, fileMap);
 
 					// 注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d", "");
@@ -578,8 +560,7 @@ public class RemoteDataHandler {
 						}
 
 						if (obj.has(_RESULT)) {
-							msg.getData().putString(_RESULT,
-									obj.getString(_RESULT));
+							msg.getData().putString(_RESULT, obj.getString(_RESULT));
 						}
 					}
 				} catch (IOException e) {
@@ -603,8 +584,7 @@ public class RemoteDataHandler {
 	 * @param pageno
 	 * @param callback
 	 */
-	public static void asyncGet(final String url, final int pagesize,
-			final int pageno, final Callback callback) {
+	public static void asyncGet(final String url, final int pagesize, final int pageno, final Callback callback) {
 		final Handler handler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -647,13 +627,11 @@ public class RemoteDataHandler {
 							}
 						}
 						if (obj.has(_COUNT)) {
-							msg.getData().putLong(_COUNT,
-									Long.valueOf(obj.getString(_COUNT)));
+							msg.getData().putLong(_COUNT, Long.valueOf(obj.getString(_COUNT)));
 						}
 
 						if (obj.has(_RESULT)) {
-							msg.getData().putString(_RESULT,
-									obj.getString(_RESULT));
+							msg.getData().putString(_RESULT, obj.getString(_RESULT));
 						}
 					}
 				} catch (IOException e) {
