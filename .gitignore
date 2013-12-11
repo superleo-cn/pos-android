@@ -9,3 +9,5 @@
 /lint.xml
 /bin
 /gen
+/.factorypath
+/.apt_generated
