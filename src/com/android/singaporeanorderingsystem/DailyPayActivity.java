@@ -748,6 +748,17 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			 imm.hideSoftInputFromWindow(send_person.getWindowToken(), 0); //强制隐藏键盘 
 			 imm.hideSoftInputFromWindow(shop_money.getWindowToken(), 0); //强制隐藏键盘 
 			 //Toast.makeText(this, "取消软键盘" , Toast.LENGTH_SHORT).show();
+			 
+			 cash_register.clearFocus();
+			 today_turnover.clearFocus();
+			 noon_time.clearFocus();
+			 noon_turnover.clearFocus();
+			 time.clearFocus();
+			 total.clearFocus();
+			 tomorrow_money.clearFocus();
+			 total_take_num.clearFocus();
+			 send_person.clearFocus();
+			 shop_money.clearFocus();
 			
 			return super.onTouchEvent(event);
 		}
