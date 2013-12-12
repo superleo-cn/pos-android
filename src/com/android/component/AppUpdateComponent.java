@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,10 @@ import com.android.common.SystemHelper;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
+import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -39,6 +44,8 @@ import com.android.model.ResponseData;
  * @author superleo
  * 
  */
+// 定义成一个可以注入的组件
+@EBean
 public class AppUpdateComponent {
 
 	private MyUpdateDialog myUpdateDialog = null;
@@ -49,11 +56,22 @@ public class AppUpdateComponent {
 	private String savePath = Constants.CACHE_DIR;
 	private String saveFileName = savePath + "/";
 	private int progress;
-	final Context context;
 
-	public AppUpdateComponent(Context context) {
-		this.context = context;
-		myUpdateDialog = new MyUpdateDialog(context);
+	// 注入 Context 变量
+	@RootContext
+	Context context;
+
+	// 注入 Activity 变量
+	@RootContext
+	Activity activity;
+
+	public AppUpdateComponent() {
+
+	}
+
+	@AfterInject
+	public void init() {
+		myUpdateDialog = new MyUpdateDialog(activity);
 	}
 
 	public void updateApp() {

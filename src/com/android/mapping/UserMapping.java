@@ -1,17 +1,13 @@
 package com.android.mapping;
 
-import java.util.List;
 import java.util.Map;
 
 import com.android.common.RestHelper;
+import com.android.mapping.UserMapping.User;
 
-public class UserMapping {
+public class UserMapping extends BasicMapping<User> {
 
-	public List<User> datas;
-
-	public String message;
-
-	public Integer code;
+	private static final UserMapping mapping = new UserMapping();
 
 	public static class User {
 
@@ -39,6 +35,12 @@ public class UserMapping {
 	}
 
 	public static UserMapping postJSON(String url, Map<String, String> params) {
-		return RestHelper.postJSON(url, UserMapping.class, params);
+		try {
+			return RestHelper.postJSON(url, UserMapping.class, params);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return mapping;
+
 	}
 }

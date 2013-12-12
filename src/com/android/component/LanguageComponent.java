@@ -4,11 +4,16 @@ import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
+
+import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
  * 更新组件
@@ -16,18 +21,31 @@ import android.util.DisplayMetrics;
  * @author superleo
  * 
  */
+// 定义成一个可以注入的组件
+@EBean
 public class LanguageComponent {
 
-	final Context context;
-	private SharedPreferences sharedPrefs;
+	// 注入 Context 变量
+	@RootContext
+	Context context;
 
-	public LanguageComponent(Context context) {
-		this.context = context;
-		sharedPrefs = context.getSharedPreferences("language", Context.MODE_PRIVATE);
+	// 注入 Activity 变量
+	@RootContext
+	Activity activity;
+
+	@Pref
+	SharedPreferencesComponent_ myPrefs;
+
+	public LanguageComponent() {
+
+	}
+
+	@AfterInject
+	public void init() {
 	}
 
 	public void updateLange() {
-		String type = sharedPrefs.getString("type", "zh");
+		String type = myPrefs.language().get();
 		if (StringUtils.equalsIgnoreCase(type, "zh")) {
 			updateLange(Locale.SIMPLIFIED_CHINESE);
 		} else {

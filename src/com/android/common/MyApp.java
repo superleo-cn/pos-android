@@ -17,13 +17,16 @@ import android.widget.Toast;
 import com.activeandroid.app.Application;
 import com.android.dao.FoodOrderDao;
 import com.android.dao.UserDao;
+import com.googlecode.androidannotations.annotations.EApplication;
 
 /**
  * Author:hjgang Create On 2013-8-6下午4:52:02 Site:http://weibo.com/hjgang or
  * http://t.qq.com/hjgang_ EMAIL:hjgang@bizpower.com or hjgang@yahoo.cn
  * Copyrights 2013-8-6 hjgang All rights reserved.
  */
-public class MyApp extends Application { 
+
+@EApplication
+public class MyApp extends Application {
 	/** 系统初始化配置文件操作器 */
 	private SharedPreferences sysInitSharedPreferences;
 	private UserDao userdao;

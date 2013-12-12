@@ -11,7 +11,7 @@ import android.view.inputmethod.InputMethodManager;
  * @author superleo
  * 
  */
-public class DismissKeyboardComponent implements OnFocusChangeListener {
+public class DismissKeyboardComponent {
 
 	final Context context;
 
@@ -19,12 +19,11 @@ public class DismissKeyboardComponent implements OnFocusChangeListener {
 		this.context = context;
 	}
 
-	@Override
 	public void onFocusChange(View v, boolean hasFocus) {
-		if (!hasFocus) {
-			InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(v.getWindowToken(), 0); // 强制隐藏键盘
-		}
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//		imm.hideSoftInputFromWindow(login_password.getWindowToken(), 0);
+//		imm.hideSoftInputFromWindow(login_name.getWindowToken(), 0); // 强制隐藏键盘
+//		return super.onTouchEvent(event);
 	}
 
 }
