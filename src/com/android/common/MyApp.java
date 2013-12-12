@@ -10,11 +10,11 @@ package com.android.common;
 
 import java.io.File;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.widget.Toast;
 
+import com.activeandroid.app.Application;
 import com.android.dao.FoodOrderDao;
 import com.android.dao.UserDao;
 
@@ -23,7 +23,7 @@ import com.android.dao.UserDao;
  * http://t.qq.com/hjgang_ EMAIL:hjgang@bizpower.com or hjgang@yahoo.cn
  * Copyrights 2013-8-6 hjgang All rights reserved.
  */
-public class MyApp extends Application {
+public class MyApp extends Application { 
 	/** 系统初始化配置文件操作器 */
 	private SharedPreferences sysInitSharedPreferences;
 	private UserDao userdao;

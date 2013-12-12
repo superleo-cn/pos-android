@@ -1,11 +1,8 @@
 package com.android.component;
 
-import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
@@ -15,13 +12,11 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.android.R;
-import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
-import com.android.dao.UserDao2;
-import com.android.handler.RemoteDataHandler;
-import com.android.model.ResponseData;
+import com.android.domain.User;
+import com.android.mapping.UserMapping;
 import com.android.singaporeanorderingsystem.MainActivity;
 import com.android.singaporeanorderingsystem.MyProcessDialog;
 
@@ -52,36 +47,22 @@ public class LoginComponent {
 	private Integer loginLocal(String username, String password, String loginType) {
 		String str_login_name = username;
 		final String str_login_password = password;
-		String str_ip = "0";
-		String str_mac = "0";
-		try {
-			str_ip = SystemHelper.getLocalIPAddress() == null ? "0" : SystemHelper.getLocalIPAddress();
-			str_mac = SystemHelper.getLocalMacAddress(activity) == null ? "0" : SystemHelper.getLocalMacAddress(activity);
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
+		String str_ip = WifiComponent.getIPAddress();
+		String str_mac = WifiComponent.getMacAddress(context);
 
 		if (!StringUtils.equalsIgnoreCase("SUPERADMIN", loginType)) {
-			// final UserDao user_dao=myApp.getUserdao();
-			// LoginUserBean user_bean = user_dao.select(str_login_name);
-			final UserDao2 userDao = UserDao2.getInatance(context);
-			ArrayList<LoginUserBean> u_datas = userDao.getList(str_login_name, myApp.getSettingShopId());
-			LoginUserBean user_bean = new LoginUserBean();
-			if (CollectionUtils.isNotEmpty(u_datas)) {
-				user_bean = u_datas.get(0);
-			}
-			if (StringUtils.isNotEmpty(user_bean.getUsername())) {
-				if (StringUtils.equalsIgnoreCase(str_login_password, user_bean.getPasswrod())) {
-					setLoginInfo(user_bean);
+			User user = User.checkLogin(str_login_name, myApp.getSettingShopId());
+			if (user != null) {
+				if(StringUtils.equalsIgnoreCase(str_login_password, user.password)){
+					setLoginInfo(user);
 					// login_audit(user_bean, "Login");
 					startMain();
 					return 1;
-				} else {
+				}else{
 					return 0;
 				}
-
+				
 			}
-
 		}
 		boolean wifi_flag = SystemHelper.isConnected(activity);
 		if (wifi_flag) {
@@ -105,24 +86,37 @@ public class LoginComponent {
 	}
 
 	private Integer loginRemote(String url, String loginType, Map<String, String> params) {
-		ResponseData data = RemoteDataHandler.post(url, params);
-		if (data.getCode() == 1) {
-			String json = data.getJson();
-			ArrayList<LoginUserBean> datas = LoginUserBean.newInstanceList(json);
-			LoginUserBean userBean = datas.get(0);
+		// ResponseData data = RemoteDataHandler.post(url, params);
+		UserMapping data = UserMapping.postJSON(url, params);
+		if (data.code == 1) {
+			UserMapping.User remoteUser = data.datas.get(0);
 			// 如果是SUPERADMIN登录，而且登录的用户却没有SUPERADMIN的权限，则禁止登录
-			if (!StringUtils.equalsIgnoreCase(userBean.getUsertype(), "SUPERADMIN")
-					&& StringUtils.equalsIgnoreCase(loginType, "SUPERADMIN")) {
+			if (!StringUtils.equalsIgnoreCase(remoteUser.usertype, "SUPERADMIN") && StringUtils.equalsIgnoreCase(loginType, "SUPERADMIN")) {
 				Toast.makeText(context, context.getString(R.string.login_quanxian), Toast.LENGTH_SHORT).show();
 				return 0;
 			}
 			// login_audit(user_bean, "Login");
-			setLoginInfo(userBean);
+			if (!StringUtils.equalsIgnoreCase("SUPERADMIN", loginType)) {
+				User user = new User();
+				user.uid = remoteUser.id;
+				user.username = remoteUser.username;
+				user.password =  params.get("user.password");
+				user.usertype = remoteUser.usertype;
+				user.status = remoteUser.status;
+				user.shopId = remoteUser.shop.id;
+				user.shopName = remoteUser.shop.name;
+				user.shopCode = remoteUser.shop.code;
+				user.save();
+				setLoginInfo(user);
+			} else {
+				setLoginInfo(remoteUser);
+			}
+
 			startMain();
 			return 1;
-		} else if (data.getCode() == 0) {
+		} else if (data.code == 0) {
 			return 0;
-		} else if (data.getCode() == -1) {
+		} else if (data.code == -1) {
 			return -1;
 		}
 		return -2;
@@ -171,12 +165,22 @@ public class LoginComponent {
 		activity.finish();
 	}
 
-	public void setLoginInfo(LoginUserBean user_bean) {
-		myApp.setU_name(user_bean.getUsername());
-		myApp.setUser_id(user_bean.getId());
-		myApp.setU_type(user_bean.getUsertype());
-		myApp.setShop_name(user_bean.getShop_name());
-		myApp.setShop_code(user_bean.getShop_code());
+	public void setLoginInfo(User user) {
+		myApp.setU_name(user.username);
+		myApp.setUser_id(user.uid);
+		myApp.setU_type(user.usertype);
+		myApp.setShop_name(user.shopName);
+		myApp.setShop_code(user.shopCode);
+	}
+
+	public void setLoginInfo(UserMapping.User user) {
+		myApp.setU_name(user.username);
+		myApp.setUser_id(user.id);
+		myApp.setU_type(user.usertype);
+		if (user.shop != null) {
+			myApp.setShop_name(user.shop.name);
+			myApp.setShop_code(user.shop.code);
+		}
 	}
 
 }

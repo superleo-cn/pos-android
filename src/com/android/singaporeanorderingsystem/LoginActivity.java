@@ -2,6 +2,7 @@ package com.android.singaporeanorderingsystem;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +17,7 @@ import com.android.component.AppUpdateComponent;
 import com.android.component.DismissKeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.LoginComponent;
+import com.android.domain.User;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -44,11 +46,6 @@ public class LoginActivity extends Activity {
 	private LoginComponent loginComponent;
 
 	void login(String loginType) {
-		boolean wifi_flag = SystemHelper.isConnected(LoginActivity.this);
-		if (!wifi_flag) {
-			Toast.makeText(LoginActivity.this, getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
-			return;
-		}
 		String str_login_name = login_name.getText().toString();
 		String str_login_password = login_password.getText().toString();
 		loginComponent.executeLogin(str_login_name, str_login_password, loginType);

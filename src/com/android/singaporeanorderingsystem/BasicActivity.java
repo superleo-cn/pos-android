@@ -147,7 +147,7 @@ public class BasicActivity extends Activity {
 		}
 		login_audit(user_bean, "Logout");
 		Intent intent = new Intent();
-		intent.setClass(getApplicationContext(), LoginActivity.class);// 当前Activity重新打开
+		intent.setClass(getApplicationContext(), LoginActivity_.class);// 当前Activity重新打开
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 		//System.exit(0);
@@ -242,7 +242,7 @@ public class BasicActivity extends Activity {
 	    	wifi_image=(ImageView) this.findViewById(R.id.wifi_iamge);
 	    	IntentFilter filter1=new IntentFilter();
 	    	 filter1.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-	    	registerReceiver(wifi_myReceiver,filter1);
+	    	//registerReceiver(wifi_myReceiver,filter1);
 	    	main_isRever=true;
 	    }
 
