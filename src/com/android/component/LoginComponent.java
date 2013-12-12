@@ -7,7 +7,6 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -17,10 +16,10 @@ import com.android.common.MyApp;
 import com.android.common.SystemHelper;
 import com.android.domain.User;
 import com.android.mapping.UserMapping;
-import com.android.singaporeanorderingsystem.MainActivity;
 import com.android.singaporeanorderingsystem.MyProcessDialog;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.res.StringRes;
@@ -46,10 +45,19 @@ public class LoginComponent {
 	@RootContext
 	Activity activity;
 
-	MyProcessDialog dialog;
-
 	@StringRes(R.string.login_wait)
 	String title;
+
+	@Bean
+	WifiComponent wifiComponent;
+
+	@Bean
+	AuditComponent auditComponent;
+
+	@Bean
+	ActivityComponent activityComponent;
+
+	MyProcessDialog dialog;
 
 	@AfterInject
 	public void init() {
@@ -62,16 +70,17 @@ public class LoginComponent {
 
 	private Integer loginLocal(String username, String password, String loginType) {
 		// 得到IP和Mac地址
-		String str_ip = WifiComponent.getIPAddress();
-		String str_mac = WifiComponent.getMacAddress(context);
+		String strIP = wifiComponent.getIPAddress();
+		String strMAC = wifiComponent.getMacAddress(context);
 
-		if (!StringUtils.equalsIgnoreCase("SUPERADMIN", loginType)) {
+		if (!StringUtils.equalsIgnoreCase(Constants.ROLE_SUPERADMIN, loginType)) {
 			User user = User.checkLogin(username, myApp.getSettingShopId());
 			if (user != null) {
 				if (StringUtils.equalsIgnoreCase(password, user.password)) {
 					setLoginInfo(user);
-					// login_audit(user_bean, "Login");
-					startMain();
+					auditComponent.logAudit(user, "Login");
+					// 启动主窗口
+					activityComponent.startMain();
 					return Constants.STATUS_SUCCESS;
 				} else {
 					return Constants.STATUS_FAILED;
@@ -85,15 +94,15 @@ public class LoginComponent {
 			params.put("user.username", username);
 			params.put("user.password", password);
 			params.put("user.shop.id", myApp.getSettingShopId());
-			params.put("user.userIp", str_ip);
-			params.put("user.userMac", str_mac);
+			params.put("user.userIp", strIP);
+			params.put("user.userMac", strMAC);
 			return loginRemote(loginType, params);
 		}
 		return Constants.STATUS_NETWORK_ERROR;
 	}
 
 	private Integer loginRemote(String loginType, Map<String, String> params) {
-		if (StringUtils.equalsIgnoreCase(loginType, "SUPERADMIN")) {
+		if (StringUtils.equalsIgnoreCase(loginType, Constants.ROLE_SUPERADMIN)) {
 			return loginRemote(Constants.URL_LOGIN_ADMIN_PATH, loginType, params);
 		} else {
 			return loginRemote(Constants.URL_LOGIN_PATH, loginType, params);
@@ -106,13 +115,14 @@ public class LoginComponent {
 		if (data.code == Constants.STATUS_SUCCESS) {
 			UserMapping.User remoteUser = data.datas.get(0);
 			// 如果是SUPERADMIN登录，而且登录的用户却没有SUPERADMIN的权限，则禁止登录
-			if (!StringUtils.equalsIgnoreCase(remoteUser.usertype, "SUPERADMIN") && StringUtils.equalsIgnoreCase(loginType, "SUPERADMIN")) {
+			if (!StringUtils.equalsIgnoreCase(remoteUser.usertype, Constants.ROLE_SUPERADMIN)
+					&& StringUtils.equalsIgnoreCase(loginType, Constants.ROLE_SUPERADMIN)) {
 				Toast.makeText(context, context.getString(R.string.login_quanxian), Toast.LENGTH_SHORT).show();
 				return Constants.STATUS_FAILED;
 			}
 			// login_audit(user_bean, "Login");
-			if (!StringUtils.equalsIgnoreCase("SUPERADMIN", loginType)) {
-				User user = new User();
+			User user = new User();
+			if (!StringUtils.equalsIgnoreCase(Constants.ROLE_SUPERADMIN, loginType)) {
 				user.uid = remoteUser.id;
 				user.username = remoteUser.username;
 				user.password = params.get("user.password");
@@ -122,12 +132,13 @@ public class LoginComponent {
 				user.shopName = remoteUser.shop.name;
 				user.shopCode = remoteUser.shop.code;
 				user.save();
-				setLoginInfo(user);
 			} else {
-				setLoginInfo(remoteUser);
+				user = getDbUser(remoteUser);
 			}
+			setLoginInfo(user);
+			auditComponent.logAudit(user, "Login");
 			// 启动主窗口
-			startMain();
+			activityComponent.startMain();
 		}
 		return data.code;
 	}
@@ -168,13 +179,6 @@ public class LoginComponent {
 		}
 	}
 
-	public void startMain() {
-		Intent intent = new Intent();
-		intent.setClass(context, MainActivity.class);
-		context.startActivity(intent);
-		activity.finish();
-	}
-
 	public void setLoginInfo(User user) {
 		myApp.setU_name(user.username);
 		myApp.setUser_id(user.uid);
@@ -183,7 +187,7 @@ public class LoginComponent {
 		myApp.setShop_code(user.shopCode);
 	}
 
-	public void setLoginInfo(UserMapping.User user) {
+	public User getDbUser(UserMapping.User user) {
 		User obj = new User();
 		obj.uid = user.id;
 		obj.username = user.username;
@@ -196,7 +200,7 @@ public class LoginComponent {
 			obj.shopId = user.shop.id;
 			obj.shopCode = user.shop.code;
 		}
-		setLoginInfo(user);
+		return obj;
 	}
 
 }

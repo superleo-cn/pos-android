@@ -36,7 +36,6 @@ import com.android.model.ResponseData;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
-import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件

@@ -3,10 +3,8 @@ package com.android.singaporeanorderingsystem;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +12,8 @@ import android.widget.ImageView;
 import com.android.R;
 import com.android.common.Constants;
 import com.android.component.AppUpdateComponent;
+import com.android.component.AuditComponent;
+import com.android.component.DismissKeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.LoginComponent;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -58,6 +58,10 @@ public class LoginActivity extends Activity {
 	@Bean
 	LanguageComponent languageComponent;
 
+	@Bean
+	DismissKeyboardComponent dismissKeyboardComponent;
+
+
 	@AfterViews
 	public void init() {
 		// 启动相关组件
@@ -84,10 +88,8 @@ public class LoginActivity extends Activity {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(login_password.getWindowToken(), 0);
-		imm.hideSoftInputFromWindow(login_name.getWindowToken(), 0); // 强制隐藏键盘
+		// 要隐藏键盘的组件
+		dismissKeyboardComponent.dismiss(login_name, login_password);
 		return super.onTouchEvent(event);
 	}
 

@@ -12,14 +12,11 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
-
-
-
-import com.android.R;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -39,9 +36,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.android.R;
 
 /**
  * 获取系统信息的工具类
+ * 
  * @author hjgang
  */
 public class SystemHelper {
@@ -50,40 +49,43 @@ public class SystemHelper {
 
 	/**
 	 * 创建本应用的桌面快捷方式<br/>
-	 * 注意：需要添加权限&lt;uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/&gt;  
+	 * 注意：需要添加权限&lt;uses-permission
+	 * android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/&gt;
+	 * 
 	 * @param paramContext
 	 */
-	public static void createShortcut(Context context, Class<?> clazz){
+	public static void createShortcut(Context context, Class<?> clazz) {
 		Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-			
-		//快捷方式的名称
+
+		// 快捷方式的名称
 		shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.app_name));
-		shortcut.putExtra("duplicate", false); //不允许重复创建
-			
+		shortcut.putExtra("duplicate", false); // 不允许重复创建
+
 		Intent localIntent2 = new Intent(context, clazz);
-	    localIntent2.setAction(Intent.ACTION_MAIN);
-	    localIntent2.addCategory(Intent.CATEGORY_LAUNCHER);
-	    
-	    shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, localIntent2);//指定快捷方式要启动的Activity类型
-		
-		//快捷方式的图标
+		localIntent2.setAction(Intent.ACTION_MAIN);
+		localIntent2.addCategory(Intent.CATEGORY_LAUNCHER);
+
+		shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, localIntent2);// 指定快捷方式要启动的Activity类型
+
+		// 快捷方式的图标
 		ShortcutIconResource iconResource = Intent.ShortcutIconResource.fromContext(context, R.drawable.ic_launcher);
 		shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
-			
+
 		context.sendBroadcast(shortcut);
 	}
-	// 将字符串转为时间戳 
+
+	// 将字符串转为时间戳
 	public static String getTime(String time) {
-		SimpleDateFormat format =   new SimpleDateFormat( "dd/MM/yyyy hh:mm" );
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 		Date date = null;
-		if(time ==null || "".equals(time) || "null".equals(time)){
+		if (time == null || "".equals(time) || "null".equals(time)) {
 			return "0";
 		}
-		if(time.contains("年")){
-			int year =Integer.parseInt(time.substring(0,time.indexOf("年")));
-			if(year<=1970){
+		if (time.contains("年")) {
+			int year = Integer.parseInt(time.substring(0, time.indexOf("年")));
+			if (year <= 1970) {
 				return "0";
-			}	
+			}
 		}
 		try {
 			date = format.parse(time);
@@ -91,29 +93,33 @@ public class SystemHelper {
 			e.printStackTrace();
 			return null;
 		}
-		return date.getTime()/1000+"";
-	} 
-	// 将字符串转为时间戳 
-		public static String getTime2(String time) {
-			SimpleDateFormat format =   new SimpleDateFormat( "yyyy年MM月dd日" );
-			Date date = null;
-			if(time ==null || "".equals(time) || "null".equals(time)){
-				return "0";
-			}
-			int year =Integer.parseInt(time.substring(0,time.indexOf("年")));
-			if(year<=1970){
-				return "0";
-			}
-			try {
-				date = format.parse(time);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			return date.getTime()/1000+"";
-		} 
+		return date.getTime() / 1000 + "";
+	}
+
+	// 将字符串转为时间戳
+	public static String getTime2(String time) {
+		DateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+		Date date = null;
+		if (time == null || "".equals(time) || "null".equals(time)) {
+			return "0";
+		}
+		int year = Integer.parseInt(time.substring(0, time.indexOf("年")));
+		if (year <= 1970) {
+			return "0";
+		}
+		try {
+			date = format.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date.getTime() / 1000 + "";
+	}
+
 	/**
 	 * 检查是否已经创建了桌面快捷方式<br/>
-	 * 注意：需要添加权限&lt;uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/&gt;  
+	 * 注意：需要添加权限&lt;uses-permission
+	 * android:name="com.android.launcher.permission.READ_SETTINGS"/&gt;
+	 * 
 	 * @param ctx
 	 * @return
 	 */
@@ -125,8 +131,7 @@ public class SystemHelper {
 			url = "content://com.android.launcher2.settings/favorites?notify=true";
 		}
 		ContentResolver resolver = context.getContentResolver();
-		Cursor cursor = resolver.query(Uri.parse(url), null, "title=?",
-				new String[] { context.getString(R.string.app_name) }, null);
+		Cursor cursor = resolver.query(Uri.parse(url), null, "title=?", new String[] { context.getString(R.string.app_name) }, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
 			cursor.close();
@@ -135,6 +140,7 @@ public class SystemHelper {
 
 		return false;
 	}
+
 	/**
 	 * 获取当前机器的屏幕信息对象<br/>
 	 * 另外：通过android.os.Build类可以获取当前系统的相关信息
@@ -143,8 +149,7 @@ public class SystemHelper {
 	 * @return
 	 */
 	public static DisplayMetrics getScreenInfo(Context context) {
-		WindowManager windowManager = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		DisplayMetrics dm = new DisplayMetrics();
 		windowManager.getDefaultDisplay().getMetrics(dm);
 		// dm.widthPixels;//寬度
@@ -162,8 +167,7 @@ public class SystemHelper {
 	 * @return
 	 */
 	public static String getMobileNumber(Context context) {
-		TelephonyManager tm = (TelephonyManager) context
-				.getSystemService(Context.TELEPHONY_SERVICE);
+		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 		return tm.getLine1Number();
 	}
 
@@ -178,8 +182,7 @@ public class SystemHelper {
 	public static boolean isConnected(Context context) {
 		boolean flag = false;
 		try {
-			ConnectivityManager connManager = (ConnectivityManager) context
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 			if (null != connManager) {
 				NetworkInfo info = connManager.getActiveNetworkInfo();
 				if (null != info && info.isAvailable()) {
@@ -223,6 +226,7 @@ public class SystemHelper {
 
 	/**
 	 * 返回当前程序版本代码,如:1
+	 * 
 	 * @param context
 	 * @return 当前程序版本代码
 	 */
@@ -267,31 +271,32 @@ public class SystemHelper {
 	 */
 	public static void installAPK(Context context, String apk) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.fromFile(new File(apk)),
-				"application/vnd.android.package-archive");
+		intent.setDataAndType(Uri.fromFile(new File(apk)), "application/vnd.android.package-archive");
 		context.startActivity(intent);
 	}
+
 	/**
 	 * 获取手机IP4地址
 	 * **/
-	public static String getLocalIPAddress() throws SocketException{ 
-	    for(Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();en.hasMoreElements();){ 
-	        NetworkInterface intf = en.nextElement(); 
-	        for(Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();){ 
-	            InetAddress inetAddress = enumIpAddr.nextElement(); 
-	            if(!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address)){ 
-	                return inetAddress.getHostAddress().toString(); 
-	            } 
-	        } 
-	    } 
-	    return "null"; 
-	} 
+	public static String getLocalIPAddress() throws SocketException {
+		for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+			NetworkInterface intf = en.nextElement();
+			for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+				InetAddress inetAddress = enumIpAddr.nextElement();
+				if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address)) {
+					return inetAddress.getHostAddress().toString();
+				}
+			}
+		}
+		return "null";
+	}
+
 	/**
 	 * 获取手机MAC地址
 	 * **/
-	public static String getLocalMacAddress(Context context) {     
-        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);     
-        WifiInfo info = wifi.getConnectionInfo();     
-        return info.getMacAddress();     
-    }     
+	public static String getLocalMacAddress(Context context) {
+		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = wifi.getConnectionInfo();
+		return info.getMacAddress();
+	}
 }

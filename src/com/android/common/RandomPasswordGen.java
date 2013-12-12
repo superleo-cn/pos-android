@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.text.ParseException;
 
-public class InfolabPasswordGen {
+public class RandomPasswordGen {
 	private int length;
 	
 	private boolean lowercaseIncluded;
@@ -18,7 +18,7 @@ public class InfolabPasswordGen {
 	private String password;
 	private String template;
 
-	public InfolabPasswordGen() {
+	public RandomPasswordGen() {
 		// by default, invlude lowercase, uppercase, and numbers
 		// in the password, and make it 8 characters long.
 		password = "";
@@ -306,25 +306,25 @@ public class InfolabPasswordGen {
 	----------------------------------------------------------*/
 	private static class randomLowercase implements randomCharacter {
 		public char execute() {
-			return InfolabPasswordGen.randomLowercase();
+			return RandomPasswordGen.randomLowercase();
 		}
 	}
 
 	private static class randomUppercase implements randomCharacter {
 		public char execute() {
-			return InfolabPasswordGen.randomUppercase();
+			return RandomPasswordGen.randomUppercase();
 		}
 	}
 
 	private static class randomOther implements randomCharacter {
 		public char execute() {
-			return InfolabPasswordGen.randomOther();
+			return RandomPasswordGen.randomOther();
 		}
 	}
 
 	private static class randomNumber implements randomCharacter {
 		public char execute() {
-			return InfolabPasswordGen.randomNumber();
+			return RandomPasswordGen.randomNumber();
 		}
 	}
 

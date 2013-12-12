@@ -2,8 +2,11 @@ package com.android.component;
 
 import android.content.Context;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
+
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -11,19 +14,19 @@ import android.view.inputmethod.InputMethodManager;
  * @author superleo
  * 
  */
+@EBean(scope = Scope.Singleton)
 public class DismissKeyboardComponent {
 
-	final Context context;
+	@RootContext
+	Context context;
 
-	public DismissKeyboardComponent(Context context) {
-		this.context = context;
-	}
-
-	public void onFocusChange(View v, boolean hasFocus) {
+	public void dismiss(View... objs) {
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//		imm.hideSoftInputFromWindow(login_password.getWindowToken(), 0);
-//		imm.hideSoftInputFromWindow(login_name.getWindowToken(), 0); // 强制隐藏键盘
-//		return super.onTouchEvent(event);
+		if (objs != null) {
+			for (View view : objs) {
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+			}
+		}
 	}
 
 }

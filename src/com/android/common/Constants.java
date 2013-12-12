@@ -122,4 +122,7 @@ public final class Constants {
 	public static final int STATUS_SERVER_FAILED = -1;
 	public static final int STATUS_NETWORK_ERROR = -2;
 
+	/** 数据库更新操作状态 */
+	public static final String DB_SUCCESS = "1";
+	public static final String DB_FAILED = "0";
 }

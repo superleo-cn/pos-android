@@ -5,6 +5,8 @@ import java.net.SocketException;
 import android.content.Context;
 
 import com.android.common.SystemHelper;
+import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -12,9 +14,10 @@ import com.android.common.SystemHelper;
  * @author superleo
  * 
  */
+@EBean(scope = Scope.Singleton)
 public class WifiComponent {
 
-	public static String getIPAddress() {
+	public String getIPAddress() {
 		try {
 			return SystemHelper.getLocalIPAddress() == null ? "0" : SystemHelper.getLocalIPAddress();
 		} catch (SocketException e) {
@@ -23,7 +26,7 @@ public class WifiComponent {
 		return "0";
 	}
 
-	public static String getMacAddress(Context context) {
+	public String getMacAddress(Context context) {
 		return SystemHelper.getLocalMacAddress(context) == null ? "0" : SystemHelper.getLocalMacAddress(context);
 	}
 
