@@ -78,9 +78,9 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "192.168.5.164";
+	public static final String HOST = "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
 	/** 服务器端口号 */
-	public static final String PORT = ":9000";
+	public static final String PORT = ":8080";
 	/** 应用上下文名 */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */
@@ -105,11 +105,11 @@ public final class Constants {
 	/** 服务器登录记录 */
 	public static final String URL_LOGIN_AUDIT = URL_CONTEXTPATH + "/audits/submit";
 
-	/* 提交每日支付款 */
+	/** 提交每日支付款 */
 	public static final String URL_POST_PAYLIST = URL_CONTEXTPATH + "/consumeTransactions/submit";
-	/* 带回总数接口 */
+	/** 带回总数接口 */
 	public static final String URL_POST_TAKENUM = URL_CONTEXTPATH + "/cashTransactions/submit";
-	/* 带回总数接口 */
+	/** 带回总数接口 */
 	public static final String URL_POST_DAILY_MONEY = URL_CONTEXTPATH + "/dailySummarys/submit";
 
 	/** 登录角色配置 */
