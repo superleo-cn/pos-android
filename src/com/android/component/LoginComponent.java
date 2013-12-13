@@ -8,9 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import com.android.R;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
@@ -22,7 +20,6 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
-import com.googlecode.androidannotations.annotations.res.StringRes;
 
 /**
  * 更新组件
@@ -45,8 +42,11 @@ public class LoginComponent {
 	@RootContext
 	Activity activity;
 
-	@StringRes(R.string.login_wait)
-	String title;
+	@Bean
+	StringResComponent stringResComponent;
+
+	@Bean
+	ToastComponent toastComponent;
 
 	@Bean
 	WifiComponent wifiComponent;
@@ -61,7 +61,7 @@ public class LoginComponent {
 
 	@AfterInject
 	public void init() {
-		dialog = new MyProcessDialog(context, title);
+		dialog = new MyProcessDialog(context, stringResComponent.loginWait);
 	}
 
 	public void executeLogin(String username, String password, String loginType) {
@@ -117,7 +117,7 @@ public class LoginComponent {
 			// 如果是SUPERADMIN登录，而且登录的用户却没有SUPERADMIN的权限，则禁止登录
 			if (!StringUtils.equalsIgnoreCase(remoteUser.usertype, Constants.ROLE_SUPERADMIN)
 					&& StringUtils.equalsIgnoreCase(loginType, Constants.ROLE_SUPERADMIN)) {
-				Toast.makeText(context, context.getString(R.string.login_quanxian), Toast.LENGTH_SHORT).show();
+				toastComponent.show(stringResComponent.loginQuanxian);
 				return Constants.STATUS_FAILED;
 			}
 			// login_audit(user_bean, "Login");
@@ -155,16 +155,16 @@ public class LoginComponent {
 			dialog.dismiss();
 			switch (result) {
 			case Constants.STATUS_FAILED:
-				Toast.makeText(activity, context.getString(R.string.login_fail), Toast.LENGTH_SHORT).show();
+				toastComponent.show(stringResComponent.loginFail);
 				break;
 			case Constants.STATUS_SUCCESS:
-				Toast.makeText(activity, context.getString(R.string.login_succ), Toast.LENGTH_SHORT).show();
+				toastComponent.show(stringResComponent.loginSucc);
 				break;
 			case Constants.STATUS_SERVER_FAILED:
-				Toast.makeText(activity, context.getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+				toastComponent.show(stringResComponent.loginServiceErr);
 				break;
 			case Constants.STATUS_NETWORK_ERROR:
-				Toast.makeText(activity, context.getString(R.string.login_wifi_err), Toast.LENGTH_SHORT).show();
+				toastComponent.show(stringResComponent.loginWifiErr);
 				break;
 			}
 		}
