@@ -3,7 +3,6 @@ package com.android.singaporeanorderingsystem;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,8 +11,7 @@ import android.widget.ImageView;
 import com.android.R;
 import com.android.common.Constants;
 import com.android.component.AppUpdateComponent;
-import com.android.component.AuditComponent;
-import com.android.component.DismissKeyboardComponent;
+import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.LoginComponent;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -59,8 +57,7 @@ public class LoginActivity extends Activity {
 	LanguageComponent languageComponent;
 
 	@Bean
-	DismissKeyboardComponent dismissKeyboardComponent;
-
+	KeyboardComponent keyboardComponent;
 
 	@AfterViews
 	public void init() {
@@ -89,19 +86,13 @@ public class LoginActivity extends Activity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// 要隐藏键盘的组件
-		dismissKeyboardComponent.dismiss(login_name, login_password);
+		keyboardComponent.dismissKeyboard(login_name, login_password);
 		return super.onTouchEvent(event);
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			onBackPressed();
-		}
-
-		return super.onKeyDown(keyCode, event);
-	}
-
+	/**
+	 * 屏蔽回退按钮
+	 */
 	public void onBackPressed() {
 		return;
 	}

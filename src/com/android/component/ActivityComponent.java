@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.android.singaporeanorderingsystem.MainActivity;
+import com.android.singaporeanorderingsystem.MainActivity_;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
@@ -37,7 +37,7 @@ public class ActivityComponent {
 	}
 
 	public void startMain() {
-		startActivity(MainActivity.class);
+		startActivity(MainActivity_.class);
 	}
 
 	public <T> void startActivity(Class<T> cls) {

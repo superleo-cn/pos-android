@@ -34,7 +34,7 @@ public class RestHelper {
 
 	public static <T> T postJSON(String url, Class<T> t, Map<String, String> params) {
 		// Create a new RestTemplate instance
-		RestTemplate restTemplate = new MyRestTemplate();
+		RestTemplate restTemplate = new RestTemplate();
 
 		// Add the Jackson message converter
 		restTemplate.getMessageConverters().add(new FormHttpMessageConverter());

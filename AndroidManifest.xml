@@ -41,7 +41,7 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
-            android:name=".singaporeanorderingsystem.MainActivity"
+            android:name=".singaporeanorderingsystem.MainActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity

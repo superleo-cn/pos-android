@@ -125,4 +125,7 @@ public final class Constants {
 	/** 数据库更新操作状态 */
 	public static final String DB_SUCCESS = "1";
 	public static final String DB_FAILED = "0";
+	
+	/** 打包价格 */
+	public static final Double PACKAGE_COST = 0.2;
 }

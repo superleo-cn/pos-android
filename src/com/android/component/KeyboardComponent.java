@@ -9,18 +9,24 @@ import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
 
 /**
- * 更新组件
+ * 键盘操作方法
  * 
  * @author superleo
  * 
  */
 @EBean(scope = Scope.Singleton)
-public class DismissKeyboardComponent {
+public class KeyboardComponent {
 
 	@RootContext
 	Context context;
 
-	public void dismiss(View... objs) {
+	/**
+	 * 要强制屏蔽键盘的组件
+	 * 
+	 * @param objs
+	 *            不定参数,可以传入任意数量的参数
+	 */
+	public void dismissKeyboard(View... objs) {
 		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (objs != null) {
 			for (View view : objs) {
