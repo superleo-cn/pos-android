@@ -3,8 +3,11 @@ package com.android.component;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
+import com.android.R;
 import com.android.singaporeanorderingsystem.MainActivity_;
+import com.android.singaporeanorderingsystem.SettingActivity_;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
@@ -40,10 +43,24 @@ public class ActivityComponent {
 		startActivity(MainActivity_.class);
 	}
 
+	public void startSetting() {
+		startActivityWithTransaction(SettingActivity_.class);
+	}
+
+	public <T> void startActivityWithTransaction(Class<T> to) {
+		Intent intent = new Intent(context, to);
+		activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+		Bundle bundle = new Bundle();
+		bundle.putString("type", "1");
+		intent.putExtras(bundle);
+		activity.startActivity(intent);
+		activity.finish();
+	}
+
 	public <T> void startActivity(Class<T> cls) {
 		Intent intent = new Intent();
 		intent.setClass(context, cls);
-		context.startActivity(intent);
+		activity.startActivity(intent);
 		activity.finish();
 	}
 }

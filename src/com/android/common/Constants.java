@@ -115,6 +115,8 @@ public final class Constants {
 	/** 登录角色配置 */
 	public static final String ROLE_SUPERADMIN = "SUPERADMIN";
 	public static final String ROLE_CASHIER = "CASHIER";
+	public static final String ROLE_ADMIN = "ADMIN";
+	public static final String ROLE_OPERATOR = "OPERATOR";
 
 	/** 登录角色配置 */
 	public static final int STATUS_SUCCESS = 1;

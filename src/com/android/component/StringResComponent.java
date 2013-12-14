@@ -33,4 +33,7 @@ public class StringResComponent {
 	@StringRes(R.string.login_wifi_err)
 	public String loginWifiErr;
 
+	@StringRes(R.string.insufficientpermissions)
+	public String insufficientpermissions;
+
 }
