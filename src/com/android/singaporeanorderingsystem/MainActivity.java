@@ -16,14 +16,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -47,6 +45,7 @@ import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
+import com.android.component.ActivityComponent;
 import com.android.component.MenuComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.dao.FoodHttpBeanDao;
@@ -137,7 +136,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	@Bean
 	MenuComponent menuComponent;
-
+	
 	private boolean frist = true;// 首次选择
 	private final int GETLIST = 1001;
 	private final int OPEN_WIFI = 1002;

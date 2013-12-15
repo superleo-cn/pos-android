@@ -23,4 +23,8 @@ public class ToastComponent {
 		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 	}
 
+	public void showLong(String message) {
+		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+	}
+
 }

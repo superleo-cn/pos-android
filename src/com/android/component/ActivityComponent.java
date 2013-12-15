@@ -49,7 +49,8 @@ public class ActivityComponent {
 
 	public <T> void startActivityWithTransaction(Class<T> to) {
 		Intent intent = new Intent(context, to);
-		activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+		activity.overridePendingTransition(R.anim.in_from_right,
+				R.anim.out_to_left);
 		Bundle bundle = new Bundle();
 		bundle.putString("type", "1");
 		intent.putExtras(bundle);
@@ -62,5 +63,17 @@ public class ActivityComponent {
 		intent.setClass(context, cls);
 		activity.startActivity(intent);
 		activity.finish();
+	}
+
+	public <T> void updateActivity(Class<T> t, String type) {
+		Intent intent = new Intent();
+		intent.setClass(activity, t);// 当前Activity重新打开
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Bundle bundle = new Bundle();
+		bundle.putString("type", type);
+		intent.putExtras(bundle);
+		activity.startActivity(intent);
+		activity.finish();
+
 	}
 }

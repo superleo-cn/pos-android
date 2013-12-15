@@ -35,5 +35,11 @@ public class StringResComponent {
 
 	@StringRes(R.string.insufficientpermissions)
 	public String insufficientpermissions;
+	
+	@StringRes(R.string.dialog_set)
+	public String dialogSet;
+	
+	@StringRes(R.string.toast_setting_succ)
+	public String toastSettingSucc;
 
 }

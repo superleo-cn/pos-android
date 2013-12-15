@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
 import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
@@ -36,6 +37,15 @@ public class LanguageComponent {
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
 
+	@Bean
+	ActivityComponent activityComponent;
+
+	@Bean
+	ToastComponent toastComponent;
+
+	@Bean
+	StringResComponent stringResComponent;
+
 	public LanguageComponent() {
 
 	}
@@ -44,21 +54,32 @@ public class LanguageComponent {
 	public void init() {
 	}
 
-	public void updateLange() {
+	public void readLanguage() {
 		String type = myPrefs.language().get();
 		if (StringUtils.equalsIgnoreCase(type, "zh")) {
-			updateLange(Locale.SIMPLIFIED_CHINESE);
+			readLanguage(Locale.SIMPLIFIED_CHINESE);
 		} else {
-			updateLange(Locale.ENGLISH);
+			readLanguage(Locale.ENGLISH);
 		}
 	}
 
-	private void updateLange(Locale locale) {
+	private void readLanguage(Locale locale) {
 		Resources res = context.getResources();
 		Configuration config = res.getConfiguration();
 		config.locale = locale;
 		DisplayMetrics dm = res.getDisplayMetrics();
 		res.updateConfiguration(config, dm);
+
+	}
+
+	public <T> void updateLanguage(Class<T> t, String type, Locale locale) {
+		Resources res = activity.getResources();
+		Configuration config = res.getConfiguration();
+		config.locale = locale;
+		DisplayMetrics dm = res.getDisplayMetrics();
+		res.updateConfiguration(config, dm);
+		toastComponent.showLong(stringResComponent.toastSettingSucc);
+		activityComponent.updateActivity(t, type);
 
 	}
 

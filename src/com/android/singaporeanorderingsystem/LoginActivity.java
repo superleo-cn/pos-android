@@ -63,7 +63,7 @@ public class LoginActivity extends Activity {
 	public void init() {
 		// 启动相关组件
 		appUpdateComponent.updateApp();
-		languageComponent.updateLange();
+		languageComponent.readLanguage();
 	}
 
 	void login(String loginType) {
