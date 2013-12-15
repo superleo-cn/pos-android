@@ -3,9 +3,8 @@ package com.android.mapping;
 import java.util.Map;
 
 import com.android.common.RestHelper;
-import com.android.mapping.UserMapping.User;
 
-public class UserMapping extends BasicMapping<User> {
+public class UserMapping extends BasicMapping<UserMapping.User> {
 
 	private static final UserMapping mapping = new UserMapping();
 

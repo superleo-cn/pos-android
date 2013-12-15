@@ -5,19 +5,18 @@ import java.util.List;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.android.mapping.FoodMapping;
 
 @Table(name = "tb_food")
 public class Food extends Model {
+	
+	@Column(name = "foodId")
+	public String foodId;
 
-	@Column(name = "android_id")
-	public String androidId;
-
-	@Column(name = "user_id")
-	public String userId;
-
-	@Column(name = "shop_id")
-	public String shopId;
+	@Column(name = "sn")
+	public String sn;
 
 	@Column(name = "name")
 	public String name;
@@ -34,32 +33,10 @@ public class Food extends Model {
 	@Column(name = "retail_price")
 	public String retailPrice;
 
-	@Column(name = "quantity")
-	public String quantity;
-
-	@Column(name = "food_id")
-	public String foodId;
-
-	@Column(name = "discount")
-	public String discount;
-
-	@Column(name = "total_package")
-	public String totalPackage;
-
-	@Column(name = "foc")
-	public String foc;
-
-	@Column(name = "status")
-	public String status;
-
-	@Column(name = "date")
-	public String date;
-
 	@Override
 	public String toString() {
-		return "FoodOrder [android_id=" + androidId + ", user_id=" + userId + ", shop_id=" + shopId + ", retail_price=" + retailPrice
-				+ ", quantity=" + quantity + ", foodid=" + foodId + ", discount=" + discount + ", total_package=" + totalPackage + ", foc="
-				+ foc + ", status=" + status + ", date " + date + "]";
+		return "Food [type=" + type + ", name=" + name + ", nameZh=" + nameZh + ",  sn=" + sn + ", retail_price=" + retailPrice
+				+ ", picture=" + picture + "]";
 	}
 
 	/**
@@ -69,6 +46,32 @@ public class Food extends Model {
 	 */
 	public static List<Food> queryList() {
 		return new Select().from(Food.class).execute();
+	}
+
+	/**
+	 * 保存食物
+	 * 
+	 * @param foodRemote
+	 */
+	public static void save(FoodMapping.FoodRemote foodRemote) {
+		// save Food
+		Food food = new Food();
+		food.foodId = foodRemote.id;
+		food.name = foodRemote.name;
+		food.nameZh = foodRemote.nameZh;
+		food.picture = foodRemote.picture;
+		food.retailPrice = foodRemote.retailPrice;
+		food.sn = foodRemote.sn;
+		food.type = foodRemote.type;
+		food.save();
+	}
+
+	/**
+	 * 删除所有食物
+	 */
+	public static void deleteAll() {
+		// save Food
+		new Delete().from(Food.class).execute();
 	}
 
 }

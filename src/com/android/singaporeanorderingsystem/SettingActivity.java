@@ -1,7 +1,5 @@
 package com.android.singaporeanorderingsystem;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +13,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,12 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.R;
-import com.android.bean.FoodHttpBean;
 import com.android.bean.GetPTakeNumBean;
 import com.android.bean.GetPayDetailBean;
 import com.android.bean.LoginUserBean;
 import com.android.common.Constants;
-import com.android.common.HttpHelper;
 import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
 import com.android.component.LanguageComponent;
@@ -54,10 +49,12 @@ import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
+import com.android.mapping.FoodMapping;
 import com.android.model.ResponseData;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
@@ -389,63 +386,6 @@ public class SettingActivity extends BasicActivity {
 			}
 		});
 
-		// 同步菜单
-		synchronization_menu.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				System.out.println("myApp.getSettingShopId()-->"
-						+ myApp.getSettingShopId());
-				dialog.show();
-				if (myApp.getSettingShopId() == null
-						|| myApp.getSettingShopId().equals("")
-						|| myApp.getSettingShopId().equals("null")
-						|| myApp.getSettingShopId().equals("0")) {
-					Toast.makeText(SettingActivity.this,
-							getString(R.string.setting_tanwei_id),
-							Toast.LENGTH_SHORT).show();
-					return;
-				}
-				String url = Constants.URL_FOODSLIST_PATH
-						+ myApp.getSettingShopId();
-				RemoteDataHandler.asyncGet(url, new Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
-						if (data.getCode() == 1) {
-							String json = data.getJson();
-							ArrayList<FoodHttpBean> datas = FoodHttpBean
-									.newInstanceList(json);
-							fhb_dao = FoodHttpBeanDao
-									.getInatance(SettingActivity.this);
-							fhb_dao.delete();
-							for (int i = 0; i < datas.size(); i++) {
-								FoodHttpBean food_h_bean = datas.get(i);
-								System.out.println("f-->"
-										+ food_h_bean.getPicture() + ",i--->"
-										+ i);
-								try {
-									System.out.println("11111111111111");
-									String image_file = Constants.CACHE_IMAGE
-											+ "/" + "food_image_" + i + ".png";
-									HttpHelper.download(food_h_bean
-											.getPicture(), new File(image_file));
-									food_h_bean.setPicture(image_file);
-									fhb_dao.save(food_h_bean);
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
-
-							}
-							Toast.makeText(SettingActivity.this,
-									getString(R.string.toast_setting_succ),
-									Toast.LENGTH_SHORT).show();
-							dialog.cancel();
-						} else if (data.getCode() == -1) {
-
-						}
-					}
-				});
-			}
-		});
 
 		// 语言设置
 		language_set.setOnClickListener(new OnClickListener() {
@@ -639,6 +579,33 @@ public class SettingActivity extends BasicActivity {
 		});
 
 		init_wifiReceiver();
+	}
+	
+	// 同步菜单
+	@Click({ R.id.synchronization_menu_brn })
+	void foodSync() {
+		System.out.println("myApp.getSettingShopId()-->"
+				+ myApp.getSettingShopId());
+		dialog.show();
+		if (myApp.getSettingShopId() == null
+				|| myApp.getSettingShopId().equals("")
+				|| myApp.getSettingShopId().equals("null")
+				|| myApp.getSettingShopId().equals("0")) {
+			Toast.makeText(SettingActivity.this,
+					getString(R.string.setting_tanwei_id),
+					Toast.LENGTH_SHORT).show();
+			return;
+		}
+		String url = Constants.URL_FOODSLIST_PATH
+				+ myApp.getSettingShopId();
+		
+		FoodMapping.getJSONAndSave(url);
+		
+		Toast.makeText(SettingActivity.this,
+				getString(R.string.toast_setting_succ),
+				Toast.LENGTH_SHORT).show();
+		dialog.cancel();
+		
 	}
 
 	/***********************************************************************************/

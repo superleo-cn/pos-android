@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".singaporeanorderingsystem.DailyPayActivity"
+            android:name=".singaporeanorderingsystem.DailyPayActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity

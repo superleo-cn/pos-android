@@ -2,6 +2,7 @@ package com.android.common;
 
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
@@ -42,13 +43,29 @@ public class RestHelper {
 
 		// set all the Parameter
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			builder.queryParam(entry.getKey(), entry.getValue());
+		if (params != null) {
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+				builder.queryParam(entry.getKey(), entry.getValue());
+			}
 		}
 
 		// Make the HTTP GET request, marshaling the response from JSON to an
 		// array of Events
 		return (T) restTemplate.postForObject(builder.build().toUri(), null, t);
+
+	}
+
+	public static <T> T getJSON(String url, Class<T> t) {
+		// Create a new RestTemplate instance
+		RestTemplate restTemplate = new RestTemplate();
+
+		// Add the Jackson message converter
+		restTemplate.getMessageConverters().add(new FormHttpMessageConverter());
+		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+
+		// Make the HTTP GET request, marshaling the response from JSON to an
+		// array of Events
+		return (T) restTemplate.getForObject(url, t);
 
 	}
 }

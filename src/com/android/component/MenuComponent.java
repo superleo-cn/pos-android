@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +15,8 @@ import android.widget.TextView;
 import com.android.R;
 import com.android.common.Constants;
 import com.android.common.MyApp;
-import com.android.singaporeanorderingsystem.DailyPayActivity;
+import com.android.singaporeanorderingsystem.DailyPayActivity_;
+import com.android.singaporeanorderingsystem.MainActivity_;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -49,7 +49,7 @@ public class MenuComponent {
 
 	@Bean
 	ToastComponent toastComponent;
-	
+
 	@Bean
 	ActivityComponent activityComponent;
 
@@ -57,7 +57,6 @@ public class MenuComponent {
 
 	private PopupWindow popupWindow;
 
-	
 	public void initPopupWindow() {
 		if (popupWindow == null) {
 			view = activity.getLayoutInflater().inflate(R.layout.popupwindow, null);
@@ -67,14 +66,23 @@ public class MenuComponent {
 			TextView popu_exit = (TextView) view.findViewById(R.id.popu_exit);
 			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
-			popu_diancai.setVisibility(View.GONE);
+
+			(getView()).setVisibility(View.GONE);
+
+			popu_diancai.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View arg0) {
+					dismiss();
+					activityComponent.startMainWithTransition();
+				}
+			});
+
 			popu_setting.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					if (popupWindow.isShowing()) {
-						popupWindow.dismiss();
-					}
+					dismiss();
 					if (!StringUtils.equalsIgnoreCase(Constants.ROLE_CASHIER, myApp.getU_type())) {
-						activityComponent.startSetting();
+						activityComponent.startSettingWithTransition();
 					} else {
 						toastComponent.show(stringResComponent.insufficientpermissions);
 					}
@@ -85,29 +93,39 @@ public class MenuComponent {
 
 				@Override
 				public void onClick(View arg0) {
-					if (popupWindow.isShowing()) {
-						popupWindow.dismiss();
-					}
-					Intent intent = new Intent(activity, DailyPayActivity.class);
-					activity.startActivity(intent);
-					activity.finish();
-					activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+					dismiss();
+					activityComponent.startDailyWithTransition();
 				}
 			});
 			popu_exit.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					if (popupWindow.isShowing()) {
-						popupWindow.dismiss();
-					}
+					dismiss();
 				}
 			});
 		}
-		if (popupWindow.isShowing()) {
-			popupWindow.dismiss();
-		}
+		dismiss();
 		popupWindow.setFocusable(true);
 		popupWindow.setBackgroundDrawable(new BitmapDrawable(context.getResources()));
 		popupWindow.showAsDropDown(menu, 0, -5);
 
+	}
+
+	private void dismiss() {
+		if (popupWindow.isShowing()) {
+			popupWindow.dismiss();
+		}
+	}
+
+	private View getView() {
+		TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
+		TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
+		TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);
+		if (activity instanceof MainActivity_) {
+			return popu_diancai;
+		} else if (activity instanceof DailyPayActivity_) {
+			return popu_daily;
+		} else {
+			return popu_setting;
+		}
 	}
 }

@@ -13,18 +13,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,10 +23,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,25 +39,35 @@ import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
-import com.android.bean.LoginUserBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
+import com.android.component.MenuComponent;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
-import com.android.dao.UserDao2;
 import com.android.dao.getDetailPayListDao;
 import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
+import com.googlecode.androidannotations.annotations.AfterViews;
+import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.Fullscreen;
+import com.googlecode.androidannotations.annotations.NoTitle;
 
 /**
  * @author jingang
  *
  */
+//不需要标题
+@NoTitle
+//全屏显示
+@Fullscreen
+//绑定登录的layout
+@EActivity(R.layout.daily_pay)
 public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	private ListView daily_list;
 	private ListView num_list;
@@ -114,10 +113,12 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	private TextView shop_name1234;
 //	private MyOrientationDetector1 m;
 	private SharedPreferences sharedPrefs;
-	 @Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.daily_pay);
+	
+	@Bean
+	MenuComponent menuComponent;
+	
+	@AfterViews
+	public void init() {
 		//init_wifiReceiver();
 //		m=new MyOrientationDetector1(DailyPayActivity.this);
 		all_num_price=new ArrayList<Double>();
@@ -348,62 +349,6 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 			 compute();
 	 }
 	 
-	 public void initPopupWindow() {
-			if (popupWindow == null) {
-				view = this.getLayoutInflater().inflate(
-						R.layout.popupwindow, null);
-				popupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT,
-						LayoutParams.WRAP_CONTENT);
-				popupWindow.setOutsideTouchable(true);
-				TextView popu_setting=(TextView) view.findViewById(R.id.popu_setting);
-				TextView popu_exit=(TextView) view.findViewById(R.id.popu_exit);
-				TextView popu_daily=(TextView) view.findViewById(R.id.popu_daily);
-				TextView popu_diancai=(TextView) view.findViewById(R.id.popu_diancai);
-				popu_diancai.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						if (popupWindow.isShowing()) {
-							popupWindow.dismiss();
-						}
-						Intent intent =new Intent(DailyPayActivity.this , MainActivity.class);
-						DailyPayActivity.this.startActivity(intent);
-						overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-						//DailyPayActivity.this.finish();
-					}
-				});;
-				popu_setting.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						if (popupWindow.isShowing()) {
-							popupWindow.dismiss();
-						}
-						if(myApp.getU_type().equals("SUPERADMIN") || myApp.getU_type().equals("ADMIN") || 
-								myApp.getU_type().equals("OPERATOR")){						
-							Intent intent =new Intent(DailyPayActivity.this , SettingActivity.class);
-							overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-							Bundle bundle=new Bundle();
-							bundle.putString("type", "1");
-							intent.putExtras(bundle);
-							DailyPayActivity.this.startActivity(intent);
-							DailyPayActivity.this.finish();
-						}else{
-							Toast.makeText(DailyPayActivity.this, getString(R.string.insufficientpermissions), Toast.LENGTH_SHORT).show();	
-						}
-					}
-				});
-				
-				popu_daily.setVisibility(View.GONE);
-				popu_exit.setOnClickListener(new OnClickListener() {
-					public void onClick(View v) {
-						if (popupWindow.isShowing()) {
-							popupWindow.dismiss();
-						}
-						CreatedDialog().create().show();
-					}
-				});
-			}
-			if (popupWindow.isShowing()) {
-				popupWindow.dismiss();
-			}
-		}
 	 // 提交数据窗口
 	 public DialogBuilder CreatedSubmitDialog(){
 			DialogBuilder builder=new DialogBuilder(this);
@@ -429,10 +374,7 @@ public class DailyPayActivity extends BasicActivity implements OnClickListener{
 	public void onClick(View V) {
 		switch(V.getId()){
 		case R.id.menu_btn:
-			initPopupWindow();
-			popupWindow.setFocusable(true);
-			popupWindow.setBackgroundDrawable(new BitmapDrawable());
-			popupWindow.showAsDropDown(menu, 0, -5);
+			menuComponent.initPopupWindow();
 			break;
 		case R.id.layout_exit:
 

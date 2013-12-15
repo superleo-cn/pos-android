@@ -45,12 +45,12 @@ import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
-import com.android.component.ActivityComponent;
 import com.android.component.MenuComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.FoodOrderDao2;
 import com.android.dialog.DialogBuilder;
+import com.android.domain.Food;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
@@ -133,10 +133,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@App
 	MyApp myApp;
-	
+
 	@Bean
 	MenuComponent menuComponent;
-	
+
 	private boolean frist = true;// 首次选择
 	private final int GETLIST = 1001;
 	private final int OPEN_WIFI = 1002;
@@ -202,21 +202,19 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void init_foodView() {
 		food_dataList = new ArrayList<FoodListBean>();
 		String type = sharedPrefs.language().get();
-		FoodHttpBeanDao fhb_dao = FoodHttpBeanDao.getInatance(MainActivity.this);
-		ArrayList<FoodHttpBean> datas = fhb_dao.getList();
-		for (int i = 0; i < datas.size(); i++) {
-			FoodHttpBean fhb = datas.get(i);
+		List<Food> datas = Food.queryList();
+		for (Food food : datas) {
 			FoodListBean bean = new FoodListBean();
 			if (StringUtils.equalsIgnoreCase("zh", type)) {
-				bean.setTitle(fhb.getNameZh());
+				bean.setTitle(food.nameZh);
 			} else {
-				bean.setTitle(fhb.getName());
+				bean.setTitle(food.name);
 			}
-			bean.setDaping_id(fhb.getSn());
-			bean.setImageID(fhb.getPicture());
-			bean.setType(fhb.getType());
-			bean.setFood_id(fhb.getId());
-			bean.setPrice(fhb.getRetailPrice() + "");
+			bean.setDaping_id(food.sn);
+			bean.setImageID(food.picture);
+			bean.setType(food.type);
+			bean.setFood_id(food.foodId);
+			bean.setPrice(food.retailPrice);
 			food_dataList.add(bean);
 		}
 

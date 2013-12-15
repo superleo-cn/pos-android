@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.android.R;
+import com.android.singaporeanorderingsystem.DailyPayActivity_;
 import com.android.singaporeanorderingsystem.MainActivity_;
 import com.android.singaporeanorderingsystem.SettingActivity_;
 import com.googlecode.androidannotations.annotations.AfterInject;
@@ -43,10 +44,19 @@ public class ActivityComponent {
 		startActivity(MainActivity_.class);
 	}
 
-	public void startSetting() {
+	public void startSettingWithTransition() {
 		startActivityWithTransaction(SettingActivity_.class);
 	}
-
+	
+	public void startMainWithTransition() {
+		startActivityWithTransaction(MainActivity_.class);
+	}
+	
+	
+	public void startDailyWithTransition() {
+		startActivityWithTransaction(DailyPayActivity_.class);
+	}
+	
 	public <T> void startActivityWithTransaction(Class<T> to) {
 		Intent intent = new Intent(context, to);
 		activity.overridePendingTransition(R.anim.in_from_right,
