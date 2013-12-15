@@ -74,7 +74,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.setting)
-@EBean
 public class SettingActivity extends BasicActivity {
 
 	@ViewById(R.id.language_set)

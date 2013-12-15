@@ -1,7 +1,6 @@
 package com.android.singaporeanorderingsystem;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -49,6 +47,7 @@ import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
+import com.android.component.MenuComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.FoodOrderDao2;
@@ -58,6 +57,7 @@ import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
@@ -134,6 +134,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	@App
 	MyApp myApp;
+	
+	@Bean
+	MenuComponent menuComponent;
 
 	private boolean frist = true;// 首次选择
 	private final int GETLIST = 1001;
@@ -195,62 +198,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		init_giditNum_view();
 		onclick_foodView();
 		onclick_giditNum_view();
-	}
-
-	public void initPopupWindow() {
-		if (popupWindow == null) {
-			view = this.getLayoutInflater().inflate(R.layout.popupwindow, null);
-			popupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			popupWindow.setOutsideTouchable(true);
-			TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);
-			TextView popu_exit = (TextView) view.findViewById(R.id.popu_exit);
-			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
-			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
-			popu_diancai.setVisibility(View.GONE);
-			popu_setting.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					if (popupWindow.isShowing()) {
-						popupWindow.dismiss();
-					}
-					if (myApp.getU_type().equals("SUPERADMIN") || myApp.getU_type().equals("ADMIN") || myApp.getU_type().equals("OPERATOR")) {
-						Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-						overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-						Bundle bundle = new Bundle();
-						bundle.putString("type", "1");
-						intent.putExtras(bundle);
-						MainActivity.this.startActivity(intent);
-						MainActivity.this.finish();
-					} else {
-						Toast.makeText(MainActivity.this, getString(R.string.insufficientpermissions), Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-
-			popu_daily.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					if (popupWindow.isShowing()) {
-						popupWindow.dismiss();
-					}
-					Intent intent = new Intent(MainActivity.this, DailyPayActivity.class);
-					MainActivity.this.startActivity(intent);
-					MainActivity.this.finish();
-					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-				}
-			});
-			popu_exit.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					if (popupWindow.isShowing()) {
-						popupWindow.dismiss();
-					}
-					// CreatedDialog().create().show();
-				}
-			});
-		}
-		if (popupWindow.isShowing()) {
-			popupWindow.dismiss();
-		}
 	}
 
 	public void init_foodView() {
@@ -646,10 +593,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.menu_btn:
-			initPopupWindow();
-			popupWindow.setFocusable(true);
-			popupWindow.setBackgroundDrawable(new BitmapDrawable());
-			popupWindow.showAsDropDown(menu, 0, -5);
+			menuComponent.initPopupWindow();
 			break;
 		case R.id.layout_exit:
 			// CreatedDialog().create().show();

@@ -45,7 +45,7 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
-            android:name=".singaporeanorderingsystem.SettingActivity"
+            android:name=".singaporeanorderingsystem.SettingActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <service android:name=".service.MyService"></service>
