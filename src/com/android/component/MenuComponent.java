@@ -53,13 +53,11 @@ public class MenuComponent {
 	@Bean
 	ActivityComponent activityComponent;
 
-	View view;
-
 	private PopupWindow popupWindow;
 
 	public void initPopupWindow() {
 		if (popupWindow == null) {
-			view = activity.getLayoutInflater().inflate(R.layout.popupwindow, null);
+			View view = activity.getLayoutInflater().inflate(R.layout.popupwindow, null);
 			popupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			popupWindow.setOutsideTouchable(true);
 			TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);
@@ -67,7 +65,7 @@ public class MenuComponent {
 			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 
-			(getView()).setVisibility(View.GONE);
+			(getHiddenView(view)).setVisibility(View.GONE);
 
 			popu_diancai.setOnClickListener(new OnClickListener() {
 
@@ -116,7 +114,7 @@ public class MenuComponent {
 		}
 	}
 
-	private View getView() {
+	private View getHiddenView(View view) {
 		TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 		TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 		TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);

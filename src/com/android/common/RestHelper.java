@@ -2,7 +2,6 @@ package com.android.common;
 
 import java.util.Map;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.FormHttpMessageConverter;
