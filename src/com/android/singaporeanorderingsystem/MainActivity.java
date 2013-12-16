@@ -37,7 +37,6 @@ import com.android.R;
 import com.android.adapter.FoodListAdapter;
 import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
-import com.android.bean.FoodHttpBean;
 import com.android.bean.FoodListBean;
 import com.android.bean.FoodOrder;
 import com.android.bean.GiditNumberBean;
@@ -47,7 +46,6 @@ import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
 import com.android.component.MenuComponent;
 import com.android.component.SharedPreferencesComponent_;
-import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.FoodOrderDao2;
 import com.android.dialog.DialogBuilder;
 import com.android.domain.Food;
@@ -59,6 +57,7 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
+import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.NoTitle;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
@@ -128,9 +127,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
-	private PopupWindow popupWindow;
-	private View view;
-
 	@App
 	MyApp myApp;
 
@@ -195,10 +191,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		// sbuff.append(0);
 		init_foodView();
 		init_giditNum_view();
-		onclick_foodView();
-		onclick_giditNum_view();
+		// onclick_foodView();
+		//onclick_giditNum_view();
 	}
 
+	/**
+	 * 初始化食物数据列表
+	 */
 	public void init_foodView() {
 		food_dataList = new ArrayList<FoodListBean>();
 		String type = sharedPrefs.language().get();
@@ -222,6 +221,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		foodView.setAdapter(adapter);
 	}
 
+	/**
+	 * 初始化计算器
+	 */
 	public void init_giditNum_view() {
 		List<GiditNumberBean> dataList = new ArrayList<GiditNumberBean>();
 		String delete = String.valueOf(R.string.delete);
@@ -235,279 +237,258 @@ public class MainActivity extends Activity implements OnClickListener {
 		giditNum_view.setAdapter(adapter);
 	}
 
-	public void onclick_foodView() {
-		foodView.setOnItemClickListener(new OnItemClickListener() {
+	/**
+	 * 点击食物点餐面板
+	 * 
+	 * @param position
+	 */
+	@ItemClick(R.id.food_list)
+	void foodPanel(int position) {
+		// TODO Auto-generated method stub
+		if (food_dataList.get(position).getType().equals("STAPLE")) {
 
-			public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				if (food_dataList.get(arg2).getType().equals("STAPLE")) {
+		} else {
+			save_selectNum++;
+		}
+		SelectFoodBean bean = new SelectFoodBean();
+		bean.setFood_name(food_dataList.get(position).getTitle());
+		bean.setFood_price(food_dataList.get(position).getPrice());
+		bean.setFood_dayin_code(food_dataList.get(position).getDaping_id());
+		bean.setFood_id(food_dataList.get(position).getFood_id());
+		bean.setFood_type(food_dataList.get(position).getType());
+		if (frist) {
+			// show_totalPrice=save_foc_price;
+			show_totalPrice += Double.parseDouble(food_dataList.get(position).getPrice());
 
-				} else {
-					save_selectNum++;
+			bean.setFood_num("1");
+			select_dataList.add(bean);
+			new Thread() {
+				public void run() {
+					Message msg = new Message();
+					msg.what = GETLIST;
+					msg.obj = select_dataList;
+					handler.sendMessage(msg);
 				}
-				SelectFoodBean bean = new SelectFoodBean();
-				bean.setFood_name(food_dataList.get(arg2).getTitle());
-				bean.setFood_price(food_dataList.get(arg2).getPrice());
-				bean.setFood_dayin_code(food_dataList.get(arg2).getDaping_id());
-				bean.setFood_id(food_dataList.get(arg2).getFood_id());
-				bean.setFood_type(food_dataList.get(arg2).getType());
-				if (frist) {
-					// show_totalPrice=save_foc_price;
-					show_totalPrice += Double.parseDouble(food_dataList.get(arg2).getPrice());
-
-					bean.setFood_num("1");
-					select_dataList.add(bean);
-					new Thread() {
-						public void run() {
-							Message msg = new Message();
-							msg.what = GETLIST;
-							msg.obj = select_dataList;
-							handler.sendMessage(msg);
-						}
-					}.start();
-				} else {
-					// for(int i=select_dataList.size()-1;i>=0;i--){
-					// SelectFoodBean add_bean=select_dataList.get(i);
-					// if(add_bean.getFood_name().equals(bean.getFood_name())){
-					// is_moreClick=true;
-					// int num=Integer.parseInt(add_bean.getFood_num());
-					// num=num+1;
-					// double
-					// price=Double.parseDouble(select_dataList.get(i).getFood_price());
-					// price=price+Double.parseDouble(food_dataList.get(arg2).getPrice());
-					// select_dataList.get(i).setFood_num(String.valueOf(num));
-					// select_dataList.get(i).setFood_price(MyNumberUtils.numToStr(price));
-					// show_totalPrice+=Double.parseDouble(food_dataList.get(arg2).getPrice());
-					//
-					// select_adapter.notifyDataSetChanged();
-					// total_price.setText(MyNumberUtils.numToStr(show_totalPrice));
-					// break;
-					// }else{
-					// is_moreClick=false;
-					// }
-					// }
-					is_moreClick = false;
-					if (!is_moreClick) {
-						bean.setFood_price(food_dataList.get(arg2).getPrice());
-						show_totalPrice += Double.parseDouble(food_dataList.get(arg2).getPrice());
-						bean.setFood_num("1");
-						select_dataList.add(bean);
-						select_adapter.notifyDataSetChanged();
-						total_price.setText(MyNumberUtils.numToStr(show_totalPrice));
-					}
-					// 计算总金额
-					add();
-				}
+			}.start();
+		} else {
+			is_moreClick = false;
+			if (!is_moreClick) {
+				bean.setFood_price(food_dataList.get(position).getPrice());
+				show_totalPrice += Double.parseDouble(food_dataList.get(position).getPrice());
+				bean.setFood_num("1");
+				select_dataList.add(bean);
+				select_adapter.notifyDataSetChanged();
+				total_price.setText(MyNumberUtils.numToStr(show_totalPrice));
 			}
-		});
+			// 计算总金额
+			add();
+		}
 	}
 
-	public void onclick_giditNum_view() {
-		giditNum_view.setOnItemClickListener(new OnItemClickListener() {
+	@ItemClick(R.id.digit_btn)
+	void calulatorPanel(int position) {
 
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				String number = "";
-				switch (arg2) {
-				case 0:
-					sbuff.append(7);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 1:
-					sbuff.append(8);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 2:
-					sbuff.append(9);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 3:
-					sbuff.append(4);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 4:
-					sbuff.append(5);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 5:
-					sbuff.append(6);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 6:
-					sbuff.append(1);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 7:
-					sbuff.append(2);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 8:
-					sbuff.append(3);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 9:
-					sbuff.append(0);
-					number = sbuff.toString();
-					if (number.indexOf(".") > -1) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-					}
-					if (is_maxPrice()) {
-						gathering.setText("9999.99");
-					} else {
-						try {
-							gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-						} catch (Exception e) {
-							Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-						}
-					}
-					compute_surplus();
-					break;
-				case 10:
-					sbuff.append(".");
-					number = sbuff.toString();
-					if (NumberUtils.isNumber(number)) {
-						sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-						if (is_maxPrice()) {
-							gathering.setText("9999.99");
-						} else {
-							try {
-								gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-							} catch (Exception e) {
-								Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-							}
-						}
-						compute_surplus();
-					} else {
-						Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-					}
-					break;
-				case 11:
-					int sb_length = sbuff.length();
-					sbuff.delete(0, sb_length);
-					gathering.setText("0.00");
-					surplus.setText("0.00");
-					compute_surplus();
-					break;
+		// TODO Auto-generated method stub
+		String number = "";
+		switch (position) {
+		case 0:
+			sbuff.append(7);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
 				}
 			}
-		});
+			compute_surplus();
+			break;
+		case 1:
+			sbuff.append(8);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 2:
+			sbuff.append(9);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 3:
+			sbuff.append(4);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 4:
+			sbuff.append(5);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 5:
+			sbuff.append(6);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 6:
+			sbuff.append(1);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 7:
+			sbuff.append(2);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 8:
+			sbuff.append(3);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 9:
+			sbuff.append(0);
+			number = sbuff.toString();
+			if (number.indexOf(".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice()) {
+				gathering.setText("9999.99");
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+			}
+			compute_surplus();
+			break;
+		case 10:
+			sbuff.append(".");
+			number = sbuff.toString();
+			if (NumberUtils.isNumber(number)) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+				if (is_maxPrice()) {
+					gathering.setText("9999.99");
+				} else {
+					try {
+						gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+					} catch (Exception e) {
+						Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+					}
+				}
+				compute_surplus();
+			} else {
+				Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+			}
+			break;
+		case 11:
+			int sb_length = sbuff.length();
+			sbuff.delete(0, sb_length);
+			gathering.setText("0.00");
+			surplus.setText("0.00");
+			compute_surplus();
+			break;
+		}
+
 	}
 
 	Handler handler = new Handler() {

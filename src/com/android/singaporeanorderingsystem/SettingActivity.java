@@ -152,14 +152,10 @@ public class SettingActivity extends BasicActivity {
 	@Bean
 	MenuComponent menuComponent;
 
-	private FoodHttpBeanDao fhb_dao;
 	private MyProcessDialog dialog;
 	private String search_date;
 	private boolean is_chinese;
 	private SharedPreferences sharedPrefs;
-	private PopupWindow popupWindow;
-	private View view;
-
 	public static String type;
 
 	private class SyncALlOperation extends AsyncTask<String, Void, Integer> {
@@ -187,21 +183,15 @@ public class SettingActivity extends BasicActivity {
 			dialog.dismiss();
 			switch (result) {
 			case 0:
-				Toast.makeText(SettingActivity.this,
-						getString(R.string.no_need_sync), Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(SettingActivity.this, getString(R.string.no_need_sync), Toast.LENGTH_SHORT).show();
 				break;
 			case 1:
 				synchronize.setText(getString(R.string.sync_succ));
-				Toast.makeText(SettingActivity.this,
-						getString(R.string.sync_succ), Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(SettingActivity.this, getString(R.string.sync_succ), Toast.LENGTH_SHORT).show();
 				break;
 			case -1:
 				synchronize.setText(getString(R.string.sync_err));
-				Toast.makeText(SettingActivity.this,
-						getString(R.string.sync_err), Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(SettingActivity.this, getString(R.string.sync_err), Toast.LENGTH_SHORT).show();
 				break;
 			}
 		}
@@ -240,8 +230,7 @@ public class SettingActivity extends BasicActivity {
 			@Override
 			public void onClick(View v) {
 				String set_time = edit_setting_time.getText().toString();
-				if (set_time != null && !set_time.equals("")
-						&& !set_time.equals("null")) {
+				if (set_time != null && !set_time.equals("") && !set_time.equals("null")) {
 					Toast.makeText(SettingActivity.this, "设置成功", 1).show();
 					myApp.setSetting_time(Long.parseLong(set_time) * 60 * 1000);
 				}
@@ -270,19 +259,16 @@ public class SettingActivity extends BasicActivity {
 		btu_setting_login_name.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String login_name = edit_setting_chongzhi_login_name.getText()
-						.toString();
+				String login_name = edit_setting_chongzhi_login_name.getText().toString();
 				UserDao2 dao = UserDao2.getInatance(SettingActivity.this);
 				ArrayList<LoginUserBean> datas = dao.getList(login_name);
 				LoginUserBean user = new LoginUserBean();
 				if (datas != null && datas.size() != 0) {
 					user = datas.get(0);
-					edit_setting_chongzhi_login_password.setText(user
-							.getPasswrod());
+					edit_setting_chongzhi_login_password.setText(user.getPasswrod());
 					Toast.makeText(SettingActivity.this, "该用户确认成功", 1).show();
 				} else {
-					Toast.makeText(SettingActivity.this, "该用户不存在，请输入正确的用户", 1)
-							.show();
+					Toast.makeText(SettingActivity.this, "该用户不存在，请输入正确的用户", 1).show();
 				}
 			}
 		});
@@ -290,26 +276,19 @@ public class SettingActivity extends BasicActivity {
 		btu_setting_login_password.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String login_password = edit_setting_chongzhi_login_password
-						.getText().toString();
-				String login_name = edit_setting_chongzhi_login_name.getText()
-						.toString();
+				String login_password = edit_setting_chongzhi_login_password.getText().toString();
+				String login_name = edit_setting_chongzhi_login_name.getText().toString();
 				if (login_name != null && !login_name.equals("")) {
 					if (login_password != null && !login_name.equals("")) {
-						UserDao2 dao = UserDao2
-								.getInatance(SettingActivity.this);
-						int reuslt = dao.update_password(login_name,
-								login_password);
+						UserDao2 dao = UserDao2.getInatance(SettingActivity.this);
+						int reuslt = dao.update_password(login_name, login_password);
 						if (reuslt == 1) {
-							Toast.makeText(SettingActivity.this, "修改密码成功", 1)
-									.show();
+							Toast.makeText(SettingActivity.this, "修改密码成功", 1).show();
 						} else {
-							Toast.makeText(SettingActivity.this, "修改密码失败，稍后重试",
-									1).show();
+							Toast.makeText(SettingActivity.this, "修改密码失败，稍后重试", 1).show();
 						}
 					} else {
-						Toast.makeText(SettingActivity.this, "密码不能为空", 1)
-								.show();
+						Toast.makeText(SettingActivity.this, "密码不能为空", 1).show();
 					}
 				} else {
 					Toast.makeText(SettingActivity.this, "用户名不能为空", 1).show();
@@ -358,9 +337,7 @@ public class SettingActivity extends BasicActivity {
 				String ip = print_one_edit.getText().toString();
 				myApp.setIp_str(ip);
 				myApp.getPrinter().reconnect();
-				Toast.makeText(SettingActivity.this,
-						getString(R.string.toast_setting_succ),
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
 			}
 		});
 		btu_discount.setOnClickListener(new OnClickListener() {
@@ -368,9 +345,7 @@ public class SettingActivity extends BasicActivity {
 			public void onClick(View v) {
 				String text_discount = take_price_edit.getText().toString();
 				myApp.setDiscount(text_discount);
-				Toast.makeText(SettingActivity.this,
-						getString(R.string.toast_setting_succ),
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -380,12 +355,9 @@ public class SettingActivity extends BasicActivity {
 			public void onClick(View v) {
 				String shop_id = shop_set.getText().toString();
 				myApp.setSettingShopId(shop_id);
-				Toast.makeText(SettingActivity.this,
-						getString(R.string.toast_setting_succ),
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
 			}
 		});
-
 
 		// 语言设置
 		language_set.setOnClickListener(new OnClickListener() {
@@ -393,95 +365,63 @@ public class SettingActivity extends BasicActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Toast.makeText(SettingActivity.this,
-						getString(R.string.toast_setting_language_succ),
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_language_succ), Toast.LENGTH_SHORT).show();
 				DialogBuilder builder = new DialogBuilder(SettingActivity.this);
 				builder.setTitle(R.string.message_title);
 				builder.setMessage(R.string.message_2);
-				builder.setPositiveButton(R.string.message_ok,
-						new android.content.DialogInterface.OnClickListener() {
+				builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
 
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// Toast.makeText(DailyPayActivity.this,
-								// "你点击了确定",
-								// Toast.LENGTH_SHORT).show();
-								if (!is_chinese) {
-									updateLange(Locale.SIMPLIFIED_CHINESE);
-									language_set.setText("中文");
-									Editor editor = sharedPrefs.edit();
-									editor.putString("type", "zh");
-									editor.commit();
-									is_chinese = true;
-								} else {
-									updateLange(Locale.ENGLISH);
-									language_set.setText("English");
-									Editor editor = sharedPrefs.edit();
-									editor.putString("type", "en");
-									editor.commit();
-									is_chinese = false;
+					public void onClick(DialogInterface dialog, int which) {
+						// Toast.makeText(DailyPayActivity.this,
+						// "你点击了确定",
+						// Toast.LENGTH_SHORT).show();
+						if (!is_chinese) {
+							updateLange(Locale.SIMPLIFIED_CHINESE);
+							language_set.setText("中文");
+							Editor editor = sharedPrefs.edit();
+							editor.putString("type", "zh");
+							editor.commit();
+							is_chinese = true;
+						} else {
+							updateLange(Locale.ENGLISH);
+							language_set.setText("English");
+							Editor editor = sharedPrefs.edit();
+							editor.putString("type", "en");
+							editor.commit();
+							is_chinese = false;
+						}
+						getDetailPayListDao.getInatance(SettingActivity.this).delete();
+						RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL + myApp.getSettingShopId(), new Callback() {
+							@Override
+							public void dataLoaded(ResponseData data) {
+								if (data.getCode() == 1) {
+									String json = data.getJson();
+									Log.e("返回数据", json);
+									Log.e("中英文", is_chinese + "");
+									ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json, is_chinese);
+									Log.e("支付页详情数据", datas.size() + "");
+									for (int i = 0; i < datas.size(); i++) {
+										GetPayDetailBean bean = datas.get(i);
+										getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName(),
+												bean.getNameZh());
+									}
+								} else if (data.getCode() == 0) {
+									Toast.makeText(SettingActivity.this, "支付页失败", Toast.LENGTH_SHORT).show();
+								} else if (data.getCode() == -1) {
+									Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
 								}
-								getDetailPayListDao.getInatance(
-										SettingActivity.this).delete();
-								RemoteDataHandler.asyncGet(
-										Constants.URL_PAY_DETAIL
-												+ myApp.getSettingShopId(),
-										new Callback() {
-											@Override
-											public void dataLoaded(
-													ResponseData data) {
-												if (data.getCode() == 1) {
-													String json = data
-															.getJson();
-													Log.e("返回数据", json);
-													Log.e("中英文", is_chinese
-															+ "");
-													ArrayList<GetPayDetailBean> datas = GetPayDetailBean
-															.newInstanceList(
-																	json,
-																	is_chinese);
-													Log.e("支付页详情数据",
-															datas.size() + "");
-													for (int i = 0; i < datas
-															.size(); i++) {
-														GetPayDetailBean bean = datas
-																.get(i);
-														getDetailPayListDao
-																.getInatance(
-																		SettingActivity.this)
-																.save(bean
-																		.getId(),
-																		bean.getName(),
-																		bean.getNameZh());
-													}
-												} else if (data.getCode() == 0) {
-													Toast.makeText(
-															SettingActivity.this,
-															"支付页失败",
-															Toast.LENGTH_SHORT)
-															.show();
-												} else if (data.getCode() == -1) {
-													Toast.makeText(
-															SettingActivity.this,
-															getString(R.string.login_service_err),
-															Toast.LENGTH_SHORT)
-															.show();
-												}
-											}
-										});
 							}
 						});
-				builder.setNegativeButton(R.string.message_cancle,
-						new android.content.DialogInterface.OnClickListener() {
+					}
+				});
+				builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
 
-							public void onClick(DialogInterface dialog,
-									int which) {
-								// Toast.makeText(DailyPayActivity.this,
-								// "你点击了取消",
-								// Toast.LENGTH_SHORT).show();
-							}
-						});
+					public void onClick(DialogInterface dialog, int which) {
+						// Toast.makeText(DailyPayActivity.this,
+						// "你点击了取消",
+						// Toast.LENGTH_SHORT).show();
+					}
+				});
 				builder.create().show();
 
 			}
@@ -495,41 +435,28 @@ public class SettingActivity extends BasicActivity {
 				// TODO Auto-generated method stub
 				dialog.show();
 				getDetailPayListDao.getInatance(SettingActivity.this).delete();
-				RemoteDataHandler.asyncGet(
-						Constants.URL_PAY_DETAIL + myApp.getSettingShopId(),
-						new Callback() {
-							@Override
-							public void dataLoaded(ResponseData data) {
-								if (data.getCode() == 1) {
-									String json = data.getJson();
-									Log.e("返回数据", json);
-									Log.e("中英文", is_chinese + "");
-									ArrayList<GetPayDetailBean> datas = GetPayDetailBean
-											.newInstanceList(json, is_chinese);
-									Log.e("支付页详情数据", datas.size() + "");
-									for (int i = 0; i < datas.size(); i++) {
-										GetPayDetailBean bean = datas.get(i);
-										getDetailPayListDao.getInatance(
-												SettingActivity.this).save(
-												bean.getId(), bean.getName(),
-												bean.getNameZh());
-									}
-									dialog.cancel();
-									Toast.makeText(
-											SettingActivity.this,
-											getString(R.string.toast_setting_succ),
-											Toast.LENGTH_SHORT).show();
-								} else if (data.getCode() == 0) {
-									Toast.makeText(SettingActivity.this,
-											"支付页失败", Toast.LENGTH_SHORT).show();
-								} else if (data.getCode() == -1) {
-									Toast.makeText(
-											SettingActivity.this,
-											getString(R.string.login_service_err),
-											Toast.LENGTH_SHORT).show();
-								}
+				RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL + myApp.getSettingShopId(), new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if (data.getCode() == 1) {
+							String json = data.getJson();
+							Log.e("返回数据", json);
+							Log.e("中英文", is_chinese + "");
+							ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json, is_chinese);
+							Log.e("支付页详情数据", datas.size() + "");
+							for (int i = 0; i < datas.size(); i++) {
+								GetPayDetailBean bean = datas.get(i);
+								getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName(), bean.getNameZh());
 							}
-						});
+							dialog.cancel();
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
+						} else if (data.getCode() == 0) {
+							Toast.makeText(SettingActivity.this, "支付页失败", Toast.LENGTH_SHORT).show();
+						} else if (data.getCode() == -1) {
+							Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 			}
 		});
 
@@ -541,89 +468,65 @@ public class SettingActivity extends BasicActivity {
 				// TODO Auto-generated method stub
 				dialog.show();
 				GetTakeNumDao.getInatance(SettingActivity.this).delete();
-				RemoteDataHandler.asyncGet(
-						Constants.URL_TAKE_DNUM + myApp.getSettingShopId(),
-						new Callback() {
-							@Override
-							public void dataLoaded(ResponseData data) {
-								if (data.getCode() == 1) {
-									String json = data.getJson();
-									Log.e("金额配置返回数据", json);
-									ArrayList<GetPTakeNumBean> datas = GetPTakeNumBean
-											.newInstanceList(json, is_chinese);
-									Log.e("金额配置详情数据", datas.size() + "");
-									for (int i = 0; i < datas.size(); i++) {
-										GetPTakeNumBean bean = datas.get(i);
-										GetTakeNumDao.getInatance(
-												SettingActivity.this).save(
-												bean.getId(), bean.getPrice());
-									}
-									dialog.cancel();
-									Toast.makeText(
-											SettingActivity.this,
-											getString(R.string.toast_setting_succ),
-											Toast.LENGTH_SHORT).show();
-								} else if (data.getCode() == 0) {
-									Toast.makeText(SettingActivity.this,
-											"金额配置失败", Toast.LENGTH_SHORT)
-											.show();
-								} else if (data.getCode() == -1) {
-									Toast.makeText(
-											SettingActivity.this,
-											getString(R.string.login_service_err),
-											Toast.LENGTH_SHORT).show();
-								}
+				RemoteDataHandler.asyncGet(Constants.URL_TAKE_DNUM + myApp.getSettingShopId(), new Callback() {
+					@Override
+					public void dataLoaded(ResponseData data) {
+						if (data.getCode() == 1) {
+							String json = data.getJson();
+							Log.e("金额配置返回数据", json);
+							ArrayList<GetPTakeNumBean> datas = GetPTakeNumBean.newInstanceList(json, is_chinese);
+							Log.e("金额配置详情数据", datas.size() + "");
+							for (int i = 0; i < datas.size(); i++) {
+								GetPTakeNumBean bean = datas.get(i);
+								GetTakeNumDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getPrice());
 							}
-						});
+							dialog.cancel();
+							Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
+						} else if (data.getCode() == 0) {
+							Toast.makeText(SettingActivity.this, "金额配置失败", Toast.LENGTH_SHORT).show();
+						} else if (data.getCode() == -1) {
+							Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 			}
 		});
 
 		init_wifiReceiver();
 	}
-	
+
 	// 同步菜单
 	@Click({ R.id.synchronization_menu_brn })
 	void foodSync() {
-		System.out.println("myApp.getSettingShopId()-->"
-				+ myApp.getSettingShopId());
+		System.out.println("myApp.getSettingShopId()-->" + myApp.getSettingShopId());
 		dialog.show();
-		if (myApp.getSettingShopId() == null
-				|| myApp.getSettingShopId().equals("")
-				|| myApp.getSettingShopId().equals("null")
+		if (myApp.getSettingShopId() == null || myApp.getSettingShopId().equals("") || myApp.getSettingShopId().equals("null")
 				|| myApp.getSettingShopId().equals("0")) {
-			Toast.makeText(SettingActivity.this,
-					getString(R.string.setting_tanwei_id),
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(SettingActivity.this, getString(R.string.setting_tanwei_id), Toast.LENGTH_SHORT).show();
 			return;
 		}
-		String url = Constants.URL_FOODSLIST_PATH
-				+ myApp.getSettingShopId();
-		
+		String url = Constants.URL_FOODSLIST_PATH + myApp.getSettingShopId();
+
 		FoodMapping.getJSONAndSave(url);
-		
-		Toast.makeText(SettingActivity.this,
-				getString(R.string.toast_setting_succ),
-				Toast.LENGTH_SHORT).show();
+
+		Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
 		dialog.cancel();
-		
+
 	}
 
 	/***********************************************************************************/
 
 	/* 判断今天是否已经是最新数据 */
 	public boolean isLatestData() {
-		List<Map<String, String>> pays = PayListDao.getInatance(this).getList(
-				search_date);
+		List<Map<String, String>> pays = PayListDao.getInatance(this).getList(search_date);
 		if (!pays.isEmpty()) {
 			return false;
 		}
-		List<Map<String, String>> nums = NumListDao.getInatance(this).getList(
-				search_date);
+		List<Map<String, String>> nums = NumListDao.getInatance(this).getList(search_date);
 		if (!nums.isEmpty()) {
 			return false;
 		}
-		HashMap<String, String> params = DailyMoneyDao.getInatance(
-				SettingActivity.this).getList(search_date);
+		HashMap<String, String> params = DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
 		if (!params.isEmpty()) {
 			return false;
 		}
@@ -634,37 +537,24 @@ public class SettingActivity extends BasicActivity {
 	public void post_payList() {
 		try {
 			HashMap<String, String> params = new HashMap<String, String>();
-			List<Map<String, String>> datas = PayListDao.getInatance(this)
-					.getList(search_date);
+			List<Map<String, String>> datas = PayListDao.getInatance(this).getList(search_date);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
 					if (datas.get(i).get("type").equals("0")) {
-						params.put("consumeTransactions[" + i + "].androidId",
-								datas.get(i).get("android_id"));
-						Log.e("consumeTransactions[" + i + "].androidId", datas
-								.get(i).get("android_id"));
-						params.put("consumeTransactions[" + i
-								+ "].consumption.id",
-								datas.get(i).get("consumption_id"));
-						Log.e("consumeTransactions[" + i + "].consumption.id",
-								datas.get(i).get("consumption_id"));
-						params.put("consumeTransactions[" + i + "].shop.id",
-								datas.get(i).get("shop_id"));
-						Log.e("consumeTransactions[" + i + "].shop.id", datas
-								.get(i).get("shop_id"));
-						params.put("consumeTransactions[" + i + "].user.id",
-								datas.get(i).get("user_id"));
-						Log.e("consumeTransactions[" + i + "].user.id", datas
-								.get(i).get("user_id"));
-						params.put("consumeTransactions[" + i + "].price",
-								datas.get(i).get("price"));
-						Log.e("consumeTransactions[" + i + "].price", datas
-								.get(i).get("price"));
+						params.put("consumeTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
+						Log.e("consumeTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
+						params.put("consumeTransactions[" + i + "].consumption.id", datas.get(i).get("consumption_id"));
+						Log.e("consumeTransactions[" + i + "].consumption.id", datas.get(i).get("consumption_id"));
+						params.put("consumeTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
+						Log.e("consumeTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
+						params.put("consumeTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
+						Log.e("consumeTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
+						params.put("consumeTransactions[" + i + "].price", datas.get(i).get("price"));
+						Log.e("consumeTransactions[" + i + "].price", datas.get(i).get("price"));
 					}
 				}
 
-				ResponseData data = RemoteDataHandler.post(
-						Constants.URL_POST_PAYLIST, params);
+				ResponseData data = RemoteDataHandler.post(Constants.URL_POST_PAYLIST, params);
 				if (data.getCode() == 1) {
 					String json = data.getJson();
 					// Toast.makeText(SettingActivity.this,
@@ -675,9 +565,7 @@ public class SettingActivity extends BasicActivity {
 					if (array.length != 0) {
 						for (int i = 0; i < array.length; i++) {
 							Log.e("数据组", array[i] + "");
-							int result = PayListDao.getInatance(
-									SettingActivity.this).update_type(array[i],
-									"1");
+							int result = PayListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
 							if (result == -1) {
 								// Toast.makeText(DailyPayActivity.this,
 								// "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
@@ -708,37 +596,25 @@ public class SettingActivity extends BasicActivity {
 	public void post_numList() {
 		try {
 			HashMap<String, String> params = new HashMap<String, String>();
-			List<Map<String, String>> datas = NumListDao.getInatance(this)
-					.getList(search_date);
+			List<Map<String, String>> datas = NumListDao.getInatance(this).getList(search_date);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
 					if (datas.get(i).get("type").equals("0")) {
-						params.put("cashTransactions[" + i + "].androidId",
-								datas.get(i).get("android_id"));
-						Log.e("cashTransactions[" + i + "].androidId", datas
-								.get(i).get("android_id"));
-						params.put("cashTransactions[" + i + "].cash.id", datas
-								.get(i).get("cash_id"));
-						Log.e("cashTransactions[" + i + "].cash.id",
-								datas.get(i).get("cash_id"));
-						params.put("cashTransactions[" + i + "].shop.id", datas
-								.get(i).get("shop_id"));
-						Log.e("cashTransactions[" + i + "].shop.id",
-								datas.get(i).get("shop_id"));
-						params.put("cashTransactions[" + i + "].user.id", datas
-								.get(i).get("user_id"));
-						Log.e("cashTransactions[" + i + "].user.id",
-								datas.get(i).get("user_id"));
-						params.put("cashTransactions[" + i + "].quantity",
-								datas.get(i).get("quantity"));
-						Log.e("cashTransactions[" + i + "].quantity", datas
-								.get(i).get("quantity"));
+						params.put("cashTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
+						Log.e("cashTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
+						params.put("cashTransactions[" + i + "].cash.id", datas.get(i).get("cash_id"));
+						Log.e("cashTransactions[" + i + "].cash.id", datas.get(i).get("cash_id"));
+						params.put("cashTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
+						Log.e("cashTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
+						params.put("cashTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
+						Log.e("cashTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
+						params.put("cashTransactions[" + i + "].quantity", datas.get(i).get("quantity"));
+						Log.e("cashTransactions[" + i + "].quantity", datas.get(i).get("quantity"));
 					}
 				}
 			}
 
-			ResponseData data = RemoteDataHandler.post(
-					Constants.URL_POST_TAKENUM, params);
+			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_TAKENUM, params);
 
 			if (data.getCode() == 1) {
 				String json = data.getJson();
@@ -750,9 +626,7 @@ public class SettingActivity extends BasicActivity {
 				if (array.length != 0) {
 					for (int i = 0; i < array.length; i++) {
 						Log.e("数据组", array[i] + "");
-						int result = NumListDao.getInatance(
-								SettingActivity.this)
-								.update_type(array[i], "1");
+						int result = NumListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
 						if (result == -1) {
 							// Toast.makeText(DailyPayActivity.this,
 							// "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
@@ -780,17 +654,14 @@ public class SettingActivity extends BasicActivity {
 	/* 提交每日营业额 */
 	public void post_dailyMoney() {
 		try {
-			HashMap<String, String> params = DailyMoneyDao.getInatance(
-					SettingActivity.this).getList(search_date);
-			ResponseData data = RemoteDataHandler.post(
-					Constants.URL_POST_DAILY_MONEY, params);
+			HashMap<String, String> params = DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
+			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_DAILY_MONEY, params);
 			if (data.getCode() == 1) {
 				String json = data.getJson();
 				// Toast.makeText(SettingActivity.this,
 				// getString(R.string.toast_submmit_succ)+json,
 				// Toast.LENGTH_SHORT).show();
-				int result = DailyMoneyDao.getInatance(SettingActivity.this)
-						.update_type(search_date);
+				int result = DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
 				if (result == -1) {
 					// Toast.makeText(SettingActivity.this, "每日营业额更新失败",
 					// Toast.LENGTH_SHORT).show();
@@ -822,8 +693,7 @@ public class SettingActivity extends BasicActivity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		InputMethodManager imm = (InputMethodManager) this
-				.getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(print_one_edit.getWindowToken(), 0); // 强制隐藏键盘
 		imm.hideSoftInputFromWindow(shop_set.getWindowToken(), 0); // 强制隐藏键盘
 		imm.hideSoftInputFromWindow(take_price_edit.getWindowToken(), 0); // 强制隐藏键盘
