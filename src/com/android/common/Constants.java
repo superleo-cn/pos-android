@@ -127,7 +127,16 @@ public final class Constants {
 	/** 数据库更新操作状态 */
 	public static final String DB_SUCCESS = "1";
 	public static final String DB_FAILED = "0";
-	
+
 	/** 打包价格 */
 	public static final Double PACKAGE_COST = 0.2;
+
+	/** 食物种类 */
+	public static final String FOOD_STAPLE = "STAPLE";
+	public static final String FOOD_DISH = "DISH";
+	
+	/** 最大金额 */
+	public static final String MAX_PRICE = "9999.99";
+	public static final Double MAX_NUM_PRICE = 9999.99;
+
 }

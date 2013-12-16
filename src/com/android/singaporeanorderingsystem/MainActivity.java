@@ -6,29 +6,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +34,13 @@ import com.android.bean.FoodOrder;
 import com.android.bean.GiditNumberBean;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
+import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
 import com.android.component.MenuComponent;
 import com.android.component.SharedPreferencesComponent_;
+import com.android.component.StringResComponent;
+import com.android.component.ToastComponent;
 import com.android.dao.FoodOrderDao2;
 import com.android.dialog.DialogBuilder;
 import com.android.domain.Food;
@@ -133,32 +128,29 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Bean
 	MenuComponent menuComponent;
 
-	private boolean frist = true;// 首次选择
-	private final int GETLIST = 1001;
-	private final int OPEN_WIFI = 1002;
-	private final int CLOSE_WIFI = 1003;
+	@Bean
+	ToastComponent toastComponent;
+
+	@Bean
+	StringResComponent stringResComponent;
+
 	private List<SelectFoodBean> select_dataList;
 	private List<FoodListBean> food_dataList;
 	private SelectListAdapter select_adapter;
+	// 计算要支付总钱
 	private double show_totalPrice = 0.00;
+	// 输入的支付总钱
 	private StringBuffer sbuff;
 	private double show_gathering = 0.00;
 	private double show_surplus = 0.00;
 	private boolean is_takePackage;
 	private boolean is_discount;
 	private boolean is_foc;
-	private boolean is_revice;
-	private boolean is_moreClick;
-	private double save_foc_price;
 	private double save_discount_price;
-	private int save_selectNum;
 	public static boolean main_isRever;
 
 	private double package_money;
-	private double dabao_price = 0;
-	private double dazhe_price = 0;
 	private FoodOrderDao2 f_dao;
-	public static String save_date = "2013-11-24";
 
 	/* 主菜单activity */
 	@AfterViews
@@ -166,6 +158,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		// init_wifiReceiver();
 		// m=new MyOrientationDetector2(MainActivity.this);
 		select_dataList = new ArrayList<SelectFoodBean>();
+		select_adapter = new SelectListAdapter(MainActivity.this, select_dataList);
+		select_list.setAdapter(select_adapter);
 		sbuff = new StringBuffer();
 		initView();
 		save_discount_price = MyNumberUtils.strToNum(myApp.getDiscount());
@@ -188,11 +182,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	/* 初始化数据 */
 	public void initData() {
-		// sbuff.append(0);
 		init_foodView();
 		init_giditNum_view();
 		// onclick_foodView();
-		//onclick_giditNum_view();
+		// onclick_giditNum_view();
 	}
 
 	/**
@@ -245,10 +238,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@ItemClick(R.id.food_list)
 	void foodPanel(int position) {
 		// TODO Auto-generated method stub
-		if (food_dataList.get(position).getType().equals("STAPLE")) {
-
-		} else {
-			save_selectNum++;
+		if (!StringUtils.equalsIgnoreCase(Constants.FOOD_STAPLE, food_dataList.get(position).getType())) {
 		}
 		SelectFoodBean bean = new SelectFoodBean();
 		bean.setFood_name(food_dataList.get(position).getTitle());
@@ -256,229 +246,53 @@ public class MainActivity extends Activity implements OnClickListener {
 		bean.setFood_dayin_code(food_dataList.get(position).getDaping_id());
 		bean.setFood_id(food_dataList.get(position).getFood_id());
 		bean.setFood_type(food_dataList.get(position).getType());
-		if (frist) {
-			// show_totalPrice=save_foc_price;
-			show_totalPrice += Double.parseDouble(food_dataList.get(position).getPrice());
+		bean.setFood_num("1");
 
-			bean.setFood_num("1");
-			select_dataList.add(bean);
-			new Thread() {
-				public void run() {
-					Message msg = new Message();
-					msg.what = GETLIST;
-					msg.obj = select_dataList;
-					handler.sendMessage(msg);
-				}
-			}.start();
-		} else {
-			is_moreClick = false;
-			if (!is_moreClick) {
-				bean.setFood_price(food_dataList.get(position).getPrice());
-				show_totalPrice += Double.parseDouble(food_dataList.get(position).getPrice());
-				bean.setFood_num("1");
-				select_dataList.add(bean);
-				select_adapter.notifyDataSetChanged();
-				total_price.setText(MyNumberUtils.numToStr(show_totalPrice));
-			}
-			// 计算总金额
-			add();
-		}
+		bean.setFood_price(food_dataList.get(position).getPrice());
+		show_totalPrice += Double.parseDouble(food_dataList.get(position).getPrice());
+		select_dataList.add(bean);
+		select_adapter.notifyDataSetChanged();
+		total_price.setText(MyNumberUtils.numToStr(show_totalPrice));
+		// 计算总金额
+		add();
+
 	}
 
 	@ItemClick(R.id.digit_btn)
 	void calulatorPanel(int position) {
-
-		// TODO Auto-generated method stub
-		String number = "";
 		switch (position) {
 		case 0:
-			sbuff.append(7);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "7", gathering);
 			break;
 		case 1:
-			sbuff.append(8);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "8", gathering);
 			break;
 		case 2:
-			sbuff.append(9);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "9", gathering);
 			break;
 		case 3:
-			sbuff.append(4);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "4", gathering);
 			break;
 		case 4:
-			sbuff.append(5);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "5", gathering);
 			break;
 		case 5:
-			sbuff.append(6);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "6", gathering);
 			break;
 		case 6:
-			sbuff.append(1);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "1", gathering);
 			break;
 		case 7:
-			sbuff.append(2);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "2", gathering);
 			break;
 		case 8:
-			sbuff.append(3);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "3", gathering);
 			break;
 		case 9:
-			sbuff.append(0);
-			number = sbuff.toString();
-			if (number.indexOf(".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice()) {
-				gathering.setText("9999.99");
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-				}
-			}
-			compute_surplus();
+			calulation(sbuff, "0", gathering);
 			break;
 		case 10:
-			sbuff.append(".");
-			number = sbuff.toString();
-			if (NumberUtils.isNumber(number)) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-				if (is_maxPrice()) {
-					gathering.setText("9999.99");
-				} else {
-					try {
-						gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-					} catch (Exception e) {
-						Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-					}
-				}
-				compute_surplus();
-			} else {
-				Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
-			}
+			calulation(sbuff, ".", gathering);
 			break;
 		case 11:
 			int sb_length = sbuff.length();
@@ -491,74 +305,47 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	}
 
+	private void calulation(StringBuffer sbuff, String appendStr, TextView gathering) {
+		sbuff.append(sbuff);
+		String number = sbuff.toString();
+		if (NumberUtils.isNumber(number)) {
+			sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			if (is_maxPrice(sbuff)) {
+				gathering.setText(Constants.MAX_PRICE);
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					toastComponent.show(stringResComponent.errPrice);
+				}
+			}
+			compute_surplus();
+		} else {
+			toastComponent.show(stringResComponent.errPrice);
+		}
+	}
+
 	Handler handler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			switch (msg.what) {
-			case GETLIST:
-				if (msg.obj == null) {
-
-				} else {
-					select_dataList = (List<SelectFoodBean>) msg.obj;
-					select_adapter = new SelectListAdapter(MainActivity.this, select_dataList);
-					select_list.setAdapter(select_adapter);
-					add();
-					frist = false;
-				}
-
-				break;
-			case OPEN_WIFI:
-				wifi_image.setBackgroundResource(R.drawable.wifi_open);
-				break;
-			case CLOSE_WIFI:
-				wifi_image.setBackgroundResource(R.drawable.wifi_close);
-				break;
 			case FoodListAdapter.LESS_DATALIST:
 				int num = (Integer) msg.obj;
 				if (select_dataList.size() != 0) {
 					Log.e("item", num + "");
-					SelectFoodBean bean = new SelectFoodBean();
-					bean.setFood_name(food_dataList.get(num).getTitle());
-					bean.setFood_price(food_dataList.get(num).getPrice());
-					bean.setFood_id(food_dataList.get(num).getFood_id());
-					bean.setFood_num("1");
-					bean.setFood_dayin_code(food_dataList.get(num).getDaping_id());
+					FoodListBean bean = food_dataList.get(num);
 					for (int i = select_dataList.size() - 1; i >= 0; i--) {
 						SelectFoodBean remove_bean = select_dataList.get(i);
-						if (remove_bean.getFood_name().equals(bean.getFood_name())) {
-							int number = Integer.parseInt(remove_bean.getFood_num());
-							number = number - 1;
-							if (food_dataList.get(num).getType().equals("STAPLE")) {
-
-							} else {
-								save_selectNum--;
-							}
-							if (number == 0) {
-								select_dataList.remove(i);
-								show_totalPrice -= Double.parseDouble(food_dataList.get(num).getPrice());
-								select_adapter.notifyDataSetChanged();
-								// total_price.setText("0.00");
-								if (select_dataList.size() == 0) {
-									frist = true;
-								}
-							} else {
-								select_dataList.get(i).setFood_num(String.valueOf(number));
-								double price = Double.parseDouble(select_dataList.get(i).getFood_price());
-								price = price - Double.parseDouble(food_dataList.get(num).getPrice());
-								select_dataList.get(i).setFood_price(MyNumberUtils.numToStr(price));
-								show_totalPrice -= Double.parseDouble(food_dataList.get(num).getPrice());
-								select_adapter.notifyDataSetChanged();
-								// total_price.setText(MyNumberUtils.numToStr(show_totalPrice));
-							}
-
+						if (StringUtils.equalsIgnoreCase(remove_bean.getFood_dayin_code(), bean.getDaping_id())) {
+							select_dataList.remove(i);
+							show_totalPrice -= Double.parseDouble(bean.getPrice());
+							select_adapter.notifyDataSetChanged();
+							add();
 							break;
 						}
 					}
-
 				}
-				add();
 				break;
 			}
 
@@ -660,7 +447,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					sbuff.append("0");
 				}
 				show_gathering = Double.parseDouble(sbuff.toString().trim());
-				if (is_maxPrice()) {
+				if (is_maxPrice(sbuff)) {
 					gathering.setText("9999.99");
 				} else {
 					try {
@@ -709,13 +496,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			public void onClick(DialogInterface dialog, int which) {
 				// 先打印数据，不耽误正常使用----------------------------
 				StringBuffer sb = new StringBuffer();
-				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-				String time = sdf.format(new Date());
+				String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
 				sb.append(time + "\n\n");
-				// FoodHttpBeanDao fhb_dao
-				// =FoodHttpBeanDao.getInatance(MainActivity.this);
-				// int fixSize = fhb_dao.getList().size();
-				// int size = select_dataList.size();
 				for (int i = 0; i < select_dataList.size(); i++) {
 					SelectFoodBean bean = select_dataList.get(i);
 					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
@@ -728,9 +510,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				myApp.getPrinter().setIp(myApp.getIp_str());
 				myApp.getPrinter().print(sb.toString());
 				// /--------------------------
-				SimpleDateFormat df_save = new SimpleDateFormat("yyyy-MM-dd");
-				String date = df_save.format(new Date());
-				save_date = date;
+				String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 				long result_price = PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(), date,
 						total_price.getText().toString(), myApp.getSettingShopId());
 				if (result_price == -1) {
@@ -826,12 +606,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
-				// int sb_length=sbuff.length();
-				// sbuff.delete(0, sb_length);
-				// gathering.setText("0.00");
-				// surplus.setText("0.00");
-				// show_gathering=0.00;
-				// show_surplus=0.00;
+				// 不做任何操作
 			}
 		});
 		return builder;
@@ -842,12 +617,10 @@ public class MainActivity extends Activity implements OnClickListener {
 			select_dataList.clear();
 			select_adapter.notifyDataSetChanged();
 		}
-		frist = true;
 		total_price.setText("0.00");
 		gathering.setText("0.00");
 		surplus.setText("0.00");
 		show_totalPrice = 0.00;
-		;
 		show_gathering = 0.00;
 		show_surplus = 0.00;
 		int sb_length = sbuff.length();
@@ -858,47 +631,13 @@ public class MainActivity extends Activity implements OnClickListener {
 		discount.setImageResource(R.drawable.package_not_select);
 		is_foc = false;
 		foc.setImageResource(R.drawable.package_not_select);
-		save_foc_price = 0.00;
-		save_selectNum = 0;
 	}
 
-	@Override
-	public void onResume() {
-		// m.enable();
-
-		super.onResume();
-	}
-
-	public void updateActivity() {
-		Intent intent = new Intent();
-		intent.setClass(this, LoginActivity.class);// 当前Activity重新打开
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(intent);
-
-	}
-
-	private void updateLange(Locale locale) {
-		Resources res = getResources();
-		Configuration config = res.getConfiguration();
-		config.locale = locale;
-		DisplayMetrics dm = res.getDisplayMetrics();
-		res.updateConfiguration(config, dm);
-		Toast.makeText(this, "Locale in " + locale + " !", Toast.LENGTH_LONG).show();
-		// updateActivity();
-
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		// unregisterReceiver(wifi_myReceiver);
-		super.onDestroy();
-	}
-
+	/**
+	 * 计算总金额
+	 */
 	public void add() {
 		show_totalPrice = 0;
-		dabao_price = 0;
-		dazhe_price = 0;
 		if (select_dataList.size() == 0) {
 			total_price.setText(MyNumberUtils.numToStr(show_totalPrice));
 		} else {
@@ -910,34 +649,24 @@ public class MainActivity extends Activity implements OnClickListener {
 				show_totalPrice += price;
 				if (is_foc) {
 					show_totalPrice = 0;
-					dabao_price = 0;
-					dazhe_price = 0;
 					select_dataList.get(i).setDabao_price(0);
 					select_dataList.get(i).setDazhe_price(0);
 				} else {
 					double dabao = num * package_money;
 					double dazhe = num * save_discount_price;
 					String type = select_dataList.get(i).getFood_type();
-					if (StringUtils.equalsIgnoreCase(type, "DISH")) {
+					if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
 						if (!is_discount && is_takePackage) {
 							show_totalPrice = show_totalPrice + dabao;
-							dabao_price += dabao;
-							dazhe_price = 0;
 							dazhe = 0;
 						} else if (is_discount && !is_takePackage) {
 							show_totalPrice = show_totalPrice - dazhe;
-							dabao_price = 0;
-							dazhe_price += dazhe;
 							dabao = 0;
 						} else if (!is_discount && !is_takePackage) {
-							dabao_price = 0;
-							dazhe_price = 0;
 							dabao = 0;
 							dazhe = 0;
 						} else if (is_discount && is_takePackage) {
 							show_totalPrice = show_totalPrice + dabao - dazhe;
-							dabao_price += dabao;
-							dazhe_price += dazhe;
 						}
 						select_dataList.get(i).setDabao_price(dabao);
 						select_dataList.get(i).setDazhe_price(dazhe);
@@ -951,34 +680,38 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 	}
 
+	/**
+	 * 计算应该找回的款项
+	 */
 	public void compute_surplus() {
 		try {
 			Double get_gathering = Double.parseDouble(gathering.getText().toString());
 			Double get_total_price = Double.parseDouble(total_price.getText().toString());
 			surplus.setText(MyNumberUtils.numToStr(get_gathering - get_total_price));
 		} catch (Exception e) {
-			Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+			toastComponent.show(stringResComponent.errPrice);
 		}
 
 	}
 
-	public boolean is_maxPrice() {
+	/**
+	 * 判断输入值是否超过最大值
+	 * 
+	 * @param sbuff
+	 * @return
+	 */
+	public boolean is_maxPrice(StringBuffer sbuff) {
 		try {
 			Double now_price = Double.parseDouble(sbuff.toString().trim());
-			if (now_price > 9999.99) {
+			if (now_price > Constants.MAX_NUM_PRICE) {
 				return true;
 			}
 		} catch (Exception e) {
-			Toast.makeText(MainActivity.this, R.string.err_price, Toast.LENGTH_SHORT).show();
+			toastComponent.show(stringResComponent.errPrice);
 			return false;
 		}
 		return false;
 
 	}
 
-	// @Override
-	// protected void onPause() {
-	// super.onPause();
-	// m.disable();
-	// }
 }

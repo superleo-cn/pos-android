@@ -12,6 +12,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 public class DateUtils {
 
 	public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd hh:mm:ss";
+	public static final String DD_MM_YYYY_HH_MM = "dd/MM/yyyy HH:mm";
+	public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
 	public static String dateToStr(Date date, String pattern) {
 		return DateFormatUtils.format(date, pattern);

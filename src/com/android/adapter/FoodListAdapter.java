@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.android.R;
 import com.android.bean.FoodListBean;
 
-
 public class FoodListAdapter extends BaseAdapter {
 
 	private Context context;
@@ -30,8 +29,7 @@ public class FoodListAdapter extends BaseAdapter {
 	private MyListener myListener;
 	public static final int LESS_DATALIST = 1004;
 
-	public FoodListAdapter(Context context, List<FoodListBean> list,
-			Handler handler) {
+	public FoodListAdapter(Context context, List<FoodListBean> list, Handler handler) {
 		this.context = context;
 		this.classList = list;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -68,11 +66,17 @@ public class FoodListAdapter extends BaseAdapter {
 		bean = classList.get(position);
 		viewHolder.titleTextView.setText(bean.getTitle());
 		Bitmap bitmap = BitmapFactory.decodeFile(bean.getImageID());
-		viewHolder.food_image.setImageDrawable(new BitmapDrawable(bitmap));
+		viewHolder.food_image.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
 		viewHolder.food_btn.setOnClickListener(myListener);
 		return convertView;
 	}
 
+	/**
+	 * 点菜面板删除监听器
+	 * 
+	 * @author superleo
+	 * 
+	 */
 	private class MyListener implements OnClickListener {
 		int mPosition;
 
@@ -84,7 +88,6 @@ public class FoodListAdapter extends BaseAdapter {
 			Log.e("点击按钮", "");
 			new Thread() {
 				public void run() {
-
 					Message msg = new Message();
 					msg.what = LESS_DATALIST;
 					msg.obj = mPosition;
