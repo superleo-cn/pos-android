@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,7 +17,9 @@ import android.widget.TextView;
 import com.android.R;
 import com.android.common.Constants;
 import com.android.common.MyApp;
+import com.android.dialog.DialogBuilder;
 import com.android.singaporeanorderingsystem.DailyPayActivity_;
+import com.android.singaporeanorderingsystem.LoginActivity_;
 import com.android.singaporeanorderingsystem.MainActivity_;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -52,6 +56,9 @@ public class MenuComponent {
 
 	@Bean
 	ActivityComponent activityComponent;
+
+	@Bean
+	LoginComponent loginComponent;
 
 	private PopupWindow popupWindow;
 
@@ -125,5 +132,23 @@ public class MenuComponent {
 		} else {
 			return popu_setting;
 		}
+	}
+
+	public DialogBuilder CreatedDialog() {
+		DialogBuilder builder = new DialogBuilder(context);
+		builder.setTitle(R.string.message_title);
+		builder.setMessage(R.string.message_exit);
+		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+				activityComponent.startLogin();
+			}
+		});
+		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		return builder;
 	}
 }

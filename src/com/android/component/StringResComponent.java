@@ -44,5 +44,8 @@ public class StringResComponent {
 	
 	@StringRes(R.string.err_price)
 	public String errPrice;
+	
+	@StringRes(R.string.open_print)
+	public String openPrint;
 
 }
