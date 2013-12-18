@@ -10,11 +10,11 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
-import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
+import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -23,7 +23,7 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
  * 
  */
 // 定义成一个可以注入的组件
-@EBean
+@EBean(scope = Scope.Singleton)
 public class LanguageComponent {
 
 	// 注入 Context 变量
@@ -45,14 +45,6 @@ public class LanguageComponent {
 
 	@Bean
 	StringResComponent stringResComponent;
-
-	public LanguageComponent() {
-
-	}
-
-	@AfterInject
-	public void init() {
-	}
 
 	public void readLanguage() {
 		String type = myPrefs.language().get();

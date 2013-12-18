@@ -35,17 +35,23 @@ public class StringResComponent {
 
 	@StringRes(R.string.insufficientpermissions)
 	public String insufficientpermissions;
-	
+
 	@StringRes(R.string.dialog_set)
 	public String dialogSet;
-	
+
 	@StringRes(R.string.toast_setting_succ)
 	public String toastSettingSucc;
-	
+
 	@StringRes(R.string.err_price)
 	public String errPrice;
-	
+
 	@StringRes(R.string.open_print)
 	public String openPrint;
+
+	@StringRes(R.string.mainTitle_txt)
+	public String mainTitle;
+	
+	@StringRes(R.string.selec_not_food)
+	public String noFood;
 
 }

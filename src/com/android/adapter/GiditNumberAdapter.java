@@ -16,9 +16,9 @@ public class GiditNumberAdapter extends BaseAdapter {
 
 	private Context context;
 	private LayoutInflater inflater;
-	private List<GiditNumberBean> classList;
+	private List<String> classList;
 
-	public GiditNumberAdapter(Context context, List<GiditNumberBean> list) {
+	public GiditNumberAdapter(Context context, List<String> list) {
 		this.context = context;
 		this.classList = list;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -38,7 +38,7 @@ public class GiditNumberAdapter extends BaseAdapter {
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
-		GiditNumberBean bean;
+		String number = null;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.digit_btn_item, null);
 			viewHolder = new ViewHolder();
@@ -48,9 +48,9 @@ public class GiditNumberAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		bean = classList.get(position);
+		number = classList.get(position);
 
-		viewHolder.gidit_num.setText(bean.getNumber());
+		viewHolder.gidit_num.setText(number);
 		return convertView;
 	}
 

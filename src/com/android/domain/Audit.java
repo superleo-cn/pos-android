@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -53,7 +52,7 @@ public class Audit extends Model {
 		}
 		// ActiveAndroid.execSQL(sql, bindArgs)
 	}
-	
+
 	public static void updateById(Long id, String status) {
 		Audit audit = Audit.load(Audit.class, id);
 		audit.status = status;

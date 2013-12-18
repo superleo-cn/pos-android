@@ -15,12 +15,11 @@ import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 
 /**
- * 更新组件
+ * 更新组件，因为要调用activey类，所以没法做成Singleton
  * 
  * @author superleo
  * 
  */
-// 定义成一个可以注入的组件
 @EBean
 public class ActivityComponent {
 
@@ -31,15 +30,6 @@ public class ActivityComponent {
 	// 注入 Activity 变量
 	@RootContext
 	Activity activity;
-
-	public ActivityComponent() {
-
-	}
-
-	@AfterInject
-	public void init() {
-
-	}
 
 	public void startLogin() {
 		startActivity(LoginActivity_.class);

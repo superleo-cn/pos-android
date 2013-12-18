@@ -24,7 +24,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +32,7 @@ import com.android.R;
 import com.android.bean.GetPTakeNumBean;
 import com.android.bean.GetPayDetailBean;
 import com.android.bean.LoginUserBean;
+import com.android.common.AndroidPrinter;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
@@ -40,7 +40,6 @@ import com.android.component.LanguageComponent;
 import com.android.component.MenuComponent;
 import com.android.component.StringResComponent;
 import com.android.dao.DailyMoneyDao;
-import com.android.dao.FoodHttpBeanDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
@@ -151,6 +150,9 @@ public class SettingActivity extends BasicActivity {
 
 	@Bean
 	MenuComponent menuComponent;
+
+	@Bean
+	AndroidPrinter androidPrinter;
 
 	private MyProcessDialog dialog;
 	private String search_date;
@@ -336,7 +338,7 @@ public class SettingActivity extends BasicActivity {
 			public void onClick(View v) {
 				String ip = print_one_edit.getText().toString();
 				myApp.setIp_str(ip);
-				myApp.getPrinter().reconnect();
+				androidPrinter.reconnect();
 				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
 			}
 		});

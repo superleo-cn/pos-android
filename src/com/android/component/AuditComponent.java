@@ -16,6 +16,7 @@ import com.android.domain.User;
 import com.android.mapping.StatusMapping;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -23,7 +24,7 @@ import com.googlecode.androidannotations.annotations.RootContext;
  * @author superleo
  * 
  */
-@EBean
+@EBean(scope = Scope.Singleton)
 public class AuditComponent {
 
 	@RootContext

@@ -5,7 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,8 +18,8 @@ import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.dialog.DialogBuilder;
 import com.android.singaporeanorderingsystem.DailyPayActivity_;
-import com.android.singaporeanorderingsystem.LoginActivity_;
 import com.android.singaporeanorderingsystem.MainActivity_;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -48,6 +47,12 @@ public class MenuComponent {
 	@ViewById(R.id.menu_btn)
 	ImageView menu; // menu按钮
 
+	@ViewById(R.id.login_name)
+	TextView login_name; // 顶部菜单栏显示的用户名字
+
+	@ViewById(R.id.shop_name1234)
+	TextView shop_name1234; // 顶部菜单栏显示的店的名称
+
 	@Bean
 	StringResComponent stringResComponent;
 
@@ -62,6 +67,18 @@ public class MenuComponent {
 
 	private PopupWindow popupWindow;
 
+	/**
+	 * 显示用户和点的名称
+	 */
+	@AfterViews
+	public void initMenu() {
+		login_name.setText(stringResComponent.mainTitle + " " + myApp.getU_name() + ",");
+		shop_name1234.setText(myApp.getShop_name() + "-" + myApp.getShop_code());
+	}
+
+	/**
+	 * 弹出菜单
+	 */
 	public void initPopupWindow() {
 		if (popupWindow == null) {
 			View view = activity.getLayoutInflater().inflate(R.layout.popupwindow, null);
@@ -121,6 +138,12 @@ public class MenuComponent {
 		}
 	}
 
+	/**
+	 * 切换时候，得到要隐藏掉的视图
+	 * 
+	 * @param view
+	 * @return
+	 */
 	private View getHiddenView(View view) {
 		TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 		TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
@@ -134,6 +157,11 @@ public class MenuComponent {
 		}
 	}
 
+	/**
+	 * 创建退出对话框
+	 * 
+	 * @return
+	 */
 	public DialogBuilder CreatedDialog() {
 		DialogBuilder builder = new DialogBuilder(context);
 		builder.setTitle(R.string.message_title);

@@ -15,8 +15,6 @@ import android.os.Environment;
 import android.widget.Toast;
 
 import com.activeandroid.app.Application;
-import com.android.dao.FoodOrderDao;
-import com.android.dao.UserDao;
 import com.googlecode.androidannotations.annotations.EApplication;
 
 /**
@@ -29,30 +27,18 @@ import com.googlecode.androidannotations.annotations.EApplication;
 public class MyApp extends Application {
 	/** 系统初始化配置文件操作器 */
 	private SharedPreferences sysInitSharedPreferences;
-	private UserDao userdao;
-	private FoodOrderDao food_order_dao;
-	private AndroidPrinter printer;
 	private String u_name = "";
 	private String user_id = "0";
-	private String u_type = "CACHIER";
+	private String u_type = "";
 	private String daily_pay_submit_flag = "1";
 	private String shop_name = "";;
 	private String shop_code = "";;
-	private long setting_time = 0;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		createCacheDir();
 		sysInitSharedPreferences = getSharedPreferences(Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
-		setting_time = sysInitSharedPreferences.getLong("setting_time", 30 * 60 * 1000);
-		userdao = new UserDao(this);
-		food_order_dao = new FoodOrderDao(this);
-		printer = new AndroidPrinter(this);
-	}
-
-	public String getDiscount() {
-		return sysInitSharedPreferences.getString("discount", "0.5");
 	}
 
 	public String getU_type() {
@@ -67,22 +53,32 @@ public class MyApp extends Application {
 		return daily_pay_submit_flag;
 	}
 
+	public String getDiscount() {
+		return sysInitSharedPreferences.getString("discount", "0.5");
+	}
+
 	public void setDiscount(String discount) {
 		sysInitSharedPreferences.edit().putString("discount", discount).commit();
 	}
 
+	public String getPackageCost() {
+		return sysInitSharedPreferences.getString("packageCost", "0.2");
+	}
+
+	public void setPackageCost(String packageCost) {
+		sysInitSharedPreferences.edit().putString("packageCost", packageCost).commit();
+	}
+
 	public long getSetting_time() {
-		return setting_time;
+		return sysInitSharedPreferences.getLong("setting_time", 30 * 60 * 1000);
 	}
 
 	public void setSetting_time(long setting_time) {
-		this.setting_time = setting_time;
 		sysInitSharedPreferences.edit().putLong("setting_time", setting_time).commit();
 	}
 
 	public String getIp_str() {
-		String ip_str = sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
-		return ip_str;
+		return sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
 	}
 
 	public void setIp_str(String ip_str) {
@@ -95,22 +91,6 @@ public class MyApp extends Application {
 
 	public void setSettingShopId(String shop_id) {
 		sysInitSharedPreferences.edit().putString("shop_id", shop_id).commit();
-	}
-
-	public UserDao getUserdao() {
-		return userdao;
-	}
-
-	public void setUserdao(UserDao userdao) {
-		this.userdao = userdao;
-	}
-
-	public AndroidPrinter getPrinter() {
-		return printer;
-	}
-
-	public void setPrinter(AndroidPrinter printer) {
-		this.printer = printer;
 	}
 
 	public String getU_name() {
@@ -131,14 +111,6 @@ public class MyApp extends Application {
 
 	public String getuName() {
 		return u_name;
-	}
-
-	public FoodOrderDao getFood_order_dao() {
-		return food_order_dao;
-	}
-
-	public void setFood_order_dao(FoodOrderDao food_order_dao) {
-		this.food_order_dao = food_order_dao;
 	}
 
 	public String getShop_name() {

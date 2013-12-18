@@ -60,7 +60,7 @@ public class LoginComponent {
 	MyProcessDialog dialog;
 
 	@AfterInject
-	public void init() {
+	public void initLogin() {
 		dialog = new MyProcessDialog(context, stringResComponent.loginWait);
 	}
 

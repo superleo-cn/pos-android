@@ -36,6 +36,7 @@ import com.android.model.ResponseData;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -44,7 +45,7 @@ import com.googlecode.androidannotations.annotations.RootContext;
  * 
  */
 // 定义成一个可以注入的组件
-@EBean
+@EBean(scope = Scope.Singleton)
 public class AppUpdateComponent {
 
 	private MyUpdateDialog myUpdateDialog = null;
@@ -64,13 +65,9 @@ public class AppUpdateComponent {
 	@RootContext
 	Activity activity;
 
-	public AppUpdateComponent() {
-
-	}
-
 	@AfterInject
-	public void init() {
-		myUpdateDialog = new MyUpdateDialog(activity);
+	public void initAppUpdate() {
+		myUpdateDialog = new MyUpdateDialog(context);
 	}
 
 	public void updateApp() {

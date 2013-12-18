@@ -7,19 +7,24 @@ import org.apache.commons.lang.StringUtils;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Message;
 import android.widget.GridView;
 
+import com.android.R;
 import com.android.adapter.FoodListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.domain.Food;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import com.googlecode.androidannotations.api.Scope;
 
 /**
- * 键盘操作方法
+ * 点菜面板组件
  * 
  * @author superleo
  * 
@@ -30,22 +35,25 @@ public class FoodComponent {
 	@RootContext
 	Context context;
 
+	@ViewById(R.id.food_list)
+	GridView foodView; // 菜品列表
+
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
 	private List<FoodListBean> foodDataList;
 
-	public List<FoodListBean> getFoodDataList() {
-		return foodDataList;
-	}
+	private OrderComponent orderComponent;
 
 	/**
-	 * 要强制屏蔽键盘的组件
+	 * 点菜面板组件初始化
 	 * 
-	 * @param objs
-	 *            不定参数,可以传入任意数量的参数
+	 * @param foodView
+	 * @param handler
+	 * 
 	 */
-	public void init(GridView foodView, Handler handler) {
+	@AfterViews
+	public void initFood() {
 		this.foodDataList = new ArrayList<FoodListBean>();
 		String type = sharedPrefs.language().get();
 		List<Food> datas = Food.queryList();
@@ -66,6 +74,36 @@ public class FoodComponent {
 
 		FoodListAdapter adapter = new FoodListAdapter(context, foodDataList, handler);
 		foodView.setAdapter(adapter);
+	}
+
+	// 点菜操作
+	@ItemClick(R.id.food_list)
+	void foodPanel(int position) {
+		FoodListBean foodBean = foodDataList.get(position);
+		orderComponent.order(foodBean);
+	}
+
+	Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case FoodListAdapter.LESS_DATALIST:
+				int num = (Integer) msg.obj;
+				orderComponent.remove(num);
+				break;
+			}
+
+			super.handleMessage(msg);
+		}
+
+	};
+
+	public List<FoodListBean> getFoodDataList() {
+		return foodDataList;
+	}
+
+	public void setOrderComponent(OrderComponent orderComponent) {
+		this.orderComponent = orderComponent;
 	}
 
 }
