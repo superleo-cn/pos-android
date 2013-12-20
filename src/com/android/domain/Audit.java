@@ -34,7 +34,7 @@ public class Audit extends Model {
 	 * @return
 	 */
 	public static List<Audit> queryByStatus(String status) {
-		return new Select().from(User.class).where("status = ?", status).execute();
+		return new Select().from(Audit.class).where("status = ?", status).execute();
 	}
 
 	/**
