@@ -1,6 +1,5 @@
 package com.android.singaporeanorderingsystem;
 
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.android.R;
@@ -20,9 +19,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 // 绑定登录的layout
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AbsractActivity {
-
-	@ViewById(R.id.menu_btn)
-	ImageView menu; // menu按钮
 
 	@ViewById(R.id.layout_exit)
 	RelativeLayout exit_layout; // 退出
