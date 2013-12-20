@@ -88,12 +88,11 @@ public class OrderComponent {
 	StringResComponent stringResComponent;
 
 	@Bean
-	CalculatorComponent calculatorComponent;
-
-	@Bean
 	ToastComponent toastComponent;
 
 	FoodComponent foodComponent;
+
+	CalculatorComponent calculatorComponent;
 
 	private List<SelectFoodBean> selectDataList;
 
@@ -411,8 +410,7 @@ public class OrderComponent {
 			SelectFoodBean bean = selectDataList.get(i);
 			FoodOrder.save(bean, myApp, is_foc);
 		}
-		// 清空数据
-		clean();
+
 		// 准备发送数据
 		Map<String, String> params = new HashMap<String, String>();
 		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
@@ -483,6 +481,8 @@ public class OrderComponent {
 				androidPrinter.print(sb.toString());
 				// 同步开始------------------------------
 				syncToServer();
+				// 清空数据------------------------------
+				clean();
 			}
 		});
 		builder.setNegativeButton(R.string.message_cancle, new DialogInterface.OnClickListener() {
@@ -528,5 +528,9 @@ public class OrderComponent {
 
 	public void setFoodComponent(FoodComponent foodComponent) {
 		this.foodComponent = foodComponent;
+	}
+
+	public void setCalculatorComponent(CalculatorComponent calculatorComponent) {
+		this.calculatorComponent = calculatorComponent;
 	}
 }

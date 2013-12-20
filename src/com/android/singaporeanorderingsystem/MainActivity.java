@@ -3,6 +3,7 @@ package com.android.singaporeanorderingsystem;
 import android.widget.RelativeLayout;
 
 import com.android.R;
+import com.android.component.ui.CalculatorComponent;
 import com.android.component.ui.FoodComponent;
 import com.android.component.ui.OrderComponent;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -37,6 +38,9 @@ public class MainActivity extends AbsractActivity {
 
 	@Bean
 	OrderComponent orderComponent;
+	
+	@Bean
+	CalculatorComponent calculatorComponent;
 
 	// @FragmentById(R.id.main_left_fragment)
 	// MainLeftFragment mainLeftFragment;
@@ -48,7 +52,9 @@ public class MainActivity extends AbsractActivity {
 	public void init() {
 		// mainLeftFragment.setOrderComponent(orderComponent);
 		foodComponent.setOrderComponent(orderComponent);
+		calculatorComponent.setOrderComponent(orderComponent);
 		orderComponent.setFoodComponent(foodComponent);
+		orderComponent.setCalculatorComponent(calculatorComponent);
 	}
 
 	// TODO: 暂时不用

@@ -7,15 +7,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterInject;
-import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
 import com.zj.wfsdk.WifiCommunication;
 
 @EBean(scope = Scope.Singleton)
 public class AndroidPrinter {
 
-	@Bean
+	@RootContext
 	Context context;
 
 	String ip = "192.168.0.100";
