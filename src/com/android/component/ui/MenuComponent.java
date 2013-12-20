@@ -17,7 +17,6 @@ import com.android.R;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
-import com.android.component.LoginComponent;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dialog.DialogBuilder;
@@ -65,9 +64,6 @@ public class MenuComponent {
 
 	@Bean
 	ActivityComponent activityComponent;
-
-	@Bean
-	LoginComponent loginComponent;
 
 	private PopupWindow popupWindow;
 
@@ -126,6 +122,7 @@ public class MenuComponent {
 			popu_exit.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					dismiss();
+					createdDialog().create().show();
 				}
 			});
 		}
@@ -166,7 +163,7 @@ public class MenuComponent {
 	 * 
 	 * @return
 	 */
-	public DialogBuilder CreatedDialog() {
+	public DialogBuilder createdDialog() {
 		DialogBuilder builder = new DialogBuilder(context);
 		builder.setTitle(R.string.message_title);
 		builder.setMessage(R.string.message_exit);

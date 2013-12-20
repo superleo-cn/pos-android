@@ -24,7 +24,7 @@ public class GetPTakeNumBean {
 		}
 		
 		
-		public static ArrayList<GetPTakeNumBean> newInstanceList(String jsonDatas,boolean is_chinese){
+		public static ArrayList<GetPTakeNumBean> newInstanceList(String jsonDatas){
 			ArrayList<GetPTakeNumBean> pay_detail = new ArrayList<GetPTakeNumBean>();
 			
 			try {

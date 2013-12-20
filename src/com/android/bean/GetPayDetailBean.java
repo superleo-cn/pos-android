@@ -28,7 +28,7 @@ public class GetPayDetailBean {
 		}
 		
 		
-		public static ArrayList<GetPayDetailBean> newInstanceList(String jsonDatas,boolean is_chinese){
+		public static ArrayList<GetPayDetailBean> newInstanceList(String jsonDatas){
 			ArrayList<GetPayDetailBean> pay_detail = new ArrayList<GetPayDetailBean>();
 			
 			try {

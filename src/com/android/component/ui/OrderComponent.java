@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,11 +31,10 @@ import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dialog.DialogBuilder;
 import com.android.domain.FoodOrder;
-import com.android.handler.RemoteDataHandler;
-import com.android.handler.RemoteDataHandler.Callback;
-import com.android.model.ResponseData;
+import com.android.mapping.StatusMapping;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -60,7 +58,7 @@ public class OrderComponent {
 	MyApp myApp; // 注入 MyApp
 
 	@ViewById(R.id.total_price)
-	TextView total_price; // 总价格
+	TextView totalPrice; // 总价格
 
 	@ViewById(R.id.gathering)
 	TextView gathering; // 收款
@@ -87,9 +85,6 @@ public class OrderComponent {
 	AndroidPrinter androidPrinter;
 
 	@Bean
-	FoodComponent foodComponent;
-
-	@Bean
 	StringResComponent stringResComponent;
 
 	@Bean
@@ -97,6 +92,8 @@ public class OrderComponent {
 
 	@Bean
 	ToastComponent toastComponent;
+
+	FoodComponent foodComponent;
 
 	private List<SelectFoodBean> selectDataList;
 
@@ -160,7 +157,7 @@ public class OrderComponent {
 		selectAdapter.notifyDataSetChanged();
 		showTotalPrice += Double.parseDouble(foodBean.getPrice());
 		add();
-		total_price.setText(MyNumberUtils.numToStr(showTotalPrice));
+		totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 	}
 
 	/**
@@ -331,7 +328,7 @@ public class OrderComponent {
 	public void add() {
 		showTotalPrice = 0;
 		if (CollectionUtils.isEmpty(selectDataList)) {
-			total_price.setText(MyNumberUtils.numToStr(showTotalPrice));
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 		} else {
 			for (int i = 0; i < selectDataList.size(); i++) {
 				SelectFoodBean bean = selectDataList.get(i);
@@ -366,7 +363,7 @@ public class OrderComponent {
 					}
 				}
 			}
-			total_price.setText(MyNumberUtils.numToStr(showTotalPrice));
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 			if (Double.parseDouble(gathering.getText().toString()) > 0) {
 				calculatorComponent.compute_surplus();
 			}
@@ -381,7 +378,7 @@ public class OrderComponent {
 			selectDataList.clear();
 			selectAdapter.notifyDataSetChanged();
 		}
-		total_price.setText("0.00");
+		totalPrice.setText("0.00");
 		gathering.setText("0.00");
 		surplus.setText("0.00");
 		showTotalPrice = 0.00;
@@ -396,11 +393,77 @@ public class OrderComponent {
 
 	}
 
+	// 同步到服务器上去
+	@Background
+	void syncToServer() {
+		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
+		long result_price = 0;
+		// long result_price =
+		// PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),
+		// date,
+		// total_price.getText().toString(), myApp.getSettingShopId());
+		if (result_price == -1) {
+			Log.e("保存价格失败", "");
+		} else {
+			Log.e("保存价格成功", "");
+		}
+		for (int i = 0; i < selectDataList.size(); i++) {
+			SelectFoodBean bean = selectDataList.get(i);
+			FoodOrder.save(bean, myApp, is_foc);
+		}
+		// 清空数据
+		clean();
+		// 准备发送数据
+		Map<String, String> params = new HashMap<String, String>();
+		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
+		System.out.println("-->" + datas.size());
+		for (int i = 0; i < datas.size(); i++) {
+			FoodOrder foodOrder = datas.get(i);
+			System.out.println("f_order.getFood_flag()-->" + foodOrder.status);
+			params.put("transactions[" + i + "].androidId", String.valueOf(foodOrder.getId()));
+			System.out.println("transactions[" + i + "].androidId-->" + foodOrder.getId());
+			params.put("transactions[" + i + "].user.id", foodOrder.userId);
+			System.out.println("transactions[" + i + "].user.id-->" + foodOrder.userId);
+			params.put("transactions[" + i + "].shop.id", foodOrder.shopId);
+			System.out.println("transactions[" + i + "].shop.id-->" + foodOrder.shopId);
+			params.put("transactions[" + i + "].quantity", foodOrder.quantity);
+			System.out.println("transactions[" + i + "].quantity-->" + foodOrder.quantity);
+			params.put("transactions[" + i + "].food.id", foodOrder.foodId);
+			System.out.println("transactions[" + i + "].food.id-->" + foodOrder.foodId);
+			params.put("transactions[" + i + "].totalDiscount", foodOrder.discount);
+			System.out.println("transactions[" + i + "].totalDiscount-->" + foodOrder.discount);
+			params.put("transactions[" + i + "].totalRetailPrice", foodOrder.retailPrice);
+			System.out.println("transactions[" + i + "].totalRetailPrice-->" + foodOrder.retailPrice);
+			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
+			System.out.println("transactions[" + i + "].totalPackage-->" + foodOrder.totalPackage);
+			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
+			System.out.println("transactions[" + i + "].freeOfCharge-->" + foodOrder.foc);
+			params.put("transactions[" + i + "].orderDate", foodOrder.date);
+			System.out.println("transactions[" + i + "].orderDate-->" + foodOrder.date);
+		}
+
+		// 异步请求数据
+		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
+		if (mapping.code == 1) {
+			FoodOrder.updateAllByStatus();
+		} else if (mapping.code == 0) {
+			List<Long> ids = mapping.datas;
+			if (CollectionUtils.isNotEmpty(ids)) {
+				for (Long id : ids) {
+					FoodOrder.updateByStatus(id);
+				}
+			}
+		} else if (mapping.code == -1) {
+
+		}
+
+	}
+
 	public DialogBuilder printDialog() {
 		DialogBuilder builder = new DialogBuilder(context);
 		// builder.setTitle(R.string.message_title);
 		builder.setMessage(stringResComponent.openPrint);
-		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
+		builder.setPositiveButton(R.string.message_ok, new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
 				// 先打印数据，不耽误正常使用----------------------------
@@ -418,200 +481,17 @@ public class OrderComponent {
 				}
 				androidPrinter.setIp(myApp.getIp_str());
 				androidPrinter.print(sb.toString());
-				// /--------------------------
-				String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-				long result_price = 0;
-				// long result_price =
-				// PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),
-				// date,
-				// total_price.getText().toString(), myApp.getSettingShopId());
-				if (result_price == -1) {
-					Log.e("保存价格失败", "");
-				} else {
-					Log.e("保存价格成功", "");
-				}
-				for (int i = 0; i < selectDataList.size(); i++) {
-					SelectFoodBean bean = selectDataList.get(i);
-					FoodOrder.save(bean, myApp, is_foc);
-				}
-				// 准备发送数据
-				Map<String, String> params = new HashMap<String, String>();
-				List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
-				System.out.println("-->" + datas.size());
-				for (int i = 0; i < datas.size(); i++) {
-					FoodOrder foodOrder = datas.get(i);
-					System.out.println("f_order.getFood_flag()-->" + foodOrder.status);
-					params.put("transactions[" + i + "].androidId", String.valueOf(foodOrder.getId()));
-					System.out.println("transactions[" + i + "].androidId-->" + foodOrder.getId());
-					params.put("transactions[" + i + "].user.id", foodOrder.userId);
-					System.out.println("transactions[" + i + "].user.id-->" + foodOrder.userId);
-					params.put("transactions[" + i + "].shop.id", foodOrder.shopId);
-					System.out.println("transactions[" + i + "].shop.id-->" + foodOrder.shopId);
-					params.put("transactions[" + i + "].quantity", foodOrder.quantity);
-					System.out.println("transactions[" + i + "].quantity-->" + foodOrder.quantity);
-					params.put("transactions[" + i + "].food.id", foodOrder.foodId);
-					System.out.println("transactions[" + i + "].food.id-->" + foodOrder.foodId);
-					params.put("transactions[" + i + "].totalDiscount", foodOrder.discount);
-					System.out.println("transactions[" + i + "].totalDiscount-->" + foodOrder.discount);
-					params.put("transactions[" + i + "].totalRetailPrice", foodOrder.retailPrice);
-					System.out.println("transactions[" + i + "].totalRetailPrice-->" + foodOrder.retailPrice);
-					params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
-					System.out.println("transactions[" + i + "].totalPackage-->" + foodOrder.totalPackage);
-					params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
-					System.out.println("transactions[" + i + "].freeOfCharge-->" + foodOrder.foc);
-					params.put("transactions[" + i + "].orderDate", foodOrder.date);
-					System.out.println("transactions[" + i + "].orderDate-->" + foodOrder.date);
-				}
-
-				// 异步请求数据
-				RemoteDataHandler.asyncPost(Constants.URL_FOOD_ORDER, params, new Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
-						if (data.getCode() == 1) {
-							FoodOrder.updateAllByStatus();
-						} else if (data.getCode() == 0) {
-							String json = data.getJson();
-							System.out.println("-----111>>>>>>" + json);
-							json = json.replaceAll("\\[", "");
-							json = json.replaceAll("\\]", "");
-							System.out.println("-----222>>>>>>" + json);
-							String[] str = json.split(",");
-							for (int i = 0; i < str.length; i++) {
-								System.out.println("-----333>>>>>>" + str[i]);
-								FoodOrder.updateByStatus(Long.parseLong(str[i]));
-							}
-						} else if (data.getCode() == -1) {
-
-						}
-					}
-				});
-
-				// 清空数据
-				clean();
+				// 同步开始------------------------------
+				syncToServer();
 			}
 		});
-		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.message_cancle, new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
 				// 不做任何操作
 			}
 		});
 		return builder;
-	}
-
-	/**
-	 * 计算输入金额
-	 * 
-	 * @param sbuff
-	 * @param position
-	 */
-	public void calculation(StringBuffer sbuff, int position) {
-		switch (position) {
-		case 0:
-			calulation(sbuff, "7", gathering);
-			break;
-		case 1:
-			calulation(sbuff, "8", gathering);
-			break;
-		case 2:
-			calulation(sbuff, "9", gathering);
-			break;
-		case 3:
-			calulation(sbuff, "4", gathering);
-			break;
-		case 4:
-			calulation(sbuff, "5", gathering);
-			break;
-		case 5:
-			calulation(sbuff, "6", gathering);
-			break;
-		case 6:
-			calulation(sbuff, "1", gathering);
-			break;
-		case 7:
-			calulation(sbuff, "2", gathering);
-			break;
-		case 8:
-			calulation(sbuff, "3", gathering);
-			break;
-		case 9:
-			calulation(sbuff, "0", gathering);
-			break;
-		case 10:
-			calulation(sbuff, ".", gathering);
-			break;
-		case 11:
-			int sb_length = sbuff.length();
-			sbuff.delete(0, sb_length);
-			gathering.setText("0.00");
-			surplus.setText("0.00");
-			compute_surplus();
-			break;
-		}
-
-	}
-
-	/**
-	 * 开始计算
-	 * 
-	 * @param sbuff
-	 * @param appendStr
-	 * @param gathering
-	 */
-	private void calulation(StringBuffer sbuff, String appendStr, TextView gathering) {
-		sbuff.append(appendStr);
-		String number = sbuff.toString();
-		if (NumberUtils.isNumber(number)) {
-			if (StringUtils.indexOf(number, ".") > -1) {
-				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
-			}
-			if (is_maxPrice(sbuff)) {
-				gathering.setText(Constants.MAX_PRICE);
-			} else {
-				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
-				} catch (Exception e) {
-					toastComponent.show(stringResComponent.errPrice);
-				}
-			}
-			compute_surplus();
-		} else {
-			toastComponent.show(stringResComponent.errPrice);
-		}
-	}
-
-	/**
-	 * 计算应该找回的款项
-	 */
-	public void compute_surplus() {
-		try {
-			Double get_gathering = Double.parseDouble(gathering.getText().toString());
-			Double get_total_price = Double.parseDouble(total_price.getText().toString());
-			surplus.setText(MyNumberUtils.numToStr(get_gathering - get_total_price));
-		} catch (Exception e) {
-			toastComponent.show(stringResComponent.errPrice);
-		}
-
-	}
-
-	/**
-	 * 判断输入值是否超过最大值
-	 * 
-	 * @param sbuff
-	 * @return
-	 */
-	public boolean is_maxPrice(StringBuffer sbuff) {
-		try {
-			Double now_price = Double.parseDouble(sbuff.toString().trim());
-			if (now_price > Constants.MAX_NUM_PRICE) {
-				return true;
-			}
-		} catch (Exception e) {
-			toastComponent.show(stringResComponent.errPrice);
-			return false;
-		}
-		return false;
-
 	}
 
 	public List<SelectFoodBean> getSelectDataList() {
@@ -640,5 +520,13 @@ public class OrderComponent {
 
 	public StringBuffer getSbuff() {
 		return sbuff;
+	}
+
+	public TextView getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setFoodComponent(FoodComponent foodComponent) {
+		this.foodComponent = foodComponent;
 	}
 }

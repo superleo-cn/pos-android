@@ -41,15 +41,24 @@ public class LanguageComponent {
 	@Bean
 	StringResComponent stringResComponent;
 
+	/**
+	 * 读取当前系统语言
+	 */
 	public void readLanguage() {
 		String type = myPrefs.language().get();
-		if (StringUtils.equalsIgnoreCase(type, "zh")) {
+		if (StringUtils.equalsIgnoreCase(type, Locale.SIMPLIFIED_CHINESE.getLanguage())) {
 			readLanguage(Locale.SIMPLIFIED_CHINESE);
 		} else {
 			readLanguage(Locale.ENGLISH);
 		}
 	}
 
+	/**
+	 * 读取当前系统语言
+	 * 
+	 * @param locale
+	 *            本地语言参数
+	 */
 	private void readLanguage(Locale locale) {
 		Resources res = context.getResources();
 		Configuration config = res.getConfiguration();
@@ -59,15 +68,19 @@ public class LanguageComponent {
 
 	}
 
-	public <T> void updateLanguage(Class<T> t, String type, Locale locale) {
+	/**
+	 * 更新系统语言
+	 * 
+	 * @param locale 要更新的语言参数
+	 */
+	public void updateLanguage(Locale locale) {
 		Resources res = context.getResources();
 		Configuration config = res.getConfiguration();
 		config.locale = locale;
 		DisplayMetrics dm = res.getDisplayMetrics();
 		res.updateConfiguration(config, dm);
+		myPrefs.language().put(locale.getLanguage());
 		toastComponent.showLong(stringResComponent.toastSettingSucc);
-		activityComponent.updateActivity(t, type);
-
 	}
 
 }

@@ -63,6 +63,7 @@ public class MainActivity extends Activity {
 	public void init() {
 		// mainLeftFragment.setOrderComponent(orderComponent);
 		foodComponent.setOrderComponent(orderComponent);
+		orderComponent.setFoodComponent(foodComponent);
 	}
 
 	/**

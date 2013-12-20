@@ -8,15 +8,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,6 +34,7 @@ import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
 import com.android.component.LanguageComponent;
+import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ui.MenuComponent;
 import com.android.dao.DailyMoneyDao;
@@ -58,6 +56,7 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 //不需要标题
 @NoTitle
@@ -156,9 +155,10 @@ public class SettingActivity extends BasicActivity {
 
 	private MyProcessDialog dialog;
 	private String search_date;
-	private boolean is_chinese;
-	private SharedPreferences sharedPrefs;
-	public static String type;
+
+	@Pref
+	SharedPreferencesComponent_ sharedPrefs;
+//	public static String type;
 
 	private class SyncALlOperation extends AsyncTask<String, Void, Integer> {
 
@@ -223,9 +223,9 @@ public class SettingActivity extends BasicActivity {
 		// .penaltyDeath().build());
 		// m=new MyOrientationDetector3(SettingActivity.this);
 		dialog = new MyProcessDialog(this, stringResComponent.dialogSet);
-		Intent intent = this.getIntent();
-		Bundle bundle = intent.getExtras();
-		type = bundle.getString("type");
+//		Intent intent = this.getIntent();
+//		Bundle bundle = intent.getExtras();
+//		type = bundle.getString("type");
 		edit_setting_time.setText(myApp.getSetting_time() / (60 * 1000) + "");
 
 		btu_setting_time.setOnClickListener(new OnClickListener() {
@@ -250,8 +250,7 @@ public class SettingActivity extends BasicActivity {
 		}
 		/***/
 		price_set_brn = (Button) this.findViewById(R.id.price_set_brn);
-		sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
-		String type = sharedPrefs.getString("type", "");
+		
 		if (myApp.getU_type().equals("SUPERADMIN")) {
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
@@ -314,19 +313,9 @@ public class SettingActivity extends BasicActivity {
 		print_one_edit.setText(myApp.getIp_str());
 		take_price_edit.setText(myApp.getDiscount());
 		shop_set.setText(myApp.getSettingShopId());
-		if (type == null) {
-			type = "en";
-		}
-		if (type.equals("zh")) {
-			is_chinese = true;
-		} else {
-			is_chinese = false;
-		}
-		if (!is_chinese) {
-			language_set.setText("English");
-		} else {
-			language_set.setText("中文");
-		}
+
+		initLanguage();
+		
 		layout_exit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -377,21 +366,7 @@ public class SettingActivity extends BasicActivity {
 						// Toast.makeText(DailyPayActivity.this,
 						// "你点击了确定",
 						// Toast.LENGTH_SHORT).show();
-						if (!is_chinese) {
-							updateLange(Locale.SIMPLIFIED_CHINESE);
-							language_set.setText("中文");
-							Editor editor = sharedPrefs.edit();
-							editor.putString("type", "zh");
-							editor.commit();
-							is_chinese = true;
-						} else {
-							updateLange(Locale.ENGLISH);
-							language_set.setText("English");
-							Editor editor = sharedPrefs.edit();
-							editor.putString("type", "en");
-							editor.commit();
-							is_chinese = false;
-						}
+						updateLanguage();
 						getDetailPayListDao.getInatance(SettingActivity.this).delete();
 						RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL + myApp.getSettingShopId(), new Callback() {
 							@Override
@@ -399,8 +374,7 @@ public class SettingActivity extends BasicActivity {
 								if (data.getCode() == 1) {
 									String json = data.getJson();
 									Log.e("返回数据", json);
-									Log.e("中英文", is_chinese + "");
-									ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json, is_chinese);
+									ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json);
 									Log.e("支付页详情数据", datas.size() + "");
 									for (int i = 0; i < datas.size(); i++) {
 										GetPayDetailBean bean = datas.get(i);
@@ -443,8 +417,7 @@ public class SettingActivity extends BasicActivity {
 						if (data.getCode() == 1) {
 							String json = data.getJson();
 							Log.e("返回数据", json);
-							Log.e("中英文", is_chinese + "");
-							ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json, is_chinese);
+							ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json);
 							Log.e("支付页详情数据", datas.size() + "");
 							for (int i = 0; i < datas.size(); i++) {
 								GetPayDetailBean bean = datas.get(i);
@@ -476,7 +449,7 @@ public class SettingActivity extends BasicActivity {
 						if (data.getCode() == 1) {
 							String json = data.getJson();
 							Log.e("金额配置返回数据", json);
-							ArrayList<GetPTakeNumBean> datas = GetPTakeNumBean.newInstanceList(json, is_chinese);
+							ArrayList<GetPTakeNumBean> datas = GetPTakeNumBean.newInstanceList(json);
 							Log.e("金额配置详情数据", datas.size() + "");
 							for (int i = 0; i < datas.size(); i++) {
 								GetPTakeNumBean bean = datas.get(i);
@@ -687,9 +660,29 @@ public class SettingActivity extends BasicActivity {
 	}
 
 	/*********************************************************************************/
-	private void updateLange(Locale locale) {
-		languageComponent.updateLanguage(SettingActivity_.class, type, locale);
+	
+	private void initLanguage(){
+		if (StringUtils.equals(sharedPrefs.language().get(), Locale.SIMPLIFIED_CHINESE.getLanguage())) {
+			language_set.setText("中文");
+		} else {
+			language_set.setText("English");
+		}
+	}
+	
+	private void updateLanguage(){
+		if (StringUtils.equals(sharedPrefs.language().get(), Locale.SIMPLIFIED_CHINESE.getLanguage())) {
+			language_set.setText("English");
+			updateLange(Locale.ENGLISH);
+		} else {
+			language_set.setText("中文");
+			updateLange(Locale.SIMPLIFIED_CHINESE);
+			
+		}
+	}
 
+	private void updateLange(Locale locale) {
+		languageComponent.updateLanguage(locale);
+		activityComponent.updateActivity(SettingActivity_.class);
 	}
 
 	@Override
@@ -702,31 +695,4 @@ public class SettingActivity extends BasicActivity {
 		return super.onTouchEvent(event);
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (type.equals("1")) {
-				Intent intent = new Intent();
-				intent.setClass(this, MainActivity.class);
-				startActivity(intent);
-				this.finish();
-			} else {
-				Intent intent = new Intent();
-				intent.setClass(this, DailyPayActivity.class);
-				startActivity(intent);
-				this.finish();
-			}
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-	// @Override
-	// protected void onResume() {
-	// super.onResume();
-	// m.enable();
-	// }
-	// @Override
-	// protected void onPause() {
-	// super.onPause();
-	// m.disable();
-	// }
 }

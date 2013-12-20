@@ -4,7 +4,7 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultSt
 import com.googlecode.androidannotations.annotations.sharedpreferences.SharedPref;
 
 // 用接口代替直接使用变量, 方便安全
-@SharedPref
+@SharedPref(value = SharedPref.Scope.UNIQUE)
 public interface SharedPreferencesComponent {
 
 	// 如果没有值的话，设置一个默认值 "zh"

@@ -10,7 +10,6 @@ import com.android.singaporeanorderingsystem.DailyPayActivity_;
 import com.android.singaporeanorderingsystem.LoginActivity_;
 import com.android.singaporeanorderingsystem.MainActivity_;
 import com.android.singaporeanorderingsystem.SettingActivity_;
-import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 
@@ -54,9 +53,9 @@ public class ActivityComponent {
 	public <T> void startActivityWithTransaction(Class<T> to) {
 		Intent intent = new Intent(context, to);
 		activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-		Bundle bundle = new Bundle();
-		bundle.putString("type", "1");
-		intent.putExtras(bundle);
+		// Bundle bundle = new Bundle();
+		// bundle.putString("type", "1");
+		// intent.putExtras(bundle);
 		activity.startActivity(intent);
 		activity.finish();
 	}
@@ -68,13 +67,13 @@ public class ActivityComponent {
 		activity.finish();
 	}
 
-	public <T> void updateActivity(Class<T> t, String type) {
+	public <T> void updateActivity(Class<T> t) {
 		Intent intent = new Intent();
 		intent.setClass(activity, t);// 当前Activity重新打开
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		Bundle bundle = new Bundle();
-		bundle.putString("type", type);
-		intent.putExtras(bundle);
+		// Bundle bundle = new Bundle();
+		// bundle.putString("type", type);
+		// intent.putExtras(bundle);
 		activity.startActivity(intent);
 		activity.finish();
 

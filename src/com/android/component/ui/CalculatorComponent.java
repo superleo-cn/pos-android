@@ -40,17 +40,10 @@ public class CalculatorComponent {
 	@Bean
 	StringResComponent stringResComponent;
 
-	@ViewById(R.id.total_price)
-	TextView total_price; // 总价格
-
-	@ViewById(R.id.gathering)
-	TextView gathering; // 收款
-
-	@ViewById(R.id.surplus)
-	TextView surplus; // 剩余
-
 	@ViewById(R.id.digit_btn)
 	GridView calucatorView; // 0-9按钮 用gridView做的按钮
+
+	OrderComponent orderComponent;
 
 	/**
 	 * 初始化计算器
@@ -70,7 +63,6 @@ public class CalculatorComponent {
 		calucatorView.setAdapter(adapter);
 	}
 
-	
 	/**
 	 * 计算输入金额
 	 * 
@@ -80,43 +72,43 @@ public class CalculatorComponent {
 	public void calculation(StringBuffer sbuff, int position) {
 		switch (position) {
 		case 0:
-			calulation(sbuff, "7", gathering);
+			calulation(sbuff, "7", orderComponent.getGathering());
 			break;
 		case 1:
-			calulation(sbuff, "8", gathering);
+			calulation(sbuff, "8", orderComponent.getGathering());
 			break;
 		case 2:
-			calulation(sbuff, "9", gathering);
+			calulation(sbuff, "9", orderComponent.getGathering());
 			break;
 		case 3:
-			calulation(sbuff, "4", gathering);
+			calulation(sbuff, "4", orderComponent.getGathering());
 			break;
 		case 4:
-			calulation(sbuff, "5", gathering);
+			calulation(sbuff, "5", orderComponent.getGathering());
 			break;
 		case 5:
-			calulation(sbuff, "6", gathering);
+			calulation(sbuff, "6", orderComponent.getGathering());
 			break;
 		case 6:
-			calulation(sbuff, "1", gathering);
+			calulation(sbuff, "1", orderComponent.getGathering());
 			break;
 		case 7:
-			calulation(sbuff, "2", gathering);
+			calulation(sbuff, "2", orderComponent.getGathering());
 			break;
 		case 8:
-			calulation(sbuff, "3", gathering);
+			calulation(sbuff, "3", orderComponent.getGathering());
 			break;
 		case 9:
-			calulation(sbuff, "0", gathering);
+			calulation(sbuff, "0", orderComponent.getGathering());
 			break;
 		case 10:
-			calulation(sbuff, ".", gathering);
+			calulation(sbuff, ".", orderComponent.getGathering());
 			break;
 		case 11:
 			int sb_length = sbuff.length();
 			sbuff.delete(0, sb_length);
-			gathering.setText("0.00");
-			surplus.setText("0.00");
+			orderComponent.getGathering().setText("0.00");
+			orderComponent.getSurplus().setText("0.00");
 			compute_surplus();
 			break;
 		}
@@ -157,9 +149,9 @@ public class CalculatorComponent {
 	 */
 	public void compute_surplus() {
 		try {
-			Double get_gathering = Double.parseDouble(gathering.getText().toString());
-			Double get_total_price = Double.parseDouble(total_price.getText().toString());
-			surplus.setText(MyNumberUtils.numToStr(get_gathering - get_total_price));
+			Double get_gathering = Double.parseDouble(orderComponent.getGathering().getText().toString());
+			Double get_total_price = Double.parseDouble(orderComponent.getTotalPrice().getText().toString());
+			orderComponent.getSurplus().setText(MyNumberUtils.numToStr(get_gathering - get_total_price));
 		} catch (Exception e) {
 			toastComponent.show(stringResComponent.errPrice);
 		}
@@ -184,6 +176,10 @@ public class CalculatorComponent {
 		}
 		return false;
 
+	}
+
+	public void setOrderComponent(OrderComponent orderComponent) {
+		this.orderComponent = orderComponent;
 	}
 
 }
