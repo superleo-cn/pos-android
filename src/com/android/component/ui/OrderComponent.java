@@ -1,4 +1,4 @@
-package com.android.component.main;
+package com.android.component.ui;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,15 +8,18 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.R;
+import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
 import com.android.bean.FoodListBean;
 import com.android.bean.SelectFoodBean;
@@ -40,7 +43,6 @@ import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 订单组件
@@ -48,7 +50,7 @@ import com.googlecode.androidannotations.api.Scope;
  * @author superleo
  * 
  */
-@EBean(scope = Scope.Singleton)
+@EBean
 public class OrderComponent {
 
 	@RootContext
@@ -78,9 +80,12 @@ public class OrderComponent {
 	@ViewById(R.id.select_list)
 	ListView selectList; // 左上角面板
 
+	@ViewById(R.id.digit_btn)
+	GridView calucatorView; // 0-9按钮 用gridView做的按钮
+
 	@Bean
 	AndroidPrinter androidPrinter;
-	
+
 	@Bean
 	FoodComponent foodComponent;
 
@@ -125,6 +130,16 @@ public class OrderComponent {
 		sbuff = new StringBuffer();
 		save_discount_price = MyNumberUtils.strToNum(myApp.getDiscount());
 		package_money = MyNumberUtils.strToNum(myApp.getPackageCost());
+
+		// 计算器
+		List<String> dataList = new ArrayList<String>();
+		String delete = String.valueOf(R.string.delete);
+		String[] str = new String[] { "7", "8", "9", "4", "5", "6", "1", "2", "3", "0", ".", "C" };
+		for (int i = 0; i < str.length; i++) {
+			dataList.add(str[i]);
+		}
+		GiditNumberAdapter adapter = new GiditNumberAdapter(context, dataList);
+		calucatorView.setAdapter(adapter);
 	}
 
 	/**
@@ -482,6 +497,121 @@ public class OrderComponent {
 			}
 		});
 		return builder;
+	}
+
+	/**
+	 * 计算输入金额
+	 * 
+	 * @param sbuff
+	 * @param position
+	 */
+	public void calculation(StringBuffer sbuff, int position) {
+		switch (position) {
+		case 0:
+			calulation(sbuff, "7", gathering);
+			break;
+		case 1:
+			calulation(sbuff, "8", gathering);
+			break;
+		case 2:
+			calulation(sbuff, "9", gathering);
+			break;
+		case 3:
+			calulation(sbuff, "4", gathering);
+			break;
+		case 4:
+			calulation(sbuff, "5", gathering);
+			break;
+		case 5:
+			calulation(sbuff, "6", gathering);
+			break;
+		case 6:
+			calulation(sbuff, "1", gathering);
+			break;
+		case 7:
+			calulation(sbuff, "2", gathering);
+			break;
+		case 8:
+			calulation(sbuff, "3", gathering);
+			break;
+		case 9:
+			calulation(sbuff, "0", gathering);
+			break;
+		case 10:
+			calulation(sbuff, ".", gathering);
+			break;
+		case 11:
+			int sb_length = sbuff.length();
+			sbuff.delete(0, sb_length);
+			gathering.setText("0.00");
+			surplus.setText("0.00");
+			compute_surplus();
+			break;
+		}
+
+	}
+
+	/**
+	 * 开始计算
+	 * 
+	 * @param sbuff
+	 * @param appendStr
+	 * @param gathering
+	 */
+	private void calulation(StringBuffer sbuff, String appendStr, TextView gathering) {
+		sbuff.append(appendStr);
+		String number = sbuff.toString();
+		if (NumberUtils.isNumber(number)) {
+			if (StringUtils.indexOf(number, ".") > -1) {
+				sbuff = new StringBuffer(StringUtils.substring(number, 0, number.indexOf(".") + 3));
+			}
+			if (is_maxPrice(sbuff)) {
+				gathering.setText(Constants.MAX_PRICE);
+			} else {
+				try {
+					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+				} catch (Exception e) {
+					toastComponent.show(stringResComponent.errPrice);
+				}
+			}
+			compute_surplus();
+		} else {
+			toastComponent.show(stringResComponent.errPrice);
+		}
+	}
+
+	/**
+	 * 计算应该找回的款项
+	 */
+	public void compute_surplus() {
+		try {
+			Double get_gathering = Double.parseDouble(gathering.getText().toString());
+			Double get_total_price = Double.parseDouble(total_price.getText().toString());
+			surplus.setText(MyNumberUtils.numToStr(get_gathering - get_total_price));
+		} catch (Exception e) {
+			toastComponent.show(stringResComponent.errPrice);
+		}
+
+	}
+
+	/**
+	 * 判断输入值是否超过最大值
+	 * 
+	 * @param sbuff
+	 * @return
+	 */
+	public boolean is_maxPrice(StringBuffer sbuff) {
+		try {
+			Double now_price = Double.parseDouble(sbuff.toString().trim());
+			if (now_price > Constants.MAX_NUM_PRICE) {
+				return true;
+			}
+		} catch (Exception e) {
+			toastComponent.show(stringResComponent.errPrice);
+			return false;
+		}
+		return false;
+
 	}
 
 	public List<SelectFoodBean> getSelectDataList() {

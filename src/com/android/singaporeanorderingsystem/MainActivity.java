@@ -5,10 +5,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.android.R;
-import com.android.component.MenuComponent;
 import com.android.component.SharedPreferencesComponent_;
-import com.android.component.main.FoodComponent;
-import com.android.component.main.OrderComponent;
+import com.android.component.ui.FoodComponent;
+import com.android.component.ui.MenuComponent;
+import com.android.component.ui.OrderComponent;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
@@ -49,12 +49,15 @@ public class MainActivity extends Activity {
 
 	@Bean
 	FoodComponent foodComponent;
-	//
-	// @FragmentById(R.id.main_left_fragment)
-	// MainLeftFragment mainLeftFragment;
 
 	@Bean
 	OrderComponent orderComponent;
+
+	// @FragmentById(R.id.main_left_fragment)
+	// MainLeftFragment mainLeftFragment;
+	//
+	// @FragmentById(R.id.main_right_fragment)
+	// MainRightFragment mainRightFragment;
 
 	@AfterViews
 	public void init() {

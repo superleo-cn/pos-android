@@ -15,6 +15,7 @@ import com.googlecode.androidannotations.api.Scope;
 @EBean(scope = Scope.Singleton)
 public class StringResComponent {
 
+	//登录界面的用到的
 	@StringRes(R.string.login_wait)
 	public String loginWait;
 
@@ -33,6 +34,7 @@ public class StringResComponent {
 	@StringRes(R.string.login_wifi_err)
 	public String loginWifiErr;
 
+	//主页用到的
 	@StringRes(R.string.insufficientpermissions)
 	public String insufficientpermissions;
 

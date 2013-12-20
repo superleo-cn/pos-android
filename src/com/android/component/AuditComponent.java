@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.common.Constants;
@@ -15,7 +14,6 @@ import com.android.domain.Audit;
 import com.android.domain.User;
 import com.android.mapping.StatusMapping;
 import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
 
 /**
@@ -26,9 +24,6 @@ import com.googlecode.androidannotations.api.Scope;
  */
 @EBean(scope = Scope.Singleton)
 public class AuditComponent {
-
-	@RootContext
-	Context context;
 
 	public void logAudit(User user, String action) {
 		Audit audit = new Audit();

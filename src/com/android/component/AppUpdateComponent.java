@@ -61,10 +61,6 @@ public class AppUpdateComponent {
 	@RootContext
 	Context context;
 
-	// 注入 Activity 变量
-	@RootContext
-	Activity activity;
-
 	@AfterInject
 	public void initAppUpdate() {
 		myUpdateDialog = new MyUpdateDialog(context);

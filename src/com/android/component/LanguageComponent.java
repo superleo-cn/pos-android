@@ -4,7 +4,6 @@ import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -29,10 +28,6 @@ public class LanguageComponent {
 	// 注入 Context 变量
 	@RootContext
 	Context context;
-
-	// 注入 Activity 变量
-	@RootContext
-	Activity activity;
 
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
@@ -65,7 +60,7 @@ public class LanguageComponent {
 	}
 
 	public <T> void updateLanguage(Class<T> t, String type, Locale locale) {
-		Resources res = activity.getResources();
+		Resources res = context.getResources();
 		Configuration config = res.getConfiguration();
 		config.locale = locale;
 		DisplayMetrics dm = res.getDisplayMetrics();

@@ -42,7 +42,7 @@ import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
-import com.android.component.MenuComponent;
+import com.android.component.ui.MenuComponent;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;

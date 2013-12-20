@@ -1,4 +1,4 @@
-package com.android.component.main;
+package com.android.component.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,6 @@ import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
-import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 点菜面板组件
@@ -29,7 +28,7 @@ import com.googlecode.androidannotations.api.Scope;
  * @author superleo
  * 
  */
-@EBean(scope = Scope.Singleton)
+@EBean
 public class FoodComponent {
 
 	@RootContext

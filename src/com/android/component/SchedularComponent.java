@@ -28,9 +28,6 @@ public class SchedularComponent {
 	Context context;
 
 	// 注入 Activity 变量
-	@RootContext
-	Activity activity;
-
 	@App
 	MyApp myApp;
 

@@ -1,4 +1,4 @@
-package com.android.component.main;
+package com.android.component.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ import com.android.component.ToastComponent;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
 
