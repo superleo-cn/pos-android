@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.android.R;
 import com.android.common.Constants;
+import com.android.component.ActivityComponent;
 import com.android.component.AppUpdateComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
@@ -54,16 +55,19 @@ public class LoginActivity extends Activity {
 	AppUpdateComponent appUpdateComponent;
 
 	@Bean
+	KeyboardComponent keyboardComponent;
+
+	@Bean
 	LanguageComponent languageComponent;
 
 	@Bean
-	KeyboardComponent keyboardComponent;
+	ActivityComponent activityComponent;
 
 	@AfterViews
 	public void init() {
 		// 启动相关组件
-		appUpdateComponent.updateApp();
 		languageComponent.readLanguage();
+		appUpdateComponent.updateApp();
 	}
 
 	void login(String loginType) {
@@ -88,13 +92,6 @@ public class LoginActivity extends Activity {
 		// 要隐藏键盘的组件
 		keyboardComponent.dismissKeyboard(login_name, login_password);
 		return super.onTouchEvent(event);
-	}
-
-	/**
-	 * 屏蔽回退按钮
-	 */
-	public void onBackPressed() {
-		return;
 	}
 
 }

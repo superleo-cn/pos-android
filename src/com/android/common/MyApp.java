@@ -39,6 +39,7 @@ public class MyApp extends Application {
 		super.onCreate();
 		createCacheDir();
 		sysInitSharedPreferences = getSharedPreferences(Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
+
 	}
 
 	public String getU_type() {
