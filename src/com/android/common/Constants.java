@@ -139,5 +139,8 @@ public final class Constants {
 	/** 最大金额 */
 	public static final String MAX_PRICE = "9999.99";
 	public static final Double MAX_NUM_PRICE = 9999.99;
+	
+	public static final int OPEN_WIFI = 1006;
+	public static final int CLOSE_WIFI = 1007;
 
 }
