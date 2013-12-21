@@ -1,5 +1,6 @@
 package com.android.component.ui;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
@@ -30,20 +33,31 @@ import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
+import com.android.bean.LoginAuditBean;
+import com.android.bean.LoginUserBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
+import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
+import com.android.dao.LoginAuditDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
+import com.android.dao.UserDao2;
 import com.android.dao.getDetailPayListDao;
+import com.android.dialog.DialogBuilder;
+import com.android.domain.Balance;
+import com.android.domain.Collection;
+import com.android.domain.Expenses;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
 import com.android.model.ResponseData;
+import com.android.singaporeanorderingsystem.BasicActivity;
+import com.android.singaporeanorderingsystem.LoginActivity_;
 import com.android.singaporeanorderingsystem.PriceSave;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
@@ -51,6 +65,7 @@ import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EBean
 public class DailyPayComponent {
@@ -72,66 +87,75 @@ public class DailyPayComponent {
 	@Bean
 	ActivityComponent activityComponent;
 	
+	@Pref
+	SharedPreferencesComponent_ sharedPrefs;
+
 	@ViewById(R.id.write_name)
 	TextView write_name;
-	
+
 	@ViewById(R.id.shop_name1234)
 	TextView shop_name1234;
-	
+
 	@ViewById(R.id.send_person)
 	EditText send_person;
-	
+
 	@ViewById(R.id.daily_detail_list)
 	ListView daily_list;
-	
+
 	@ViewById(R.id.daily_num_list)
 	ListView num_list;
-	
+
 	@ViewById(R.id.text_id_all_price)
 	TextView text_id_all_price;
-	
+
 	@ViewById(R.id.take_all_price)
 	TextView take_all_price;
-	
+
 	@ViewById(R.id.tomorrow_money)
 	EditText tomorrow_money;
-	
+
 	@ViewById(R.id.shop_money)
 	EditText shop_money;
-	
+
 	@ViewById(R.id.cash_register)
 	EditText cash_register;
-	
+
 	@ViewById(R.id.today_turnover)
 	EditText today_turnover;
-	
+
 	@ViewById(R.id.total)
 	EditText total;
-	
+
 	@ViewById(R.id.total_take_num)
 	EditText total_take_num;
-	
+
 	@ViewById(R.id.noon_time)
 	EditText noon_time;
-	
+
 	@ViewById(R.id.noon_turnover)
 	EditText noon_turnover;
-	
+
 	@ViewById(R.id.time)
 	EditText time;
-	
+
 	@ViewById(R.id.btu_id_sbumit)
 	Button btu_id_sbumit;
-	
+
 	@ViewById(R.id.menu_btn)
-	ImageView menu; //menu按钮
-	
+	ImageView menu; // menu按钮
+
 	@ViewById(R.id.other)
 	EditText other;
-	
+
 	@ViewById(R.id.wifi_iamge)
-	ImageView wifi_image; //wifi 图标
+	ImageView wifi_image; // wifi 图标
 	
+	@ViewById(R.id.login_name)
+	TextView login_name; // 用户名字
+	
+	@Bean
+	DailypaySubmitComponent dailypaysubmitComponent;
+
 	private List<Double> all_num_price = new ArrayList<Double>();
 	private List<Double> all_pay_price = new ArrayList<Double>();
 	private List<DailyPayDetailBean> detail_classList = new ArrayList<DailyPayDetailBean>();
@@ -150,9 +174,8 @@ public class DailyPayComponent {
 	}
 
 	public void initData() {
-		// sharedPrefs = getSharedPreferences("language", Context.MODE_PRIVATE);
-		// String type = sharedPrefs.context.getString("type", "");
-		// login_name.setText(context.getString(R.string.mainTitle_txt)+" "+myApp.getU_name()+",");
+		String type = sharedPrefs.language().get();
+		login_name.setText(context.getString(R.string.mainTitle_txt)+" "+myApp.getU_name()+",");
 		shop_name1234.setText(myApp.getShop_name() + "-" + myApp.getShop_code());
 		write_name.setText(myApp.getU_name());
 		send_person.setText(myApp.getU_name());
@@ -163,11 +186,11 @@ public class DailyPayComponent {
 			for (int i = 0; i < datas.size(); i++) {
 				DailyPayDetailBean bean = new DailyPayDetailBean();
 				bean.setName(datas.get(i).get("name"));
-				// if(StringUtils.equalsIgnoreCase("zh", type)){
-				// bean.setName(datas.get(i).get("nameZh"));
-				// }else{
-				// bean.setName(datas.get(i).get("name"));
-				// }
+				 if(StringUtils.equalsIgnoreCase("zh", type)){
+				 bean.setName(datas.get(i).get("nameZh"));
+				 }else{
+				 bean.setName(datas.get(i).get("name"));
+				 }
 				bean.setId(datas.get(i).get("number_id"));
 				bean.setPrice("");
 				detail_classList.add(bean);
@@ -222,160 +245,259 @@ public class DailyPayComponent {
 		take_all_price.setText(df.format(num_count));
 		compute();
 	}
-	
-	 public void  clear_data(){
-    	 InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-    	String detail_price;
-    	SimpleDateFormat df_date=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    	String date=df_date.format(new Date());
-    	this.search_date=date;
-    	/*提交每日支付金额*/	    	
-    	for(int i=0;i<detail_classList.size();i++){
-    		DailyPayDetailBean bean = detail_classList.get(i);
-    		if(bean != null && StringUtils.isNotEmpty(bean.getPrice())){
-    			detail_price=bean.getPrice();
-    		}else{
-    			detail_price="0.00";
-    		} 
-    /*参数*/		
-    //Sandroid_id,Sconsumption_id,shop_id,user_id,date,type,price
-	    	PayListDao.getInatance(context).save(String.valueOf(i+1),
-	    			bean.getId(),
-	    			myApp.getSettingShopId(),
-	    			myApp.getUser_id(),
-	    			date,
-	    			"0",
-	    			detail_price);
-    	}
-    /*提交每日支付金额结束*/	
-    	
-   /*提交带回总数接口*/
-    	String take_num;
-    	for(int j=0;j<number_classList.size();j++){
-    		TakeNumberBean bean = number_classList.get(j);
-    		if(bean != null && StringUtils.isNotEmpty(bean.getNum())){
-    			take_num=bean.getNum();
-    		}else{
-    			take_num="0";
-    		} 
-   /*参数*/
-   //android_id,cash_id,shop_id,user_id,date,type,quantity
-    		NumListDao.getInatance(context).save(String.valueOf(j+1),
-    				bean.getId(),
-	    			myApp.getSettingShopId(),
-	    			myApp.getUser_id(),
-	    			date,
-	    			"0",
-    				take_num);
-    	}
-    
-    /*提交带回总数接口结束*/
 
-    	int num_of_visible_view=num_list.getLastVisiblePosition() - num_list.getFirstVisiblePosition();
-    	for(int i=0;i<=num_of_visible_view;i++){
-    		EditText edit=(EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
-    		edit.setEnabled(false);
-    		imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
-    		
-    	}
-    	
-    	int num_of_view=daily_list.getLastVisiblePosition() - daily_list.getFirstVisiblePosition();
-    	for(int i=0;i<=num_of_view;i++){
-    		EditText edit=(EditText) daily_list.getChildAt(i).findViewById(R.id.text_id_price);
-    		edit.setEnabled(false);
-    		imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
-    		
-    	}
-    	
-    	String aOpenBalance=shop_money.getText().toString();
-    	if(aOpenBalance.isEmpty()){
-    		aOpenBalance="0";
-    	}
-    	String bExpenses=text_id_all_price.getText().toString();
-    	if(bExpenses.isEmpty()){
-    		bExpenses="0";
-    	}
-    	String cCashCollected=cash_register.getText().toString();
-    	if(cCashCollected.isEmpty()){
-    		cCashCollected="0";
-    	}
-    	String dDailyTurnover=today_turnover.getText().toString();
-    	if(dDailyTurnover.isEmpty()){
-    		dDailyTurnover="0";
-    	}
-    	String eNextOpenBalance=tomorrow_money.getText().toString();
-    	if(eNextOpenBalance.isEmpty()){
-    		eNextOpenBalance="0";
-    	}
-    	String fBringBackCash=total_take_num.getText().toString();
-    	if(fBringBackCash.isEmpty()){
-    		fBringBackCash="0";
-    	}
-    	String gTotalBalance=total.getText().toString();
-    	if(gTotalBalance.isEmpty()){
-    		gTotalBalance="0";
-    	}
-    	String middleCalculateTime=noon_time.getText().toString();
-    	if(middleCalculateTime.isEmpty()){
-    		middleCalculateTime="yyyy-MM-dd";
-    	}
-    	String middleCalculateBalance=noon_turnover.getText().toString();
-    	if(middleCalculateBalance.isEmpty()){
-    		middleCalculateBalance="0";
-    	}
-    	String calculateTime=time.getText().toString();
-    	if(calculateTime.isEmpty()){
-    		calculateTime="yyyy-MM-dd";
-    	}
-    	String others=other.getText().toString();
-    	if(others.isEmpty()){
-    		others="";
-    	}
-    	String courier=send_person.getText().toString();
-    	if(courier.isEmpty()){
-    		courier="";
-    	}
-    	String type="0";
-		DailyMoneyDao.getInatance(context).save("0", 
-				myApp.getSettingShopId(),
-				myApp.getUser_id(), 
-				aOpenBalance,
-				bExpenses,
-				cCashCollected, 
-				dDailyTurnover,
-				eNextOpenBalance, 
-				fBringBackCash,
-				gTotalBalance,
-				middleCalculateTime,
-				middleCalculateBalance,
-				calculateTime,
-				others, 
-				courier, 
-				type,
-				date);
-    	
-    	
-    	cash_register.setText("");
-    	today_turnover.setText("");
-    	noon_time.setText("");
-    	noon_turnover.setText("");
-    	time.setText("");
-    	total.setText("");
-    	tomorrow_money.setText("");
-    	total_take_num.setText("");
-    	send_person.setText("");
-    	other.setText("");
-    	shop_money.setText("");
-    	//text_id_all_price.setText("");
-    	
-    	post_payList();
-    	post_numList(); 
-    	post_dailyMoney();
-    	
-    	//记录退出日志，退出系统
-//    	logUserAction();
-    	
-    }
+	// 提交数据窗口
+	public DialogBuilder CreatedSubmitDialog() {
+		DialogBuilder builder = new DialogBuilder(context);
+		builder.setTitle(R.string.message_title);
+		builder.setMessage(R.string.message_zhifu);
+		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+				if (doValidation()) {
+					clear_data();
+					btu_id_sbumit.setVisibility(View.GONE);
+				}
+			}
+		});
+		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
+
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		});
+		return builder;
+	}
+
+	public boolean doValidation() {
+		// 带回总数 和 开店金额 不能为0
+		String txtTotal = StringUtils.defaultIfEmpty(total_take_num.getText().toString(), "0");
+		Double totalTakeNum = Double.parseDouble(txtTotal);
+		String txtShopMoney = StringUtils.defaultIfEmpty(shop_money.getText().toString(), "0");
+		Double shopMoney = Double.parseDouble(txtShopMoney);
+
+		if (totalTakeNum.doubleValue() <= 0 || shopMoney.doubleValue() <= 0) {
+			Toast.makeText(context, context.getString(R.string.dialy_submit_error1), Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
+		// 带回总数金额不一致
+		Double sigle_price = 0.00;
+		for (int i = 0; i < all_num_price.size(); i++) {
+			sigle_price += all_num_price.get(i).doubleValue();
+		}
+
+		if (sigle_price.doubleValue() != totalTakeNum.doubleValue()) {
+			Toast.makeText(context, context.getString(R.string.dialy_submit_error2), Toast.LENGTH_SHORT).show();
+			return false;
+		}
+
+		// 收银机不能为负数
+		String txtCashRegister = StringUtils.defaultIfEmpty(cash_register.getText().toString(), "0");
+		Double cashRegister = Double.parseDouble(txtCashRegister);
+		if (cashRegister < 0) {
+			Toast.makeText(context, context.getString(R.string.dialy_submit_error3), Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		return true;
+	}
+
+	public void clear_data() {
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		String detail_price;
+		SimpleDateFormat df_date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String date = df_date.format(new Date());
+		this.search_date = date;
+		/* 提交每日支付金额 */
+		for (int i = 0; i < detail_classList.size(); i++) {
+			DailyPayDetailBean bean = detail_classList.get(i);
+			if (bean != null && StringUtils.isNotEmpty(bean.getPrice())) {
+				detail_price = bean.getPrice();
+			} else {
+				detail_price = "0.00";
+			}
+			Expenses e_bean = new Expenses();
+			e_bean.consumptionId = bean.getId();//
+			e_bean.price = detail_price;//
+			Expenses.save(e_bean, myApp);
+		}
+		/* 提交每日支付金额结束 */
+
+		/* 提交带回总数接口 */
+		String take_num;
+		for (int j = 0; j < number_classList.size(); j++) {
+			TakeNumberBean bean = number_classList.get(j);
+			if (bean != null && StringUtils.isNotEmpty(bean.getNum())) {
+				take_num = bean.getNum();
+			} else {
+				take_num = "0";
+			}
+			Collection c_bean =new Collection();
+			c_bean.cashID=bean.getId();
+			c_bean.quantity=take_num;
+			Collection.save(c_bean, myApp);
+		}
+
+		/* 提交带回总数接口结束 */
+
+		int num_of_visible_view = num_list.getLastVisiblePosition() - num_list.getFirstVisiblePosition();
+		for (int i = 0; i <= num_of_visible_view; i++) {
+			EditText edit = (EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
+			edit.setEnabled(false);
+			imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+
+		}
+
+		int num_of_view = daily_list.getLastVisiblePosition() - daily_list.getFirstVisiblePosition();
+		for (int i = 0; i <= num_of_view; i++) {
+			EditText edit = (EditText) daily_list.getChildAt(i).findViewById(R.id.text_id_price);
+			edit.setEnabled(false);
+			imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+
+		}
+
+		String aOpenBalance = shop_money.getText().toString();
+		if (aOpenBalance.isEmpty()) {
+			aOpenBalance = "0";
+		}
+		String bExpenses = text_id_all_price.getText().toString();
+		if (bExpenses.isEmpty()) {
+			bExpenses = "0";
+		}
+		String cCashCollected = cash_register.getText().toString();
+		if (cCashCollected.isEmpty()) {
+			cCashCollected = "0";
+		}
+		String dDailyTurnover = today_turnover.getText().toString();
+		if (dDailyTurnover.isEmpty()) {
+			dDailyTurnover = "0";
+		}
+		String eNextOpenBalance = tomorrow_money.getText().toString();
+		if (eNextOpenBalance.isEmpty()) {
+			eNextOpenBalance = "0";
+		}
+		String fBringBackCash = total_take_num.getText().toString();
+		if (fBringBackCash.isEmpty()) {
+			fBringBackCash = "0";
+		}
+		String gTotalBalance = total.getText().toString();
+		if (gTotalBalance.isEmpty()) {
+			gTotalBalance = "0";
+		}
+		String middleCalculateTime = noon_time.getText().toString();
+		if (middleCalculateTime.isEmpty()) {
+			middleCalculateTime = "yyyy-MM-dd";
+		}
+		String middleCalculateBalance = noon_turnover.getText().toString();
+		if (middleCalculateBalance.isEmpty()) {
+			middleCalculateBalance = "0";
+		}
+		String calculateTime = time.getText().toString();
+		if (calculateTime.isEmpty()) {
+			calculateTime = "yyyy-MM-dd";
+		}
+		String others = other.getText().toString();
+		if (others.isEmpty()) {
+			others = "";
+		}
+		String courier = send_person.getText().toString();
+		if (courier.isEmpty()) {
+			courier = "";
+		}
+		Balance bean=new Balance();
+		bean.aOpenBalance=aOpenBalance;
+		bean.bExpenses=bExpenses;
+		bean.cCashCollected=cCashCollected;
+		bean.dDailyTurnover=dDailyTurnover;
+		bean.eNextOpenBalance=eNextOpenBalance;
+		bean.fBringBackCash=fBringBackCash;
+		bean.gTotalBalance=gTotalBalance;
+		bean.middleCalculateTime=middleCalculateTime;
+		bean.middleCalculateBalance=middleCalculateBalance;
+		bean.calculateTime=calculateTime;
+		bean.others=others;
+		bean.courier=courier;
+		Balance.save(bean, myApp);
+
+		cash_register.setText("");
+		today_turnover.setText("");
+		noon_time.setText("");
+		noon_turnover.setText("");
+		time.setText("");
+		total.setText("");
+		tomorrow_money.setText("");
+		total_take_num.setText("");
+		send_person.setText("");
+		other.setText("");
+		shop_money.setText("");
+		// text_id_all_price.setText("");
+
+		dailypaysubmitComponent.post_payList(search_date);
+		dailypaysubmitComponent.post_numList(search_date);
+		dailypaysubmitComponent.post_dailyMoney(search_date);
+		
+
+		// 记录退出日志，退出系统
+		logUserAction();
+
+	}
+	public void logUserAction(){
+		final UserDao2 u_dao = UserDao2.getInatance(context);
+		LoginUserBean user_bean = new LoginUserBean();
+		ArrayList<LoginUserBean> u_datas = null;
+		if (StringUtils.equalsIgnoreCase("SUPERADMIN", myApp.getU_type())) {
+			user_bean.setId(myApp.getUser_id());
+		} else {
+			u_datas = u_dao.getList(myApp.getU_name(), myApp.getSettingShopId());
+			if (u_datas != null && u_datas.size() != 0) {
+				user_bean = u_datas.get(0);
+			}
+		}
+		login_audit(user_bean, "Logout");
+		activityComponent.startLogin();
+		//System.exit(0);
+	}
+	
+	public void login_audit(LoginUserBean login_user, String action) {
+		final LoginAuditDao dao = LoginAuditDao.getInatance(context);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		LoginAuditBean login_audit = new LoginAuditBean();
+		login_audit.setUser_id(login_user.getId());
+		login_audit.setShop_id(login_user.getShop_id());
+		login_audit.setActionDate(df.format(new Date()));
+		login_audit.setAction(action);
+		login_audit.setFood_flag("0");
+		dao.save(login_audit);
+		ArrayList<LoginAuditBean> u_datas = dao.getList("0");
+		if (u_datas != null && u_datas.size() != 0) {
+			HashMap<String, String> params = new HashMap<String, String>();
+			for (int i = 0; i < u_datas.size(); i++) {
+				LoginAuditBean login_a_bean = u_datas.get(i);
+				params.put("audits[" + i + "].androidId", login_a_bean.getAndroid_id());
+				params.put("audits[" + i + "].shop.id", login_a_bean.getShop_id());
+				params.put("audits[" + i + "].user.id", login_a_bean.getUser_id());
+				params.put("audits[" + i + "].actionDate", login_a_bean.getActionDate());
+				params.put("audits[" + i + "].action", login_a_bean.getAction());
+			}
+			try {
+				ResponseData data = RemoteDataHandler.post(Constants.URL_LOGIN_AUDIT, params);
+				if (data.getCode() == 1) {
+					dao.update_all_type("0");
+				} else if (data.getCode() == 0) {
+					String json = data.getJson();
+					json = json.replaceAll("\\[", "");
+					json = json.replaceAll("\\]", "");
+					String[] str = json.split(",");
+					for (int i = 0; i < str.length; i++) {
+						dao.update_type(str[i]);
+					}
+				} else if (data.getCode() == -1) {
+
+				}
+			} catch (Exception e) {
+				Log.e("error", "LogMessage", e);
+			}
+		}
+	}
 
 	public void compute() {
 		try {
@@ -414,263 +536,132 @@ public class DailyPayComponent {
 			// e.getMessage();
 		}
 	}
-	public void initView(){
-		 String userId=myApp.getUser_id();
-		 String shopId=myApp.getSettingShopId();
-		 if(shopId==null){
-			 shopId="0";
-		 }
 
-		 SimpleDateFormat df_save=new SimpleDateFormat("yyyy-MM-dd");
-	    	String date=df_save.format(new Date());
-	    	Log.e("今天日期", date);
-		 boolean flag = DailyMoneyDao.getInatance(context).isCompleted(shopId, userId, date, "1");
-		 if(!flag){
+	public void initView() {
+		String userId = myApp.getUser_id();
+		String shopId = myApp.getSettingShopId();
+		if (shopId == null) {
+			shopId = "0";
+		}
+
+		SimpleDateFormat df_save = new SimpleDateFormat("yyyy-MM-dd");
+		String date = df_save.format(new Date());
+		Log.e("今天日期", date);
+		boolean flag = DailyMoneyDao.getInatance(context).isCompleted(shopId, userId, date, "1");
+		if (!flag) {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
-			List<String> priceList= null;
-			if(!flag){
-				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(),date,myApp.getSettingShopId());
-			}else{
+			List<String> priceList = null;
+			if (!flag) {
+				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date, myApp.getSettingShopId());
+			} else {
 				btu_id_sbumit.setVisibility(View.GONE);
 			}
 
-			//Double price=0.00;
-			if(priceList==null){
-				order_price=0.00;
-			}else{		
-				if(priceList.size()!=0){
-					for(int i=0;i<priceList.size();i++){
-				order_price+=Double.parseDouble(priceList.get(i));
+			// Double price=0.00;
+			if (priceList == null) {
+				order_price = 0.00;
+			} else {
+				if (priceList.size() != 0) {
+					for (int i = 0; i < priceList.size(); i++) {
+						order_price += Double.parseDouble(priceList.get(i));
 					}
-				}else{
-					order_price=0.00;
+				} else {
+					order_price = 0.00;
 				}
 
 			}
-		}else if(myApp.getDaily_pay_submit_flag().equals("0")){
+		} else if (myApp.getDaily_pay_submit_flag().equals("0")) {
 			btu_id_sbumit.setVisibility(View.GONE);
 		}
-//		initData();
-		shop_money.addTextChangedListener(new TextWatcher(){
+		// initData();
+		shop_money.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void afterTextChanged(Editable s) {
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start,
-					int count, int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start,
-					int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				compute();
 				Log.e("今日输出价格", "");
-			}});
-		
-		tomorrow_money.addTextChangedListener(new TextWatcher(){
+			}
+		});
+
+		tomorrow_money.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void afterTextChanged(Editable s) {
 			}
 
 			@Override
-			public void beforeTextChanged(CharSequence s, int start,
-					int count, int after) {
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
 
 			@Override
-			public void onTextChanged(CharSequence s, int start,
-					int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				compute();
 				Log.e("明日输出价格", "");
-			}});
- }
-	/*提交每日支付*/
-	public void post_payList(){
-		try{
-		HashMap<String, String> params= new HashMap<String,String>();
-		List<Map<String,String>> datas=PayListDao.getInatance(context).getList(search_date);
-		if(!datas.isEmpty()){
-		for(int i=0;i<datas.size();i++){
-			if(datas.get(i).get("type").equals("0")){
-			params.put("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-			Log.e("consumeTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-			params.put("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
-			Log.e("consumeTransactions["+i+"].consumption.id", datas.get(i).get("consumption_id"));
-			params.put("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-			Log.e("consumeTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-			params.put("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-			Log.e("consumeTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-			params.put("consumeTransactions["+i+"].price", datas.get(i).get("price"));
-			Log.e("consumeTransactions["+i+"].price", datas.get(i).get("price"));
-			}
-		}
-		}
-		RemoteDataHandler.asyncPost(Constants.URL_POST_PAYLIST, params, new Callback() {
-			@Override
-			public void dataLoaded(ResponseData data) {
-				if(data.getCode() == 1){
-					String json=data.getJson();
-					//Toast.makeText(context, context.getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-				String str=json.substring(1,json.length()-1);
-				String []array=str.split(",");
-				if(array.length!=0){
-					for(int i=0;i<array.length;i++){
-						Log.e("数据组",array[i]+"");
-					int result=	PayListDao.getInatance(context).update_type(array[i], "1");
-					if(result==-1){
-						//Toast.makeText(context, "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
-					}else{
-						//Toast.makeText(context, "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
-					}
-					}
-				}
-				}else if(data.getCode() == 0){
-					Toast.makeText(context, context.getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-				}else if(data.getCode() == -1){
-					Toast.makeText(context, context.getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
-				}
 			}
 		});
-		}catch(Exception e){
-			e.getMessage();
-		}
 	}
-	
-	/*提交带回总数*/
-	public void post_numList(){
-		try{
-			HashMap<String, String> params= new HashMap<String,String>();
-			List<Map<String,String>> datas=NumListDao.getInatance(context).getList(search_date);
-			if(!datas.isEmpty()){
-			for(int i=0;i<datas.size();i++){
-				if(datas.get(i).get("type").equals("0")){
-				params.put("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-				Log.e("cashTransactions["+i+"].androidId", datas.get(i).get("android_id"));
-				params.put("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
-				Log.e("cashTransactions["+i+"].cash.id", datas.get(i).get("cash_id"));
-				params.put("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-				Log.e("cashTransactions["+i+"].shop.id", datas.get(i).get("shop_id"));
-				params.put("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-				Log.e("cashTransactions["+i+"].user.id", datas.get(i).get("user_id"));
-				params.put("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
-				Log.e("cashTransactions["+i+"].quantity", datas.get(i).get("quantity"));
-				}
-			}
-			}
-			RemoteDataHandler.asyncPost(Constants.URL_POST_TAKENUM, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						String json=data.getJson();
-						//Toast.makeText(context, context.getString(R.string.toast_submmit_succ)/, Toast.LENGTH_SHORT).show();
-					String str=json.substring(1,json.length()-1);
-					String []array=str.split(",");
-					if(array.length!=0){
-						for(int i=0;i<array.length;i++){
-							Log.e("数据组",array[i]+"");
-						int result=	NumListDao.getInatance(context).update_type(array[i], "1");
-						if(result==-1){
-							//Toast.makeText(context, "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
-						}else{
-							//Toast.makeText(context, "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
-						}
-						}
-					}
-					}else if(data.getCode() == 0){
-						Toast.makeText(context, context.getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-					}else if(data.getCode() == -1){
-						Toast.makeText(context, context.getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-			}catch(Exception e){
-				e.getMessage();
-			}
-	}
-	
-	/*提交每日营业额*/
-	public void post_dailyMoney(){
-		try{
-			HashMap<String, String> params= DailyMoneyDao.getInatance(context).getList(search_date);
-			RemoteDataHandler.asyncPost(Constants.URL_POST_DAILY_MONEY, params, new Callback() {
-				@Override
-				public void dataLoaded(ResponseData data) {
-					if(data.getCode() == 1){
-						String json=data.getJson();
-						//Toast.makeText(context, context.getString(R.string.toast_submmit_succ)+json, Toast.LENGTH_SHORT).show();
-						int result=DailyMoneyDao.getInatance(context).update_type(search_date);
-						if(result==-1){
-							Toast.makeText(context, "每日营业额更新失败", Toast.LENGTH_SHORT).show();
-						}else{
-							Toast.makeText(context, "每日营业额更新成功", Toast.LENGTH_SHORT).show();
-						}
-					}else if(data.getCode() == 0){
-						Toast.makeText(context, context.getString(R.string.toast_submmit_fail), Toast.LENGTH_SHORT).show();
-					}else if(data.getCode() == -1){
-						Toast.makeText(context, context.getString(R.string.toast_submmit_err), Toast.LENGTH_SHORT).show();
-					}
-				}
-			});
-			}catch(Exception e){
-				e.getMessage();
-			}
-	}
+
+
 	Handler handler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
-			 switch(msg.what){
-			 case Constants.OPEN_WIFI:
-			 wifi_image.setImageResource(R.drawable.wifi_open);
-			 break;
-			 case Constants.CLOSE_WIFI:
-			 wifi_image.setImageResource(R.drawable.wifi_close);
-			 break;
-			 case DailyPayDetailAdapter.CHAGE_NUM_DETAIL:
-			 try{
-			 count=0.00;
-			 String str=(String) msg.obj;
-			 Log.e("改变支付款价格", str);
-			 int num=Integer.parseInt(str.substring(0,1));
-			 String price=str.substring(2,str.length());
-			 Log.e("截取的价格",price );
-			 all_pay_price.set(num, Double.parseDouble(price));
-			 Double sigle_price=0.00;
-			 for(int i=0;i<all_pay_price.size();i++){
-			 sigle_price=all_pay_price.get(i).doubleValue();
-			 count=count+sigle_price;
-			 }
-			 text_id_all_price.setText(df.format(count));
-			
-			 compute();
-			 }catch(Exception e){
-			 Log.e("支付款计算报错信息", e.getMessage());
-			 Toast.makeText(context, R.string.err_price,
-			 Toast.LENGTH_SHORT).show();
-			 }
-			 break;
-			 case TakeNumerAdapter.SET_NUM:
-			 num_count=0.00;
-			 String str=(String) msg.obj;
-			 Log.e("改变带回总数价格", str);
-			 int num=Integer.parseInt(str.substring(0,1));
-			 String price=str.substring(2,str.length());
-			 Log.e("截取带回的价格",price );
-			 all_num_price.set(num, Double.parseDouble(price));
-			 Double sigle_price=0.00;
-			 for(int i=0;i<all_num_price.size();i++){
-			 sigle_price=all_num_price.get(i).doubleValue();
-			 num_count=num_count+sigle_price;
-			 }
-			
-			 take_all_price.setText(df.format(num_count));
-			 compute();
-			 break;
-			 }
+			switch (msg.what) {
+			case Constants.OPEN_WIFI:
+				wifi_image.setImageResource(R.drawable.wifi_open);
+				break;
+			case Constants.CLOSE_WIFI:
+				wifi_image.setImageResource(R.drawable.wifi_close);
+				break;
+			case DailyPayDetailAdapter.CHAGE_NUM_DETAIL:
+				try {
+					count = 0.00;
+					String str = (String) msg.obj;
+					Log.e("改变支付款价格", str);
+					int num = Integer.parseInt(str.substring(0, 1));
+					String price = str.substring(2, str.length());
+					Log.e("截取的价格", price);
+					all_pay_price.set(num, Double.parseDouble(price));
+					Double sigle_price = 0.00;
+					for (int i = 0; i < all_pay_price.size(); i++) {
+						sigle_price = all_pay_price.get(i).doubleValue();
+						count = count + sigle_price;
+					}
+					text_id_all_price.setText(df.format(count));
+
+					compute();
+				} catch (Exception e) {
+					Log.e("支付款计算报错信息", e.getMessage());
+					Toast.makeText(context, R.string.err_price, Toast.LENGTH_SHORT).show();
+				}
+				break;
+			case TakeNumerAdapter.SET_NUM:
+				num_count = 0.00;
+				String str = (String) msg.obj;
+				Log.e("改变带回总数价格", str);
+				int num = Integer.parseInt(str.substring(0, 1));
+				String price = str.substring(2, str.length());
+				Log.e("截取带回的价格", price);
+				all_num_price.set(num, Double.parseDouble(price));
+				Double sigle_price = 0.00;
+				for (int i = 0; i < all_num_price.size(); i++) {
+					sigle_price = all_num_price.get(i).doubleValue();
+					num_count = num_count + sigle_price;
+				}
+
+				take_all_price.setText(df.format(num_count));
+				compute();
+				break;
+			}
 		}
 
 	};
