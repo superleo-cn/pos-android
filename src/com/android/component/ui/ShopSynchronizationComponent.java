@@ -1,24 +1,27 @@
 package com.android.component.ui;
 
-import android.content.Context;
 import android.widget.EditText;
 
 import com.android.R;
-import com.android.common.MyApp;
 import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
-import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
-import com.googlecode.androidannotations.annotations.sharedpreferences.SharedPref;
 
+/**
+ * 店铺ID同步操作
+ * 
+ * @author superleo
+ * 
+ */
 @EBean
-public class ShopIDSynchronizationComponent {
+public class ShopSynchronizationComponent {
 
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
@@ -35,7 +38,16 @@ public class ShopIDSynchronizationComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
-	public void synchronizeShopID() {
+	@ViewById(R.id.shop_set)
+	EditText shopSset;
+	
+	@AfterViews
+	public void initFoodSynchronization() {
+		shopSset.setText(myPrefs.shopId().get());
+	}
+
+	@Click(R.id.synchronization_shop_brn)
+	public void synchronizeSHopID() {
 		keyboardComponent.dismissKeyboard(shopSet);
 		String shopId = shopSet.getText().toString();
 		myPrefs.shopId().put(shopId);

@@ -1,23 +1,15 @@
 package com.android.singaporeanorderingsystem;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,17 +21,20 @@ import com.android.R;
 import com.android.bean.GetPTakeNumBean;
 import com.android.bean.GetPayDetailBean;
 import com.android.bean.LoginUserBean;
-import com.android.common.AndroidPrinter;
 import com.android.common.Constants;
+import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ui.DiscountSetComponent;
+import com.android.component.ui.ExpenseSynchronizationComponent;
+import com.android.component.ui.FoodSynchronizationComponent;
+import com.android.component.ui.LanguageSetComponent;
 import com.android.component.ui.MenuComponent;
 import com.android.component.ui.PrintSetComponent;
-import com.android.component.ui.ShopIDSynchronizationComponent;
+import com.android.component.ui.ShopSynchronizationComponent;
 import com.android.component.ui.TimeSetComponent;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
@@ -47,15 +42,12 @@ import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
 import com.android.dao.UserDao2;
 import com.android.dao.getDetailPayListDao;
-import com.android.dialog.DialogBuilder;
 import com.android.handler.RemoteDataHandler;
 import com.android.handler.RemoteDataHandler.Callback;
-import com.android.mapping.FoodMapping;
 import com.android.model.ResponseData;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
@@ -68,28 +60,7 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.setting)
-public class SettingActivity extends BasicActivity {
-
-	@ViewById(R.id.language_set)
-	EditText language_set;
-
-	// @ViewById(R.id.print_one_edit)
-	// EditText print_one_edit;
-
-	// @ViewById(R.id.shop_set)
-	// EditText shop_set;
-
-	// @ViewById(R.id.take_price_edit)
-	// EditText take_price_edit;
-
-	@ViewById(R.id.synchronization_menu_brn)
-	Button synchronization_menu;
-
-	@ViewById(R.id.synchronization_shop_brn)
-	Button synchronization_shop;
-
-	@ViewById(R.id.btu_discount)
-	Button btu_discount;
+public class SettingActivity extends AbstractActivity {
 
 	@ViewById(R.id.synchronization_pay_brn)
 	Button synchronization_pay;
@@ -124,9 +95,6 @@ public class SettingActivity extends BasicActivity {
 	@ViewById(R.id.btu_setting_login_password)
 	Button btu_setting_login_password;
 
-	// @ViewById(R.id.edit_setting_time)
-	// EditText edit_setting_time;
-
 	@ViewById(R.id.btu_setting_time)
 	Button btu_setting_time;
 
@@ -150,21 +118,30 @@ public class SettingActivity extends BasicActivity {
 
 	@Bean
 	TimeSetComponent timeSetComponent;
+
 	@Bean
 	PrintSetComponent printSetComponent;
+
 	@Bean
 	DiscountSetComponent discountSetComponent;
-	@Bean
-	ShopIDSynchronizationComponent shopIDSynchronizationComponent;
 
-	@App
-	MyApp myApp;
+	@Bean
+	ShopSynchronizationComponent shopSynchronizationComponent;
+
+	@Bean
+	LanguageSetComponent languageSetComponent;
+
+	@Bean
+	FoodSynchronizationComponent foodSynchronizationComponent;
+
+	@Bean
+	ExpenseSynchronizationComponent expenseSynchronizationComponent;
 
 	@Bean
 	MenuComponent menuComponent;
 
-	@Bean
-	AndroidPrinter androidPrinter;
+	@App
+	MyApp myApp;
 
 	private MyProcessDialog dialog;
 	private String search_date;
@@ -180,18 +157,8 @@ public class SettingActivity extends BasicActivity {
 		protected Integer doInBackground(String... objs) {
 			// if(!isLatestData()){
 			dialog.show();
-			post_payList();
-			post_numList();
-			post_dailyMoney();
 			dialog.cancel();
-			if (!isLatestData()) {
-				return -1;
-			} else {
-
-				return 1;
-			}
-			// }
-			// return 0;
+			return 1;
 		}
 
 		@Override
@@ -224,41 +191,11 @@ public class SettingActivity extends BasicActivity {
 
 	@AfterViews
 	public void init() {
-		// StrictMode.setThreadPolicy(new
-		// StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork()
-		// // 这里可以替换为detectAll()
-		// // 就包括了磁盘读写和网络I/O
-		// .penaltyLog() // 打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
-		// .build());
-		// StrictMode.setVmPolicy(new
-		// StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects() //
-		// 探测SQLite数据库操作
-		// .penaltyLog() // 打印logcat
-		// .penaltyDeath().build());
-		// m=new MyOrientationDetector3(SettingActivity.this);
-		dialog = new MyProcessDialog(this, stringResComponent.dialogSet);
-		// Intent intent = this.getIntent();
-		// Bundle bundle = intent.getExtras();
-		// type = bundle.getString("type");
-		// edit_setting_time.setText(myApp.getSetting_time() / (60 * 1000) +
-		// "");
 
-		// btu_setting_time.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// String set_time = edit_setting_time.getText().toString();
-		// if (set_time != null && !set_time.equals("") &&
-		// !set_time.equals("null")) {
-		// Toast.makeText(SettingActivity.this, "设置成功", 1).show();
-		// myApp.setSetting_time(Long.parseLong(set_time) * 60 * 1000);
-		// }
-		// }
-		// });
+		dialog = new MyProcessDialog(this, stringResComponent.dialogSet);
 
 		/** 判断今天是否是最新的 */
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		String date = df.format(new Date());
-		SettingActivity.this.search_date = date;
+		search_date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 		if (!isLatestData()) {
 			synchronize.setText(getString(R.string.sync_err));
 		} else {
@@ -317,108 +254,6 @@ public class SettingActivity extends BasicActivity {
 			@Override
 			public void onClick(View v) {
 				new SyncALlOperation().execute("");
-			}
-		});
-
-		// menu.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// menuComponent.initPopupWindow();
-		// }
-		// });
-		// print_one_edit.setText(myApp.getIp_str());
-		// take_price_edit.setText(myApp.getDiscount());
-		// shop_set.setText(myApp.getSettingShopId());
-
-		initLanguage();
-
-		layout_exit.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				CreatedDialog().create().show();
-			}
-		});
-		// print_one_btu.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// String ip = print_one_edit.getText().toString();
-		// myApp.setIp_str(ip);
-		// androidPrinter.reconnect();
-		// Toast.makeText(SettingActivity.this,
-		// getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-		// }
-		// });
-		// btu_discount.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// String text_discount = take_price_edit.getText().toString();
-		// myApp.setDiscount(text_discount);
-		// Toast.makeText(SettingActivity.this,
-		// getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-		// }
-		// });
-
-		// // 设置摊位ID,第一次超管必须设置好
-		// synchronization_shop.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// String shop_id = shop_set.getText().toString();
-		// myApp.setSettingShopId(shop_id);
-		// Toast.makeText(SettingActivity.this,
-		// getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-		// }
-		// });
-
-		// 语言设置
-		language_set.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_language_succ), Toast.LENGTH_SHORT).show();
-				DialogBuilder builder = new DialogBuilder(SettingActivity.this);
-				builder.setTitle(R.string.message_title);
-				builder.setMessage(R.string.message_2);
-				builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						// Toast.makeText(DailyPayActivity.this,
-						// "你点击了确定",
-						// Toast.LENGTH_SHORT).show();
-						updateLanguage();
-						getDetailPayListDao.getInatance(SettingActivity.this).delete();
-						RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL + myApp.getSettingShopId(), new Callback() {
-							@Override
-							public void dataLoaded(ResponseData data) {
-								if (data.getCode() == 1) {
-									String json = data.getJson();
-									Log.e("返回数据", json);
-									ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json);
-									Log.e("支付页详情数据", datas.size() + "");
-									for (int i = 0; i < datas.size(); i++) {
-										GetPayDetailBean bean = datas.get(i);
-										getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName(),
-												bean.getNameZh());
-									}
-								} else if (data.getCode() == 0) {
-									Toast.makeText(SettingActivity.this, "支付页失败", Toast.LENGTH_SHORT).show();
-								} else if (data.getCode() == -1) {
-									Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
-								}
-							}
-						});
-					}
-				});
-				builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						// Toast.makeText(DailyPayActivity.this,
-						// "你点击了取消",
-						// Toast.LENGTH_SHORT).show();
-					}
-				});
-				builder.create().show();
-
 			}
 		});
 
@@ -486,51 +321,6 @@ public class SettingActivity extends BasicActivity {
 			}
 		});
 
-		init_wifiReceiver();
-	}
-
-	@Click(R.id.edit_setting_time)
-	public void setTime() {
-		timeSetComponent.setTime();
-	}
-
-	@Click(R.id.print_one_btu)
-	public void setPrintIP() {
-		printSetComponent.setPrintIP();
-	}
-
-	@Click(R.id.btu_discount)
-	public void setDiscount() {
-		discountSetComponent.setDiscount();
-	}
-
-	@Click(R.id.synchronization_shop_brn)
-	public void synchronizeSHopID() {
-		shopIDSynchronizationComponent.synchronizeShopID();
-	}
-
-	@Click(R.id.menu_btn)
-	public void menu() {
-		menuComponent.initPopupWindow();
-	}
-
-	// 同步菜单
-	@Click({ R.id.synchronization_menu_brn })
-	void foodSync() {
-		System.out.println("myApp.getSettingShopId()-->" + myApp.getSettingShopId());
-		dialog.show();
-		if (myApp.getSettingShopId() == null || myApp.getSettingShopId().equals("") || myApp.getSettingShopId().equals("null")
-				|| myApp.getSettingShopId().equals("0")) {
-			Toast.makeText(SettingActivity.this, getString(R.string.setting_tanwei_id), Toast.LENGTH_SHORT).show();
-			return;
-		}
-		String url = Constants.URL_FOODSLIST_PATH + myApp.getSettingShopId();
-
-		FoodMapping.getJSONAndSave(url);
-
-		Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-		dialog.cancel();
-
 	}
 
 	/***********************************************************************************/
@@ -550,197 +340,6 @@ public class SettingActivity extends BasicActivity {
 			return false;
 		}
 		return true;
-	}
-
-	/* 提交每日支付 */
-	public void post_payList() {
-		try {
-			HashMap<String, String> params = new HashMap<String, String>();
-			List<Map<String, String>> datas = PayListDao.getInatance(this).getList(search_date);
-			if (!datas.isEmpty()) {
-				for (int i = 0; i < datas.size(); i++) {
-					if (datas.get(i).get("type").equals("0")) {
-						params.put("consumeTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
-						Log.e("consumeTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
-						params.put("consumeTransactions[" + i + "].consumption.id", datas.get(i).get("consumption_id"));
-						Log.e("consumeTransactions[" + i + "].consumption.id", datas.get(i).get("consumption_id"));
-						params.put("consumeTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
-						Log.e("consumeTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
-						params.put("consumeTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
-						Log.e("consumeTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
-						params.put("consumeTransactions[" + i + "].price", datas.get(i).get("price"));
-						Log.e("consumeTransactions[" + i + "].price", datas.get(i).get("price"));
-					}
-				}
-
-				ResponseData data = RemoteDataHandler.post(Constants.URL_POST_PAYLIST, params);
-				if (data.getCode() == 1) {
-					String json = data.getJson();
-					// Toast.makeText(SettingActivity.this,
-					// getString(R.string.toast_submmit_succ)+json,
-					// Toast.LENGTH_SHORT).show();
-					String str = json.substring(1, json.length() - 1);
-					String[] array = str.split(",");
-					if (array.length != 0) {
-						for (int i = 0; i < array.length; i++) {
-							Log.e("数据组", array[i] + "");
-							int result = PayListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
-							if (result == -1) {
-								// Toast.makeText(DailyPayActivity.this,
-								// "每日支付接口更新失败", Toast.LENGTH_SHORT).show();
-							} else {
-								// Toast.makeText(DailyPayActivity.this,
-								// "每日支付接口更新成功", Toast.LENGTH_SHORT).show();
-							}
-
-						}
-					}
-				} else if (data.getCode() == 0) {
-					// Toast.makeText(SettingActivity.this,
-					// getString(R.string.toast_submmit_fail),
-					// Toast.LENGTH_SHORT).show();
-				} else if (data.getCode() == -1) {
-					// Toast.makeText(SettingActivity.this,
-					// getString(R.string.toast_submmit_err),
-					// Toast.LENGTH_SHORT).show();
-				}
-			}
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-	}
-
-	/* 提交带回总数 */
-	public void post_numList() {
-		try {
-			HashMap<String, String> params = new HashMap<String, String>();
-			List<Map<String, String>> datas = NumListDao.getInatance(this).getList(search_date);
-			if (!datas.isEmpty()) {
-				for (int i = 0; i < datas.size(); i++) {
-					if (datas.get(i).get("type").equals("0")) {
-						params.put("cashTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
-						Log.e("cashTransactions[" + i + "].androidId", datas.get(i).get("android_id"));
-						params.put("cashTransactions[" + i + "].cash.id", datas.get(i).get("cash_id"));
-						Log.e("cashTransactions[" + i + "].cash.id", datas.get(i).get("cash_id"));
-						params.put("cashTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
-						Log.e("cashTransactions[" + i + "].shop.id", datas.get(i).get("shop_id"));
-						params.put("cashTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
-						Log.e("cashTransactions[" + i + "].user.id", datas.get(i).get("user_id"));
-						params.put("cashTransactions[" + i + "].quantity", datas.get(i).get("quantity"));
-						Log.e("cashTransactions[" + i + "].quantity", datas.get(i).get("quantity"));
-					}
-				}
-			}
-
-			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_TAKENUM, params);
-
-			if (data.getCode() == 1) {
-				String json = data.getJson();
-				// Toast.makeText(SettingActivity.this,
-				// getString(R.string.toast_submmit_succ)+json,
-				// Toast.LENGTH_SHORT).show();
-				String str = json.substring(1, json.length() - 1);
-				String[] array = str.split(",");
-				if (array.length != 0) {
-					for (int i = 0; i < array.length; i++) {
-						Log.e("数据组", array[i] + "");
-						int result = NumListDao.getInatance(SettingActivity.this).update_type(array[i], "1");
-						if (result == -1) {
-							// Toast.makeText(DailyPayActivity.this,
-							// "带回总数接口更新失败", Toast.LENGTH_SHORT).show();
-						} else {
-							// Toast.makeText(DailyPayActivity.this,
-							// "带回总数接口更新成功", Toast.LENGTH_SHORT).show();
-						}
-					}
-				}
-			} else if (data.getCode() == 0) {
-				// Toast.makeText(SettingActivity.this,
-				// getString(R.string.toast_submmit_fail),
-				// Toast.LENGTH_SHORT).show();
-			} else if (data.getCode() == -1) {
-				// Toast.makeText(SettingActivity.this,
-				// getString(R.string.toast_submmit_err),
-				// Toast.LENGTH_SHORT).show();
-			}
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-	}
-
-	/* 提交每日营业额 */
-	public void post_dailyMoney() {
-		try {
-			HashMap<String, String> params = DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
-			ResponseData data = RemoteDataHandler.post(Constants.URL_POST_DAILY_MONEY, params);
-			if (data.getCode() == 1) {
-				String json = data.getJson();
-				// Toast.makeText(SettingActivity.this,
-				// getString(R.string.toast_submmit_succ)+json,
-				// Toast.LENGTH_SHORT).show();
-				int result = DailyMoneyDao.getInatance(SettingActivity.this).update_type(search_date);
-				if (result == -1) {
-					// Toast.makeText(SettingActivity.this, "每日营业额更新失败",
-					// Toast.LENGTH_SHORT).show();
-				} else {
-					// Toast.makeText(SettingActivity.this, "每日营业额更新成功",
-					// Toast.LENGTH_SHORT).show();
-				}
-			} else if (data.getCode() == 0) {
-				// Toast.makeText(SettingActivity.this,
-				// getString(R.string.toast_submmit_fail),
-				// Toast.LENGTH_SHORT).show();
-			} else if (data.getCode() == -1) {
-				// Toast.makeText(SettingActivity.this,
-				// getString(R.string.toast_submmit_err),
-				// Toast.LENGTH_SHORT).show();
-			}
-
-		} catch (Exception e) {
-			e.getMessage();
-		}
-	}
-
-	/*********************************************************************************/
-
-	private void initLanguage() {
-		if (StringUtils.equals(sharedPrefs.language().get(), Locale.SIMPLIFIED_CHINESE.getLanguage())) {
-			language_set.setText("中文");
-		} else {
-			language_set.setText("English");
-		}
-	}
-
-	private void updateLanguage() {
-		if (StringUtils.equals(sharedPrefs.language().get(), Locale.SIMPLIFIED_CHINESE.getLanguage())) {
-			language_set.setText("English");
-			updateLange(Locale.ENGLISH);
-		} else {
-			language_set.setText("中文");
-			updateLange(Locale.SIMPLIFIED_CHINESE);
-
-		}
-	}
-
-	private void updateLange(Locale locale) {
-		languageComponent.updateLanguage(locale);
-		activityComponent.updateActivity(SettingActivity_.class);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		// TODO Auto-generated method stub
-
-		// InputMethodManager imm = (InputMethodManager)
-		// this.getSystemService(Context.INPUT_METHOD_SERVICE);
-		// imm.hideSoftInputFromWindow(print_one_edit.getWindowToken(), 0); //
-		// 强制隐藏键盘
-		// imm.hideSoftInputFromWindow(shop_set.getWindowToken(), 0); // 强制隐藏键盘
-		// imm.hideSoftInputFromWindow(take_price_edit.getWindowToken(), 0); //
-		// 强制隐藏键盘
-		return super.onTouchEvent(event);
 	}
 
 }

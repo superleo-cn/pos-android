@@ -40,12 +40,12 @@ public class DailypaySubmitComponent {
 					Log.e("consumeTransactions[" + i + "].androidId", expenses.getId()+"");
 					params.put("consumeTransactions[" + i + "].consumption.id",expenses.consumptionId);
 					Log.e("consumeTransactions[" + i + "].consumption.id", expenses.consumptionId);
-					params.put("consumeTransactions[" + i + "].shop.id", expenses.shopId);
-					Log.e("consumeTransactions[" + i + "].shop.id",expenses.shopId);
-					params.put("consumeTransactions[" + i + "].user.id", expenses.userId);
-					Log.e("consumeTransactions[" + i + "].user.id", expenses.userId);
-					params.put("consumeTransactions[" + i + "].price", expenses.price);
-					Log.e("consumeTransactions[" + i + "].price", expenses.price);
+//					params.put("consumeTransactions[" + i + "].shop.id", expenses.shopId);
+//					Log.e("consumeTransactions[" + i + "].shop.id",expenses.shopId);
+//					params.put("consumeTransactions[" + i + "].user.id", expenses.userId);
+//					Log.e("consumeTransactions[" + i + "].user.id", expenses.userId);
+//					params.put("consumeTransactions[" + i + "].price", expenses.price);
+//					Log.e("consumeTransactions[" + i + "].price", expenses.price);
 				}
 			}
 			// 异步请求数据

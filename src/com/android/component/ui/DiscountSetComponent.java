@@ -4,11 +4,11 @@ import android.widget.EditText;
 
 import com.android.R;
 import com.android.component.KeyboardComponent;
-import com.android.component.SharedPreferencesComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
@@ -37,6 +37,7 @@ public class DiscountSetComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
+	@Click(R.id.btu_discount)
 	public void setDiscount() {
 		keyboardComponent.dismissKeyboard(takePriceEdit);
 		String textDiscount = takePriceEdit.getText().toString();

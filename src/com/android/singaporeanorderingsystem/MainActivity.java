@@ -19,7 +19,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AbsractActivity {
+public class MainActivity extends AbstractActivity {
 
 	@ViewById(R.id.layout_exit)
 	RelativeLayout exit_layout; // 退出
@@ -38,7 +38,7 @@ public class MainActivity extends AbsractActivity {
 
 	@Bean
 	OrderComponent orderComponent;
-	
+
 	@Bean
 	CalculatorComponent calculatorComponent;
 

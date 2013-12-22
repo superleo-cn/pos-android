@@ -15,7 +15,7 @@ import com.googlecode.androidannotations.api.Scope;
 @EBean(scope = Scope.Singleton)
 public class StringResComponent {
 
-	//登录界面的用到的
+	// 登录界面的用到的
 	@StringRes(R.string.login_wait)
 	public String loginWait;
 
@@ -34,7 +34,7 @@ public class StringResComponent {
 	@StringRes(R.string.login_wifi_err)
 	public String loginWifiErr;
 
-	//主页用到的
+	// 主页用到的
 	@StringRes(R.string.insufficientpermissions)
 	public String insufficientpermissions;
 
@@ -52,8 +52,18 @@ public class StringResComponent {
 
 	@StringRes(R.string.mainTitle_txt)
 	public String mainTitle;
-	
+
 	@StringRes(R.string.selec_not_food)
 	public String noFood;
+
+	// 设置页面用到的
+	@StringRes(R.string.toast_setting_language_succ)
+	public String toastSettingLanguageSucc;
+
+	@StringRes(R.string.message_title)
+	public String messageTitle;
+
+	@StringRes(R.string.setting_tanwei_id)
+	public String settingTanweiId;
 
 }

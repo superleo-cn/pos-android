@@ -17,7 +17,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity
-public abstract class AbsractActivity extends Activity {
+public abstract class AbstractActivity extends Activity {
 
 	@Bean
 	public MenuComponent menuComponent;

@@ -32,7 +32,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.daily_pay)
-public class DailyPayActivity extends AbsractActivity {
+public class DailyPayActivity extends AbstractActivity {
 
 	@ViewById(R.id.text_id_all_price)
 	TextView text_id_all_price;

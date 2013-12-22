@@ -20,6 +20,7 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
  * 更新组件
@@ -30,7 +31,9 @@ import com.googlecode.androidannotations.annotations.RootContext;
 @EBean
 public class LoginComponent {
 
-	// 注入 MyApp
+	@Pref
+	SharedPreferencesComponent_ myPrefs;
+
 	@App
 	MyApp myApp;
 
@@ -74,7 +77,7 @@ public class LoginComponent {
 		String strMAC = wifiComponent.getMacAddress(context);
 
 		if (!StringUtils.equalsIgnoreCase(Constants.ROLE_SUPERADMIN, loginType)) {
-			User user = User.checkLogin(username, myApp.getSettingShopId());
+			User user = User.checkLogin(username, myPrefs.shopId().get());
 			if (user != null) {
 				if (StringUtils.equalsIgnoreCase(password, user.password)) {
 					setLoginInfo(user);
@@ -93,7 +96,7 @@ public class LoginComponent {
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user.username", username);
 			params.put("user.password", password);
-			params.put("user.shop.id", myApp.getSettingShopId());
+			params.put("user.shop.id", myPrefs.shopId().get());
 			params.put("user.userIp", strIP);
 			params.put("user.userMac", strMAC);
 			return loginRemote(loginType, params);
@@ -185,6 +188,7 @@ public class LoginComponent {
 		myApp.setU_type(user.usertype);
 		myApp.setShop_name(user.shopName);
 		myApp.setShop_code(user.shopCode);
+
 	}
 
 	public User getDbUser(UserMapping.User user) {

@@ -317,8 +317,8 @@ public class DailyPayComponent {
 			}
 			Expenses e_bean = new Expenses();
 			e_bean.consumptionId = bean.getId();//
-			e_bean.price = detail_price;//
-			Expenses.save(e_bean, myApp);
+//			e_bean.price = detail_price;
+//			Expenses.save(e_bean, myApp);
 		}
 		/* 提交每日支付金额结束 */
 
