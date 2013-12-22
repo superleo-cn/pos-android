@@ -36,7 +36,11 @@ import com.android.component.ActivityComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
+import com.android.component.ui.DiscountSetComponent;
 import com.android.component.ui.MenuComponent;
+import com.android.component.ui.PrintSetComponent;
+import com.android.component.ui.ShopIDSynchronizationComponent;
+import com.android.component.ui.TimeSetComponent;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;
@@ -69,14 +73,14 @@ public class SettingActivity extends BasicActivity {
 	@ViewById(R.id.language_set)
 	EditText language_set;
 
-	@ViewById(R.id.print_one_edit)
-	EditText print_one_edit;
+	// @ViewById(R.id.print_one_edit)
+	// EditText print_one_edit;
 
-	@ViewById(R.id.shop_set)
-	EditText shop_set;
+	// @ViewById(R.id.shop_set)
+	// EditText shop_set;
 
-	@ViewById(R.id.take_price_edit)
-	EditText take_price_edit;
+	// @ViewById(R.id.take_price_edit)
+	// EditText take_price_edit;
 
 	@ViewById(R.id.synchronization_menu_brn)
 	Button synchronization_menu;
@@ -120,8 +124,8 @@ public class SettingActivity extends BasicActivity {
 	@ViewById(R.id.btu_setting_login_password)
 	Button btu_setting_login_password;
 
-	@ViewById(R.id.edit_setting_time)
-	EditText edit_setting_time;
+	// @ViewById(R.id.edit_setting_time)
+	// EditText edit_setting_time;
 
 	@ViewById(R.id.btu_setting_time)
 	Button btu_setting_time;
@@ -144,6 +148,15 @@ public class SettingActivity extends BasicActivity {
 	@Bean
 	LanguageComponent languageComponent;
 
+	@Bean
+	TimeSetComponent timeSetComponent;
+	@Bean
+	PrintSetComponent printSetComponent;
+	@Bean
+	DiscountSetComponent discountSetComponent;
+	@Bean
+	ShopIDSynchronizationComponent shopIDSynchronizationComponent;
+
 	@App
 	MyApp myApp;
 
@@ -158,7 +171,8 @@ public class SettingActivity extends BasicActivity {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
-//	public static String type;
+
+	// public static String type;
 
 	private class SyncALlOperation extends AsyncTask<String, Void, Integer> {
 
@@ -223,21 +237,23 @@ public class SettingActivity extends BasicActivity {
 		// .penaltyDeath().build());
 		// m=new MyOrientationDetector3(SettingActivity.this);
 		dialog = new MyProcessDialog(this, stringResComponent.dialogSet);
-//		Intent intent = this.getIntent();
-//		Bundle bundle = intent.getExtras();
-//		type = bundle.getString("type");
-		edit_setting_time.setText(myApp.getSetting_time() / (60 * 1000) + "");
+		// Intent intent = this.getIntent();
+		// Bundle bundle = intent.getExtras();
+		// type = bundle.getString("type");
+		// edit_setting_time.setText(myApp.getSetting_time() / (60 * 1000) +
+		// "");
 
-		btu_setting_time.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String set_time = edit_setting_time.getText().toString();
-				if (set_time != null && !set_time.equals("") && !set_time.equals("null")) {
-					Toast.makeText(SettingActivity.this, "设置成功", 1).show();
-					myApp.setSetting_time(Long.parseLong(set_time) * 60 * 1000);
-				}
-			}
-		});
+		// btu_setting_time.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// String set_time = edit_setting_time.getText().toString();
+		// if (set_time != null && !set_time.equals("") &&
+		// !set_time.equals("null")) {
+		// Toast.makeText(SettingActivity.this, "设置成功", 1).show();
+		// myApp.setSetting_time(Long.parseLong(set_time) * 60 * 1000);
+		// }
+		// }
+		// });
 
 		/** 判断今天是否是最新的 */
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -250,7 +266,7 @@ public class SettingActivity extends BasicActivity {
 		}
 		/***/
 		price_set_brn = (Button) this.findViewById(R.id.price_set_brn);
-		
+
 		if (myApp.getU_type().equals("SUPERADMIN")) {
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
@@ -304,51 +320,54 @@ public class SettingActivity extends BasicActivity {
 			}
 		});
 
-		menu.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				menuComponent.initPopupWindow();
-			}
-		});
-		print_one_edit.setText(myApp.getIp_str());
-		take_price_edit.setText(myApp.getDiscount());
-		shop_set.setText(myApp.getSettingShopId());
+		// menu.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// menuComponent.initPopupWindow();
+		// }
+		// });
+		// print_one_edit.setText(myApp.getIp_str());
+		// take_price_edit.setText(myApp.getDiscount());
+		// shop_set.setText(myApp.getSettingShopId());
 
 		initLanguage();
-		
+
 		layout_exit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				CreatedDialog().create().show();
 			}
 		});
-		print_one_btu.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String ip = print_one_edit.getText().toString();
-				myApp.setIp_str(ip);
-				androidPrinter.reconnect();
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-			}
-		});
-		btu_discount.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String text_discount = take_price_edit.getText().toString();
-				myApp.setDiscount(text_discount);
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-			}
-		});
+		// print_one_btu.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// String ip = print_one_edit.getText().toString();
+		// myApp.setIp_str(ip);
+		// androidPrinter.reconnect();
+		// Toast.makeText(SettingActivity.this,
+		// getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
+		// }
+		// });
+		// btu_discount.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// String text_discount = take_price_edit.getText().toString();
+		// myApp.setDiscount(text_discount);
+		// Toast.makeText(SettingActivity.this,
+		// getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
+		// }
+		// });
 
-		// 设置摊位ID,第一次超管必须设置好
-		synchronization_shop.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				String shop_id = shop_set.getText().toString();
-				myApp.setSettingShopId(shop_id);
-				Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-			}
-		});
+		// // 设置摊位ID,第一次超管必须设置好
+		// synchronization_shop.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// String shop_id = shop_set.getText().toString();
+		// myApp.setSettingShopId(shop_id);
+		// Toast.makeText(SettingActivity.this,
+		// getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
+		// }
+		// });
 
 		// 语言设置
 		language_set.setOnClickListener(new OnClickListener() {
@@ -468,6 +487,31 @@ public class SettingActivity extends BasicActivity {
 		});
 
 		init_wifiReceiver();
+	}
+
+	@Click(R.id.edit_setting_time)
+	public void setTime() {
+		timeSetComponent.setTime();
+	}
+
+	@Click(R.id.print_one_btu)
+	public void setPrintIP() {
+		printSetComponent.setPrintIP();
+	}
+
+	@Click(R.id.btu_discount)
+	public void setDiscount() {
+		discountSetComponent.setDiscount();
+	}
+
+	@Click(R.id.synchronization_shop_brn)
+	public void synchronizeSHopID() {
+		shopIDSynchronizationComponent.synchronizeShopID();
+	}
+
+	@Click(R.id.menu_btn)
+	public void menu() {
+		menuComponent.initPopupWindow();
 	}
 
 	// 同步菜单
@@ -660,23 +704,23 @@ public class SettingActivity extends BasicActivity {
 	}
 
 	/*********************************************************************************/
-	
-	private void initLanguage(){
+
+	private void initLanguage() {
 		if (StringUtils.equals(sharedPrefs.language().get(), Locale.SIMPLIFIED_CHINESE.getLanguage())) {
 			language_set.setText("中文");
 		} else {
 			language_set.setText("English");
 		}
 	}
-	
-	private void updateLanguage(){
+
+	private void updateLanguage() {
 		if (StringUtils.equals(sharedPrefs.language().get(), Locale.SIMPLIFIED_CHINESE.getLanguage())) {
 			language_set.setText("English");
 			updateLange(Locale.ENGLISH);
 		} else {
 			language_set.setText("中文");
 			updateLange(Locale.SIMPLIFIED_CHINESE);
-			
+
 		}
 	}
 
@@ -688,10 +732,14 @@ public class SettingActivity extends BasicActivity {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// TODO Auto-generated method stub
-		InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(print_one_edit.getWindowToken(), 0); // 强制隐藏键盘
-		imm.hideSoftInputFromWindow(shop_set.getWindowToken(), 0); // 强制隐藏键盘
-		imm.hideSoftInputFromWindow(take_price_edit.getWindowToken(), 0); // 强制隐藏键盘
+
+		// InputMethodManager imm = (InputMethodManager)
+		// this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		// imm.hideSoftInputFromWindow(print_one_edit.getWindowToken(), 0); //
+		// 强制隐藏键盘
+		// imm.hideSoftInputFromWindow(shop_set.getWindowToken(), 0); // 强制隐藏键盘
+		// imm.hideSoftInputFromWindow(take_price_edit.getWindowToken(), 0); //
+		// 强制隐藏键盘
 		return super.onTouchEvent(event);
 	}
 
