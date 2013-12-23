@@ -28,6 +28,7 @@ import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
 import com.android.common.MyApp;
+import com.android.common.MyTextUtils;
 import com.android.component.ActivityComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
@@ -241,7 +242,7 @@ public class DailyPayComponent {
 		dailypaysubmitComponent.saveOther(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num,
 				total, noon_time, noon_turnover, noon_time, other, send_person);
 
-		dailypaysubmitComponent.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money,
+		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money,
 				total_take_num, send_person, other, shop_money);
 
 		SimpleDateFormat df_date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
