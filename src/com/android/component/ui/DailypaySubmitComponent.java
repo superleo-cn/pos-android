@@ -234,22 +234,21 @@ public class DailypaySubmitComponent {
 	/**
 	 * 保存每日其他数据
 	 * */
-<<<<<<< HEAD
 	public void saveOther(TextView shop_money, TextView text_id_all_price, TextView cash_register, TextView today_turnover,
 			TextView tomorrow_money, TextView total_take_num, TextView total, TextView noon_time, TextView noon_turnover, TextView time,
 			TextView other, TextView send_person) {
-		String aOpenBalance = checkIntTextView(shop_money);
-		String bExpenses = checkIntTextView(text_id_all_price);
-		String cCashCollected = checkIntTextView(cash_register);
-		String dDailyTurnover = checkIntTextView(today_turnover);
-		String eNextOpenBalance = checkIntTextView(tomorrow_money);
-		String fBringBackCash = checkIntTextView(total_take_num);
-		String gTotalBalance = checkIntTextView(total);
-		String middleCalculateTime = checkIntTextView(noon_time);
-		String middleCalculateBalance = checkIntTextView(noon_turnover);
-		String calculateTime = checkIntTextView(time);
-		String others = checkIntTextView(other);
-		String courier = checkIntTextView(send_person);
+		String aOpenBalance = MyTextUtils.checkIntTextView(shop_money);
+		String bExpenses = MyTextUtils.checkIntTextView(text_id_all_price);
+		String cCashCollected = MyTextUtils.checkIntTextView(cash_register);
+		String dDailyTurnover = MyTextUtils.checkIntTextView(today_turnover);
+		String eNextOpenBalance = MyTextUtils.checkIntTextView(tomorrow_money);
+		String fBringBackCash = MyTextUtils.checkIntTextView(total_take_num);
+		String gTotalBalance = MyTextUtils.checkIntTextView(total);
+		String middleCalculateTime = MyTextUtils.checkIntTextView(noon_time);
+		String middleCalculateBalance = MyTextUtils.checkIntTextView(noon_turnover);
+		String calculateTime = MyTextUtils.checkIntTextView(time);
+		String others = MyTextUtils.checkIntTextView(other);
+		String courier = MyTextUtils.checkIntTextView(send_person);
 
 		Balance bean = new Balance();
 		bean.aOpenBalance = aOpenBalance;
@@ -264,37 +263,6 @@ public class DailypaySubmitComponent {
 		bean.calculateTime = calculateTime;
 		bean.others = others;
 		bean.courier = courier;
-=======
-	public void saveOther(TextView shop_money,TextView text_id_all_price,TextView cash_register
-			,TextView today_turnover,TextView tomorrow_money,TextView total_take_num,TextView total
-			,TextView noon_time,TextView noon_turnover,TextView time,TextView other,TextView send_person){
-		String aOpenBalance=MyTextUtils.checkIntTextView(shop_money);
-		String bExpenses = MyTextUtils.checkIntTextView(text_id_all_price);
-		String cCashCollected = MyTextUtils.checkIntTextView(cash_register);
-		String dDailyTurnover = MyTextUtils.checkIntTextView(today_turnover);
-		String eNextOpenBalance = MyTextUtils.checkIntTextView(tomorrow_money);
-		String fBringBackCash = MyTextUtils.checkIntTextView(total_take_num);
-		String gTotalBalance = MyTextUtils.checkIntTextView(total);
-		String middleCalculateTime = MyTextUtils.checkIntTextView(noon_time);
-		String middleCalculateBalance = MyTextUtils.checkIntTextView(noon_turnover);
-		String calculateTime = MyTextUtils.checkIntTextView(time);
-		String others = MyTextUtils.checkIntTextView(other);
-		String courier = MyTextUtils.checkIntTextView(send_person);
-		
-		Balance bean=new Balance();
-		bean.aOpenBalance=aOpenBalance;
-		bean.bExpenses=bExpenses;
-		bean.cCashCollected=cCashCollected;
-		bean.dDailyTurnover=dDailyTurnover;
-		bean.eNextOpenBalance=eNextOpenBalance;
-		bean.fBringBackCash=fBringBackCash;
-		bean.gTotalBalance=gTotalBalance;
-		bean.middleCalculateTime=middleCalculateTime;
-		bean.middleCalculateBalance=middleCalculateBalance;
-		bean.calculateTime=calculateTime;
-		bean.others=others;
-		bean.courier=courier;
->>>>>>> branch '2.x' of https://github.com/superleo-cn/pos-android.git
 		Balance.save(bean);
 	}
 
@@ -424,46 +392,5 @@ public class DailypaySubmitComponent {
 
 		}
 	}
-<<<<<<< HEAD
-
-	public String checkIntTextView(TextView textview) {
-		String str = textview.getText().toString();
-		if (str.isEmpty()) {
-			str = "0";
-		}
-		return str;
-	}
-
-	public String checkTimeTextView(TextView textview) {
-		String str = textview.getText().toString();
-		if (str.isEmpty()) {
-			str = "yyyy-MM-dd";
-		}
-		return str;
-	}
-
-	public String checkStringTextView(TextView textview) {
-		String str = textview.getText().toString();
-		if (str.isEmpty()) {
-			str = "";
-		}
-		return str;
-	}
-
-	/**
-	 * 要强制失去焦点的组件
-	 * 
-	 * @param objs
-	 *            不定参数,可以传入任意数量的参数
-	 */
-	public void clearTextView(TextView... objs) {
-		if (objs != null) {
-			for (TextView view : objs) {
-				view.setText("");
-			}
-		}
-	}
-=======
 	
->>>>>>> branch '2.x' of https://github.com/superleo-cn/pos-android.git
 }

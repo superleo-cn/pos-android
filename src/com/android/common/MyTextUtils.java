@@ -4,55 +4,43 @@ import org.apache.commons.lang.StringUtils;
 
 import android.widget.TextView;
 
-<<<<<<< HEAD
 /**
  * Date Help Class
  * 
  * @author Hu Bo
  */
 public class MyTextUtils {
-
 	public static String trimTextView(TextView textview) {
 		return StringUtils.trim(textview.toString());
 	}
 
 	public static String checkIntTextView(TextView textview) {
-		String value = trimTextView(textview);
-		if (StringUtils.isNotEmpty(value)) {
-			if (StringUtils.isNumeric(value)) {
-				return value;
-			}
-		}
-		return "0";
-=======
-public class MyTextUtils {
-	public static String trimTextView(TextView textview) {
-		return StringUtils.trim(textview.toString());
-	}
-	public static String checkIntTextView(TextView textview){
 		String str = textview.getText().toString();
 		if (str.isEmpty()) {
 			str = "0";
 		}
 		return str;
 	}
-	public static String checkTimeTextView(TextView textview){
+
+	public static String checkTimeTextView(TextView textview) {
 		String str = textview.getText().toString();
 		if (str.isEmpty()) {
 			str = "yyyy-MM-dd";
 		}
 		return str;
 	}
-	public static String checkStringTextView(TextView textview){
+
+	public static String checkStringTextView(TextView textview) {
 		String str = textview.getText().toString();
 		if (str.isEmpty()) {
 			str = "";
 		}
 		return str;
 	}
-	
+
 	/**
 	 * 要强制失去焦点的组件
+	 * 
 	 * @param objs
 	 *            不定参数,可以传入任意数量的参数
 	 */
@@ -62,6 +50,5 @@ public class MyTextUtils {
 				view.setText("");
 			}
 		}
->>>>>>> branch '2.x' of https://github.com/superleo-cn/pos-android.git
 	}
 }
