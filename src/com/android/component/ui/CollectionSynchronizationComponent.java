@@ -49,7 +49,6 @@ public class CollectionSynchronizationComponent {
 	// 同步菜单
 	@Click(R.id.price_set_brn)
 	void collectionSync() {
-		System.out.println("myApp.getSettingShopId()-->" + myApp.getSettingShopId());
 		if (StringUtils.isNotEmpty(myApp.getSettingShopId()) || StringUtils.equals(myApp.getSettingShopId(), "0")) {
 			toastComponent.show(stringResComponent.settingTanweiId);
 			return;

@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.widget.EditText;
 
 import com.android.R;
+import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
@@ -32,12 +33,16 @@ public class TimeSetComponent {
 	StringResComponent stringResComponent;
 
 	@Bean
+	KeyboardComponent keyboardComponent;
+
+	@Bean
 	ToastComponent toastComponent;
 
 	@Click(R.id.edit_setting_time)
 	public void setTime() {
 		String setTime = editSettingTime.getText().toString();
 		if (!TextUtils.isEmpty(setTime) && !setTime.equals("null")) {
+			keyboardComponent.dismissKeyboard(editSettingTime);
 			toastComponent.show(stringResComponent.toastSettingSucc);
 			myPrefs.time().put(Long.parseLong(setTime) * 60 * 1000);
 		}

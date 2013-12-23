@@ -57,6 +57,15 @@ public class CollectionOrder extends Model {
 	}
 
 	/**
+	 * 返回食物订单列表
+	 * 
+	 * @return
+	 */
+	public static List<CollectionOrder> queryListByStatus(String status) {
+		return new Select().from(CollectionOrder.class).where("status = ?", status).execute();
+	}
+
+	/**
 	 * 保存
 	 * 
 	 * @param bean

@@ -1,27 +1,22 @@
 package com.android.singaporeanorderingsystem;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.util.CollectionUtils;
+
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.R;
-import com.android.bean.GetPayDetailBean;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
-import com.android.component.ActivityComponent;
-import com.android.component.LanguageComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ui.CollectionSynchronizationComponent;
@@ -35,11 +30,7 @@ import com.android.component.ui.ShopSynchronizationComponent;
 import com.android.component.ui.TimeSetComponent;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.NumListDao;
-import com.android.dao.PayListDao;
-import com.android.dao.getDetailPayListDao;
-import com.android.handler.RemoteDataHandler;
-import com.android.handler.RemoteDataHandler.Callback;
-import com.android.model.ResponseData;
+import com.android.domain.CollectionOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -75,53 +66,52 @@ public class SettingActivity extends AbstractActivity {
 	@ViewById(R.id.synchronizeText)
 	TextView synchronize;
 
-	@ViewById(R.id.menu_btn)
-	ImageView menu;
-
-	@Bean
-	ActivityComponent activityComponent;
-
 	@Bean
 	StringResComponent stringResComponent;
 
-	@Bean
-	LanguageComponent languageComponent;
-
+	// 时间组件
 	@Bean
 	TimeSetComponent timeSetComponent;
 
+	// 打印机组件
 	@Bean
 	PrintSetComponent printSetComponent;
 
+	// 打折组件
 	@Bean
 	DiscountSetComponent discountSetComponent;
 
+	// 摊位组件
 	@Bean
 	ShopSynchronizationComponent shopSynchronizationComponent;
 
+	// 语言组件
 	@Bean
 	LanguageSetComponent languageSetComponent;
 
+	// 食物组件
 	@Bean
 	FoodSynchronizationComponent foodSynchronizationComponent;
 
+	// 支付款项组件
 	@Bean
 	ExpenseSynchronizationComponent expenseSynchronizationComponent;
 
+	// 带回总数组件
 	@Bean
 	CollectionSynchronizationComponent collectionSynchronizationComponent;
 
+	// 设置密码
 	@Bean
 	ResetPasswordComponent resetPasswordComponent;
 
 	@App
 	MyApp myApp;
 
-	private MyProcessDialog dialog;
-	private String search_date;
-
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
+
+	private MyProcessDialog dialog;
 
 	// public static String type;
 
@@ -131,71 +121,43 @@ public class SettingActivity extends AbstractActivity {
 		dialog = new MyProcessDialog(this, stringResComponent.dialogSet);
 
 		/** 判断今天是否是最新的 */
-		search_date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-		if (!isLatestData()) {
-			synchronize.setText(getString(R.string.sync_err));
+		if (!isLatestUpdate()) {
+			synchronize.setText(stringResComponent.syncErr);
 		} else {
-			synchronize.setText(getString(R.string.sync_succ));
+			synchronize.setText(stringResComponent.syncSucc);
 		}
-		/***/
 
-		if (myApp.getU_type().equals("SUPERADMIN")) {
+		if (StringUtils.equalsIgnoreCase(myApp.getU_type(), Constants.ROLE_ADMIN)) {
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
 			setting_time.setVisibility(View.VISIBLE);
 		}
-
-		// 支付款同步
-		synchronization_pay.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				dialog.show();
-				getDetailPayListDao.getInatance(SettingActivity.this).delete();
-				RemoteDataHandler.asyncGet(Constants.URL_PAY_DETAIL + myApp.getSettingShopId(), new Callback() {
-					@Override
-					public void dataLoaded(ResponseData data) {
-						if (data.getCode() == 1) {
-							String json = data.getJson();
-							Log.e("返回数据", json);
-							ArrayList<GetPayDetailBean> datas = GetPayDetailBean.newInstanceList(json);
-							Log.e("支付页详情数据", datas.size() + "");
-							for (int i = 0; i < datas.size(); i++) {
-								GetPayDetailBean bean = datas.get(i);
-								getDetailPayListDao.getInatance(SettingActivity.this).save(bean.getId(), bean.getName(), bean.getNameZh());
-							}
-							dialog.cancel();
-							Toast.makeText(SettingActivity.this, getString(R.string.toast_setting_succ), Toast.LENGTH_SHORT).show();
-						} else if (data.getCode() == 0) {
-							Toast.makeText(SettingActivity.this, "支付页失败", Toast.LENGTH_SHORT).show();
-						} else if (data.getCode() == -1) {
-							Toast.makeText(SettingActivity.this, getString(R.string.login_service_err), Toast.LENGTH_SHORT).show();
-						}
-					}
-				});
-			}
-		});
 
 	}
 
 	/***********************************************************************************/
 
 	/* 判断今天是否已经是最新数据 */
-	public boolean isLatestData() {
-		List<Map<String, String>> pays = PayListDao.getInatance(this).getList(search_date);
-		if (!pays.isEmpty()) {
+	public boolean isLatestUpdate() {
+
+		String search_date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
+
+		List<CollectionOrder> pays = CollectionOrder.queryListByDate(search_date);
+		if (CollectionUtils.isEmpty(pays)) {
 			return false;
 		}
+
 		List<Map<String, String>> nums = NumListDao.getInatance(this).getList(search_date);
 		if (!nums.isEmpty()) {
 			return false;
 		}
+
 		HashMap<String, String> params = DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
 		if (!params.isEmpty()) {
 			return false;
 		}
 		return true;
+
 	}
 
 }

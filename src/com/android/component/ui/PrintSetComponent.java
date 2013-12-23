@@ -42,9 +42,8 @@ public class PrintSetComponent {
 	KeyboardComponent keyboardComponent;
 
 	/**
-	 * 更新IP操作
+	 * 更新打印机IP操作
 	 */
-
 	@Click(R.id.print_one_btu)
 	public void setPrintIP() {
 		keyboardComponent.dismissKeyboard(printOneEdit);
