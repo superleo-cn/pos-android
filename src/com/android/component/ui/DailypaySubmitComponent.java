@@ -4,6 +4,8 @@
 package com.android.component.ui;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,21 +17,29 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
+import com.android.common.MyApp;
 import com.android.component.SharedPreferencesComponent_;
+import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.getDetailPayListDao;
 import com.android.domain.Balance;
 import com.android.domain.Collection;
 import com.android.domain.Expenses;
 import com.android.mapping.StatusMapping;
+import com.android.singaporeanorderingsystem.PriceSave;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
@@ -43,8 +53,18 @@ public class DailypaySubmitComponent {
 	@RootContext
 	Context context;
 	
+	@App
+	MyApp myApp;
+	
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
+	
+	public void submitAll(String date){
+		
+		post_payList(date);
+		post_numList(date);
+		post_dailyMoney(date);
+	}
 
 	/* 提交每日支付 */
 	public void post_payList(String search_date) {
@@ -312,6 +332,54 @@ public class DailypaySubmitComponent {
 			}
 		}
 		take_all_price.setText(df.format(num_count));
+	}
+	public void initView(Button btu_id_sbumit) {
+		Double order_price = 0.00;
+		String userId = myApp.getUser_id();
+		String shopId = myApp.getSettingShopId();
+		if (shopId == null) {
+			shopId = "0";
+		}
+
+		SimpleDateFormat df_save = new SimpleDateFormat("yyyy-MM-dd");
+		String date = df_save.format(new Date());
+		Log.e("今天日期", date);
+		boolean flag = DailyMoneyDao.getInatance(context).isCompleted(shopId, userId, date, "1");
+		if (!flag) {
+			btu_id_sbumit.setVisibility(View.VISIBLE);
+			List<String> priceList = null;
+			if (!flag) {
+				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date, myApp.getSettingShopId());
+			} else {
+				btu_id_sbumit.setVisibility(View.GONE);
+			}
+
+			// Double price=0.00;
+			if (priceList == null) {
+				order_price = 0.00;
+			} else {
+				if (priceList.size() != 0) {
+					for (int i = 0; i < priceList.size(); i++) {
+						order_price += Double.parseDouble(priceList.get(i));
+					}
+				} else {
+					order_price = 0.00;
+				}
+
+			}
+		} else if (myApp.getDaily_pay_submit_flag().equals("0")) {
+			btu_id_sbumit.setVisibility(View.GONE);
+		}
+	}
+	public void submitOver(ListView view,int r){
+		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		int num_of_visible_view = view.getLastVisiblePosition() - view.getFirstVisiblePosition();
+		for (int i = 0; i <= num_of_visible_view; i++) {
+			EditText edit = (EditText) view.getChildAt(i).findViewById(r);
+			edit.setEnabled(false);
+			imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+
+		}
 	}
 	
 	public String checkIntTextView(TextView textview){

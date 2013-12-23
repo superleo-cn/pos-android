@@ -1,7 +1,9 @@
 package com.android.adapter;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
@@ -26,13 +28,13 @@ import com.android.singaporeanorderingsystem.DailyPayActivity;
 
 public class DailyPayDetailAdapter extends BaseAdapter {
 
-	@SuppressWarnings("unused")
 	private Context context;
 	private LayoutInflater inflater;
 	private List<DailyPayDetailBean> classList;
 	private Handler handler;
 	private int index = -1;
 	public static final int CHAGE_NUM_DETAIL=1020;
+	public static Map<Integer, String> hashMap_detail = new HashMap<Integer, String>();
 	private DailyPayDetailBean detailBean;
 	
 	public DailyPayDetailAdapter(Context context, List<DailyPayDetailBean> list,
@@ -102,7 +104,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 					int p = (Integer) viewHolder.text_id_price.getTag();
 					cacheData(s.toString(), p);
 					if(viewHolder.text_id_price.getText().toString().isEmpty()){
-						DailyPayActivity.hashMap_detail.put(p, ""); 
+						hashMap_detail.put(p, ""); 
 						Message msg = new Message();
 						msg.what = CHAGE_NUM_DETAIL;
 						msg.obj=p+"+"+"0.00";
@@ -121,7 +123,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 						}
 						String now_price=price;
 						Log.e("变空后的价格", now_price);
-						DailyPayActivity.hashMap_detail.put(p, now_price); 
+						hashMap_detail.put(p, now_price); 
 								Message msg = new Message();
 								msg.what = CHAGE_NUM_DETAIL;
 								msg.obj=p+"+"+now_price;
@@ -153,8 +155,8 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	    }
 		
 		 
-		 if(DailyPayActivity.hashMap_detail.get(position) != null){  
-			   viewHolder.text_id_price.setText(DailyPayActivity.hashMap_detail.get(position));
+		 if(hashMap_detail.get(position) != null){  
+			   viewHolder.text_id_price.setText(hashMap_detail.get(position));
 			   Log.e("改变值", "成功");
 			             }  
 		return convertView;

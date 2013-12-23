@@ -65,5 +65,17 @@ public class StringResComponent {
 
 	@StringRes(R.string.setting_tanwei_id)
 	public String settingTanweiId;
-
+	
+	@StringRes(R.string.dialy_submit_error1)
+	public String dialy_submit_error1;
+	
+	@StringRes(R.string.dialy_submit_error2)
+	public String dialy_submit_error2;
+	
+	@StringRes(R.string.dialy_submit_error3)
+	public String dialy_submit_error3;
+	
+	@StringRes(R.string.err_price)
+	public String err_price;
+	
 }

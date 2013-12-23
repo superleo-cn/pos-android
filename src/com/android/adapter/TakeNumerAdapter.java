@@ -2,7 +2,9 @@ package com.android.adapter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
@@ -30,14 +32,14 @@ import com.android.singaporeanorderingsystem.MainActivity;
 
 public class TakeNumerAdapter extends BaseAdapter {
 
-	@SuppressWarnings("unused")
 	private Context context;
 	private LayoutInflater inflater;
 	private List<TakeNumberBean> classList;
 	public static final int SET_NUM=2001;
 	private int index = -1;
-	@SuppressWarnings("unused")
 	private Handler handler;
+	public static Map<Integer, String> hashMap_numprice = new HashMap<Integer, String>();
+	public static Map<Integer, String> hashMap_num = new HashMap<Integer, String>();
 	public TakeNumerAdapter(Context context, List<TakeNumberBean> list,
 			Handler handler) {
 		this.context = context;
@@ -144,8 +146,8 @@ public class TakeNumerAdapter extends BaseAdapter {
 						Double total_price=price*num;
 						DecimalFormat df=new DecimalFormat("0.00");
 						viewHolder.num_price.setText(df.format(total_price));
-						DailyPayActivity.hashMap_num.put(position, result); 
-						DailyPayActivity.hashMap_numprice.put(position, String.valueOf(total_price));
+						hashMap_num.put(position, result); 
+						hashMap_numprice.put(position, String.valueOf(total_price));
 						Message msg = new Message();
 						msg.what = SET_NUM;
 						msg.obj=position+"+"+String.valueOf(total_price);
@@ -179,12 +181,12 @@ public class TakeNumerAdapter extends BaseAdapter {
 	               // 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
 	 
 	        	viewHolder.id_price.requestFocus();
-	        	 if(DailyPayActivity.hashMap_num.get(position) != null){  
-	    			 viewHolder.id_price.setText(DailyPayActivity.hashMap_num.get(position));
+	        	 if(hashMap_num.get(position) != null){  
+	    			 viewHolder.id_price.setText(hashMap_num.get(position));
 	    			   Log.e("改变值", "成功");
 	    	}  
-	        	 if(DailyPayActivity.hashMap_numprice.get(position) != null){  
-	    			 viewHolder.num_price.setText(DailyPayActivity.hashMap_numprice.get(position));
+	        	 if(hashMap_numprice.get(position) != null){  
+	    			 viewHolder.num_price.setText(hashMap_numprice.get(position));
 	    			   Log.e("改变值", "成功");
 	    	}  
 	        }

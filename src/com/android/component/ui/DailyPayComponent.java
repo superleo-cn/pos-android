@@ -13,17 +13,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
@@ -37,14 +33,14 @@ import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.dao.DailyMoneyDao;
 import com.android.dialog.DialogBuilder;
-import com.android.singaporeanorderingsystem.PriceSave;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.TextChange;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -73,6 +69,9 @@ public class DailyPayComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
+
+	@Bean
+	MenuComponent menuComponent;
 
 	@ViewById(R.id.write_name)
 	TextView write_name;
@@ -150,7 +149,6 @@ public class DailyPayComponent {
 	private Double num_count = 0.00;
 	private Double count = 0.00;
 	private Double order_price = 0.00;
-	private String search_date;
 
 	@AfterViews
 	public void initDailayPay() {
@@ -169,6 +167,7 @@ public class DailyPayComponent {
 		dailypaysubmitComponent.loadingCollection(number_classList, number_adapter, num_list, all_num_price, num_count, take_all_price,
 				handler);
 		compute();
+		dailypaysubmitComponent.initView(btu_id_sbumit);
 	}
 
 	// 提交数据窗口
@@ -201,7 +200,7 @@ public class DailyPayComponent {
 		Double shopMoney = Double.parseDouble(txtShopMoney);
 
 		if (totalTakeNum.doubleValue() <= 0 || shopMoney.doubleValue() <= 0) {
-			Toast.makeText(context, context.getString(R.string.dialy_submit_error1), Toast.LENGTH_SHORT).show();
+			toastComponent.show(stringResComponent.dialy_submit_error1);
 			return false;
 		}
 
@@ -212,7 +211,7 @@ public class DailyPayComponent {
 		}
 
 		if (sigle_price.doubleValue() != totalTakeNum.doubleValue()) {
-			Toast.makeText(context, context.getString(R.string.dialy_submit_error2), Toast.LENGTH_SHORT).show();
+			toastComponent.show(stringResComponent.dialy_submit_error2);
 			return false;
 		}
 
@@ -220,17 +219,13 @@ public class DailyPayComponent {
 		String txtCashRegister = StringUtils.defaultIfEmpty(cash_register.getText().toString(), "0");
 		Double cashRegister = Double.parseDouble(txtCashRegister);
 		if (cashRegister < 0) {
-			Toast.makeText(context, context.getString(R.string.dialy_submit_error3), Toast.LENGTH_SHORT).show();
+			toastComponent.show(stringResComponent.dialy_submit_error3);
 			return false;
 		}
 		return true;
 	}
 
 	public void clear_data() {
-		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-		SimpleDateFormat df_date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String date = df_date.format(new Date());
-		this.search_date = date;
 		/* 提交每日支付金额 */
 		dailypaysubmitComponent.saveExpenses(detail_classList);
 		/* 提交每日支付金额结束 */
@@ -240,31 +235,19 @@ public class DailyPayComponent {
 
 		/* 提交带回总数接口结束 */
 
-		int num_of_visible_view = num_list.getLastVisiblePosition() - num_list.getFirstVisiblePosition();
-		for (int i = 0; i <= num_of_visible_view; i++) {
-			EditText edit = (EditText) num_list.getChildAt(i).findViewById(R.id.num_id_price);
-			edit.setEnabled(false);
-			imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
+		dailypaysubmitComponent.submitOver(num_list, R.id.num_id_price);
+		dailypaysubmitComponent.submitOver(daily_list, R.id.text_id_price);
 
-		}
-
-		int num_of_view = daily_list.getLastVisiblePosition() - daily_list.getFirstVisiblePosition();
-		for (int i = 0; i <= num_of_view; i++) {
-			EditText edit = (EditText) daily_list.getChildAt(i).findViewById(R.id.text_id_price);
-			edit.setEnabled(false);
-			imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
-
-		}
 		dailypaysubmitComponent.saveOther(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num,
 				total, noon_time, noon_turnover, noon_time, other, send_person);
 
 		dailypaysubmitComponent.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money,
 				total_take_num, send_person, other, shop_money);
 
-		dailypaysubmitComponent.post_payList(search_date);
-		dailypaysubmitComponent.post_numList(search_date);
-		dailypaysubmitComponent.post_dailyMoney(search_date);
-
+		SimpleDateFormat df_date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String date = df_date.format(new Date());
+		
+		dailypaysubmitComponent.submitAll(date);
 	}
 
 	public void compute() {
@@ -284,15 +267,12 @@ public class DailyPayComponent {
 			}
 
 			String all_price = text_id_all_price.getText().toString();
-			Double price_f = Double.parseDouble(take_all_price.getText().toString());
 			cash_register.setText(df.format(order_price + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
 			Double price_b = Double.parseDouble(all_price);
 			Double price_c = Double.parseDouble(cash_register.getText().toString());
-			Double price_today = price_b + price_c;
 			Double price_d = order_price;
 			today_turnover.setText(df.format(price_d));
 
-			Double price_a = Double.parseDouble(shop_money_text);
 			Double total_t = price_c - price_b;
 			total.setText(df.format(total_t));
 
@@ -305,77 +285,28 @@ public class DailyPayComponent {
 		}
 	}
 
-	public void initView() {
-		String userId = myApp.getUser_id();
-		String shopId = myApp.getSettingShopId();
-		if (shopId == null) {
-			shopId = "0";
-		}
-
-		SimpleDateFormat df_save = new SimpleDateFormat("yyyy-MM-dd");
-		String date = df_save.format(new Date());
-		Log.e("今天日期", date);
-		boolean flag = DailyMoneyDao.getInatance(context).isCompleted(shopId, userId, date, "1");
-		if (!flag) {
-			btu_id_sbumit.setVisibility(View.VISIBLE);
-			List<String> priceList = null;
-			if (!flag) {
-				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date, myApp.getSettingShopId());
-			} else {
-				btu_id_sbumit.setVisibility(View.GONE);
-			}
-
-			// Double price=0.00;
-			if (priceList == null) {
-				order_price = 0.00;
-			} else {
-				if (priceList.size() != 0) {
-					for (int i = 0; i < priceList.size(); i++) {
-						order_price += Double.parseDouble(priceList.get(i));
-					}
-				} else {
-					order_price = 0.00;
-				}
-
-			}
-		} else if (myApp.getDaily_pay_submit_flag().equals("0")) {
-			btu_id_sbumit.setVisibility(View.GONE);
-		}
-		// initData();
-		shop_money.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				compute();
-				Log.e("今日输出价格", "");
-			}
-		});
-
-		tomorrow_money.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				compute();
-				Log.e("明日输出价格", "");
-			}
-		});
+	
+	@Click(R.id.btu_id_sbumit)
+	void sbumitOnClick() {
+		CreatedSubmitDialog().create().show();
 	}
+
+	@Click(R.id.menu_btn)
+	void menuBtnOnClick() {
+		menuComponent.initPopupWindow();
+	}
+
+	@TextChange(R.id.shop_money)
+	void shopmoneyTextChanged(){
+		compute();
+		Log.e("今日输出价格", "");
+	}
+	@TextChange(R.id.tomorrow_money)
+	void tomorrowmoneyTextChanged(){
+		compute();
+		Log.e("明日输出价格", "");
+	}
+	
 
 	Handler handler = new Handler() {
 
@@ -408,7 +339,7 @@ public class DailyPayComponent {
 					compute();
 				} catch (Exception e) {
 					Log.e("支付款计算报错信息", e.getMessage());
-					Toast.makeText(context, R.string.err_price, Toast.LENGTH_SHORT).show();
+					toastComponent.show(stringResComponent.err_price);
 				}
 				break;
 			case TakeNumerAdapter.SET_NUM:
