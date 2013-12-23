@@ -11,7 +11,7 @@ import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.mapping.ExpensesMapping;
+import com.android.mapping.CollectionMapping;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
@@ -26,7 +26,7 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
  * 
  */
 @EBean
-public class ExpenseSynchronizationComponent {
+public class CollectionSynchronizationComponent {
 
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
@@ -47,16 +47,15 @@ public class ExpenseSynchronizationComponent {
 	MyApp myApp;
 
 	// 同步菜单
-	@Click(R.id.synchronization_pay_brn)
-	void expensesSync() {
-
+	@Click(R.id.price_set_brn)
+	void collectionSync() {
 		System.out.println("myApp.getSettingShopId()-->" + myApp.getSettingShopId());
 		if (StringUtils.isNotEmpty(myApp.getSettingShopId()) || StringUtils.equals(myApp.getSettingShopId(), "0")) {
 			toastComponent.show(stringResComponent.settingTanweiId);
 			return;
 		}
-		String url = Constants.URL_PAY_DETAIL + myApp.getSettingShopId();
-		ExpensesMapping.getJSONAndSave(url);
+		String url = Constants.URL_TAKE_DNUM + myApp.getSettingShopId();
+		CollectionMapping.getJSONAndSave(url);
 		toastComponent.show(stringResComponent.toastSettingSucc);
 	}
 

@@ -67,7 +67,6 @@ public class Expenses extends Model {
 	 * 删除所有支付款项
 	 */
 	public static void deleteAll() {
-		// save Food
 		new Delete().from(Expenses.class).execute();
 	}
 
