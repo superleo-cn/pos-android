@@ -52,6 +52,14 @@ public class Collection extends Model{
 		c_order.cashID= bean.cashID;
 		c_order.save();
 	}
+	public static void save(Collection bean) {
+		Collection c_order = new Collection();
+		c_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
+		c_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+		c_order.quantity = bean.quantity;//
+		c_order.cashID= bean.cashID;
+		c_order.save();
+	}
 	/**
 	 * 返回列表
 	 * @return

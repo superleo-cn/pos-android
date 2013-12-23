@@ -34,5 +34,18 @@ public class KeyboardComponent {
 			}
 		}
 	}
+	/**
+	 * 要强制失去焦点的组件
+	 * 
+	 * @param objs
+	 *            不定参数,可以传入任意数量的参数
+	 */
+	public void clearfocusKeyboard(View... objs) {
+		if (objs != null) {
+			for (View view : objs) {
+				view.clearFocus();
+			}
+		}
+	}
 
 }

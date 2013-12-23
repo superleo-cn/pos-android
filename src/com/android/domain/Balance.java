@@ -97,6 +97,24 @@ public class Balance extends Model{
 		b_order.others=bean.others;
 		b_order.save();
 	}
+	public static void save(Balance bean) {
+		Balance b_order = new Balance();
+		b_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
+		b_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+		b_order.aOpenBalance=bean.aOpenBalance;
+		b_order.bExpenses=bean.bExpenses;
+		b_order.cCashCollected=bean.cCashCollected;
+		b_order.dDailyTurnover=bean.dDailyTurnover;
+		b_order.eNextOpenBalance=bean.eNextOpenBalance;
+		b_order.fBringBackCash=bean.fBringBackCash;
+		b_order.gTotalBalance=bean.gTotalBalance;
+		b_order.middleCalculateTime=bean.middleCalculateTime;
+		b_order.middleCalculateBalance=bean.middleCalculateBalance;
+		b_order.calculateTime=bean.calculateTime;
+		b_order.courier=bean.courier;
+		b_order.others=bean.others;
+		b_order.save();
+	}
 	/**
 	 * 返回列表
 	 * @return
