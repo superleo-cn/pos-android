@@ -40,23 +40,6 @@ public class Collection extends Model {
 		return "Collection [cashID=" + cashID + ", shopId=" + shopId + ", userId=" + userId + ", quantity=" + quantity + "]";
 	}
 
-	/**
-	 * 保存
-	 * 
-	 * @param bean
-	 * @param myApp
-	 */
-	public static void save(Collection bean, MyApp myApp) {
-		Collection c_order = new Collection();
-		c_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
-		c_order.shopId = myApp.getSettingShopId();// 店idmyApp.getShopid()
-		c_order.userId = myApp.getUser_id();//
-		c_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-		c_order.quantity = bean.quantity;//
-		c_order.cashID = bean.cashID;
-		c_order.save();
-	}
-
 	public static void save(Collection bean) {
 		Collection c_order = new Collection();
 		c_order.status = Constants.DB_FAILED;// 是否成功 1是 0否

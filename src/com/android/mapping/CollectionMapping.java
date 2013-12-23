@@ -17,7 +17,7 @@ public class CollectionMapping extends BasicMapping<CollectionRemote> {
 
 		public String id;
 
-		public String name;
+		public String price;
 
 		public String position;
 

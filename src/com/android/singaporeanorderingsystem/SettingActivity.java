@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.R;
-import com.android.bean.GetPTakeNumBean;
 import com.android.bean.GetPayDetailBean;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
@@ -25,6 +24,7 @@ import com.android.component.ActivityComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
+import com.android.component.ui.CollectionSynchronizationComponent;
 import com.android.component.ui.DiscountSetComponent;
 import com.android.component.ui.ExpenseSynchronizationComponent;
 import com.android.component.ui.FoodSynchronizationComponent;
@@ -34,7 +34,6 @@ import com.android.component.ui.ResetPasswordComponent;
 import com.android.component.ui.ShopSynchronizationComponent;
 import com.android.component.ui.TimeSetComponent;
 import com.android.dao.DailyMoneyDao;
-import com.android.dao.GetTakeNumDao;
 import com.android.dao.NumListDao;
 import com.android.dao.PayListDao;
 import com.android.dao.getDetailPayListDao;
@@ -108,6 +107,9 @@ public class SettingActivity extends AbstractActivity {
 
 	@Bean
 	ExpenseSynchronizationComponent expenseSynchronizationComponent;
+
+	@Bean
+	CollectionSynchronizationComponent collectionSynchronizationComponent;
 
 	@Bean
 	ResetPasswordComponent resetPasswordComponent;

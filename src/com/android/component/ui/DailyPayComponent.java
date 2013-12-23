@@ -232,7 +232,7 @@ public class DailyPayComponent {
 		/* 提交每日支付金额结束 */
 
 		/* 提交带回总数接口 */
-		dailypaysubmitComponent.saveCollection(number_classList);
+		dailypaysubmitComponent.saveCollectionOrder(number_classList);
 
 		/* 提交带回总数接口结束 */
 

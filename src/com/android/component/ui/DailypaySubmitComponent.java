@@ -121,8 +121,8 @@ public class DailypaySubmitComponent {
 					CollectionOrder collection = datas.get(i);
 					params.put("cashTransactions[" + i + "].androidId", collection.getId() + "");
 					Log.e("cashTransactions[" + i + "].androidId", collection.getId() + "");
-					params.put("cashTransactions[" + i + "].cash.id", collection.cacheId);
-					Log.e("cashTransactions[" + i + "].cash.id", collection.cacheId);
+					params.put("cashTransactions[" + i + "].cash.id", collection.cashId);
+					Log.e("cashTransactions[" + i + "].cash.id", collection.cashId);
 					params.put("cashTransactions[" + i + "].shop.id", collection.shopId);
 					Log.e("cashTransactions[" + i + "].shop.id", collection.shopId);
 					params.put("cashTransactions[" + i + "].user.id", collection.userId);
@@ -215,19 +215,11 @@ public class DailypaySubmitComponent {
 	/**
 	 * 保存每日带回总数
 	 * */
-	public void saveCollection(List<TakeNumberBean> number_classList) {
-		String take_num;
+	public void saveCollectionOrder(List<TakeNumberBean> number_classList) {
 		for (int j = 0; j < number_classList.size(); j++) {
 			TakeNumberBean bean = number_classList.get(j);
-			if (bean != null && StringUtils.isNotEmpty(bean.getNum())) {
-				take_num = bean.getNum();
-			} else {
-				take_num = "0";
-			}
-			Collection c_bean = new Collection();
-			c_bean.cashID = bean.getId();
-			c_bean.quantity = take_num;
-			Collection.save(c_bean);
+			bean.setPrice(StringUtils.defaultIfEmpty(bean.getNum(), "0"));
+			CollectionOrder.save(bean, myApp);
 		}
 	}
 
@@ -392,5 +384,5 @@ public class DailypaySubmitComponent {
 
 		}
 	}
-	
+
 }
