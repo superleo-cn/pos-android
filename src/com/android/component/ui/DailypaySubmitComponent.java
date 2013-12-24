@@ -34,10 +34,11 @@ import com.android.component.SharedPreferencesComponent_;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.GetTakeNumDao;
 import com.android.dao.getDetailPayListDao;
-import com.android.domain.Balance;
+import com.android.domain.BalanceOrder;
 import com.android.domain.Collection;
 import com.android.domain.CollectionOrder;
 import com.android.domain.Expenses;
+import com.android.domain.ExpensesOrder;
 import com.android.mapping.StatusMapping;
 import com.android.singaporeanorderingsystem.PriceSave;
 import com.googlecode.androidannotations.annotations.App;
@@ -71,37 +72,26 @@ public class DailypaySubmitComponent {
 	public void post_payList(String search_date) {
 		try {
 			HashMap<String, String> params = new HashMap<String, String>();
-			List<Expenses> datas = Expenses.TodayList(search_date);
+			List<ExpensesOrder> datas = ExpensesOrder.TodayList(search_date);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
-					Expenses expenses = datas.get(i);
+					ExpensesOrder expenses = datas.get(i);
 					params.put("consumeTransactions[" + i + "].androidId", expenses.getId() + "");
-					Log.e("consumeTransactions[" + i + "].androidId", expenses.getId() + "");
 					params.put("consumeTransactions[" + i + "].consumption.id", expenses.consumptionId);
-					Log.e("consumeTransactions[" + i + "].consumption.id", expenses.consumptionId);
-					// params.put("consumeTransactions[" + i + "].shop.id",
-					// expenses.shopId);
-					// Log.e("consumeTransactions[" + i +
-					// "].shop.id",expenses.shopId);
-					// params.put("consumeTransactions[" + i + "].user.id",
-					// expenses.userId);
-					// Log.e("consumeTransactions[" + i + "].user.id",
-					// expenses.userId);
-					// params.put("consumeTransactions[" + i + "].price",
-					// expenses.price);
-					// Log.e("consumeTransactions[" + i + "].price",
-					// expenses.price);
+					params.put("consumeTransactions[" + i + "].shop.id", expenses.shopID);
+					params.put("consumeTransactions[" + i + "].user.id", expenses.userID);
+					params.put("consumeTransactions[" + i + "].price", expenses.price);
 				}
 			}
 			// 异步请求数据
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_PAYLIST, params);
 			if (mapping.code == 1) {
-				Expenses.updateAllByStatus();
+				ExpensesOrder.updateAllByStatus();
 			} else if (mapping.code == 0) {
 				List<Long> ids = mapping.datas;
 				if (CollectionUtils.isNotEmpty(ids)) {
 					for (Long id : ids) {
-						Expenses.updateByStatus(id);
+						ExpensesOrder.updateByStatus(id);
 					}
 				}
 			} else if (mapping.code == -1) {
@@ -135,12 +125,12 @@ public class DailypaySubmitComponent {
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_TAKENUM, params);
 			if (mapping.code == 1) {
 				// 更新全部
-				Collection.updateAllByStatus();
+				CollectionOrder.updateAllByStatus();
 			} else if (mapping.code == 0) {
 				List<Long> ids = mapping.datas;
 				if (CollectionUtils.isNotEmpty(ids)) {
 					for (Long id : ids) {
-						Collection.updateByStatus(id);
+						CollectionOrder.updateByStatus(id);
 					}
 				}
 			} else if (mapping.code == -1) {
@@ -154,10 +144,10 @@ public class DailypaySubmitComponent {
 	public void post_dailyMoney(final String search_date) {
 		try {
 			HashMap<String, String> params = new HashMap<String, String>();
-			List<Balance> datas = Balance.TodayList(search_date);
+			List<BalanceOrder> datas = BalanceOrder.TodayList(search_date);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
-					Balance balance = datas.get(i);
+					BalanceOrder balance = datas.get(i);
 					params.put("cashTransactions[" + i + "].androidId", balance.getId() + "");
 					params.put("cashTransactions[" + i + "].aOpenBalance", balance.aOpenBalance);
 					params.put("cashTransactions[" + i + "].bExpenses", balance.bExpenses);
@@ -177,12 +167,12 @@ public class DailypaySubmitComponent {
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_DAILY_MONEY, params);
 			if (mapping.code == 1) {
 				// 更新全部
-				Balance.updateAllByStatus();
+				BalanceOrder.updateAllByStatus();
 			} else if (mapping.code == 0) {
 				List<Long> ids = mapping.datas;
 				if (CollectionUtils.isNotEmpty(ids)) {
 					for (Long id : ids) {
-						Balance.updateByStatus(id);
+						BalanceOrder.updateByStatus(id);
 					}
 				}
 			} else if (mapping.code == -1) {
@@ -205,10 +195,10 @@ public class DailypaySubmitComponent {
 			} else {
 				detail_price = "0.00";
 			}
-			Expenses e_bean = new Expenses();
+			ExpensesOrder e_bean = new ExpensesOrder();
 			e_bean.consumptionId = bean.getId();//
-			// e_bean.price = detail_price;
-			// Expenses.save(e_bean, myApp);
+			e_bean.price = detail_price;
+			ExpensesOrder.save(e_bean, myApp);
 		}
 	}
 
@@ -242,7 +232,7 @@ public class DailypaySubmitComponent {
 		String others = MyTextUtils.checkIntTextView(other);
 		String courier = MyTextUtils.checkIntTextView(send_person);
 
-		Balance bean = new Balance();
+		BalanceOrder bean = new BalanceOrder();
 		bean.aOpenBalance = aOpenBalance;
 		bean.bExpenses = bExpenses;
 		bean.cCashCollected = cCashCollected;
@@ -255,7 +245,7 @@ public class DailypaySubmitComponent {
 		bean.calculateTime = calculateTime;
 		bean.others = others;
 		bean.courier = courier;
-		Balance.save(bean);
+		BalanceOrder.save(bean);
 	}
 
 	/**

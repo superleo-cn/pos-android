@@ -1,6 +1,5 @@
 package com.android.adapter;
 
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +18,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.DailyPayDetailBean;
-import com.android.singaporeanorderingsystem.DailyPayActivity;
 
 
 public class DailyPayDetailAdapter extends BaseAdapter {

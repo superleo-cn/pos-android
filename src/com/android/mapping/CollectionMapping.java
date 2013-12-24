@@ -33,7 +33,7 @@ public class CollectionMapping extends BasicMapping<CollectionRemote> {
 				if (CollectionUtils.isNotEmpty(list)) {
 					for (int i = 0; i < list.size(); i++) {
 						CollectionRemote CollectionRemote = list.get(i);
-						// Collection.save(CollectionRemote);
+						Collection.save(CollectionRemote);
 					}
 				}
 			}

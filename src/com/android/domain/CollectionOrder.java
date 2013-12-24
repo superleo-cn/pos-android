@@ -3,6 +3,8 @@ package com.android.domain;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -81,5 +83,29 @@ public class CollectionOrder extends Model {
 		c_order.cashId = bean.getId();
 		c_order.save();
 	}
+	/**
+	 * 更新所有提交成功的
+	 */
+	public static void updateAllByStatus() {
+		List<CollectionOrder> collectionList = queryListByStatus(Constants.DB_SUCCESS);
+		if (CollectionUtils.isNotEmpty(collectionList)) {
+			for (CollectionOrder collection : collectionList) {
+				collection.status = Constants.DB_SUCCESS;
+				collection.save();
+			}
+		}
+	}
 
+	/**
+	 * 按照ID更新数据
+	 * 
+	 * @param androidId
+	 */
+	public static void updateByStatus(Long androidId) {
+		CollectionOrder collection = CollectionOrder.load(CollectionOrder.class, androidId);
+		if (collection != null) {
+			collection.status = Constants.DB_SUCCESS;
+			collection.save();
+		}
+	}
 }

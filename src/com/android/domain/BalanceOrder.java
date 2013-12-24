@@ -13,8 +13,8 @@ import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
 
-@Table(name = "tb_balance")
-public class Balance extends Model{
+@Table(name = "tb_balance_order")
+public class BalanceOrder extends Model{
 	@Column(name = "shopId")
 	public String shopId;
 	
@@ -65,7 +65,7 @@ public class Balance extends Model{
 
 	@Override
 	public String toString() {
-		return "Balance [shopId=" + shopId + ", userId=" + userId + ", aOpenBalance=" + aOpenBalance + ", bExpenses=" + bExpenses
+		return "BalanceOrder [shopId=" + shopId + ", userId=" + userId + ", aOpenBalance=" + aOpenBalance + ", bExpenses=" + bExpenses
 				+ ", cCashCollected=" + cCashCollected + ", dDailyTurnover=" + dDailyTurnover + ", eNextOpenBalance=" + eNextOpenBalance
 				+ ", fBringBackCash=" + fBringBackCash + ", gTotalBalance=" + gTotalBalance + ", middleCalculateTime="
 				+ middleCalculateTime + ", middleCalculateBalance=" + middleCalculateBalance + ", calculateTime=" + calculateTime
@@ -77,8 +77,8 @@ public class Balance extends Model{
 	 * @param bean
 	 * @param myApp
 	 */
-	public static void save(Balance bean,MyApp myApp) {
-		Balance b_order = new Balance();
+	public static void save(BalanceOrder bean,MyApp myApp) {
+		BalanceOrder b_order = new BalanceOrder();
 		b_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		b_order.shopId = myApp.getSettingShopId();// 店idmyApp.getShopid()
 		b_order.userId = myApp.getUser_id();//
@@ -97,8 +97,8 @@ public class Balance extends Model{
 		b_order.others=bean.others;
 		b_order.save();
 	}
-	public static void save(Balance bean) {
-		Balance b_order = new Balance();
+	public static void save(BalanceOrder bean) {
+		BalanceOrder b_order = new BalanceOrder();
 		b_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		b_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
 		b_order.aOpenBalance=bean.aOpenBalance;
@@ -119,38 +119,38 @@ public class Balance extends Model{
 	 * 返回列表
 	 * @return
 	 */
-	public static List<Balance> queryList() {
-		return new Select().from(Balance.class).execute();
+	public static List<BalanceOrder> queryList() {
+		return new Select().from(BalanceOrder.class).execute();
 	}
 	/**
 	 * 返回订单列表
 	 * 
 	 * @return
 	 */
-	public static List<Balance> queryListByStatus(String status) {
-		return new Select().from(Balance.class).where("status = ?", status).execute();
+	public static List<BalanceOrder> queryListByStatus(String status) {
+		return new Select().from(BalanceOrder.class).where("status = ?", status).execute();
 	}
 	/**
 	 * 返回今天数据列表
 	 * @return
 	 */
-	public static List<Balance> TodayList(String time) {
-		return new Select().from(Balance.class).where("date = ?", time).execute();
+	public static List<BalanceOrder> TodayList(String time) {
+		return new Select().from(BalanceOrder.class).where("date = ?", time).execute();
 	}
 	/**
 	 * 返回今天数据列表
 	 * @return
 	 */
-	public static List<Balance> TodayStatusList(String time,String status) {
-		return new Select().from(Balance.class).where("date = ? and status=?", time,status).execute();
+	public static List<BalanceOrder> TodayStatusList(String time,String status) {
+		return new Select().from(BalanceOrder.class).where("date = ? and status=?", time,status).execute();
 	}
 	/**
 	 * 更新所有提交成功的
 	 */
 	public static void updateAllByStatus() {
-		List<Balance> Balances = queryListByStatus(Constants.DB_SUCCESS);
+		List<BalanceOrder> Balances = queryListByStatus(Constants.DB_SUCCESS);
 		if (CollectionUtils.isNotEmpty(Balances)) {
-			for (Balance Balance : Balances) {
+			for (BalanceOrder Balance : Balances) {
 				Balance.status = Constants.DB_SUCCESS;
 				Balance.save();
 			}
@@ -161,7 +161,7 @@ public class Balance extends Model{
 	 * @param androidId
 	 */
 	public static void updateByStatus(Long androidId) {
-		Balance balance = Balance.load(Balance.class, androidId);
+		BalanceOrder balance = BalanceOrder.load(BalanceOrder.class, androidId);
 		if (balance != null) {
 			balance.status = Constants.DB_SUCCESS;
 			balance.save();

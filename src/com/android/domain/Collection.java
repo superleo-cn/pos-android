@@ -13,21 +13,16 @@ import com.activeandroid.query.Select;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
+import com.android.mapping.CollectionMapping.CollectionRemote;
 
 @Table(name = "tb_collection")
 public class Collection extends Model {
 
-	@Column(name = "cashID")
-	public String cashID;
+	@Column(name = "collectionID")
+	public String collectionID;
 
-	@Column(name = "shopId")
-	public String shopId;
-
-	@Column(name = "userId")
-	public String userId;
-
-	@Column(name = "quantity")
-	public String quantity;
+	@Column(name = "price")
+	public String price;
 
 	@Column(name = "status")
 	public String status;
@@ -35,17 +30,18 @@ public class Collection extends Model {
 	@Column(name = "date")
 	public String date;
 
+
 	@Override
 	public String toString() {
-		return "Collection [cashID=" + cashID + ", shopId=" + shopId + ", userId=" + userId + ", quantity=" + quantity + "]";
+		return "Collection [collectionID=" + collectionID + ", price=" + price + ", status=" + status + ", date=" + date + "]";
 	}
 
-	public static void save(Collection bean) {
+	public static void save(CollectionRemote bean) {
 		Collection c_order = new Collection();
 		c_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		c_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-		c_order.quantity = bean.quantity;//
-		c_order.cashID = bean.cashID;
+		c_order.price = bean.price;//
+		c_order.collectionID = bean.id;
 		c_order.save();
 	}
 
@@ -75,33 +71,6 @@ public class Collection extends Model {
 	public static List<Collection> TodayStatusList(String time, String status) {
 		return new Select().from(Collection.class).where("date = ? and status=?", time, status).execute();
 	}
-
-	/**
-	 * 更新所有提交成功的
-	 */
-	public static void updateAllByStatus() {
-		List<Collection> Collections = queryListByStatus(Constants.DB_SUCCESS);
-		if (CollectionUtils.isNotEmpty(Collections)) {
-			for (Collection Collection : Collections) {
-				Collection.status = Constants.DB_SUCCESS;
-				Collection.save();
-			}
-		}
-	}
-
-	/**
-	 * 按照ID更新数据
-	 * 
-	 * @param androidId
-	 */
-	public static void updateByStatus(Long androidId) {
-		Collection collection = Collection.load(Collection.class, androidId);
-		if (collection != null) {
-			collection.status = Constants.DB_SUCCESS;
-			collection.save();
-		}
-	}
-
 	/**
 	 * 删除所有带回总数
 	 */
