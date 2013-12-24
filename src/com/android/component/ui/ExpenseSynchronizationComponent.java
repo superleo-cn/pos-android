@@ -43,17 +43,15 @@ public class ExpenseSynchronizationComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
-	@App
-	MyApp myApp;
-
 	// 同步菜单
 	@Click(R.id.synchronization_pay_brn)
 	void expensesSync() {
-		if (StringUtils.isNotEmpty(myApp.getSettingShopId()) || StringUtils.equals(myApp.getSettingShopId(), "0")) {
+		String shopId = myPrefs.shopId().get();
+		if (StringUtils.isEmpty(shopId) || StringUtils.equals(shopId, "0")) {
 			toastComponent.show(stringResComponent.settingTanweiId);
 			return;
 		}
-		String url = Constants.URL_PAY_DETAIL + myApp.getSettingShopId();
+		String url = Constants.URL_PAY_DETAIL + shopId;
 		ExpensesMapping.getJSONAndSave(url);
 		toastComponent.show(stringResComponent.toastSettingSucc);
 	}
