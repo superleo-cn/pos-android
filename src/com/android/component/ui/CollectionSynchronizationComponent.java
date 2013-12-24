@@ -43,17 +43,15 @@ public class CollectionSynchronizationComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
-	@App
-	MyApp myApp;
-
 	// 同步菜单
 	@Click(R.id.price_set_brn)
 	void collectionSync() {
-		if (StringUtils.isNotEmpty(myApp.getSettingShopId()) || StringUtils.equals(myApp.getSettingShopId(), "0")) {
+		String shopId = myPrefs.shopId().get();
+		if (StringUtils.isEmpty(shopId) || StringUtils.equals(shopId, "0")) {
 			toastComponent.show(stringResComponent.settingTanweiId);
 			return;
 		}
-		String url = Constants.URL_TAKE_DNUM + myApp.getSettingShopId();
+		String url = Constants.URL_TAKE_DNUM + shopId;
 		CollectionMapping.getJSONAndSave(url);
 		toastComponent.show(stringResComponent.toastSettingSucc);
 	}
