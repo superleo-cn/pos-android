@@ -48,8 +48,6 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 @EActivity(R.layout.setting)
 public class SettingActivity extends AbstractActivity {
 
-	@ViewById(R.id.synchronization_pay_brn)
-	Button synchronization_pay;
 
 	@ViewById(R.id.admin_set)
 	TextView admin_set;
