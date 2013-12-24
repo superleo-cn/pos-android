@@ -127,7 +127,7 @@ public class SettingActivity extends AbstractActivity {
 			synchronize.setText(stringResComponent.syncSucc);
 		}
 
-		if (StringUtils.equalsIgnoreCase(myApp.getU_type(), Constants.ROLE_ADMIN)) {
+		if (StringUtils.equalsIgnoreCase(myApp.getU_type(), Constants.ROLE_SUPERADMIN)) {
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
 			setting_time.setVisibility(View.VISIBLE);
