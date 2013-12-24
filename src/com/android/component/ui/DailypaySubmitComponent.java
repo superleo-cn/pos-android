@@ -8,7 +8,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -32,8 +31,6 @@ import com.android.common.MyApp;
 import com.android.common.MyTextUtils;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.dao.DailyMoneyDao;
-import com.android.dao.GetTakeNumDao;
-import com.android.dao.getDetailPayListDao;
 import com.android.domain.BalanceOrder;
 import com.android.domain.Collection;
 import com.android.domain.CollectionOrder;
@@ -254,18 +251,19 @@ public class DailypaySubmitComponent {
 	public void loadingExpenses(List<DailyPayDetailBean> detail_classList, List<Double> all_pay_price,
 			DailyPayDetailAdapter detail_adapter, ListView daily_list, Handler handler) {
 		String type = sharedPrefs.language().get();
-		List<Map<String, String>> datas = getDetailPayListDao.getInatance(context).getList();
+		List<Expenses> datas= Expenses.queryList();
 		if (datas == null) {
 		} else {
 			for (int i = 0; i < datas.size(); i++) {
+				Expenses expenses=datas.get(i);
 				DailyPayDetailBean bean = new DailyPayDetailBean();
-				bean.setName(datas.get(i).get("name"));
+				bean.setName(expenses.nameZh);
 				if (StringUtils.equalsIgnoreCase("zh", type)) {
-					bean.setName(datas.get(i).get("nameZh"));
+					bean.setName(expenses.nameZh);
 				} else {
-					bean.setName(datas.get(i).get("name"));
+					bean.setName(expenses.name);
 				}
-				bean.setId(datas.get(i).get("number_id"));
+				bean.setId(expenses.expensesID);
 				bean.setPrice("");
 				detail_classList.add(bean);
 				all_pay_price.add(0.00);
@@ -283,15 +281,16 @@ public class DailypaySubmitComponent {
 	public void loadingCollection(List<TakeNumberBean> number_classList, TakeNumerAdapter number_adapter, ListView num_list,
 			List<Double> all_num_price, Double num_count, TextView take_all_price, Handler handler) {
 		DecimalFormat df = new DecimalFormat("0.00");
-		List<Map<String, String>> datas_num = GetTakeNumDao.getInatance(context).getList();
+		List<Collection> datas_num =Collection.queryList();
 		Log.e("查询带回数据库", datas_num.size() + "");
 		if (datas_num == null) {
 		} else {
 			for (int j = 0; j < datas_num.size(); j++) {
+				Collection collection=datas_num.get(j);
 				TakeNumberBean bean = new TakeNumberBean();
-				bean.setPrice(datas_num.get(j).get("price"));
+				bean.setPrice(collection.price);
 				;
-				bean.setId(datas_num.get(j).get("number_id"));
+				bean.setId(collection.collectionID);
 				bean.setNum("");
 				// hashMap_num.put(j, "");
 				number_classList.add(bean);
