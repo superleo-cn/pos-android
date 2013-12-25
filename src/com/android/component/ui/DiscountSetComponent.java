@@ -39,10 +39,14 @@ public class DiscountSetComponent {
 
 	@Click(R.id.btu_discount)
 	public void setDiscount() {
-		keyboardComponent.dismissKeyboard(takePriceEdit);
 		String textDiscount = takePriceEdit.getText().toString();
 		myPrefs.discount().put(textDiscount);
+		dissmissKeyboard();
 		toastComponent.show(stringResComponent.toastSettingSucc);
+	}
+	
+	public void dissmissKeyboard() {
+		keyboardComponent.dismissKeyboard(takePriceEdit);
 	}
 
 }

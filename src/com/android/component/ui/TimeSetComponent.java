@@ -42,10 +42,14 @@ public class TimeSetComponent {
 	public void setTime() {
 		String setTime = editSettingTime.getText().toString();
 		if (!TextUtils.isEmpty(setTime) && !setTime.equals("null")) {
-			keyboardComponent.dismissKeyboard(editSettingTime);
+			dissmissKeyboard();
 			toastComponent.show(stringResComponent.toastSettingSucc);
 			myPrefs.time().put(Long.parseLong(setTime) * 60 * 1000);
 		}
+	}
+
+	public void dissmissKeyboard() {
+		keyboardComponent.dismissKeyboard(editSettingTime);
 	}
 
 }

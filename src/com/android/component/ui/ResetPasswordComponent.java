@@ -82,7 +82,11 @@ public class ResetPasswordComponent {
 		} else {
 			toastComponent.show("用户名或者密码不能为空");
 		}
+		dissmissKeyboard();
+	}
 
+	public void dissmissKeyboard() {
+		keyboardComponent.dismissKeyboard(editSettingChongzhiLoginName, editSettingChongzhiLoginPassword);
 	}
 
 }

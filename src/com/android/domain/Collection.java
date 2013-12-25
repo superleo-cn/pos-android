@@ -75,7 +75,7 @@ public class Collection extends Model {
 	 * 删除所有带回总数
 	 */
 	public static void deleteAll() {
-		new Delete().from(Expenses.class).execute();
+		new Delete().from(Collection.class).execute();
 	}
 
 }

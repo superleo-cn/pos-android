@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import android.widget.EditText;
 
 import com.android.R;
+import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
@@ -42,6 +43,9 @@ public class LanguageSetComponent {
 	@Bean
 	LanguageComponent languageComponent;
 
+	@Bean
+	KeyboardComponent keyboardComponent;
+
 	// 语言设置
 	@Click(R.id.language_set)
 	public void setLanguage() {
@@ -64,6 +68,10 @@ public class LanguageSetComponent {
 		} else {
 			languageSet.setText("English");
 		}
+	}
+
+	public void dissmissKeyboard() {
+		keyboardComponent.dismissKeyboard(languageSet);
 	}
 
 }

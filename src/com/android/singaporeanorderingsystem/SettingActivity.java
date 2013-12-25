@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.CollectionUtils;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -139,6 +140,17 @@ public class SettingActivity extends AbstractActivity {
 		}
 		return true;
 
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		timeSetComponent.dissmissKeyboard();
+		printSetComponent.dissmissKeyboard();
+		discountSetComponent.dissmissKeyboard();
+		shopSynchronizationComponent.dissmissKeyboard();
+		languageSetComponent.dissmissKeyboard();
+		resetPasswordComponent.dissmissKeyboard();
+		return super.dispatchTouchEvent(event);
 	}
 
 }

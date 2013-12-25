@@ -40,7 +40,7 @@ public class ShopSynchronizationComponent {
 
 	@ViewById(R.id.shop_set)
 	EditText shopSset;
-	
+
 	@AfterViews
 	public void initFoodSynchronization() {
 		shopSset.setText(myPrefs.shopId().get());
@@ -48,9 +48,13 @@ public class ShopSynchronizationComponent {
 
 	@Click(R.id.synchronization_shop_brn)
 	public void synchronizeSHopID() {
-		keyboardComponent.dismissKeyboard(shopSet);
 		String shopId = shopSet.getText().toString();
 		myPrefs.shopId().put(shopId);
+		dissmissKeyboard();
 		toastComponent.show(stringResComponent.toastSettingSucc);
+	}
+
+	public void dissmissKeyboard() {
+		keyboardComponent.dismissKeyboard(shopSet);
 	}
 }
