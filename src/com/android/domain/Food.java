@@ -33,6 +33,9 @@ public class Food extends Model {
 	@Column(name = "retail_price")
 	public String retailPrice;
 
+	//非数据库字段
+	public String title;
+	
 	@Override
 	public String toString() {
 		return "Food [type=" + type + ", name=" + name + ", nameZh=" + nameZh + ",  sn=" + sn + ", retail_price=" + retailPrice

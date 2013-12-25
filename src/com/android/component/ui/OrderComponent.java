@@ -20,7 +20,6 @@ import android.widget.TextView;
 import com.android.R;
 import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
-import com.android.bean.FoodListBean;
 import com.android.bean.SelectFoodBean;
 import com.android.common.AndroidPrinter;
 import com.android.common.Constants;
@@ -30,6 +29,7 @@ import com.android.common.MyNumberUtils;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dialog.DialogBuilder;
+import com.android.domain.Food;
 import com.android.domain.FoodOrder;
 import com.android.mapping.StatusMapping;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -143,18 +143,18 @@ public class OrderComponent {
 	 * 
 	 * @param foodBean
 	 */
-	public void order(FoodListBean foodBean) {
+	public void order(Food foodBean) {
 		SelectFoodBean bean = new SelectFoodBean();
-		bean.setFood_name(foodBean.getTitle());
-		bean.setFood_price(foodBean.getPrice());
-		bean.setFood_dayin_code(foodBean.getDaping_id());
-		bean.setFood_id(foodBean.getFood_id());
-		bean.setFood_type(foodBean.getType());
+		bean.setFood_name(foodBean.title);
+		bean.setFood_price(foodBean.retailPrice);
+		bean.setFood_dayin_code(foodBean.sn);
+		bean.setFood_id(foodBean.foodId);
+		bean.setFood_type(foodBean.type);
 		bean.setFood_num("1");
-		bean.setFood_price(foodBean.getPrice());
+		bean.setFood_price(foodBean.picture);
 		selectDataList.add(bean);
 		selectAdapter.notifyDataSetChanged();
-		showTotalPrice += Double.parseDouble(foodBean.getPrice());
+		showTotalPrice += Double.parseDouble(foodBean.retailPrice);
 		add();
 		totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 	}
@@ -167,13 +167,13 @@ public class OrderComponent {
 	public void remove(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			Log.e("item", index + "");
-			List<FoodListBean> food_dataList = foodComponent.getFoodDataList();
-			FoodListBean bean = food_dataList.get(index);
+			List<Food> food_dataList = foodComponent.getFoodDataList();
+			Food bean = food_dataList.get(index);
 			for (int i = selectDataList.size() - 1; i >= 0; i--) {
 				SelectFoodBean remove_bean = selectDataList.get(i);
-				if (StringUtils.equalsIgnoreCase(remove_bean.getFood_dayin_code(), bean.getDaping_id())) {
+				if (StringUtils.equalsIgnoreCase(remove_bean.getFood_dayin_code(), bean.sn)) {
 					selectDataList.remove(i);
-					showTotalPrice -= Double.parseDouble(bean.getPrice());
+					showTotalPrice -= Double.parseDouble(bean.retailPrice);
 					selectAdapter.notifyDataSetChanged();
 					add();
 					break;

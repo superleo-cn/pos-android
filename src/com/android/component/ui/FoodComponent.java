@@ -1,7 +1,7 @@
 package com.android.component.ui;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -12,7 +12,6 @@ import android.widget.GridView;
 
 import com.android.R;
 import com.android.adapter.FoodListAdapter;
-import com.android.bean.FoodListBean;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.domain.Food;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -40,7 +39,7 @@ public class FoodComponent {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
-	private List<FoodListBean> foodDataList;
+	private List<Food> foodDataList;
 
 	private OrderComponent orderComponent;
 
@@ -53,24 +52,15 @@ public class FoodComponent {
 	 */
 	@AfterViews
 	public void initFood() {
-		this.foodDataList = new ArrayList<FoodListBean>();
+		this.foodDataList = Food.queryList();
 		String type = sharedPrefs.language().get();
-		List<Food> datas = Food.queryList();
-		for (Food food : datas) {
-			FoodListBean bean = new FoodListBean();
-			if (StringUtils.equalsIgnoreCase("zh", type)) {
-				bean.setTitle(food.nameZh);
+		for (Food food : foodDataList) {
+			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+				food.title = food.nameZh;
 			} else {
-				bean.setTitle(food.name);
+				food.title = food.name;
 			}
-			bean.setDaping_id(food.sn);
-			bean.setImageID(food.picture);
-			bean.setType(food.type);
-			bean.setFood_id(food.foodId);
-			bean.setPrice(food.retailPrice);
-			foodDataList.add(bean);
 		}
-
 		FoodListAdapter adapter = new FoodListAdapter(context, foodDataList, handler);
 		foodView.setAdapter(adapter);
 	}
@@ -78,7 +68,7 @@ public class FoodComponent {
 	// 点菜操作
 	@ItemClick(R.id.food_list)
 	void foodPanel(int position) {
-		FoodListBean foodBean = foodDataList.get(position);
+		Food foodBean = foodDataList.get(position);
 		orderComponent.order(foodBean);
 	}
 
@@ -97,7 +87,7 @@ public class FoodComponent {
 
 	};
 
-	public List<FoodListBean> getFoodDataList() {
+	public List<Food> getFoodDataList() {
 		return foodDataList;
 	}
 

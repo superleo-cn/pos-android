@@ -18,18 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.bean.FoodListBean;
+import com.android.domain.Food;
 
 public class FoodListAdapter extends BaseAdapter {
 
 	private Context context;
 	private LayoutInflater inflater;
-	private List<FoodListBean> classList;
+	private List<Food> classList;
 	private Handler handler;
 	private MyListener myListener;
 	public static final int LESS_DATALIST = 1004;
 
-	public FoodListAdapter(Context context, List<FoodListBean> list, Handler handler) {
+	public FoodListAdapter(Context context, List<Food> list, Handler handler) {
 		this.context = context;
 		this.classList = list;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,7 +50,7 @@ public class FoodListAdapter extends BaseAdapter {
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
-		FoodListBean bean;
+		Food bean;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.foot_list_item, null);
 			viewHolder = new ViewHolder();
@@ -64,8 +64,8 @@ public class FoodListAdapter extends BaseAdapter {
 		}
 
 		bean = classList.get(position);
-		viewHolder.titleTextView.setText(bean.getTitle());
-		Bitmap bitmap = BitmapFactory.decodeFile(bean.getImageID());
+		viewHolder.titleTextView.setText(bean.title);
+		Bitmap bitmap = BitmapFactory.decodeFile(bean.picture);
 		viewHolder.food_image.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
 		viewHolder.food_btn.setOnClickListener(myListener);
 		return convertView;
