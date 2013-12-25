@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import android.widget.EditText;
 
 import com.android.R;
+import com.android.component.ActivityComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.SharedPreferencesComponent_;
@@ -46,18 +47,21 @@ public class LanguageSetComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
+	@Bean
+	ActivityComponent activityComponent;
+
 	// 语言设置
 	@Click(R.id.language_set)
 	public void setLanguage() {
 		String type = myPrefs.language().get();
 		if (StringUtils.equalsIgnoreCase(type, Locale.SIMPLIFIED_CHINESE.getLanguage())) {
-			languageComponent.updateLanguage(Locale.SIMPLIFIED_CHINESE);
-			languageSet.setText("中文");
-		} else {
 			languageComponent.updateLanguage(Locale.ENGLISH);
 			languageSet.setText("English");
+		} else {
+			languageComponent.updateLanguage(Locale.SIMPLIFIED_CHINESE);
+			languageSet.setText("中文");
 		}
-		toastComponent.show(stringResComponent.toastSettingLanguageSucc);
+		activityComponent.startSettingWithTransition();
 	}
 
 	// 初始化数据

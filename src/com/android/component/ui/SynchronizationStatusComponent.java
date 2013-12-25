@@ -1,5 +1,6 @@
 package com.android.component.ui;
 
+import android.content.Context;
 import android.widget.TextView;
 
 import com.android.R;
@@ -8,6 +9,7 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 /**
@@ -18,6 +20,9 @@ import com.googlecode.androidannotations.annotations.ViewById;
  */
 @EBean
 public class SynchronizationStatusComponent {
+
+	@RootContext
+	Context context;
 
 	@ViewById(R.id.synchronizeText)
 	TextView synchronize;

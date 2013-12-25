@@ -3,7 +3,6 @@ package com.android.component;
 import com.android.R;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.res.StringRes;
-import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -12,7 +11,7 @@ import com.googlecode.androidannotations.api.Scope;
  * 
  */
 // 定义成一个可以注入的组件
-@EBean(scope = Scope.Singleton)
+@EBean
 public class StringResComponent {
 
 	// 登录界面的用到的
@@ -89,5 +88,5 @@ public class StringResComponent {
 
 	@StringRes(R.string.sync_err)
 	public String syncErr;
-	
+
 }
