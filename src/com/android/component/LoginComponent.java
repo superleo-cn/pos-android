@@ -164,10 +164,10 @@ public class LoginComponent {
 				toastComponent.show(stringResComponent.loginSucc);
 				break;
 			case Constants.STATUS_SERVER_FAILED:
-				toastComponent.show(stringResComponent.loginServiceErr);
+				toastComponent.show(stringResComponent.serviceErr);
 				break;
 			case Constants.STATUS_NETWORK_ERROR:
-				toastComponent.show(stringResComponent.loginWifiErr);
+				toastComponent.show(stringResComponent.wifiErr);
 				break;
 			}
 		}

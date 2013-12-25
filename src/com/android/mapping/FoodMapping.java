@@ -52,7 +52,7 @@ public class FoodMapping extends BasicMapping<FoodRemote> {
 					}
 				}
 			}
-			return null;
+			return foodMapping;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

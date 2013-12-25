@@ -28,11 +28,11 @@ public class StringResComponent {
 	@StringRes(R.string.login_succ)
 	public String loginSucc;
 
-	@StringRes(R.string.login_service_err)
-	public String loginServiceErr;
+	@StringRes(R.string.wifi_err)
+	public String wifiErr;
 
-	@StringRes(R.string.login_wifi_err)
-	public String loginWifiErr;
+	@StringRes(R.string.service_err)
+	public String serviceErr;
 
 	// 主页用到的
 	@StringRes(R.string.insufficientpermissions)
@@ -43,6 +43,9 @@ public class StringResComponent {
 
 	@StringRes(R.string.toast_setting_succ)
 	public String toastSettingSucc;
+
+	@StringRes(R.string.toast_setting_err)
+	public String toastSettingErr;
 
 	@StringRes(R.string.err_price)
 	public String errPrice;
@@ -86,4 +89,5 @@ public class StringResComponent {
 
 	@StringRes(R.string.sync_err)
 	public String syncErr;
+	
 }

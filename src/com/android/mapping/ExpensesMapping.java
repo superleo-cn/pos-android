@@ -39,7 +39,7 @@ public class ExpensesMapping extends BasicMapping<ExpensesRemote> {
 					}
 				}
 			}
-			return null;
+			return expensesMapping;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

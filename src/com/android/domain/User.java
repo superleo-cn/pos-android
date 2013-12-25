@@ -43,7 +43,7 @@ public class User extends Model {
 	 * @return
 	 */
 	public static User checkLogin(String username, String shopId) {
-		return new Select().from(User.class).where("username = ? and shop_id=?", username, shopId).executeSingle();
+		return new Select().from(User.class).where("username = ? and shop_id = ?", username, shopId).executeSingle();
 	}
 
 }

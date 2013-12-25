@@ -327,7 +327,7 @@ public class DailypaySubmitComponent {
 	public void initView(Button btu_id_sbumit) {
 		Double order_price = 0.00;
 		String userId = myApp.getUser_id();
-		String shopId = myApp.getSettingShopId();
+		String shopId = sharedPrefs.shopId().get();
 		if (shopId == null) {
 			shopId = "0";
 		}
@@ -340,7 +340,7 @@ public class DailypaySubmitComponent {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
 			List<String> priceList = null;
 			if (!flag) {
-				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date, myApp.getSettingShopId());
+				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date,sharedPrefs.shopId().get());
 			} else {
 				btu_id_sbumit.setVisibility(View.GONE);
 			}

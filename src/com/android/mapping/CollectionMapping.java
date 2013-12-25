@@ -37,7 +37,7 @@ public class CollectionMapping extends BasicMapping<CollectionRemote> {
 					}
 				}
 			}
-			return null;
+			return CollectionMapping;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

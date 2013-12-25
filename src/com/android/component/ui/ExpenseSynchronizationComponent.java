@@ -2,20 +2,23 @@ package com.android.component.ui;
 
 import org.apache.commons.lang.StringUtils;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.widget.Button;
 
 import com.android.R;
 import com.android.common.Constants;
-import com.android.common.MyApp;
 import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.mapping.ExpensesMapping;
-import com.googlecode.androidannotations.annotations.App;
+import com.android.singaporeanorderingsystem.MyProcessDialog;
+import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -43,6 +46,17 @@ public class ExpenseSynchronizationComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
+	// 注入 Context 变量
+	@RootContext
+	Context context;
+
+	MyProcessDialog dialog;
+
+	@AfterInject
+	public void initLogin() {
+		dialog = new MyProcessDialog(context, stringResComponent.dialogSet);
+	}
+
 	// 同步菜单
 	@Click(R.id.synchronization_pay_brn)
 	void expensesSync() {
@@ -51,9 +65,44 @@ public class ExpenseSynchronizationComponent {
 			toastComponent.show(stringResComponent.settingTanweiId);
 			return;
 		}
-		String url = Constants.URL_PAY_DETAIL + shopId;
-		ExpensesMapping.getJSONAndSave(url);
-		toastComponent.show(stringResComponent.toastSettingSucc);
+		new ExpenseSynchronizationTask().execute(shopId);
+	}
+
+	private class ExpenseSynchronizationTask extends AsyncTask<String, Void, ExpensesMapping> {
+
+		@Override
+		protected ExpensesMapping doInBackground(String... objs) {
+			String url = Constants.URL_PAY_DETAIL + objs[0];
+			return ExpensesMapping.getJSONAndSave(url);
+		}
+
+		@Override
+		protected void onPostExecute(ExpensesMapping mapping) {
+			dialog.dismiss();
+			switch (mapping.code) {
+			case Constants.STATUS_FAILED:
+				toastComponent.show(stringResComponent.toastSettingErr);
+				break;
+			case Constants.STATUS_SUCCESS:
+				toastComponent.show(stringResComponent.toastSettingSucc);
+				break;
+			case Constants.STATUS_SERVER_FAILED:
+				toastComponent.show(stringResComponent.serviceErr);
+				break;
+			case Constants.STATUS_NETWORK_ERROR:
+				toastComponent.show(stringResComponent.wifiErr);
+				break;
+			}
+		}
+
+		@Override
+		protected void onPreExecute() {
+			dialog.show();
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+		}
 	}
 
 }

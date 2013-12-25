@@ -17,7 +17,6 @@ import com.android.R;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
-import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ui.CollectionSynchronizationComponent;
 import com.android.component.ui.DiscountSetComponent;
@@ -27,6 +26,7 @@ import com.android.component.ui.LanguageSetComponent;
 import com.android.component.ui.PrintSetComponent;
 import com.android.component.ui.ResetPasswordComponent;
 import com.android.component.ui.ShopSynchronizationComponent;
+import com.android.component.ui.SynchronizationStatusComponent;
 import com.android.component.ui.TimeSetComponent;
 import com.android.dao.DailyMoneyDao;
 import com.android.dao.NumListDao;
@@ -38,7 +38,6 @@ import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
 import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 //不需要标题
 @NoTitle
@@ -48,12 +47,11 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 @EActivity(R.layout.setting)
 public class SettingActivity extends AbstractActivity {
 
+	@ViewById(R.id.r_set_admin_lay)
+	RelativeLayout r_set_admin_lay;
 
 	@ViewById(R.id.admin_set)
 	TextView admin_set;
-
-	@ViewById(R.id.r_set_admin_lay)
-	RelativeLayout r_set_admin_lay;
 
 	@ViewById(R.id.btu_setting_time)
 	Button btu_setting_time;
@@ -61,11 +59,12 @@ public class SettingActivity extends AbstractActivity {
 	@ViewById(R.id.setting_time)
 	RelativeLayout setting_time;
 
-	@ViewById(R.id.synchronizeText)
-	TextView synchronize;
-
 	@Bean
 	StringResComponent stringResComponent;
+
+	// 状态同步组件
+	@Bean
+	SynchronizationStatusComponent synchronizationStatusComponent;
 
 	// 时间组件
 	@Bean
@@ -106,24 +105,8 @@ public class SettingActivity extends AbstractActivity {
 	@App
 	MyApp myApp;
 
-	@Pref
-	SharedPreferencesComponent_ sharedPrefs;
-
-	private MyProcessDialog dialog;
-
-	// public static String type;
-
 	@AfterViews
-	public void init() {
-
-		dialog = new MyProcessDialog(this, stringResComponent.dialogSet);
-
-		/** 判断今天是否是最新的 */
-		if (!isLatestUpdate()) {
-			synchronize.setText(stringResComponent.syncErr);
-		} else {
-			synchronize.setText(stringResComponent.syncSucc);
-		}
+	public void initSetting() {
 
 		if (StringUtils.equalsIgnoreCase(myApp.getU_type(), Constants.ROLE_SUPERADMIN)) {
 			admin_set.setVisibility(View.VISIBLE);

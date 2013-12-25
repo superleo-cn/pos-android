@@ -80,15 +80,16 @@
 
 	<string name="message_shop">Do you want to change outlet ID？</string>
 	<string name="login_quanxian">Unauthorized Login</string>
-	<string name="login_wifi_err">The network is not avaliable, please contact your administrator.</string>
 	<string name="login_succ">Login Granted</string>
 	<string name="login_fail">Fail,Please fill correct username and password.</string>
-	<string name="login_service_err">Server Exception, please try again later!</string>
+	<string name="service_err">Server Exception, please try again later!</string>
+	<string name="wifi_err">The network is not avaliable, please contact your administrator.</string>
 	<string name="insufficientpermissions">You are unauthorized to access it</string>
 	<string name="toast_submmit_succ">Submit Success</string>
 	<string name="toast_submmit_fail">Submit Fail</string>
 	<string name="toast_submmit_err">Submit Error</string>
-	<string name="toast_setting_succ">Configue Success</string>
+	<string name="toast_setting_succ">Configue Successfully</string>
+	<string name="toast_setting_err">Configue Failed</string>
 	<string name="toast_setting_language_succ">Language configuration success</string>
 	<string name="btu_queren">Confirm</string>
 	<string name="btn_quxiao">Cancel</string>

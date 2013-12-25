@@ -1,5 +1,6 @@
 package com.android.component.ui;
 
+import android.view.MotionEvent;
 import android.widget.EditText;
 
 import com.android.R;
@@ -11,6 +12,7 @@ import com.android.component.ToastComponent;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.Touch;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -51,6 +53,12 @@ public class PrintSetComponent {
 		myPrefs.printIp().put(ip);
 		androidPrinter.reconnect();
 		toastComponent.show(stringResComponent.toastSettingSucc);
+	}
+
+	@Touch
+	public void touch(MotionEvent event) {
+		// 要隐藏键盘的组件
+		keyboardComponent.dismissKeyboard(printOneEdit);
 	}
 
 }
