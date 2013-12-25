@@ -3,6 +3,7 @@ package com.android.singaporeanorderingsystem;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -10,6 +11,7 @@ import com.android.R;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.ui.MenuComponent;
 import com.android.dialog.DialogBuilder;
+import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -32,6 +34,18 @@ public abstract class AbstractActivity extends Activity {
 
 	@Pref
 	public SharedPreferencesComponent_ sharedPrefs;
+
+	@AfterInject
+	public void initAbstract() {
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // 这里可以替换为detectAll()
+																																// 就包括了磁盘读写和网络I/O
+				.penaltyLog() // 打印logcat，当然也可以定位到dropbox，通过文件保存相应的log
+				.build());
+		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects() // 探测SQLite数据库操作
+				.penaltyLog() // 打印logcat
+				.penaltyDeath().build());
+
+	}
 
 	/**
 	 * @TODO: 最后放到基类里面去
