@@ -8,6 +8,7 @@ import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -41,6 +42,12 @@ public class PrintSetComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
+	// 初始化数据
+	@AfterViews
+	public void initDiscountSet() {
+		printOneEdit.setText(myPrefs.printIp().get());
+	}
+
 	/**
 	 * 更新打印机IP操作
 	 */
@@ -53,7 +60,6 @@ public class PrintSetComponent {
 		toastComponent.show(stringResComponent.toastSettingSucc);
 	}
 
-	
 	public void dissmissKeyboard() {
 		keyboardComponent.dismissKeyboard(printOneEdit);
 	}

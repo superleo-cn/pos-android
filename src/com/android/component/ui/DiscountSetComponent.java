@@ -7,6 +7,7 @@ import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -37,6 +38,12 @@ public class DiscountSetComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
+	// 初始化数据
+	@AfterViews
+	public void initDiscountSet() {
+		takePriceEdit.setText(myPrefs.discount().get());
+	}
+
 	@Click(R.id.btu_discount)
 	public void setDiscount() {
 		String textDiscount = takePriceEdit.getText().toString();
@@ -44,7 +51,7 @@ public class DiscountSetComponent {
 		dissmissKeyboard();
 		toastComponent.show(stringResComponent.toastSettingSucc);
 	}
-	
+
 	public void dissmissKeyboard() {
 		keyboardComponent.dismissKeyboard(takePriceEdit);
 	}
