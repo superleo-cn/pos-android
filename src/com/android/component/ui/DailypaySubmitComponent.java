@@ -30,7 +30,6 @@ import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.MyTextUtils;
 import com.android.component.SharedPreferencesComponent_;
-import com.android.dao.DailyMoneyDao;
 import com.android.domain.BalanceOrder;
 import com.android.domain.Collection;
 import com.android.domain.CollectionOrder;
@@ -251,11 +250,11 @@ public class DailypaySubmitComponent {
 	public void loadingExpenses(List<DailyPayDetailBean> detail_classList, List<Double> all_pay_price,
 			DailyPayDetailAdapter detail_adapter, ListView daily_list, Handler handler) {
 		String type = sharedPrefs.language().get();
-		List<Expenses> datas= Expenses.queryList();
+		List<Expenses> datas = Expenses.queryList();
 		if (datas == null) {
 		} else {
 			for (int i = 0; i < datas.size(); i++) {
-				Expenses expenses=datas.get(i);
+				Expenses expenses = datas.get(i);
 				DailyPayDetailBean bean = new DailyPayDetailBean();
 				bean.setName(expenses.nameZh);
 				if (StringUtils.equalsIgnoreCase("zh", type)) {
@@ -281,12 +280,12 @@ public class DailypaySubmitComponent {
 	public void loadingCollection(List<TakeNumberBean> number_classList, TakeNumerAdapter number_adapter, ListView num_list,
 			List<Double> all_num_price, Double num_count, TextView take_all_price, Handler handler) {
 		DecimalFormat df = new DecimalFormat("0.00");
-		List<Collection> datas_num =Collection.queryList();
+		List<Collection> datas_num = Collection.queryList();
 		Log.e("查询带回数据库", datas_num.size() + "");
 		if (datas_num == null) {
 		} else {
 			for (int j = 0; j < datas_num.size(); j++) {
-				Collection collection=datas_num.get(j);
+				Collection collection = datas_num.get(j);
 				TakeNumberBean bean = new TakeNumberBean();
 				bean.setPrice(collection.price);
 				;
@@ -335,12 +334,12 @@ public class DailypaySubmitComponent {
 		SimpleDateFormat df_save = new SimpleDateFormat("yyyy-MM-dd");
 		String date = df_save.format(new Date());
 		Log.e("今天日期", date);
-		boolean flag = DailyMoneyDao.getInatance(context).isCompleted(shopId, userId, date, "1");
+		boolean flag = false; //DailyMoneyDao.getInatance(context).isCompleted(shopId, userId, date, "1");
 		if (!flag) {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
 			List<String> priceList = null;
 			if (!flag) {
-				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date,sharedPrefs.shopId().get());
+				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date, sharedPrefs.shopId().get());
 			} else {
 				btu_id_sbumit.setVisibility(View.GONE);
 			}

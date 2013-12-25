@@ -1,12 +1,8 @@
 package com.android.singaporeanorderingsystem;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.util.CollectionUtils;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,9 +25,6 @@ import com.android.component.ui.ResetPasswordComponent;
 import com.android.component.ui.ShopSynchronizationComponent;
 import com.android.component.ui.SynchronizationStatusComponent;
 import com.android.component.ui.TimeSetComponent;
-import com.android.dao.DailyMoneyDao;
-import com.android.dao.NumListDao;
-import com.android.domain.CollectionOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -124,20 +117,23 @@ public class SettingActivity extends AbstractActivity {
 
 		String search_date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 
-		List<CollectionOrder> pays = CollectionOrder.queryListByDate(search_date);
-		if (CollectionUtils.isEmpty(pays)) {
-			return false;
-		}
-
-		List<Map<String, String>> nums = NumListDao.getInatance(this).getList(search_date);
-		if (!nums.isEmpty()) {
-			return false;
-		}
-
-		HashMap<String, String> params = DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
-		if (!params.isEmpty()) {
-			return false;
-		}
+		// List<CollectionOrder> pays =
+		// CollectionOrder.queryListByDate(search_date);
+		// if (CollectionUtils.isEmpty(pays)) {
+		// return false;
+		// }
+		//
+		// List<Map<String, String>> nums =
+		// NumListDao.getInatance(this).getList(search_date);
+		// if (!nums.isEmpty()) {
+		// return false;
+		// }
+		//
+		// HashMap<String, String> params =
+		// DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
+		// if (!params.isEmpty()) {
+		// return false;
+		// }
 		return true;
 
 	}

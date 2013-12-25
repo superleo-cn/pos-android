@@ -3,7 +3,6 @@ package com.android.component;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.android.R;
 import com.android.singaporeanorderingsystem.DailyPayActivity_;
