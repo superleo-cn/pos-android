@@ -4,10 +4,10 @@
 package com.android.component.ui;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +27,7 @@ import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
+import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyTextUtils;
 import com.android.component.SharedPreferencesComponent_;
@@ -58,14 +59,13 @@ public class DailypaySubmitComponent {
 	SharedPreferencesComponent_ sharedPrefs;
 
 	public void submitAll(String date) {
-
-		post_payList(date);
-		post_numList(date);
+		postPayList(date);
+		postNumList(date);
 		post_dailyMoney(date);
 	}
 
 	/* 提交每日支付 */
-	public void post_payList(String search_date) {
+	public void postPayList(String search_date) {
 		try {
 			HashMap<String, String> params = new HashMap<String, String>();
 			List<ExpensesOrder> datas = ExpensesOrder.TodayList(search_date);
@@ -81,16 +81,15 @@ public class DailypaySubmitComponent {
 			}
 			// 异步请求数据
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_PAYLIST, params);
-			if (mapping.code == 1) {
+			if (mapping.code == Constants.STATUS_SUCCESS) {
 				ExpensesOrder.updateAllByStatus();
-			} else if (mapping.code == 0) {
+			} else if (mapping.code == Constants.STATUS_FAILED) {
 				List<Long> ids = mapping.datas;
 				if (CollectionUtils.isNotEmpty(ids)) {
 					for (Long id : ids) {
 						ExpensesOrder.updateByStatus(id);
 					}
 				}
-			} else if (mapping.code == -1) {
 			}
 		} catch (Exception e) {
 			e.getMessage();
@@ -98,15 +97,15 @@ public class DailypaySubmitComponent {
 	}
 
 	/* 提交带回总数 */
-	public void post_numList(String search_date) {
+	public void postNumList(String search_date) {
 		try {
 			HashMap<String, String> params = new HashMap<String, String>();
 			List<CollectionOrder> datas = CollectionOrder.queryListByDate(search_date);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
 					CollectionOrder collection = datas.get(i);
-					params.put("cashTransactions[" + i + "].androidId", collection.getId() + "");
-					Log.e("cashTransactions[" + i + "].androidId", collection.getId() + "");
+					params.put("cashTransactions[" + i + "].androidId", String.valueOf(collection.getId()));
+					Log.e("cashTransactions[" + i + "].androidId", String.valueOf(collection.getId()));
 					params.put("cashTransactions[" + i + "].cash.id", collection.cashId);
 					Log.e("cashTransactions[" + i + "].cash.id", collection.cashId);
 					params.put("cashTransactions[" + i + "].shop.id", collection.shopId);
@@ -119,17 +118,16 @@ public class DailypaySubmitComponent {
 			}
 			// 异步请求数据
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_TAKENUM, params);
-			if (mapping.code == 1) {
+			if (mapping.code == Constants.STATUS_SUCCESS) {
 				// 更新全部
 				CollectionOrder.updateAllByStatus();
-			} else if (mapping.code == 0) {
+			} else if (mapping.code == Constants.STATUS_FAILED) {
 				List<Long> ids = mapping.datas;
 				if (CollectionUtils.isNotEmpty(ids)) {
 					for (Long id : ids) {
 						CollectionOrder.updateByStatus(id);
 					}
 				}
-			} else if (mapping.code == -1) {
 			}
 		} catch (Exception e) {
 			e.getMessage();
@@ -161,17 +159,16 @@ public class DailypaySubmitComponent {
 			}
 			// 异步请求数据
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_DAILY_MONEY, params);
-			if (mapping.code == 1) {
+			if (mapping.code == Constants.STATUS_SUCCESS) {
 				// 更新全部
 				BalanceOrder.updateAllByStatus();
-			} else if (mapping.code == 0) {
+			} else if (mapping.code == Constants.STATUS_FAILED) {
 				List<Long> ids = mapping.datas;
 				if (CollectionUtils.isNotEmpty(ids)) {
 					for (Long id : ids) {
 						BalanceOrder.updateByStatus(id);
 					}
 				}
-			} else if (mapping.code == -1) {
 			}
 		} catch (Exception e) {
 			e.getMessage();
@@ -189,7 +186,7 @@ public class DailypaySubmitComponent {
 			if (bean != null && StringUtils.isNotEmpty(bean.getPrice())) {
 				detail_price = bean.getPrice();
 			} else {
-				detail_price = "0.00";
+				detail_price = Constants.PRICE_FLOAT;
 			}
 			ExpensesOrder e_bean = new ExpensesOrder();
 			e_bean.consumptionId = bean.getId();//
@@ -204,7 +201,7 @@ public class DailypaySubmitComponent {
 	public void saveCollectionOrder(List<TakeNumberBean> number_classList) {
 		for (int j = 0; j < number_classList.size(); j++) {
 			TakeNumberBean bean = number_classList.get(j);
-			bean.setPrice(StringUtils.defaultIfEmpty(bean.getNum(), "0"));
+			bean.setPrice(StringUtils.defaultIfEmpty(bean.getNum(), Constants.PRICE_INT));
 			CollectionOrder.save(bean, myApp);
 		}
 	}
@@ -257,7 +254,7 @@ public class DailypaySubmitComponent {
 				Expenses expenses = datas.get(i);
 				DailyPayDetailBean bean = new DailyPayDetailBean();
 				bean.setName(expenses.nameZh);
-				if (StringUtils.equalsIgnoreCase("zh", type)) {
+				if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
 					bean.setName(expenses.nameZh);
 				} else {
 					bean.setName(expenses.name);
@@ -265,7 +262,7 @@ public class DailypaySubmitComponent {
 				bean.setId(expenses.expensesID);
 				bean.setPrice("");
 				detail_classList.add(bean);
-				all_pay_price.add(0.00);
+				all_pay_price.add(Constants.PRICE_NUM_FLOAT);
 			}
 
 			detail_adapter = new DailyPayDetailAdapter(context, detail_classList, handler);
@@ -279,7 +276,7 @@ public class DailypaySubmitComponent {
 	 * */
 	public void loadingCollection(List<TakeNumberBean> number_classList, TakeNumerAdapter number_adapter, ListView num_list,
 			List<Double> all_num_price, Double num_count, TextView take_all_price, Handler handler) {
-		DecimalFormat df = new DecimalFormat("0.00");
+		DecimalFormat df = new DecimalFormat(Constants.PRICE_FLOAT);
 		List<Collection> datas_num = Collection.queryList();
 		Log.e("查询带回数据库", datas_num.size() + "");
 		if (datas_num == null) {
@@ -301,15 +298,15 @@ public class DailypaySubmitComponent {
 				for (int i = 0; i < number_classList.size(); i++) {
 					String price_tv = number_classList.get(i).getPrice();
 					if (price_tv.equals("")) {
-						price_tv = "0.00";
+						price_tv = Constants.PRICE_FLOAT;
 					}
 					Double sigle_price = Double.parseDouble(price_tv);
 					String num_tv = number_classList.get(i).getNum();
 					if (num_tv.equals("")) {
-						num_tv = "0";
+						num_tv = Constants.PRICE_INT;
 					}
 					int num = Integer.parseInt(num_tv);
-					Double total_price = 0.00;
+					Double total_price = Constants.PRICE_NUM_FLOAT;
 					total_price = num * sigle_price;
 					all_num_price.add(total_price);
 					// hashMap_numprice.put(i, String.valueOf(total_price));
@@ -324,17 +321,12 @@ public class DailypaySubmitComponent {
 	}
 
 	public void initView(Button btu_id_sbumit) {
-		Double order_price = 0.00;
-		String userId = myApp.getUser_id();
+		Double order_price = Constants.PRICE_NUM_FLOAT;
 		String shopId = sharedPrefs.shopId().get();
-		if (shopId == null) {
-			shopId = "0";
-		}
-
-		SimpleDateFormat df_save = new SimpleDateFormat("yyyy-MM-dd");
-		String date = df_save.format(new Date());
+		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 		Log.e("今天日期", date);
-		boolean flag = false; //DailyMoneyDao.getInatance(context).isCompleted(shopId, userId, date, "1");
+		boolean flag = false; // DailyMoneyDao.getInatance(context).isCompleted(shopId,
+								// userId, date, "1");
 		if (!flag) {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
 			List<String> priceList = null;

@@ -151,7 +151,6 @@ public class OrderComponent {
 		bean.setFood_id(foodBean.foodId);
 		bean.setFood_type(foodBean.type);
 		bean.setFood_num("1");
-		bean.setFood_price(foodBean.picture);
 		selectDataList.add(bean);
 		selectAdapter.notifyDataSetChanged();
 		showTotalPrice += Double.parseDouble(foodBean.retailPrice);
@@ -392,6 +391,14 @@ public class OrderComponent {
 
 	}
 
+	// 保存数据
+	void storeOrders() {
+		for (int i = 0; i < selectDataList.size(); i++) {
+			SelectFoodBean bean = selectDataList.get(i);
+			FoodOrder.save(bean, myApp, is_foc);
+		}
+	}
+
 	// 同步到服务器上去
 	@Background
 	void syncToServer() {
@@ -401,15 +408,6 @@ public class OrderComponent {
 		// PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),
 		// date,
 		// total_price.getText().toString(), myApp.getSettingShopId());
-		if (result_price == -1) {
-			Log.e("保存价格失败", "");
-		} else {
-			Log.e("保存价格成功", "");
-		}
-		for (int i = 0; i < selectDataList.size(); i++) {
-			SelectFoodBean bean = selectDataList.get(i);
-			FoodOrder.save(bean, myApp, is_foc);
-		}
 
 		// 准备发送数据
 		Map<String, String> params = new HashMap<String, String>();
@@ -451,8 +449,6 @@ public class OrderComponent {
 					FoodOrder.updateByStatus(id);
 				}
 			}
-		} else if (mapping.code == -1) {
-
 		}
 
 	}
@@ -479,6 +475,8 @@ public class OrderComponent {
 				}
 				androidPrinter.setIp(myApp.getIp_str());
 				androidPrinter.print(sb.toString());
+				// 保存数据------------------------------
+				storeOrders();
 				// 同步开始------------------------------
 				syncToServer();
 				// 清空数据------------------------------

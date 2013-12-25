@@ -115,6 +115,12 @@ public final class Constants {
 	public static final String MAX_PRICE = "9999.99";
 	public static final Double MAX_NUM_PRICE = 9999.99;
 
+	/** 默认金额 */
+	public static final String PRICE_FLOAT = "0.00";
+	public static final String PRICE_INT = "0";
+	public static final double PRICE_NUM_FLOAT = 0.00;
+	public static final int PRICE_NUM_INT = 0;
+
 	public static final int OPEN_WIFI = 1006;
 	public static final int CLOSE_WIFI = 1007;
 

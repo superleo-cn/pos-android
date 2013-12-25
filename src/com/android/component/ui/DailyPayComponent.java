@@ -1,7 +1,6 @@
 package com.android.component.ui;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +25,7 @@ import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
-import com.android.common.Constants;
+import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyTextUtils;
 import com.android.component.ActivityComponent;
@@ -76,9 +75,6 @@ public class DailyPayComponent {
 
 	@ViewById(R.id.write_name)
 	TextView write_name;
-
-	@ViewById(R.id.shop_name1234)
-	TextView shop_name1234;
 
 	@ViewById(R.id.send_person)
 	EditText send_person;
@@ -131,12 +127,6 @@ public class DailyPayComponent {
 	@ViewById(R.id.other)
 	EditText other;
 
-	@ViewById(R.id.wifi_iamge)
-	ImageView wifi_image; // wifi 图标
-
-	@ViewById(R.id.login_name)
-	TextView login_name; // 用户名字
-
 	@Bean
 	DailypaySubmitComponent dailypaysubmitComponent;
 
@@ -157,8 +147,7 @@ public class DailyPayComponent {
 	}
 
 	public void initData() {
-		login_name.setText(context.getString(R.string.mainTitle_txt) + " " + myApp.getU_name() + ",");
-		shop_name1234.setText(myApp.getShop_name() + "-" + myApp.getShop_code());
+
 		write_name.setText(myApp.getU_name());
 		send_person.setText(myApp.getU_name());
 
@@ -233,7 +222,6 @@ public class DailyPayComponent {
 
 		/* 提交带回总数接口 */
 		dailypaysubmitComponent.saveCollectionOrder(number_classList);
-
 		/* 提交带回总数接口结束 */
 
 		dailypaysubmitComponent.submitOver(num_list, R.id.num_id_price);
@@ -242,12 +230,11 @@ public class DailyPayComponent {
 		dailypaysubmitComponent.saveOther(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num,
 				total, noon_time, noon_turnover, noon_time, other, send_person);
 
-		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money,
-				total_take_num, send_person, other, shop_money);
+		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
+				send_person, other, shop_money);
 
-		SimpleDateFormat df_date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		String date = df_date.format(new Date());
-		
+		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+
 		dailypaysubmitComponent.submitAll(date);
 	}
 
@@ -286,28 +273,22 @@ public class DailyPayComponent {
 		}
 	}
 
-	
 	@Click(R.id.btu_id_sbumit)
 	void sbumitOnClick() {
 		CreatedSubmitDialog().create().show();
 	}
 
-	@Click(R.id.menu_btn)
-	void menuBtnOnClick() {
-		menuComponent.initPopupWindow();
-	}
-
 	@TextChange(R.id.shop_money)
-	void shopmoneyTextChanged(){
+	void shopmoneyTextChanged() {
 		compute();
 		Log.e("今日输出价格", "");
 	}
+
 	@TextChange(R.id.tomorrow_money)
-	void tomorrowmoneyTextChanged(){
+	void tomorrowmoneyTextChanged() {
 		compute();
 		Log.e("明日输出价格", "");
 	}
-	
 
 	Handler handler = new Handler() {
 
@@ -315,12 +296,6 @@ public class DailyPayComponent {
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			switch (msg.what) {
-			case Constants.OPEN_WIFI:
-				wifi_image.setImageResource(R.drawable.wifi_open);
-				break;
-			case Constants.CLOSE_WIFI:
-				wifi_image.setImageResource(R.drawable.wifi_close);
-				break;
 			case DailyPayDetailAdapter.CHAGE_NUM_DETAIL:
 				try {
 					count = 0.00;
