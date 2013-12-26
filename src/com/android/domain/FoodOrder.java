@@ -64,6 +64,22 @@ public class FoodOrder extends Model {
 	}
 
 	/**
+	 * @return
+	 */
+	public static List<FoodOrder> queryListByPange(int pangeno,int pangesize) {
+		return new Select().from(FoodOrder.class).limit(pangeno+","+pangesize).execute();
+	}
+	
+	/**
+	 * 返回数据个数
+	 * @return count
+	 */
+	
+	public static int queryListByCount() {
+		return new Select().from(FoodOrder.class).execute().size();
+	}
+	
+	/**
 	 * 返回全部食物订单列表
 	 * 
 	 * @return

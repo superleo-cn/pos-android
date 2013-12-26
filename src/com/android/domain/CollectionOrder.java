@@ -58,10 +58,15 @@ public class CollectionOrder extends Model {
 	public static List<CollectionOrder> queryListByDate(String time) {
 		return new Select().from(CollectionOrder.class).where("date = ?", time).execute();
 	}
+	
+	/**
+	 * @return
+	 */
+	public static List<CollectionOrder> queryList() {
+		return new Select().from(CollectionOrder.class).execute();
+	}
 
 	/**
-	 * 返回食物订单列表
-	 * 
 	 * @return
 	 */
 	public static List<CollectionOrder> queryListByStatus(String status) {
