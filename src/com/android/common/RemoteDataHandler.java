@@ -1,4 +1,4 @@
-package com.android.handler;
+package com.android.common;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.android.common.HttpHelper;
 import com.android.model.ResponseData;
 
 /**
