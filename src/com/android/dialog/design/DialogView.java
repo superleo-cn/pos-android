@@ -1,4 +1,4 @@
-package com.android.dialog;
+package com.android.dialog.design;
 
 
 import com.android.R;

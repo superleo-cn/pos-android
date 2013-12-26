@@ -5,7 +5,7 @@
  *  site: http://blog.csdn.net/qjyong
  *  email: qjyong@gmail.com
  */
-package com.android.singaporeanorderingsystem;
+package com.android.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,9 +13,8 @@ import android.widget.TextView;
 
 import com.android.R;
 
-
 /**
- * 等待对话框
+ * 加载对话框
  * 
  * @author hjgang
  */

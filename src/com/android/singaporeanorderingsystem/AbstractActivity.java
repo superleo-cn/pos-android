@@ -4,18 +4,15 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.StrictMode;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.android.R;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.ui.MenuComponent;
-import com.android.dialog.DialogBuilder;
+import com.android.dialog.design.DialogBuilder;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity
@@ -23,14 +20,6 @@ public abstract class AbstractActivity extends Activity {
 
 	@Bean
 	public MenuComponent menuComponent;
-
-	// menu按钮
-	@ViewById(R.id.menu_btn)
-	ImageView menu;
-
-	// 退出
-	@ViewById(R.id.layout_exit)
-	RelativeLayout exit_layout;
 
 	@Pref
 	public SharedPreferencesComponent_ sharedPrefs;
