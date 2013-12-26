@@ -22,6 +22,7 @@ import com.android.component.ToastComponent;
 import com.android.dialog.DialogBuilder;
 import com.android.singaporeanorderingsystem.DailyPayActivity_;
 import com.android.singaporeanorderingsystem.MainActivity_;
+import com.android.singaporeanorderingsystem.SettingActivity_;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -88,6 +89,7 @@ public class MenuComponent {
 			TextView popu_exit = (TextView) view.findViewById(R.id.popu_exit);
 			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
+			TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
 
 			(getHiddenView(view)).setVisibility(View.GONE);
 
@@ -125,6 +127,13 @@ public class MenuComponent {
 					createdDialog().create().show();
 				}
 			});
+			popu_QueryAllDB.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dismiss();
+					activityComponent.startQueryAllWithTransition();
+				}
+			});
 		}
 		dismiss();
 		popupWindow.setFocusable(true);
@@ -149,12 +158,15 @@ public class MenuComponent {
 		TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 		TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 		TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);
+		TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
 		if (activity instanceof MainActivity_) {
 			return popu_diancai;
 		} else if (activity instanceof DailyPayActivity_) {
 			return popu_daily;
-		} else {
+		} else if(activity instanceof SettingActivity_){
 			return popu_setting;
+		}else{
+			return popu_QueryAllDB;
 		}
 	}
 

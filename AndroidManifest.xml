@@ -44,6 +44,10 @@
             android:name=".singaporeanorderingsystem.MainActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
+         <activity
+            android:name=".singaporeanorderingsystem.QueryAllDBActivity_"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
             android:name=".singaporeanorderingsystem.SettingActivity_"
             android:screenOrientation="landscape"

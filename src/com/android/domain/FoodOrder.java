@@ -62,6 +62,14 @@ public class FoodOrder extends Model {
 	public static List<FoodOrder> queryListByStatus(String status) {
 		return new Select().from(FoodOrder.class).where("status = ?", status).execute();
 	}
+	
+	/**
+	 * 返回全部食物订单列表
+	 * @return
+	 */
+	public static List<FoodOrder> queryAllList() {
+		return new Select().from(FoodOrder.class).execute();
+	}
 
 	/**
 	 * 保存食物订单
