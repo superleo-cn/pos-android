@@ -66,19 +66,20 @@ public class FoodOrder extends Model {
 	/**
 	 * @return
 	 */
-	public static List<FoodOrder> queryListByPange(int pangeno,int pangesize) {
-		return new Select().from(FoodOrder.class).limit(pangeno+","+pangesize).execute();
+	public static List<FoodOrder> queryListByPange(int pangeno, int pangesize) {
+		return new Select().from(FoodOrder.class).limit(pangeno + "," + pangesize).execute();
 	}
-	
+
 	/**
 	 * 返回数据个数
+	 * 
 	 * @return count
 	 */
-	
+
 	public static int queryListByCount() {
 		return new Select().from(FoodOrder.class).execute().size();
 	}
-	
+
 	/**
 	 * 返回全部食物订单列表
 	 * 
@@ -107,10 +108,10 @@ public class FoodOrder extends Model {
 		// bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
 		double totalRetailPrice = Double.parseDouble(bean.getFood_price()) - bean.getDazhe_price() + bean.getDabao_price();
 		if (is_foc) {
-			food_order.foc = "1";// 是否免费 1是 0否
-			totalRetailPrice = 0;
+			food_order.foc = Constants.FOC_YES;// 是否免费 1是 0否
+			totalRetailPrice = Constants.DEFAULT_PRICE_NUM_INT;
 		} else {
-			food_order.foc = "0";// 是否免费 1是 0否
+			food_order.foc = Constants.FOC_NO;// 是否免费 1是 0否
 		}
 		food_order.retailPrice = String.valueOf(totalRetailPrice);// 收钱数
 		food_order.foodId = bean.getFood_id();// 食物id

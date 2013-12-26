@@ -1,4 +1,4 @@
-package com.android.component.ui;
+package com.android.component.ui.setting;
 
 import android.content.Context;
 import android.widget.TextView;

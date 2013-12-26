@@ -1,9 +1,9 @@
 package com.android.singaporeanorderingsystem;
 
 import com.android.R;
-import com.android.component.ui.CalculatorComponent;
-import com.android.component.ui.FoodComponent;
-import com.android.component.ui.OrderComponent;
+import com.android.component.ui.main.CalculatorComponent;
+import com.android.component.ui.main.FoodComponent;
+import com.android.component.ui.main.OrderComponent;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;

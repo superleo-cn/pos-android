@@ -1,4 +1,4 @@
-package com.android.component.ui;
+package com.android.component.ui.main;
 
 import java.util.List;
 import java.util.Locale;

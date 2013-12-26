@@ -56,7 +56,7 @@ public class ExpensesOrder extends Model {
 		expense.consumptionId = bean.getId();
 		expense.shopID = myApp.getShopId();// 店idmyApp.getShopid()
 		expense.userID = myApp.getUserId();//
-		expense.price = StringUtils.defaultIfEmpty(bean.getPrice(), Constants.PRICE_FLOAT);
+		expense.price = StringUtils.defaultIfEmpty(bean.getPrice(), Constants.DEFAULT_PRICE_FLOAT);
 		expense.save();
 	}
 

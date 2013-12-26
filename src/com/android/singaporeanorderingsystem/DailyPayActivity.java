@@ -3,7 +3,7 @@ package com.android.singaporeanorderingsystem;
 import android.view.MotionEvent;
 
 import com.android.R;
-import com.android.component.ui.DailyPayComponent;
+import com.android.component.ui.daily.DailyPayComponent;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;

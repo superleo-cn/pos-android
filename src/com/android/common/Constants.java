@@ -104,8 +104,9 @@ public final class Constants {
 	public static final String DB_SUCCESS = "1";
 	public static final String DB_FAILED = "0";
 
-	/** 打包价格 */
-	public static final Double PACKAGE_COST = 0.2;
+	/** 是否免费状态 */
+	public static final String FOC_YES = "1";
+	public static final String FOC_NO = "0";
 
 	/** 食物种类 */
 	public static final String FOOD_STAPLE = "STAPLE";
@@ -116,10 +117,10 @@ public final class Constants {
 	public static final Double MAX_NUM_PRICE = 9999.99;
 
 	/** 默认金额 */
-	public static final String PRICE_FLOAT = "0.00";
-	public static final String PRICE_INT = "0";
-	public static final double PRICE_NUM_FLOAT = 0.00;
-	public static final int PRICE_NUM_INT = 0;
+	public static final String DEFAULT_PRICE_FLOAT = "0.00";
+	public static final String DEFAULT_PRICE_INT = "0";
+	public static final double DEFAULT_PRICE_NUM_FLOAT = 0.00;
+	public static final int DEFAULT_PRICE_NUM_INT = 0;
 
 	public static final int OPEN_WIFI = 1006;
 	public static final int CLOSE_WIFI = 1007;

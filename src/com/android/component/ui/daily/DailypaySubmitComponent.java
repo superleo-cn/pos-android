@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.android.component.ui;
+package com.android.component.ui.daily;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -227,7 +227,7 @@ public class DailypaySubmitComponent {
 				bean.setId(expenses.expensesID);
 				bean.setPrice(StringUtils.EMPTY);
 				detail_classList.add(bean);
-				all_pay_price.add(Constants.PRICE_NUM_FLOAT);
+				all_pay_price.add(Constants.DEFAULT_PRICE_NUM_FLOAT);
 			}
 
 			detail_adapter = new DailyPayDetailAdapter(context, detail_classList, handler);
@@ -241,7 +241,7 @@ public class DailypaySubmitComponent {
 	 * */
 	public void loadingCollection(List<TakeNumberBean> number_classList, TakeNumerAdapter number_adapter, ListView num_list,
 			List<Double> all_num_price, Double num_count, TextView take_all_price, Handler handler) {
-		DecimalFormat df = new DecimalFormat(Constants.PRICE_FLOAT);
+		DecimalFormat df = new DecimalFormat(Constants.DEFAULT_PRICE_FLOAT);
 		List<Collection> datas_num = Collection.queryList();
 		Log.e("查询带回数据库", datas_num.size() + "");
 		if (datas_num != null) {
@@ -260,15 +260,15 @@ public class DailypaySubmitComponent {
 				for (TakeNumberBean bean : number_classList) {
 					String price_tv = bean.getPrice();
 					if (StringUtils.isEmpty(price_tv)) {
-						price_tv = Constants.PRICE_FLOAT;
+						price_tv = Constants.DEFAULT_PRICE_FLOAT;
 					}
 					Double sigle_price = Double.parseDouble(price_tv);
 					String num_tv = bean.getNum();
 					if (StringUtils.isEmpty(num_tv)) {
-						num_tv = Constants.PRICE_INT;
+						num_tv = Constants.DEFAULT_PRICE_INT;
 					}
 					int num = Integer.parseInt(num_tv);
-					Double total_price = Constants.PRICE_NUM_FLOAT;
+					Double total_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
 					total_price = num * sigle_price;
 					all_num_price.add(total_price);
 					num_count = num_count + total_price;
@@ -284,7 +284,7 @@ public class DailypaySubmitComponent {
 
 	@AfterViews
 	public void initDailypaySubmit() {
-		Double order_price = Constants.PRICE_NUM_FLOAT;
+		Double order_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
 		String shopId = sharedPrefs.shopId().get();
 		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 		Log.e("今天日期", date);

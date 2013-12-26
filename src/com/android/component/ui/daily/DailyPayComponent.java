@@ -1,4 +1,4 @@
-package com.android.component.ui;
+package com.android.component.ui.daily;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -132,9 +132,9 @@ public class DailyPayComponent {
 	private List<TakeNumberBean> number_classList = new ArrayList<TakeNumberBean>();
 	private DailyPayDetailAdapter detail_adapter;
 	private TakeNumerAdapter number_adapter;
-	private Double num_count = Constants.PRICE_NUM_FLOAT;
-	private Double count = Constants.PRICE_NUM_FLOAT;
-	private Double order_price = Constants.PRICE_NUM_FLOAT;
+	private Double num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	private Double order_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
 
 	@AfterViews
 	public void initDailayPay() {
@@ -243,8 +243,8 @@ public class DailyPayComponent {
 
 	public void compute() {
 		try {
-			String shop_money_text = StringUtils.defaultIfEmpty(shop_money.getText().toString(), Constants.PRICE_INT);
-			String tomorrow_money_text = StringUtils.defaultIfEmpty(tomorrow_money.getText().toString(), Constants.PRICE_INT);
+			String shop_money_text = StringUtils.defaultIfEmpty(shop_money.getText().toString(), Constants.DEFAULT_PRICE_INT);
+			String tomorrow_money_text = StringUtils.defaultIfEmpty(tomorrow_money.getText().toString(), Constants.DEFAULT_PRICE_INT);
 
 			String all_price = text_id_all_price.getText().toString();
 			cash_register

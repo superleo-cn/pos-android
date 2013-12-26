@@ -1,4 +1,4 @@
-package com.android.component;
+package com.android.component.ui.login;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,12 @@ import android.os.AsyncTask;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.common.SystemHelper;
+import com.android.component.ActivityComponent;
+import com.android.component.AuditComponent;
+import com.android.component.SharedPreferencesComponent_;
+import com.android.component.StringResComponent;
+import com.android.component.ToastComponent;
+import com.android.component.WifiComponent;
 import com.android.dialog.MyProcessDialog;
 import com.android.domain.User;
 import com.android.mapping.UserMapping;

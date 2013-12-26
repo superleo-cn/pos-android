@@ -1,4 +1,4 @@
-package com.android.component.ui;
+package com.android.component.ui.main;
 
 import java.util.ArrayList;
 import java.util.List;

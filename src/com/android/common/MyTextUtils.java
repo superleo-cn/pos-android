@@ -17,7 +17,7 @@ public class MyTextUtils {
 	public static String checkIntTextView(TextView textview) {
 		String str = textview.getText().toString();
 		if (str.isEmpty()) {
-			str = Constants.PRICE_INT;
+			str = Constants.DEFAULT_PRICE_INT;
 		}
 		return str;
 	}

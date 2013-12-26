@@ -80,14 +80,14 @@ public class CollectionOrder extends Model {
 	 * @param myApp
 	 */
 	public static void save(TakeNumberBean bean, MyApp myApp) {
-		CollectionOrder c_order = new CollectionOrder();
-		c_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
-		c_order.shopId = myApp.getShopId();// 店idmyApp.getShopid()
-		c_order.userId = myApp.getUserId();//
-		c_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-		c_order.quantity = bean.getNum();//
-		c_order.cashId = bean.getId();
-		c_order.save();
+		CollectionOrder collectionOrder = new CollectionOrder();
+		collectionOrder.status = Constants.DB_FAILED;// 是否成功 1是 0否
+		collectionOrder.shopId = myApp.getShopId();// 店idmyApp.getShopid()
+		collectionOrder.userId = myApp.getUserId();//
+		collectionOrder.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+		collectionOrder.quantity = bean.getNum();//
+		collectionOrder.cashId = bean.getId();
+		collectionOrder.save();
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class CollectionOrder extends Model {
 	public static void save(List<TakeNumberBean> number_classList, MyApp myApp) {
 		for (int j = 0; j < number_classList.size(); j++) {
 			TakeNumberBean bean = number_classList.get(j);
-			bean.setPrice(StringUtils.defaultIfEmpty(bean.getNum(), Constants.PRICE_INT));
+			bean.setPrice(StringUtils.defaultIfEmpty(bean.getNum(), Constants.DEFAULT_PRICE_INT));
 			CollectionOrder.save(bean, myApp);
 		}
 	}
