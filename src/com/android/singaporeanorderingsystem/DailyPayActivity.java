@@ -5,7 +5,6 @@ import android.view.MotionEvent;
 import com.android.R;
 import com.android.component.ui.DailyPayComponent;
 import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
@@ -22,11 +21,6 @@ import com.googlecode.androidannotations.annotations.NoTitle;
 public class DailyPayActivity extends AbstractActivity {
 	@Bean
 	DailyPayComponent dailyPayComponent;
-	
-	@Click(R.id.layout_exit)
-	void layoutExitOnClick() {
-		CreatedDialog().create().show();
-	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

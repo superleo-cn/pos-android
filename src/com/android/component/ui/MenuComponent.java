@@ -19,7 +19,7 @@ import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.dialog.DialogBuilder;
+import com.android.dialog.design.DialogBuilder;
 import com.android.singaporeanorderingsystem.DailyPayActivity_;
 import com.android.singaporeanorderingsystem.MainActivity_;
 import com.android.singaporeanorderingsystem.SettingActivity_;

@@ -77,12 +77,12 @@ public class LoginActivity extends Activity {
 		return;
 	}
 
-	@LongClick({ R.id.image_logo_ico })
+	@LongClick(R.id.image_logo_ico)
 	void adminLogin() {
 		login(Constants.ROLE_SUPERADMIN);
 	}
 
-	@Click({ R.id.login_ok })
+	@Click(R.id.login_ok)
 	void cashierLogin() {
 		login(Constants.ROLE_CASHIER);
 	}

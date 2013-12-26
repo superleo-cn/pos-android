@@ -28,7 +28,7 @@ import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.dialog.DialogBuilder;
+import com.android.dialog.design.DialogBuilder;
 import com.android.domain.Food;
 import com.android.domain.FoodOrder;
 import com.android.mapping.StatusMapping;

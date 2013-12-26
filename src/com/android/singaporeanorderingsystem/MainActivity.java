@@ -1,7 +1,5 @@
 package com.android.singaporeanorderingsystem;
 
-import android.widget.RelativeLayout;
-
 import com.android.R;
 import com.android.component.ui.CalculatorComponent;
 import com.android.component.ui.FoodComponent;
@@ -11,7 +9,6 @@ import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 //不需要标题
 @NoTitle
@@ -20,18 +17,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 // 绑定登录的layout
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AbstractActivity {
-
-	@ViewById(R.id.layout_exit)
-	RelativeLayout exit_layout; // 退出
-
-	@ViewById(R.id.r_lay_id_take_package)
-	RelativeLayout r_lay_id_take_package;
-
-	@ViewById(R.id.r_lay_id_foc)
-	RelativeLayout r_lay_id_foc;
-
-	@ViewById(R.id.r_lay_id_discount)
-	RelativeLayout r_lay_id_discount;
 
 	@Bean
 	FoodComponent foodComponent;
@@ -42,22 +27,13 @@ public class MainActivity extends AbstractActivity {
 	@Bean
 	CalculatorComponent calculatorComponent;
 
-	// @FragmentById(R.id.main_left_fragment)
-	// MainLeftFragment mainLeftFragment;
-	//
-	// @FragmentById(R.id.main_right_fragment)
-	// MainRightFragment mainRightFragment;
-
 	@AfterViews
 	public void init() {
-		// mainLeftFragment.setOrderComponent(orderComponent);
+		// 手动依赖注入，解决循环问题
 		foodComponent.setOrderComponent(orderComponent);
 		calculatorComponent.setOrderComponent(orderComponent);
 		orderComponent.setFoodComponent(foodComponent);
 		orderComponent.setCalculatorComponent(calculatorComponent);
 	}
-
-	// TODO: 暂时不用
-	// CreatedDialog().create().show();
 
 }
