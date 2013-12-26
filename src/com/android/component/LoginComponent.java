@@ -183,11 +183,11 @@ public class LoginComponent {
 	}
 
 	public void setLoginInfo(User user) {
-		myApp.setU_name(user.username);
-		myApp.setUser_id(user.uid);
-		myApp.setU_type(user.usertype);
-		myApp.setShop_name(user.shopName);
-		myApp.setShop_code(user.shopCode);
+		myApp.setUsername(user.username);
+		myApp.setUserId(user.uid);
+		myApp.setUserType(user.usertype);
+		myApp.setShopName(user.shopName);
+		myApp.setShopCode(user.shopCode);
 
 	}
 

@@ -10,12 +10,13 @@ package com.android.common;
 
 import java.io.File;
 
-import android.content.SharedPreferences;
 import android.os.Environment;
 import android.widget.Toast;
 
 import com.activeandroid.app.Application;
+import com.android.component.SharedPreferencesComponent_;
 import com.googlecode.androidannotations.annotations.EApplication;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
  * Author:hjgang Create On 2013-8-6下午4:52:02 Site:http://weibo.com/hjgang or
@@ -26,108 +27,64 @@ import com.googlecode.androidannotations.annotations.EApplication;
 @EApplication
 public class MyApp extends Application {
 	/** 系统初始化配置文件操作器 */
-	private SharedPreferences sysInitSharedPreferences;
-	private String u_name = "";
-	private String user_id = "0";
-	private String u_type = "";
-	private String daily_pay_submit_flag = "1";
-	private String shop_name = "";;
-	private String shop_code = "";;
+	private String username = "";
+	private String userId = "0";
+	private String userType = "";
+	private String shopName = "";
+	private String shopCode = "";
+
+	@Pref
+	SharedPreferencesComponent_ myPrefs;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		createCacheDir();
-		sysInitSharedPreferences = getSharedPreferences(Constants.SYSTEM_INIT_FILE_NAME, MODE_PRIVATE);
 
 	}
 
-	public String getU_type() {
-		return u_type;
+	public String getUserType() {
+		return userType;
 	}
 
-	public void setU_type(String u_type) {
-		this.u_type = u_type;
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
-	public String getDaily_pay_submit_flag() {
-		return daily_pay_submit_flag;
+	public String getUsername() {
+		return username;
 	}
 
-	public String getDiscount() {
-		return sysInitSharedPreferences.getString("discount", "0.5");
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public void setDiscount(String discount) {
-		sysInitSharedPreferences.edit().putString("discount", discount).commit();
+	public String getUserId() {
+		return userId;
 	}
 
-	public String getPackageCost() {
-		return sysInitSharedPreferences.getString("packageCost", "0.2");
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public void setPackageCost(String packageCost) {
-		sysInitSharedPreferences.edit().putString("packageCost", packageCost).commit();
+	public String getShopName() {
+		return shopName;
 	}
 
-	public long getSetting_time() {
-		return sysInitSharedPreferences.getLong("setting_time", 30 * 60 * 1000);
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 
-	public void setSetting_time(long setting_time) {
-		sysInitSharedPreferences.edit().putLong("setting_time", setting_time).commit();
+	public String getShopCode() {
+		return shopCode;
 	}
 
-	public String getIp_str() {
-		return sysInitSharedPreferences.getString("ip_str", "192.168.0.1");
+	public void setShopCode(String shopCode) {
+		this.shopCode = shopCode;
 	}
 
-	public void setIp_str(String ip_str) {
-		sysInitSharedPreferences.edit().putString("ip_str", ip_str).commit();
-	}
-
-	public String getSettingShopId() {
-		return sysInitSharedPreferences.getString("shop_id", "0");
-	}
-
-	public void setSettingShopId(String shop_id) {
-		sysInitSharedPreferences.edit().putString("shop_id", shop_id).commit();
-	}
-
-	public String getU_name() {
-		return u_name;
-	}
-
-	public void setU_name(String u_name) {
-		this.u_name = u_name;
-	}
-
-	public String getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
-
-	public String getuName() {
-		return u_name;
-	}
-
-	public String getShop_name() {
-		return shop_name;
-	}
-
-	public void setShop_name(String shop_name) {
-		this.shop_name = shop_name;
-	}
-
-	public String getShop_code() {
-		return shop_code;
-	}
-
-	public void setShop_code(String shop_code) {
-		this.shop_code = shop_code;
+	public String getShopId() {
+		return myPrefs.shopId().get();
 	}
 
 	// 创建SD卡缓存目录
@@ -170,15 +127,6 @@ public class MyApp extends Application {
 		} else {
 			Toast.makeText(MyApp.this, "亲，您的SD不在了，可能有的功能不能用奥，赶快看看吧。", Toast.LENGTH_SHORT).show();
 		}
-	}
-
-	/**
-	 * 获取系统初始化文件操作器
-	 * 
-	 * @return
-	 */
-	public SharedPreferences getSysInitSharedPreferences() {
-		return sysInitSharedPreferences;
 	}
 
 }

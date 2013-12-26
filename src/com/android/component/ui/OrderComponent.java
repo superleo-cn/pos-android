@@ -26,6 +26,7 @@ import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
+import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dialog.design.DialogBuilder;
@@ -41,6 +42,7 @@ import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
  * 订单组件
@@ -90,6 +92,9 @@ public class OrderComponent {
 	@Bean
 	ToastComponent toastComponent;
 
+	@Pref
+	SharedPreferencesComponent_ sharedPrefs;
+
 	FoodComponent foodComponent;
 
 	CalculatorComponent calculatorComponent;
@@ -124,8 +129,8 @@ public class OrderComponent {
 		this.selectList.setAdapter(selectAdapter);
 		// 初始化订单价钱
 		sbuff = new StringBuffer();
-		save_discount_price = MyNumberUtils.strToNum(myApp.getDiscount());
-		package_money = MyNumberUtils.strToNum(myApp.getPackageCost());
+		save_discount_price = MyNumberUtils.strToNum(sharedPrefs.discount().get());
+		package_money = MyNumberUtils.strToNum(sharedPrefs.packageCost().get());
 
 		// 计算器
 		List<String> dataList = new ArrayList<String>();
@@ -473,7 +478,7 @@ public class OrderComponent {
 					}
 					sb.append(foodName + "     " + qty);
 				}
-				androidPrinter.setIp(myApp.getIp_str());
+				androidPrinter.setIp(sharedPrefs.printIp().get());
 				androidPrinter.print(sb.toString());
 				// 保存数据------------------------------
 				storeOrders();

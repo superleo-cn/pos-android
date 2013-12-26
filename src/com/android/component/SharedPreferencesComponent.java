@@ -15,6 +15,9 @@ public interface SharedPreferencesComponent {
 	@DefaultString("0.5")
 	String discount();
 
+	@DefaultString("0.2")
+	String packageCost();
+
 	@DefaultString("192.168.0.100")
 	String printIp();
 

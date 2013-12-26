@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -16,12 +17,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
@@ -30,6 +30,7 @@ import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyTextUtils;
+import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.domain.BalanceOrder;
 import com.android.domain.Collection;
@@ -38,9 +39,12 @@ import com.android.domain.Expenses;
 import com.android.domain.ExpensesOrder;
 import com.android.mapping.StatusMapping;
 import com.android.singaporeanorderingsystem.PriceSave;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
@@ -58,17 +62,23 @@ public class DailypaySubmitComponent {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
+	@Bean
+	KeyboardComponent keyboardComponent;
+
+	@ViewById(R.id.btu_id_sbumit)
+	Button btu_id_sbumit;
+
 	public void submitAll(String date) {
 		postPayList(date);
 		postNumList(date);
-		post_dailyMoney(date);
+		postDailyMoney(date);
 	}
 
 	/* 提交每日支付 */
-	public void postPayList(String search_date) {
+	public void postPayList(String searchDate) {
 		try {
-			HashMap<String, String> params = new HashMap<String, String>();
-			List<ExpensesOrder> datas = ExpensesOrder.TodayList(search_date);
+			Map<String, String> params = new HashMap<String, String>();
+			List<ExpensesOrder> datas = ExpensesOrder.TodayList(searchDate);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
 					ExpensesOrder expenses = datas.get(i);
@@ -97,10 +107,10 @@ public class DailypaySubmitComponent {
 	}
 
 	/* 提交带回总数 */
-	public void postNumList(String search_date) {
+	public void postNumList(String searchDate) {
 		try {
-			HashMap<String, String> params = new HashMap<String, String>();
-			List<CollectionOrder> datas = CollectionOrder.queryListByDate(search_date);
+			Map<String, String> params = new HashMap<String, String>();
+			List<CollectionOrder> datas = CollectionOrder.queryListByDate(searchDate);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
 					CollectionOrder collection = datas.get(i);
@@ -135,10 +145,10 @@ public class DailypaySubmitComponent {
 	}
 
 	/* 提交每日营业额 */
-	public void post_dailyMoney(final String search_date) {
+	public void postDailyMoney(final String searchDate) {
 		try {
-			HashMap<String, String> params = new HashMap<String, String>();
-			List<BalanceOrder> datas = BalanceOrder.TodayList(search_date);
+			Map<String, String> params = new HashMap<String, String>();
+			List<BalanceOrder> datas = BalanceOrder.TodayList(searchDate);
 			if (!datas.isEmpty()) {
 				for (int i = 0; i < datas.size(); i++) {
 					BalanceOrder balance = datas.get(i);
@@ -176,40 +186,9 @@ public class DailypaySubmitComponent {
 	}
 
 	/**
-	 * 保存每日支付金额
-	 * */
-	public void saveExpenses(List<DailyPayDetailBean> detail_classList) {
-		String detail_price;
-		/* 提交每日支付金额 */
-		for (int i = 0; i < detail_classList.size(); i++) {
-			DailyPayDetailBean bean = detail_classList.get(i);
-			if (bean != null && StringUtils.isNotEmpty(bean.getPrice())) {
-				detail_price = bean.getPrice();
-			} else {
-				detail_price = Constants.PRICE_FLOAT;
-			}
-			ExpensesOrder e_bean = new ExpensesOrder();
-			e_bean.consumptionId = bean.getId();//
-			e_bean.price = detail_price;
-			ExpensesOrder.save(e_bean, myApp);
-		}
-	}
-
-	/**
-	 * 保存每日带回总数
-	 * */
-	public void saveCollectionOrder(List<TakeNumberBean> number_classList) {
-		for (int j = 0; j < number_classList.size(); j++) {
-			TakeNumberBean bean = number_classList.get(j);
-			bean.setPrice(StringUtils.defaultIfEmpty(bean.getNum(), Constants.PRICE_INT));
-			CollectionOrder.save(bean, myApp);
-		}
-	}
-
-	/**
 	 * 保存每日其他数据
 	 * */
-	public void saveOther(TextView shop_money, TextView text_id_all_price, TextView cash_register, TextView today_turnover,
+	public void save(TextView shop_money, TextView text_id_all_price, TextView cash_register, TextView today_turnover,
 			TextView tomorrow_money, TextView total_take_num, TextView total, TextView noon_time, TextView noon_turnover, TextView time,
 			TextView other, TextView send_person) {
 		String aOpenBalance = MyTextUtils.checkIntTextView(shop_money);
@@ -225,20 +204,8 @@ public class DailypaySubmitComponent {
 		String others = MyTextUtils.checkIntTextView(other);
 		String courier = MyTextUtils.checkIntTextView(send_person);
 
-		BalanceOrder bean = new BalanceOrder();
-		bean.aOpenBalance = aOpenBalance;
-		bean.bExpenses = bExpenses;
-		bean.cCashCollected = cCashCollected;
-		bean.dDailyTurnover = dDailyTurnover;
-		bean.eNextOpenBalance = eNextOpenBalance;
-		bean.fBringBackCash = fBringBackCash;
-		bean.gTotalBalance = gTotalBalance;
-		bean.middleCalculateTime = middleCalculateTime;
-		bean.middleCalculateBalance = middleCalculateBalance;
-		bean.calculateTime = calculateTime;
-		bean.others = others;
-		bean.courier = courier;
-		BalanceOrder.save(bean);
+		BalanceOrder.save(aOpenBalance, bExpenses, cCashCollected, dDailyTurnover, eNextOpenBalance, fBringBackCash, gTotalBalance,
+				middleCalculateTime, middleCalculateBalance, calculateTime, others, courier, myApp);
 	}
 
 	/**
@@ -248,10 +215,8 @@ public class DailypaySubmitComponent {
 			DailyPayDetailAdapter detail_adapter, ListView daily_list, Handler handler) {
 		String type = sharedPrefs.language().get();
 		List<Expenses> datas = Expenses.queryList();
-		if (datas == null) {
-		} else {
-			for (int i = 0; i < datas.size(); i++) {
-				Expenses expenses = datas.get(i);
+		if (datas != null) {
+			for (Expenses expenses : datas) {
 				DailyPayDetailBean bean = new DailyPayDetailBean();
 				bean.setName(expenses.nameZh);
 				if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
@@ -260,7 +225,7 @@ public class DailypaySubmitComponent {
 					bean.setName(expenses.name);
 				}
 				bean.setId(expenses.expensesID);
-				bean.setPrice("");
+				bean.setPrice(StringUtils.EMPTY);
 				detail_classList.add(bean);
 				all_pay_price.add(Constants.PRICE_NUM_FLOAT);
 			}
@@ -272,20 +237,17 @@ public class DailypaySubmitComponent {
 	}
 
 	/**
-	 * 
+	 * 带回总数加载数据
 	 * */
 	public void loadingCollection(List<TakeNumberBean> number_classList, TakeNumerAdapter number_adapter, ListView num_list,
 			List<Double> all_num_price, Double num_count, TextView take_all_price, Handler handler) {
 		DecimalFormat df = new DecimalFormat(Constants.PRICE_FLOAT);
 		List<Collection> datas_num = Collection.queryList();
 		Log.e("查询带回数据库", datas_num.size() + "");
-		if (datas_num == null) {
-		} else {
-			for (int j = 0; j < datas_num.size(); j++) {
-				Collection collection = datas_num.get(j);
+		if (datas_num != null) {
+			for (Collection collection : datas_num) {
 				TakeNumberBean bean = new TakeNumberBean();
 				bean.setPrice(collection.price);
-				;
 				bean.setId(collection.collectionID);
 				bean.setNum("");
 				// hashMap_num.put(j, "");
@@ -295,32 +257,33 @@ public class DailypaySubmitComponent {
 			number_adapter = new TakeNumerAdapter(context, number_classList, handler);
 			num_list.setAdapter(number_adapter);
 			try {
-				for (int i = 0; i < number_classList.size(); i++) {
-					String price_tv = number_classList.get(i).getPrice();
-					if (price_tv.equals("")) {
+				for (TakeNumberBean bean : number_classList) {
+					String price_tv = bean.getPrice();
+					if (StringUtils.isEmpty(price_tv)) {
 						price_tv = Constants.PRICE_FLOAT;
 					}
 					Double sigle_price = Double.parseDouble(price_tv);
-					String num_tv = number_classList.get(i).getNum();
-					if (num_tv.equals("")) {
+					String num_tv = bean.getNum();
+					if (StringUtils.isEmpty(num_tv)) {
 						num_tv = Constants.PRICE_INT;
 					}
 					int num = Integer.parseInt(num_tv);
 					Double total_price = Constants.PRICE_NUM_FLOAT;
 					total_price = num * sigle_price;
 					all_num_price.add(total_price);
-					// hashMap_numprice.put(i, String.valueOf(total_price));
 					num_count = num_count + total_price;
 				}
 
 			} catch (Exception e) {
 
 			}
+
 		}
 		take_all_price.setText(df.format(num_count));
 	}
 
-	public void initView(Button btu_id_sbumit) {
+	@AfterViews
+	public void initDailypaySubmit() {
 		Double order_price = Constants.PRICE_NUM_FLOAT;
 		String shopId = sharedPrefs.shopId().get();
 		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
@@ -331,7 +294,7 @@ public class DailypaySubmitComponent {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
 			List<String> priceList = null;
 			if (!flag) {
-				priceList = PriceSave.getInatance(context).getList(myApp.getUser_id(), date, sharedPrefs.shopId().get());
+				priceList = PriceSave.getInatance(context).getList(myApp.getUserId(), date, shopId);
 			} else {
 				btu_id_sbumit.setVisibility(View.GONE);
 			}
@@ -349,19 +312,8 @@ public class DailypaySubmitComponent {
 				}
 
 			}
-		} else if (myApp.getDaily_pay_submit_flag().equals("0")) {
+		} else if (false) {
 			btu_id_sbumit.setVisibility(View.GONE);
-		}
-	}
-
-	public void submitOver(ListView view, int r) {
-		InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-		int num_of_visible_view = view.getLastVisiblePosition() - view.getFirstVisiblePosition();
-		for (int i = 0; i <= num_of_visible_view; i++) {
-			EditText edit = (EditText) view.getChildAt(i).findViewById(r);
-			edit.setEnabled(false);
-			imm.hideSoftInputFromWindow(edit.getWindowToken(), 0);
-
 		}
 	}
 

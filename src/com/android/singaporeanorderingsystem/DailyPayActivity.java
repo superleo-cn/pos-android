@@ -19,6 +19,7 @@ import com.googlecode.androidannotations.annotations.NoTitle;
 // 绑定登录的layout
 @EActivity(R.layout.daily_pay)
 public class DailyPayActivity extends AbstractActivity {
+
 	@Bean
 	DailyPayComponent dailyPayComponent;
 

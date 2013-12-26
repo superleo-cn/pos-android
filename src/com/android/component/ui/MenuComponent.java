@@ -73,8 +73,8 @@ public class MenuComponent {
 	 */
 	@AfterViews
 	public void initMenu() {
-		login_name.setText(stringResComponent.mainTitle + " " + myApp.getU_name() + ",");
-		shop_name1234.setText(myApp.getShop_name() + "-" + myApp.getShop_code());
+		login_name.setText(stringResComponent.mainTitle + " " + myApp.getUsername() + ",");
+		shop_name1234.setText(myApp.getShopName() + "-" + myApp.getShopCode());
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class MenuComponent {
 			popu_setting.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					dismiss();
-					if (!StringUtils.equalsIgnoreCase(Constants.ROLE_CASHIER, myApp.getU_type())) {
+					if (!StringUtils.equalsIgnoreCase(Constants.ROLE_CASHIER, myApp.getUserType())) {
 						activityComponent.startSettingWithTransition();
 					} else {
 						toastComponent.show(stringResComponent.insufficientpermissions);
@@ -163,9 +163,9 @@ public class MenuComponent {
 			return popu_diancai;
 		} else if (activity instanceof DailyPayActivity_) {
 			return popu_daily;
-		} else if(activity instanceof SettingActivity_){
+		} else if (activity instanceof SettingActivity_) {
 			return popu_setting;
-		}else{
+		} else {
 			return popu_QueryAllDB;
 		}
 	}

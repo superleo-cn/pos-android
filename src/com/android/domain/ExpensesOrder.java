@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.android.bean.DailyPayDetailBean;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
@@ -25,7 +27,7 @@ public class ExpensesOrder extends Model {
 
 	@Column(name = "userID")
 	public String userID;
-	
+
 	@Column(name = "price")
 	public String price;
 
@@ -35,7 +37,6 @@ public class ExpensesOrder extends Model {
 	@Column(name = "date")
 	public String date;
 
-	
 	@Override
 	public String toString() {
 		return "ExpensesOrder [consumptionId=" + consumptionId + ", shopID=" + shopID + ", userID=" + userID + ", price=" + price
@@ -48,16 +49,25 @@ public class ExpensesOrder extends Model {
 	 * @param bean
 	 * @param myApp
 	 */
-
-	public static void save(ExpensesOrder bean,MyApp myApp) {
+	public static void save(DailyPayDetailBean bean, MyApp myApp) {
 		ExpensesOrder expense = new ExpensesOrder();
 		expense.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		expense.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-		expense.consumptionId = bean.consumptionId;
-		expense.shopID = myApp.getSettingShopId();// 店idmyApp.getShopid()
-		expense.userID = myApp.getUser_id();//
-		expense.price = bean.price;//
+		expense.consumptionId = bean.getId();
+		expense.shopID = myApp.getShopId();// 店idmyApp.getShopid()
+		expense.userID = myApp.getUserId();//
+		expense.price = StringUtils.defaultIfEmpty(bean.getPrice(), Constants.PRICE_FLOAT);
 		expense.save();
+	}
+
+	/**
+	 * 保存每日支付金额
+	 * */
+	public static void saveExpenses(List<DailyPayDetailBean> detail_classList, MyApp myApp) {
+		/* 提交每日支付金额 */
+		for (DailyPayDetailBean bean : detail_classList) {
+			save(bean, myApp);
+		}
 	}
 
 	/**

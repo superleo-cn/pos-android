@@ -17,7 +17,7 @@ public class MyTextUtils {
 	public static String checkIntTextView(TextView textview) {
 		String str = textview.getText().toString();
 		if (str.isEmpty()) {
-			str = "0";
+			str = Constants.PRICE_INT;
 		}
 		return str;
 	}
@@ -25,7 +25,7 @@ public class MyTextUtils {
 	public static String checkTimeTextView(TextView textview) {
 		String str = textview.getText().toString();
 		if (str.isEmpty()) {
-			str = "yyyy-MM-dd";
+			str = DateUtils.YYYY_MM_DD;
 		}
 		return str;
 	}
@@ -33,7 +33,7 @@ public class MyTextUtils {
 	public static String checkStringTextView(TextView textview) {
 		String str = textview.getText().toString();
 		if (str.isEmpty()) {
-			str = "";
+			str = StringUtils.EMPTY;
 		}
 		return str;
 	}
@@ -47,7 +47,7 @@ public class MyTextUtils {
 	public static void clearTextView(TextView... objs) {
 		if (objs != null) {
 			for (TextView view : objs) {
-				view.setText("");
+				view.setText(StringUtils.EMPTY);
 			}
 		}
 	}

@@ -62,9 +62,10 @@ public class FoodOrder extends Model {
 	public static List<FoodOrder> queryListByStatus(String status) {
 		return new Select().from(FoodOrder.class).where("status = ?", status).execute();
 	}
-	
+
 	/**
 	 * 返回全部食物订单列表
+	 * 
 	 * @return
 	 */
 	public static List<FoodOrder> queryAllList() {
@@ -82,10 +83,10 @@ public class FoodOrder extends Model {
 		FoodOrder food_order = new FoodOrder();
 		// food_order.setDiscount(dazhe_price+"");//打折钱数
 		food_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
-		food_order.shopId = myApp.getSettingShopId();// 店idmyApp.getShopid()
+		food_order.shopId = myApp.getShopId();// 店idmyApp.getShopid()
 		food_order.totalPackage = String.valueOf(bean.getDabao_price());// 打包钱数
 		food_order.discount = String.valueOf(bean.getDazhe_price()); // 打折钱数
-		food_order.userId = myApp.getUser_id();// 用户id
+		food_order.userId = myApp.getUserId();// 用户id
 		// food_order.setRetailprice(Double.parseDouble(
 		// bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
 		double totalRetailPrice = Double.parseDouble(bean.getFood_price()) - bean.getDazhe_price() + bean.getDabao_price();

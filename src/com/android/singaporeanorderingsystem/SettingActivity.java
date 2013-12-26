@@ -102,7 +102,7 @@ public class SettingActivity extends AbstractActivity {
 	@AfterViews
 	public void initSetting() {
 
-		if (StringUtils.equalsIgnoreCase(myApp.getU_type(), Constants.ROLE_SUPERADMIN)) {
+		if (StringUtils.equalsIgnoreCase(myApp.getUserType(), Constants.ROLE_SUPERADMIN)) {
 			admin_set.setVisibility(View.VISIBLE);
 			r_set_admin_lay.setVisibility(View.VISIBLE);
 			setting_time.setVisibility(View.VISIBLE);

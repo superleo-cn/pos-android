@@ -14,52 +14,52 @@ import com.android.common.DateUtils;
 import com.android.common.MyApp;
 
 @Table(name = "tb_balance_order")
-public class BalanceOrder extends Model{
+public class BalanceOrder extends Model {
 	@Column(name = "shopId")
 	public String shopId;
-	
+
 	@Column(name = "userId")
 	public String userId;
-	
+
 	@Column(name = "aOpenBalance")
 	public String aOpenBalance;
-	
+
 	@Column(name = "bExpenses")
 	public String bExpenses;
-	
+
 	@Column(name = "cCashCollected")
 	public String cCashCollected;
-	
+
 	@Column(name = "dDailyTurnover")
 	public String dDailyTurnover;
-	
+
 	@Column(name = "eNextOpenBalance")
 	public String eNextOpenBalance;
-	
+
 	@Column(name = "fBringBackCash")
 	public String fBringBackCash;
-	
+
 	@Column(name = "gTotalBalance")
 	public String gTotalBalance;
-	
+
 	@Column(name = "middleCalculateTime")
 	public String middleCalculateTime;
-	
+
 	@Column(name = "middleCalculateBalance")
 	public String middleCalculateBalance;
-	
+
 	@Column(name = "calculateTime")
 	public String calculateTime;
-	
+
 	@Column(name = "courier")
 	public String courier;
-	
+
 	@Column(name = "others")
 	public String others;
-	
+
 	@Column(name = "status")
 	public String status;
-	
+
 	@Column(name = "date")
 	public String date;
 
@@ -71,57 +71,69 @@ public class BalanceOrder extends Model{
 				+ middleCalculateTime + ", middleCalculateBalance=" + middleCalculateBalance + ", calculateTime=" + calculateTime
 				+ ", courier=" + courier + ", others=" + others + ", status=" + status + ", date=" + date + "]";
 	}
-	
+
 	/**
 	 * 保存
+	 * 
 	 * @param bean
 	 * @param myApp
 	 */
-	public static void save(BalanceOrder bean,MyApp myApp) {
+	public static void save(BalanceOrder bean, MyApp myApp) {
 		BalanceOrder b_order = new BalanceOrder();
 		b_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
-		b_order.shopId = myApp.getSettingShopId();// 店idmyApp.getShopid()
-		b_order.userId = myApp.getUser_id();//
+		b_order.shopId = myApp.getShopId();
+		b_order.userId = myApp.getUserId();
 		b_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-		b_order.aOpenBalance=bean.aOpenBalance;
-		b_order.bExpenses=bean.bExpenses;
-		b_order.cCashCollected=bean.cCashCollected;
-		b_order.dDailyTurnover=bean.dDailyTurnover;
-		b_order.eNextOpenBalance=bean.eNextOpenBalance;
-		b_order.fBringBackCash=bean.fBringBackCash;
-		b_order.gTotalBalance=bean.gTotalBalance;
-		b_order.middleCalculateTime=bean.middleCalculateTime;
-		b_order.middleCalculateBalance=bean.middleCalculateBalance;
-		b_order.calculateTime=bean.calculateTime;
-		b_order.courier=bean.courier;
-		b_order.others=bean.others;
+		b_order.aOpenBalance = bean.aOpenBalance;
+		b_order.bExpenses = bean.bExpenses;
+		b_order.cCashCollected = bean.cCashCollected;
+		b_order.dDailyTurnover = bean.dDailyTurnover;
+		b_order.eNextOpenBalance = bean.eNextOpenBalance;
+		b_order.fBringBackCash = bean.fBringBackCash;
+		b_order.gTotalBalance = bean.gTotalBalance;
+		b_order.middleCalculateTime = bean.middleCalculateTime;
+		b_order.middleCalculateBalance = bean.middleCalculateBalance;
+		b_order.calculateTime = bean.calculateTime;
+		b_order.courier = bean.courier;
+		b_order.others = bean.others;
 		b_order.save();
 	}
-	public static void save(BalanceOrder bean) {
-		BalanceOrder b_order = new BalanceOrder();
-		b_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
-		b_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-		b_order.aOpenBalance=bean.aOpenBalance;
-		b_order.bExpenses=bean.bExpenses;
-		b_order.cCashCollected=bean.cCashCollected;
-		b_order.dDailyTurnover=bean.dDailyTurnover;
-		b_order.eNextOpenBalance=bean.eNextOpenBalance;
-		b_order.fBringBackCash=bean.fBringBackCash;
-		b_order.gTotalBalance=bean.gTotalBalance;
-		b_order.middleCalculateTime=bean.middleCalculateTime;
-		b_order.middleCalculateBalance=bean.middleCalculateBalance;
-		b_order.calculateTime=bean.calculateTime;
-		b_order.courier=bean.courier;
-		b_order.others=bean.others;
-		b_order.save();
+
+	/**
+	 * 保存每日其他数据
+	 * */
+	public static void save(String aOpenBalance, String bExpenses, String cCashCollected, String dDailyTurnover, String eNextOpenBalance,
+			String fBringBackCash, String gTotalBalance, String middleCalculateTime, String middleCalculateBalance, String calculateTime,
+			String others, String courier, MyApp myApp) {
+		BalanceOrder bean = new BalanceOrder();
+		bean.status = Constants.DB_FAILED;// 是否成功 1是 0否
+		bean.shopId = myApp.getShopId();// 店idmyApp.getShopid()
+		bean.userId = myApp.getUserId();//
+		bean.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+		bean.aOpenBalance = aOpenBalance;
+		bean.bExpenses = bExpenses;
+		bean.cCashCollected = cCashCollected;
+		bean.dDailyTurnover = dDailyTurnover;
+		bean.eNextOpenBalance = eNextOpenBalance;
+		bean.fBringBackCash = fBringBackCash;
+		bean.gTotalBalance = gTotalBalance;
+		bean.middleCalculateTime = middleCalculateTime;
+		bean.middleCalculateBalance = middleCalculateBalance;
+		bean.calculateTime = calculateTime;
+		bean.others = others;
+		bean.courier = courier;
+		bean.save();
 	}
+
 	/**
 	 * 返回列表
+	 * 
 	 * @return
 	 */
 	public static List<BalanceOrder> queryList() {
 		return new Select().from(BalanceOrder.class).execute();
 	}
+
 	/**
 	 * 返回订单列表
 	 * 
@@ -130,20 +142,25 @@ public class BalanceOrder extends Model{
 	public static List<BalanceOrder> queryListByStatus(String status) {
 		return new Select().from(BalanceOrder.class).where("status = ?", status).execute();
 	}
+
 	/**
 	 * 返回今天数据列表
+	 * 
 	 * @return
 	 */
 	public static List<BalanceOrder> TodayList(String time) {
 		return new Select().from(BalanceOrder.class).where("date = ?", time).execute();
 	}
+
 	/**
 	 * 返回今天数据列表
+	 * 
 	 * @return
 	 */
-	public static List<BalanceOrder> TodayStatusList(String time,String status) {
-		return new Select().from(BalanceOrder.class).where("date = ? and status=?", time,status).execute();
+	public static List<BalanceOrder> TodayStatusList(String time, String status) {
+		return new Select().from(BalanceOrder.class).where("date = ? and status=?", time, status).execute();
 	}
+
 	/**
 	 * 更新所有提交成功的
 	 */
@@ -156,8 +173,10 @@ public class BalanceOrder extends Model{
 			}
 		}
 	}
+
 	/**
 	 * 按照ID更新数据
+	 * 
 	 * @param androidId
 	 */
 	public static void updateByStatus(Long androidId) {

@@ -1,6 +1,5 @@
 package com.android.component.ui;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,8 +23,10 @@ import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
+import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
+import com.android.common.MyNumberUtils;
 import com.android.common.MyTextUtils;
 import com.android.component.ActivityComponent;
 import com.android.component.KeyboardComponent;
@@ -34,6 +34,8 @@ import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dialog.design.DialogBuilder;
+import com.android.domain.CollectionOrder;
+import com.android.domain.ExpensesOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -69,9 +71,6 @@ public class DailyPayComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
-
-	@Bean
-	MenuComponent menuComponent;
 
 	@ViewById(R.id.write_name)
 	TextView write_name;
@@ -121,9 +120,6 @@ public class DailyPayComponent {
 	@ViewById(R.id.btu_id_sbumit)
 	Button btu_id_sbumit;
 
-	@ViewById(R.id.menu_btn)
-	ImageView menu; // menu按钮
-
 	@ViewById(R.id.other)
 	EditText other;
 
@@ -136,10 +132,9 @@ public class DailyPayComponent {
 	private List<TakeNumberBean> number_classList = new ArrayList<TakeNumberBean>();
 	private DailyPayDetailAdapter detail_adapter;
 	private TakeNumerAdapter number_adapter;
-	private DecimalFormat df = new DecimalFormat("0.00");
-	private Double num_count = 0.00;
-	private Double count = 0.00;
-	private Double order_price = 0.00;
+	private Double num_count = Constants.PRICE_NUM_FLOAT;
+	private Double count = Constants.PRICE_NUM_FLOAT;
+	private Double order_price = Constants.PRICE_NUM_FLOAT;
 
 	@AfterViews
 	public void initDailayPay() {
@@ -147,17 +142,20 @@ public class DailyPayComponent {
 	}
 
 	public void initData() {
+		// 设置记录人和送款人
+		write_name.setText(myApp.getUsername());
+		send_person.setText(myApp.getUsername());
 
-		write_name.setText(myApp.getU_name());
-		send_person.setText(myApp.getU_name());
-
+		// 加载支付款项
 		dailypaysubmitComponent.loadingExpenses(detail_classList, all_pay_price, detail_adapter, daily_list, handler);
-		text_id_all_price.setText(df.format(count));
+		text_id_all_price.setText(MyNumberUtils.numToStr(count));
 
+		// 加载支付款项
 		dailypaysubmitComponent.loadingCollection(number_classList, number_adapter, num_list, all_num_price, num_count, take_all_price,
 				handler);
+		// 计算
 		compute();
-		dailypaysubmitComponent.initView(btu_id_sbumit);
+
 	}
 
 	// 提交数据窗口
@@ -169,7 +167,7 @@ public class DailyPayComponent {
 
 			public void onClick(DialogInterface dialog, int which) {
 				if (doValidation()) {
-					clear_data();
+					storeAndSync();
 					btu_id_sbumit.setVisibility(View.GONE);
 				}
 			}
@@ -215,20 +213,25 @@ public class DailyPayComponent {
 		return true;
 	}
 
-	public void clear_data() {
+	/**
+	 * 存储本机并且提交
+	 */
+	public void storeAndSync() {
 		/* 提交每日支付金额 */
-		dailypaysubmitComponent.saveExpenses(detail_classList);
+		ExpensesOrder.saveExpenses(detail_classList, myApp);
 		/* 提交每日支付金额结束 */
 
 		/* 提交带回总数接口 */
-		dailypaysubmitComponent.saveCollectionOrder(number_classList);
+		CollectionOrder.save(number_classList, myApp);
 		/* 提交带回总数接口结束 */
 
-		dailypaysubmitComponent.submitOver(num_list, R.id.num_id_price);
-		dailypaysubmitComponent.submitOver(daily_list, R.id.text_id_price);
+		// 设置成只读操作
+		setReadonly(num_list, R.id.num_id_price);
+		setReadonly(daily_list, R.id.text_id_price);
 
-		dailypaysubmitComponent.saveOther(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num,
-				total, noon_time, noon_turnover, noon_time, other, send_person);
+		// 保存其他输入项目
+		dailypaysubmitComponent.save(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num, total,
+				noon_time, noon_turnover, noon_time, other, send_person);
 
 		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
 				send_person, other, shop_money);
@@ -240,33 +243,23 @@ public class DailyPayComponent {
 
 	public void compute() {
 		try {
-			String shop_money_text;
-			String tomorrow_money_text;
-			if (shop_money.getText().toString().length() == 0) {
-				shop_money_text = "0";
-			} else {
-				shop_money_text = shop_money.getText().toString();
-			}
-
-			if (tomorrow_money.getText().toString().length() == 0) {
-				tomorrow_money_text = "0";
-			} else {
-				tomorrow_money_text = tomorrow_money.getText().toString();
-			}
+			String shop_money_text = StringUtils.defaultIfEmpty(shop_money.getText().toString(), Constants.PRICE_INT);
+			String tomorrow_money_text = StringUtils.defaultIfEmpty(tomorrow_money.getText().toString(), Constants.PRICE_INT);
 
 			String all_price = text_id_all_price.getText().toString();
-			cash_register.setText(df.format(order_price + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
+			cash_register
+					.setText(MyNumberUtils.numToStr(order_price + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
 			Double price_b = Double.parseDouble(all_price);
 			Double price_c = Double.parseDouble(cash_register.getText().toString());
 			Double price_d = order_price;
-			today_turnover.setText(df.format(price_d));
+			today_turnover.setText(MyNumberUtils.numToStr(price_d));
 
 			Double total_t = price_c - price_b;
-			total.setText(df.format(total_t));
+			total.setText(MyNumberUtils.numToStr(total_t));
 
 			Double price_e = Double.parseDouble(tomorrow_money_text);
 			Double take_price = Double.parseDouble(cash_register.getText().toString()) - price_e;
-			total_take_num.setText(df.format(take_price));
+			total_take_num.setText(MyNumberUtils.numToStr(take_price));
 		} catch (Exception e) {
 			Log.e("总计算", e.getMessage());
 			// e.getMessage();
@@ -310,7 +303,7 @@ public class DailyPayComponent {
 						sigle_price = all_pay_price.get(i).doubleValue();
 						count = count + sigle_price;
 					}
-					text_id_all_price.setText(df.format(count));
+					text_id_all_price.setText(MyNumberUtils.numToStr(count));
 
 					compute();
 				} catch (Exception e) {
@@ -332,7 +325,7 @@ public class DailyPayComponent {
 					num_count = num_count + sigle_price;
 				}
 
-				take_all_price.setText(df.format(num_count));
+				take_all_price.setText(MyNumberUtils.numToStr(num_count));
 				compute();
 				break;
 			}
@@ -345,5 +338,13 @@ public class DailyPayComponent {
 				total_take_num, send_person, shop_money);
 		keyboardComponent.clearfocusKeyboard(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money,
 				total_take_num, send_person, shop_money);
+	}
+
+	public void setReadonly(ListView view, int r) {
+		int num_of_visible_view = view.getLastVisiblePosition() - view.getFirstVisiblePosition();
+		for (int i = 0; i <= num_of_visible_view; i++) {
+			EditText edit = (EditText) view.getChildAt(i).findViewById(r);
+			keyboardComponent.dismissKeyboardReadonly(true, edit);
+		}
 	}
 }
