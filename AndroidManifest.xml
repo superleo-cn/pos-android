@@ -25,7 +25,7 @@
 		<meta-data android:name="AA_DB_VERSION" android:value="1" />
         
         <activity
-            android:name=".singaporeanorderingsystem.LoginActivity_"
+            android:name="com.android.activity.LoginActivity_"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -37,19 +37,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".singaporeanorderingsystem.DailyPayActivity_"
+            android:name="com.android.activity.DailyPayActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
-            android:name=".singaporeanorderingsystem.MainActivity_"
+            android:name="com.android.activity.MainActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
          <activity
-            android:name=".singaporeanorderingsystem.QueryAllDBActivity_"
+            android:name="com.android.activity.QueryAllDBActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <activity
-            android:name=".singaporeanorderingsystem.SettingActivity_"
+            android:name="com.android.activity.SettingActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
         <service android:name=".service.MyService"></service>

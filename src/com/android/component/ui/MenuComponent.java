@@ -14,15 +14,15 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.R;
+import com.android.activity.DailyPayActivity_;
+import com.android.activity.MainActivity_;
+import com.android.activity.SettingActivity_;
 import com.android.common.Constants;
 import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dialog.design.DialogBuilder;
-import com.android.singaporeanorderingsystem.DailyPayActivity_;
-import com.android.singaporeanorderingsystem.MainActivity_;
-import com.android.singaporeanorderingsystem.SettingActivity_;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;

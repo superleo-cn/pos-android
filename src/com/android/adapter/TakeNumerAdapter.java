@@ -25,9 +25,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.R;
+import com.android.activity.DailyPayActivity;
+import com.android.activity.MainActivity;
 import com.android.bean.TakeNumberBean;
-import com.android.singaporeanorderingsystem.DailyPayActivity;
-import com.android.singaporeanorderingsystem.MainActivity;
 
 
 public class TakeNumerAdapter extends BaseAdapter {

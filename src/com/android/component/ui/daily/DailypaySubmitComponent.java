@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.R;
+import com.android.activity.PriceSave;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
@@ -38,7 +39,6 @@ import com.android.domain.CollectionOrder;
 import com.android.domain.Expenses;
 import com.android.domain.ExpensesOrder;
 import com.android.mapping.StatusMapping;
-import com.android.singaporeanorderingsystem.PriceSave;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;

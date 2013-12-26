@@ -1,4 +1,4 @@
-package com.android.singaporeanorderingsystem;
+package com.android.activity;
 
 import android.widget.GridView;
 

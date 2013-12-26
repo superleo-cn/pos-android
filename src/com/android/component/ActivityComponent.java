@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.android.R;
-import com.android.singaporeanorderingsystem.DailyPayActivity_;
-import com.android.singaporeanorderingsystem.LoginActivity_;
-import com.android.singaporeanorderingsystem.MainActivity_;
-import com.android.singaporeanorderingsystem.QueryAllDBActivity_;
-import com.android.singaporeanorderingsystem.SettingActivity_;
+import com.android.activity.DailyPayActivity_;
+import com.android.activity.LoginActivity_;
+import com.android.activity.MainActivity_;
+import com.android.activity.QueryAllDBActivity_;
+import com.android.activity.SettingActivity_;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 
@@ -49,7 +49,7 @@ public class ActivityComponent {
 	public void startDailyWithTransition() {
 		startActivityWithTransaction(DailyPayActivity_.class);
 	}
-	
+
 	public void startQueryAllWithTransition() {
 		startActivityWithTransaction(QueryAllDBActivity_.class);
 	}

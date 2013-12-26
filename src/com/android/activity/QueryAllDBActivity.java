@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.android.singaporeanorderingsystem;
+package com.android.activity;
 import com.android.R;
 import com.android.component.ui.QueryAllDBAComponent;
 

@@ -1,4 +1,4 @@
-package com.android.singaporeanorderingsystem;
+package com.android.activity;
 
 import android.app.Activity;
 import android.content.DialogInterface;
