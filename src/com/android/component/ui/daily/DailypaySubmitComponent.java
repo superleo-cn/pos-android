@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.activity.PriceSave;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
@@ -250,7 +249,6 @@ public class DailypaySubmitComponent {
 				bean.setPrice(collection.price);
 				bean.setId(collection.collectionID);
 				bean.setNum("");
-				// hashMap_num.put(j, "");
 				number_classList.add(bean);
 			}
 			Log.e("打包带走", number_classList.size() + "");
@@ -275,7 +273,7 @@ public class DailypaySubmitComponent {
 				}
 
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 
 		}
@@ -284,37 +282,30 @@ public class DailypaySubmitComponent {
 
 	@AfterViews
 	public void initDailypaySubmit() {
-		Double order_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
-		String shopId = sharedPrefs.shopId().get();
 		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 		Log.e("今天日期", date);
-		boolean flag = false; // DailyMoneyDao.getInatance(context).isCompleted(shopId,
-								// userId, date, "1");
+		boolean flag = isComplete(date);
 		if (!flag) {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
-			List<String> priceList = null;
-			if (!flag) {
-				priceList = PriceSave.getInatance(context).getList(myApp.getUserId(), date, shopId);
-			} else {
-				btu_id_sbumit.setVisibility(View.GONE);
-			}
-
-			// Double price=0.00;
-			if (priceList == null) {
-				order_price = 0.00;
-			} else {
-				if (priceList.size() != 0) {
-					for (int i = 0; i < priceList.size(); i++) {
-						order_price += Double.parseDouble(priceList.get(i));
-					}
-				} else {
-					order_price = 0.00;
-				}
-
-			}
-		} else if (false) {
+		} else {
 			btu_id_sbumit.setVisibility(View.GONE);
 		}
 	}
 
+	/**
+	 * 判断是否已经完成
+	 * 
+	 * @param date
+	 * @return
+	 */
+	private boolean isComplete(String date) {
+		List<Expenses> expenseslist = Expenses.todayStatusList(date, Constants.DB_FAILED);
+		List<BalanceOrder> balanceOrderlist = BalanceOrder.todayStatusList(date, Constants.DB_FAILED);
+		List<CollectionOrder> collectionOrderlist = CollectionOrder.todayStatusList(date, Constants.DB_FAILED);
+		if (CollectionUtils.isNotEmpty(expenseslist) && CollectionUtils.isNotEmpty(balanceOrderlist)
+				&& CollectionUtils.isNotEmpty(collectionOrderlist)) {
+			return true;
+		}
+		return false;
+	}
 }

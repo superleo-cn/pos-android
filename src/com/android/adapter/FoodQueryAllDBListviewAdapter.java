@@ -11,18 +11,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.R;
+import com.android.common.MyNumberUtils;
 import com.android.domain.FoodOrder;
 
 public class FoodQueryAllDBListviewAdapter extends BaseAdapter {
 	private List<FoodOrder> data;
 	private Context context;
 	private LayoutInflater inflater;
-	
+
 	public FoodQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	public List<FoodOrder> getData() {
 		return data;
 	}
@@ -33,7 +34,7 @@ public class FoodQueryAllDBListviewAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return data == null ? 0: data.size();
+		return data == null ? 0 : data.size();
 	}
 
 	@Override
@@ -67,16 +68,16 @@ public class FoodQueryAllDBListviewAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		if(position == 0){
+		if (position == 0) {
 			viewHolder.list_item_title.setVisibility(View.VISIBLE);
-		}else{
+		} else {
 			viewHolder.list_item_title.setVisibility(View.GONE);
 		}
-		FoodOrder food_order=data.get(position);
+		FoodOrder food_order = data.get(position);
 		viewHolder.text_food_id.setText(food_order.foodId);
 		viewHolder.text_shop_id.setText(food_order.shopId);
 		viewHolder.text_user_id.setText(food_order.userId);
-		viewHolder.text_retail_price.setText(food_order.retailPrice);
+		viewHolder.text_retail_price.setText(MyNumberUtils.numToStr(food_order.retailPrice));
 		viewHolder.text_quantity.setText(food_order.quantity);
 		viewHolder.text_foc.setText(food_order.foc);
 		viewHolder.text_discount.setText(food_order.discount);
@@ -85,6 +86,7 @@ public class FoodQueryAllDBListviewAdapter extends BaseAdapter {
 		viewHolder.text_date.setText(food_order.date);
 		return convertView;
 	}
+
 	private final class ViewHolder {
 		LinearLayout list_item_title;
 		TextView text_food_id;

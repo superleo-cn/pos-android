@@ -407,13 +407,6 @@ public class OrderComponent {
 	// 同步到服务器上去
 	@Background
 	void syncToServer() {
-		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-		long result_price = 0;
-		// long result_price =
-		// PriceSave.getInatance(MainActivity.this).save(myApp.getUser_id(),
-		// date,
-		// total_price.getText().toString(), myApp.getSettingShopId());
-
 		// 准备发送数据
 		Map<String, String> params = new HashMap<String, String>();
 		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
@@ -433,7 +426,7 @@ public class OrderComponent {
 			System.out.println("transactions[" + i + "].food.id-->" + foodOrder.foodId);
 			params.put("transactions[" + i + "].totalDiscount", foodOrder.discount);
 			System.out.println("transactions[" + i + "].totalDiscount-->" + foodOrder.discount);
-			params.put("transactions[" + i + "].totalRetailPrice", foodOrder.retailPrice);
+			params.put("transactions[" + i + "].totalRetailPrice", String.valueOf(foodOrder.retailPrice));
 			System.out.println("transactions[" + i + "].totalRetailPrice-->" + foodOrder.retailPrice);
 			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
 			System.out.println("transactions[" + i + "].totalPackage-->" + foodOrder.totalPackage);
@@ -445,9 +438,9 @@ public class OrderComponent {
 
 		// 异步请求数据
 		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
-		if (mapping.code == 1) {
+		if (mapping.code == Constants.STATUS_SUCCESS) {
 			FoodOrder.updateAllByStatus();
-		} else if (mapping.code == 0) {
+		} else if (mapping.code == Constants.STATUS_FAILED) {
 			List<Long> ids = mapping.datas;
 			if (CollectionUtils.isNotEmpty(ids)) {
 				for (Long id : ids) {

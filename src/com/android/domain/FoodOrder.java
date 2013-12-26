@@ -13,6 +13,7 @@ import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
+import com.android.common.MyNumberUtils;
 
 @Table(name = "tb_food_order")
 public class FoodOrder extends Model {
@@ -24,7 +25,7 @@ public class FoodOrder extends Model {
 	public String shopId;
 
 	@Column(name = "retail_price")
-	public String retailPrice;
+	public Double retailPrice;
 
 	@Column(name = "quantity")
 	public String quantity;
@@ -90,6 +91,20 @@ public class FoodOrder extends Model {
 	}
 
 	/**
+	 * 返回每天收银的总钱
+	 * 
+	 * @return
+	 */
+	public static Double totalRetailCollection(String username, String shopId) {
+		FoodOrder food = new Select("sum(retail_price) as retail_price").from(FoodOrder.class)
+				.where("user_id = ? and shop_id = ? ", username, shopId).groupBy("user_id, shop_id").executeSingle();
+		if (food != null) {
+			return food.retailPrice;
+		}
+		return Constants.DEFAULT_PRICE_NUM_FLOAT;
+	}
+
+	/**
 	 * 保存食物订单
 	 * 
 	 * @param bean
@@ -98,14 +113,11 @@ public class FoodOrder extends Model {
 	 */
 	public static void save(SelectFoodBean bean, MyApp myApp, boolean is_foc) {
 		FoodOrder food_order = new FoodOrder();
-		// food_order.setDiscount(dazhe_price+"");//打折钱数
 		food_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		food_order.shopId = myApp.getShopId();// 店idmyApp.getShopid()
 		food_order.totalPackage = String.valueOf(bean.getDabao_price());// 打包钱数
 		food_order.discount = String.valueOf(bean.getDazhe_price()); // 打折钱数
 		food_order.userId = myApp.getUserId();// 用户id
-		// food_order.setRetailprice(Double.parseDouble(
-		// bean.getFood_price())*Double.parseDouble(bean.getFood_num())+"");//收钱数
 		double totalRetailPrice = Double.parseDouble(bean.getFood_price()) - bean.getDazhe_price() + bean.getDabao_price();
 		if (is_foc) {
 			food_order.foc = Constants.FOC_YES;// 是否免费 1是 0否
@@ -113,7 +125,7 @@ public class FoodOrder extends Model {
 		} else {
 			food_order.foc = Constants.FOC_NO;// 是否免费 1是 0否
 		}
-		food_order.retailPrice = String.valueOf(totalRetailPrice);// 收钱数
+		food_order.retailPrice = totalRetailPrice;// 收钱数
 		food_order.foodId = bean.getFood_id();// 食物id
 		food_order.quantity = bean.getFood_num();// 数量
 		food_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);

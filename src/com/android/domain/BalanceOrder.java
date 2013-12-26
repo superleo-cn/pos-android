@@ -157,7 +157,7 @@ public class BalanceOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static List<BalanceOrder> TodayStatusList(String time, String status) {
+	public static List<BalanceOrder> todayStatusList(String time, String status) {
 		return new Select().from(BalanceOrder.class).where("date = ? and status=?", time, status).execute();
 	}
 

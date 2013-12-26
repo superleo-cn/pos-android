@@ -58,7 +58,7 @@ public class CollectionOrder extends Model {
 	public static List<CollectionOrder> queryListByDate(String time) {
 		return new Select().from(CollectionOrder.class).where("date = ?", time).execute();
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -71,6 +71,15 @@ public class CollectionOrder extends Model {
 	 */
 	public static List<CollectionOrder> queryListByStatus(String status) {
 		return new Select().from(CollectionOrder.class).where("status = ?", status).execute();
+	}
+
+	/**
+	 * 
+	 * @param status
+	 * @return
+	 */
+	public static List<CollectionOrder> todayStatusList(String date, String status) {
+		return new Select().from(CollectionOrder.class).where("date = ? and status = ?", date, status).execute();
 	}
 
 	/**

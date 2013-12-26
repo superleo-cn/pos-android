@@ -270,7 +270,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="20dip"
                         android:background="@drawable/tong_btu_bg2"
-                        android:text="@string/synchronize_btn" />
+                        android:text="@string/set_title" />
                     
                 </RelativeLayout>
                 

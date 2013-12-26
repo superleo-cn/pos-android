@@ -3,8 +3,6 @@ package com.android.domain;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -32,8 +30,6 @@ public class Expenses extends Model {
 	@Column(name = "date")
 	public String date;
 
-
-	
 	@Override
 	public String toString() {
 		return "Expenses [expensesID=" + expensesID + ", name=" + name + ", nameZh=" + nameZh + ", status=" + status + ", date=" + date
@@ -86,8 +82,8 @@ public class Expenses extends Model {
 	 * 
 	 * @return
 	 */
-	public static List<Expenses> TodayList(String time) {
-		return new Select().from(Expenses.class).where("date = ?", time).execute();
+	public static List<Expenses> todayStatusList(String time, String status) {
+		return new Select().from(Expenses.class).where("date = ? and status = ?", time, status).execute();
 	}
 
 }

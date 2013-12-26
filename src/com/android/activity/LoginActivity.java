@@ -15,6 +15,7 @@ import com.android.component.AppUpdateComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.ui.login.LoginComponent;
+import com.android.domain.FoodOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;

@@ -36,6 +36,7 @@ import com.android.component.ToastComponent;
 import com.android.dialog.design.DialogBuilder;
 import com.android.domain.CollectionOrder;
 import com.android.domain.ExpensesOrder;
+import com.android.domain.FoodOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -134,7 +135,6 @@ public class DailyPayComponent {
 	private TakeNumerAdapter number_adapter;
 	private Double num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
-	private Double order_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
 
 	@AfterViews
 	public void initDailayPay() {
@@ -193,7 +193,8 @@ public class DailyPayComponent {
 		}
 
 		// 带回总数金额不一致
-		Double sigle_price = 0.00;
+		Double sigle_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
+		;
 		for (int i = 0; i < all_num_price.size(); i++) {
 			sigle_price += all_num_price.get(i).doubleValue();
 		}
@@ -245,18 +246,23 @@ public class DailyPayComponent {
 		try {
 			String shop_money_text = StringUtils.defaultIfEmpty(shop_money.getText().toString(), Constants.DEFAULT_PRICE_INT);
 			String tomorrow_money_text = StringUtils.defaultIfEmpty(tomorrow_money.getText().toString(), Constants.DEFAULT_PRICE_INT);
-
 			String all_price = text_id_all_price.getText().toString();
+			// 收银机
+			Double cashRegister = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId());
 			cash_register
-					.setText(MyNumberUtils.numToStr(order_price + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
+					.setText(MyNumberUtils.numToStr(cashRegister + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
+
+			// 今日营业额
 			Double price_b = Double.parseDouble(all_price);
 			Double price_c = Double.parseDouble(cash_register.getText().toString());
-			Double price_d = order_price;
+			Double price_d = cashRegister;
 			today_turnover.setText(MyNumberUtils.numToStr(price_d));
 
+			// 总数
 			Double total_t = price_c - price_b;
 			total.setText(MyNumberUtils.numToStr(total_t));
 
+			// 带回总数
 			Double price_e = Double.parseDouble(tomorrow_money_text);
 			Double take_price = Double.parseDouble(cash_register.getText().toString()) - price_e;
 			total_take_num.setText(MyNumberUtils.numToStr(take_price));
@@ -291,20 +297,17 @@ public class DailyPayComponent {
 			switch (msg.what) {
 			case DailyPayDetailAdapter.CHAGE_NUM_DETAIL:
 				try {
-					count = 0.00;
+					count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 					String str = (String) msg.obj;
 					Log.e("改变支付款价格", str);
 					int num = Integer.parseInt(str.substring(0, 1));
 					String price = str.substring(2, str.length());
 					Log.e("截取的价格", price);
 					all_pay_price.set(num, Double.parseDouble(price));
-					Double sigle_price = 0.00;
-					for (int i = 0; i < all_pay_price.size(); i++) {
-						sigle_price = all_pay_price.get(i).doubleValue();
+					for (Double sigle_price : all_pay_price) {
 						count = count + sigle_price;
 					}
 					text_id_all_price.setText(MyNumberUtils.numToStr(count));
-
 					compute();
 				} catch (Exception e) {
 					Log.e("支付款计算报错信息", e.getMessage());
@@ -312,19 +315,16 @@ public class DailyPayComponent {
 				}
 				break;
 			case TakeNumerAdapter.SET_NUM:
-				num_count = 0.00;
+				num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 				String str = (String) msg.obj;
 				Log.e("改变带回总数价格", str);
 				int num = Integer.parseInt(str.substring(0, 1));
 				String price = str.substring(2, str.length());
 				Log.e("截取带回的价格", price);
 				all_num_price.set(num, Double.parseDouble(price));
-				Double sigle_price = 0.00;
-				for (int i = 0; i < all_num_price.size(); i++) {
-					sigle_price = all_num_price.get(i).doubleValue();
+				for (Double sigle_price : all_num_price) {
 					num_count = num_count + sigle_price;
 				}
-
 				take_all_price.setText(MyNumberUtils.numToStr(num_count));
 				compute();
 				break;

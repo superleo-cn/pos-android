@@ -126,7 +126,6 @@ public class LoginComponent {
 			// 如果是SUPERADMIN登录，而且登录的用户却没有SUPERADMIN的权限，则禁止登录
 			if (!StringUtils.equalsIgnoreCase(remoteUser.usertype, Constants.ROLE_SUPERADMIN)
 					&& StringUtils.equalsIgnoreCase(loginType, Constants.ROLE_SUPERADMIN)) {
-				toastComponent.show(stringResComponent.loginQuanxian);
 				return Constants.STATUS_FAILED;
 			}
 			// login_audit(user_bean, "Login");
