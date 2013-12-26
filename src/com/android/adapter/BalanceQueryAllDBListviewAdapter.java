@@ -10,23 +10,23 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.domain.FoodOrder;
+import com.android.domain.BalanceOrder;
 
-public class QueryAllDBListviewAdapter extends BaseAdapter {
-	private List<FoodOrder> data;
+public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
+	private List<BalanceOrder> data;
 	private Context context;
 	private LayoutInflater inflater;
 	
-	public QueryAllDBListviewAdapter(Context context) {
+	public BalanceQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	
-	public List<FoodOrder> getData() {
+	public List<BalanceOrder> getData() {
 		return data;
 	}
 
-	public void setData(List<FoodOrder> data) {
+	public void setData(List<BalanceOrder> data) {
 		this.data = data;
 	}
 
@@ -51,13 +51,13 @@ public class QueryAllDBListviewAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.query_all_list_item, null);
 			viewHolder = new ViewHolder();
-			viewHolder.text = (TextView) convertView.findViewById(R.id.text);
+//			viewHolder.text = (TextView) convertView.findViewById(R.id.text);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		FoodOrder food_order=data.get(position);
-		viewHolder.text.setText(food_order.toString());
+//		BalanceOrder balance_order=data.get(position);
+//		viewHolder.text.setText(balance_order.toString());
 		return convertView;
 	}
 	private final class ViewHolder {

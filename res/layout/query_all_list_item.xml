@@ -1,15 +1,244 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ffffff" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/text"
+    <LinearLayout
+        android:id="@+id/list_item_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dip"
-        android:layout_marginTop="5dip"
-        android:textColor="#000000"
-        android:textSize="18sp" />
-</RelativeLayout>
+        android:background="#000000"
+        android:visibility="gone"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="food_id"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="shop_id"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="user_id"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="retail_price"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="quantity"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="foc"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="discount"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="total_package"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="status"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:text="date"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:orientation="horizontal" >
+
+         <TextView
+             android:id="@+id/text_food_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_shop_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+             android:id="@+id/text_user_id"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+             android:id="@+id/text_retail_price"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_quantity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_foc"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_discount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+             android:id="@+id/text_total_package"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+             android:id="@+id/text_status"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</LinearLayout>
