@@ -4,16 +4,16 @@ public class TakeNumberBean {
 	private String id;
 	private String price;
 	private String num;
+
 	public TakeNumberBean() {
 	}
 
-	public TakeNumberBean(String  id, String price,String num) {
+	public TakeNumberBean(String id, String price, String num) {
 		super();
 		this.id = id;
 		this.price = price;
-		this.num=num;
+		this.num = num;
 	}
-
 
 	public String getPrice() {
 		return price;
@@ -38,7 +38,5 @@ public class TakeNumberBean {
 	public void setNum(String num) {
 		this.num = num;
 	}
-
-	
 
 }

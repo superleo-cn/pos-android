@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.bean.GiditNumberBean;
 
 public class GiditNumberAdapter extends BaseAdapter {
 
