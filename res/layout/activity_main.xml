@@ -29,7 +29,7 @@
                 <GridView
                     android:id="@+id/food_list"
                     android:layout_width="fill_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="fill_parent"
                     android:descendantFocusability="blocksDescendants"
                     android:horizontalSpacing="5dp"
                     android:numColumns="4"
