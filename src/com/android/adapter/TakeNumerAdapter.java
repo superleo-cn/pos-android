@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -28,10 +29,13 @@ import com.android.R;
 import com.android.activity.DailyPayActivity;
 import com.android.activity.MainActivity;
 import com.android.bean.TakeNumberBean;
+import com.android.component.KeyboardComponent;
+import com.googlecode.androidannotations.annotations.Bean;
 
 
 public class TakeNumerAdapter extends BaseAdapter {
-
+	@Bean
+	KeyboardComponent keyboardComponent;
 	private Context context;
 	private LayoutInflater inflater;
 	private List<TakeNumberBean> classList;
@@ -191,7 +195,16 @@ public class TakeNumerAdapter extends BaseAdapter {
 	    	}  
 	        }
 
-		
+	        convertView.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+//					keyboardComponent.dismissKeyboard(v);
+					InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+					return false;
+				}
+			});
 		
 		return convertView;
 	}

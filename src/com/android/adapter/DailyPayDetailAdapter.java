@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -21,10 +22,13 @@ import android.widget.TextView;
 
 import com.android.R;
 import com.android.bean.DailyPayDetailBean;
+import com.android.component.KeyboardComponent;
+import com.googlecode.androidannotations.annotations.Bean;
 
 
 public class DailyPayDetailAdapter extends BaseAdapter {
-
+	@Bean
+	KeyboardComponent keyboardComponent;
 	private Context context;
 	private LayoutInflater inflater;
 	private List<DailyPayDetailBean> classList;
@@ -135,6 +139,8 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder = (ViewHolder) convertView.getTag();
 			viewHolder.text_id_price.setTag(position);
 		}
+		
+		
 
 		bean = classList.get(position);
 		viewHolder.text_id_name.setText(bean.getName());
@@ -156,9 +162,18 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			   viewHolder.text_id_price.setText(hashMap_detail.get(position));
 			   Log.e("改变值", "成功");
 			             }  
+		 convertView.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+//				keyboardComponent.dismissKeyboard(v);
+				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				return false;
+			}
+		});
 		return convertView;
 	}
-	
 	public boolean is_maxPrice(String zhi){
 		 try{
 	    	Double now_price=Double.parseDouble(zhi);
