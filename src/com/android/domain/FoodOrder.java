@@ -13,7 +13,6 @@ import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
-import com.android.common.MyNumberUtils;
 
 @Table(name = "tb_food_order")
 public class FoodOrder extends Model {
@@ -126,9 +125,9 @@ public class FoodOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static Double totalRetailCollection(String username, String shopId, String date) {
+	public static Double totalRetailCollection(String userId, String shopId, String date) {
 		FoodOrder food = new Select("sum(retail_price) as retail_price").from(FoodOrder.class)
-				.where("user_id = ? and shop_id = ? and date >= ? ", username, shopId, date).groupBy("user_id, shop_id").executeSingle();
+				.where("user_id = ? and shop_id = ? and date >= ? ", userId, shopId, date).groupBy("user_id, shop_id").executeSingle();
 		if (food != null) {
 			return food.retailPrice;
 		}

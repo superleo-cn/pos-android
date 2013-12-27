@@ -40,6 +40,7 @@ import com.android.component.ToastComponent;
 import com.android.dialog.design.DialogBuilder;
 import com.android.domain.CollectionOrder;
 import com.android.domain.ExpensesOrder;
+import com.android.domain.FoodOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -166,6 +167,8 @@ public class DailyPayComponent {
 		send_person.setText(myApp.getUsername());
 
 		// 收银机
+		todayReceive = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId(),
+				DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
 		cash_register.setText(MyNumberUtils.numToStr(todayReceive));
 
 		// 加载支付款项
