@@ -48,6 +48,7 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.TextChange;
+import com.googlecode.androidannotations.annotations.Touch;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -149,16 +150,11 @@ public class DailyPayComponent {
 	public void initDailayPay() {
 		initData();
 		initSubmitButton();
-		scrollviewID.setOnTouchListener(new OnTouchListener() {
+	}
 
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// keyboardComponent.dismissKeyboard(v);
-				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-				return false;
-			}
-		});
+	@Touch(R.id.scrollviewID)
+	void scrollViewTouch(MotionEvent event) {
+		keyboardComponent.dismissKeyboard(scrollviewID);
 	}
 
 	public void initData() {
@@ -172,24 +168,12 @@ public class DailyPayComponent {
 		cash_register.setText(MyNumberUtils.numToStr(todayReceive));
 
 		// 加载支付款项
-		scrollviewID.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				// keyboardComponent.dismissKeyboard(v);
-				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-				return false;
-			}
-		});
 		dailypaysubmitComponent.loadingExpenses(detail_classList, all_pay_price, detail_adapter, daily_list, handler);
 		text_id_all_price.setText(Constants.DEFAULT_PRICE_FLOAT);
 
 		// 加载支付款项
 		dailypaysubmitComponent.loadingCollection(number_classList, number_adapter, num_list, all_num_price, num_count, take_all_price,
 				handler);
-		// 计算
-		// compute();
 
 	}
 
