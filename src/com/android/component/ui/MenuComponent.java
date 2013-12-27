@@ -26,6 +26,7 @@ import com.android.dialog.design.DialogBuilder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
@@ -56,6 +57,9 @@ public class MenuComponent {
 
 	@ViewById(R.id.shop_name1234)
 	TextView shop_name1234; // 顶部菜单栏显示的店的名称
+	
+	@ViewById(R.id.textDailyPay)
+	TextView textDailyPay;
 
 	@Bean
 	StringResComponent stringResComponent;
@@ -90,7 +94,7 @@ public class MenuComponent {
 			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 			TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
-			if(myApp.getUsername().equals("superadmin")){
+			if(myApp.getUsername().equalsIgnoreCase(Constants.ROLE_SUPERADMIN)){
 				popu_QueryAllDB.setVisibility(View.VISIBLE);
 			}else{
 				popu_QueryAllDB.setVisibility(View.GONE);
@@ -147,6 +151,11 @@ public class MenuComponent {
 
 	}
 
+	@Click(R.id.textDailyPay)
+	void textDailyPayOnClick(){
+		activityComponent.startDailyWithTransition();
+	}
+	
 	private void dismiss() {
 		if (popupWindow.isShowing()) {
 			popupWindow.dismiss();
