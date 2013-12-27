@@ -141,6 +141,8 @@ public class DailyPayComponent {
 	private TakeNumerAdapter number_adapter;
 	private Double num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	// 收银机
+	Double cashRegister = Constants.DEFAULT_PRICE_NUM_FLOAT;
 
 	@AfterViews
 	public void initDailayPay() {
@@ -163,15 +165,19 @@ public class DailyPayComponent {
 		write_name.setText(myApp.getUsername());
 		send_person.setText(myApp.getUsername());
 
+		// 收银机
+		Double cashRegister = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId());
+		cash_register.setText(MyNumberUtils.numToStr(cashRegister));
+
 		// 加载支付款项
 		dailypaysubmitComponent.loadingExpenses(detail_classList, all_pay_price, detail_adapter, daily_list, handler);
-		text_id_all_price.setText(MyNumberUtils.numToStr(count));
+		text_id_all_price.setText(Constants.DEFAULT_PRICE_FLOAT);
 
 		// 加载支付款项
 		dailypaysubmitComponent.loadingCollection(number_classList, number_adapter, num_list, all_num_price, num_count, take_all_price,
 				handler);
 		// 计算
-		compute();
+		// compute();
 
 	}
 
@@ -265,18 +271,17 @@ public class DailyPayComponent {
 		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
 				send_person, other, shop_money);
 
-		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-
+		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 		dailypaysubmitComponent.submitAll(date);
 	}
 
 	public void compute() {
 		try {
+
 			String shop_money_text = StringUtils.defaultIfEmpty(shop_money.getText().toString(), Constants.DEFAULT_PRICE_INT);
 			String tomorrow_money_text = StringUtils.defaultIfEmpty(tomorrow_money.getText().toString(), Constants.DEFAULT_PRICE_INT);
 			String all_price = text_id_all_price.getText().toString();
 			// 收银机
-			Double cashRegister = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId());
 			cash_register
 					.setText(MyNumberUtils.numToStr(cashRegister + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
 

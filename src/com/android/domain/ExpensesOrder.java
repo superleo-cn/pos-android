@@ -100,17 +100,8 @@ public class ExpensesOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static List<ExpensesOrder> TodayList(String time) {
-		return new Select().from(ExpensesOrder.class).where("date = ?", time).execute();
-	}
-
-	/**
-	 * 返回今天数据列表
-	 * 
-	 * @return
-	 */
-	public static List<ExpensesOrder> TodayStatusList(String time, String status) {
-		return new Select().from(ExpensesOrder.class).where("date = ? and status=?", time, status).execute();
+	public static List<ExpensesOrder> todayStatusList(String time, String status) {
+		return new Select().from(ExpensesOrder.class).where("date >= ? and status = ?", time, status).execute();
 	}
 
 	/**
