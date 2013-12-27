@@ -57,7 +57,7 @@ public class MenuComponent {
 
 	@ViewById(R.id.shop_name1234)
 	TextView shop_name1234; // 顶部菜单栏显示的店的名称
-	
+
 	@ViewById(R.id.textDailyPay)
 	TextView textDailyPay;
 
@@ -94,10 +94,15 @@ public class MenuComponent {
 			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 			TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
-			if(myApp.getUsername().equalsIgnoreCase(Constants.ROLE_SUPERADMIN)){
+			if (myApp.getUsername().equalsIgnoreCase(Constants.ROLE_SUPERADMIN)) {
 				popu_QueryAllDB.setVisibility(View.VISIBLE);
-			}else{
+			} else {
 				popu_QueryAllDB.setVisibility(View.GONE);
+			}
+			if (myApp.getUsername().equalsIgnoreCase(Constants.ROLE_CASHIER)) {
+				popu_setting.setVisibility(View.GONE);
+			} else {
+				popu_setting.setVisibility(View.VISIBLE);
 			}
 
 			(getHiddenView(view)).setVisibility(View.GONE);
@@ -152,10 +157,10 @@ public class MenuComponent {
 	}
 
 	@Click(R.id.textDailyPay)
-	void textDailyPayOnClick(){
+	void textDailyPayOnClick() {
 		activityComponent.startDailyWithTransition();
 	}
-	
+
 	private void dismiss() {
 		if (popupWindow.isShowing()) {
 			popupWindow.dismiss();
