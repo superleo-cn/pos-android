@@ -37,6 +37,30 @@ public class QueryAllDBLoadingComponent {
 		queryAllDBListview.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 	}
+	
+	public void queryFoodLoading(int pangeno,String status) {
+		FoodQueryAllDBListviewAdapter adapter = new FoodQueryAllDBListviewAdapter(context);
+		List<FoodOrder> data = FoodOrder.queryListByPange(status,pangeno, Constants.PARAM_PAGESIZE);
+		adapter.setData(data);
+		queryAllDBListview.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void queryFoodLoading(int pangeno,String status,String startTime,String endTime) {
+		FoodQueryAllDBListviewAdapter adapter = new FoodQueryAllDBListviewAdapter(context);
+		List<FoodOrder> data = FoodOrder.queryListByPange(status,startTime,endTime,pangeno, Constants.PARAM_PAGESIZE);
+		adapter.setData(data);
+		queryAllDBListview.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+	}
+	
+	public void queryFoodLoading(int pangeno,String startTime,String endTime) {
+		FoodQueryAllDBListviewAdapter adapter = new FoodQueryAllDBListviewAdapter(context);
+		List<FoodOrder> data = FoodOrder.queryListByPange(startTime,endTime,pangeno, Constants.PARAM_PAGESIZE);
+		adapter.setData(data);
+		queryAllDBListview.setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+	}
 
 	public void queryExpensesLoading(int pangeno) {
 		ExpensesQueryAllDBListviewAdapter adapter = new ExpensesQueryAllDBListviewAdapter(context);

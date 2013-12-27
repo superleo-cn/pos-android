@@ -20,9 +20,9 @@
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#f5f5f5"
+            android:padding="5dip"
             android:text="订单数据"
             android:textColor="#000000"
-             android:padding="5dip"
             android:textSize="18sp" />
 
         <Button
@@ -32,9 +32,9 @@
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#f5f5f5"
+            android:padding="5dip"
             android:text="支付款项数据"
             android:textColor="#000000"
-             android:padding="5dip"
             android:textSize="18sp" />
 
         <Button
@@ -44,9 +44,9 @@
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#f5f5f5"
+            android:padding="5dip"
             android:text="带回总数数据"
             android:textColor="#000000"
-             android:padding="5dip"
             android:textSize="18sp" />
 
         <Button
@@ -56,45 +56,101 @@
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#f5f5f5"
+            android:padding="5dip"
             android:text="结算其他数据"
-             android:padding="5dip"
             android:textColor="#000000"
             android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dip"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/textStatusID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#c0c0c0"
+            android:padding="5dip"
+            android:text="全部"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/startTimeID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="开始时间"
+            android:singleLine="true"
+            android:padding="5dip"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+         <TextView
+            android:id="@+id/endTimeID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="结束时间"
+            android:singleLine="true"
+            android:padding="5dip"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonSearchID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#c0c0c0"
+            android:text="搜索"
+            android:padding="5dip"
+            android:textColor="#000000"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <ListView
         android:id="@+id/queryAllDBListview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:layout_margin="5dip" />
-    
-    <RelativeLayout 
+        android:layout_margin="5dip"
+        android:layout_weight="1" />
+
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dip"
         android:orientation="horizontal" >
-          <Button
-              android:id="@+id/button_id_shang"
+
+        <Button
+            android:id="@+id/button_id_shang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_margin="0.000075dip"
             android:background="#f5f5f5"
-            android:text="上一页"
             android:padding="5dip"
+            android:text="上一页"
             android:textColor="#000000"
-            android:layout_alignParentLeft="true"
             android:textSize="18sp" />
 
         <Button
             android:id="@+id/button_id_xia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_margin="0.000075dip"
             android:background="#f5f5f5"
+            android:padding="5dip"
             android:text="下一页"
-             android:padding="5dip"
-            android:layout_alignParentRight="true"
             android:textColor="#000000"
             android:textSize="18sp" />
     </RelativeLayout>

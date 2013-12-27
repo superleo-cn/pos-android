@@ -65,10 +65,33 @@ public class FoodOrder extends Model {
 	}
 
 	/**
+	 * 分页查询
 	 * @return
 	 */
 	public static List<FoodOrder> queryListByPange(int pangeno, int pangesize) {
 		return new Select().from(FoodOrder.class).limit(pangeno + "," + pangesize).execute();
+	}
+	
+	/**
+	 * @param startTime,endTime,pangeno,pangesize
+	 * @return
+	 */
+	public static List<FoodOrder> queryListByPange(String startTime,String endTime,int pangeno, int pangesize) {
+		return new Select().from(FoodOrder.class).where("date between ? and ?",startTime,endTime).limit(pangeno + "," + pangesize).execute();
+	}
+	/**
+	 * @param status,startTime,endTime,pangeno,pangesize
+	 * @return
+	 */
+	public static List<FoodOrder> queryListByPange(String status,String startTime,String endTime,int pangeno, int pangesize) {
+		return new Select().from(FoodOrder.class).where("status = ? and date between ? and ?",status,startTime,endTime).limit(pangeno + "," + pangesize).execute();
+	}
+	/**
+	 * @param status,pangeno,pangesize
+	 * @return
+	 */
+	public static List<FoodOrder> queryListByPange(String status,int pangeno, int pangesize) {
+		return new Select().from(FoodOrder.class).where("status = ? ",status).limit(pangeno + "," + pangesize).execute();
 	}
 
 	/**
