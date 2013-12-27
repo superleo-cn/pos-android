@@ -159,7 +159,7 @@ public class FoodOrder extends Model {
 	 * 更新所以提交成功的
 	 */
 	public static void updateAllByStatus() {
-		List<FoodOrder> foodOrders = queryListByStatus(Constants.DB_SUCCESS);
+		List<FoodOrder> foodOrders = queryListByStatus(Constants.DB_FAILED);
 		if (CollectionUtils.isNotEmpty(foodOrders)) {
 			for (FoodOrder foodOrder : foodOrders) {
 				foodOrder.status = Constants.DB_SUCCESS;

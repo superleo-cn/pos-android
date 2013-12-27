@@ -117,7 +117,7 @@ public class ExpensesOrder extends Model {
 	 * 更新所有提交成功的
 	 */
 	public static void updateAllByStatus() {
-		List<ExpensesOrder> expensess = queryListByStatus(Constants.DB_SUCCESS);
+		List<ExpensesOrder> expensess = queryListByStatus(Constants.DB_FAILED);
 		if (CollectionUtils.isNotEmpty(expensess)) {
 			for (ExpensesOrder expenses : expensess) {
 				expenses.status = Constants.DB_SUCCESS;

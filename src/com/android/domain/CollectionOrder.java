@@ -114,7 +114,7 @@ public class CollectionOrder extends Model {
 	 * 更新所有提交成功的
 	 */
 	public static void updateAllByStatus() {
-		List<CollectionOrder> collectionList = queryListByStatus(Constants.DB_SUCCESS);
+		List<CollectionOrder> collectionList = queryListByStatus(Constants.DB_FAILED);
 		if (CollectionUtils.isNotEmpty(collectionList)) {
 			for (CollectionOrder collection : collectionList) {
 				collection.status = Constants.DB_SUCCESS;

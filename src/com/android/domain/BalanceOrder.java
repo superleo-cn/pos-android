@@ -165,7 +165,7 @@ public class BalanceOrder extends Model {
 	 * 更新所有提交成功的
 	 */
 	public static void updateAllByStatus() {
-		List<BalanceOrder> Balances = queryListByStatus(Constants.DB_SUCCESS);
+		List<BalanceOrder> Balances = queryListByStatus(Constants.DB_FAILED);
 		if (CollectionUtils.isNotEmpty(Balances)) {
 			for (BalanceOrder Balance : Balances) {
 				Balance.status = Constants.DB_SUCCESS;
