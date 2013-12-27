@@ -3,50 +3,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/list" >
- <TextView
-     android:id="@+id/popu_diancai"
+
+    <TextView
+        android:id="@+id/popu_diancai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dip"
         android:gravity="center"
         android:text="@string/diancai_name"
-       android:textColor="#000000"
+        android:textColor="#000000"
         android:textSize="18sp" />
-	<TextView
+
+    <TextView
+        android:id="@+id/popu_daily"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/popu_diancai"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dip"
         android:gravity="center"
         android:text="@string/daily_pay"
-        android:layout_below="@+id/popu_diancai"
         android:textColor="#000000"
-        android:id="@+id/popu_daily"
-        android:textSize="18sp" />
-	<TextView
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/popu_setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/popu_daily"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dip"
         android:gravity="center"
-        android:layout_below="@id/popu_daily"
         android:text="@string/setting"
         android:textColor="#000000"
         android:textSize="18sp" />
-	<TextView
+
+    <TextView
         android:id="@+id/popu_QueryAllDB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/popu_setting"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dip"
         android:gravity="center"
-        android:layout_below="@id/popu_setting"
         android:text="查询数据"
         android:textColor="#000000"
-        android:textSize="18sp" 
-        android:visibility="gone"/>
+        android:textSize="18sp"
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/popu_exit"
         android:layout_width="wrap_content"
@@ -59,6 +65,5 @@
         android:text="@string/exitApp"
         android:textColor="#000000"
         android:textSize="18sp" />
-
 
 </RelativeLayout>
