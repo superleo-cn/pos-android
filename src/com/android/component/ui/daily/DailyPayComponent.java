@@ -135,8 +135,8 @@ public class DailyPayComponent {
 	private TakeNumerAdapter number_adapter;
 	private Double num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
-	// 收银机
-	Double cashRegister = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	// 今日收银机
+	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
 
 	@AfterViews
 	public void initDailayPay() {
@@ -150,8 +150,7 @@ public class DailyPayComponent {
 		send_person.setText(myApp.getUsername());
 
 		// 收银机
-		Double cashRegister = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId());
-		cash_register.setText(MyNumberUtils.numToStr(cashRegister));
+		cash_register.setText(MyNumberUtils.numToStr(todayReceive));
 
 		// 加载支付款项
 		dailypaysubmitComponent.loadingExpenses(detail_classList, all_pay_price, detail_adapter, daily_list, handler);
@@ -267,12 +266,12 @@ public class DailyPayComponent {
 			String all_price = text_id_all_price.getText().toString();
 			// 收银机
 			cash_register
-					.setText(MyNumberUtils.numToStr(cashRegister + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
+					.setText(MyNumberUtils.numToStr(todayReceive + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
 
 			// 今日营业额
 			Double price_b = Double.parseDouble(all_price);
 			Double price_c = Double.parseDouble(cash_register.getText().toString());
-			Double price_d = cashRegister;
+			Double price_d = todayReceive;
 			today_turnover.setText(MyNumberUtils.numToStr(price_d));
 
 			// 总数

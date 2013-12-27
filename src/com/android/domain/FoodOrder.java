@@ -66,32 +66,40 @@ public class FoodOrder extends Model {
 
 	/**
 	 * 分页查询
+	 * 
 	 * @return
 	 */
 	public static List<FoodOrder> queryListByPange(int pangeno, int pangesize) {
 		return new Select().from(FoodOrder.class).limit(pangeno + "," + pangesize).execute();
 	}
-	
+
 	/**
-	 * @param startTime,endTime,pangeno,pangesize
+	 * @param startTime
+	 *            ,endTime,pangeno,pangesize
 	 * @return
 	 */
-	public static List<FoodOrder> queryListByPange(String startTime,String endTime,int pangeno, int pangesize) {
-		return new Select().from(FoodOrder.class).where("date between ? and ?",startTime,endTime).limit(pangeno + "," + pangesize).execute();
+	public static List<FoodOrder> queryListByPange(String startTime, String endTime, int pangeno, int pangesize) {
+		return new Select().from(FoodOrder.class).where("date between ? and ?", startTime, endTime).limit(pangeno + "," + pangesize)
+				.execute();
 	}
+
 	/**
-	 * @param status,startTime,endTime,pangeno,pangesize
+	 * @param status
+	 *            ,startTime,endTime,pangeno,pangesize
 	 * @return
 	 */
-	public static List<FoodOrder> queryListByPange(String status,String startTime,String endTime,int pangeno, int pangesize) {
-		return new Select().from(FoodOrder.class).where("status = ? and date between ? and ?",status,startTime,endTime).limit(pangeno + "," + pangesize).execute();
+	public static List<FoodOrder> queryListByPange(String status, String startTime, String endTime, int pangeno, int pangesize) {
+		return new Select().from(FoodOrder.class).where("status = ? and date between ? and ?", status, startTime, endTime)
+				.limit(pangeno + "," + pangesize).execute();
 	}
+
 	/**
-	 * @param status,pangeno,pangesize
+	 * @param status
+	 *            ,pangeno,pangesize
 	 * @return
 	 */
-	public static List<FoodOrder> queryListByPange(String status,int pangeno, int pangesize) {
-		return new Select().from(FoodOrder.class).where("status = ? ",status).limit(pangeno + "," + pangesize).execute();
+	public static List<FoodOrder> queryListByPange(String status, int pangeno, int pangesize) {
+		return new Select().from(FoodOrder.class).where("status = ? ", status).limit(pangeno + "," + pangesize).execute();
 	}
 
 	/**
@@ -118,9 +126,9 @@ public class FoodOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static Double totalRetailCollection(String username, String shopId) {
+	public static Double totalRetailCollection(String username, String shopId, String date) {
 		FoodOrder food = new Select("sum(retail_price) as retail_price").from(FoodOrder.class)
-				.where("user_id = ? and shop_id = ? ", username, shopId).groupBy("user_id, shop_id").executeSingle();
+				.where("user_id = ? and shop_id = ? and date >= ? ", username, shopId, date).groupBy("user_id, shop_id").executeSingle();
 		if (food != null) {
 			return food.retailPrice;
 		}
