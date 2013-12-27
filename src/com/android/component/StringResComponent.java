@@ -65,6 +65,9 @@ public class StringResComponent {
 	@StringRes(R.string.message_title)
 	public String messageTitle;
 
+	@StringRes(R.string.message_exit)
+	public String messageExit;
+
 	@StringRes(R.string.setting_tanwei_id)
 	public String settingTanweiId;
 

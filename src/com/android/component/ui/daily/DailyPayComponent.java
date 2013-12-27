@@ -224,7 +224,6 @@ public class DailyPayComponent {
 
 		// 带回总数金额不一致
 		Double sigle_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
-		;
 		for (int i = 0; i < all_num_price.size(); i++) {
 			sigle_price += all_num_price.get(i).doubleValue();
 		}
@@ -293,7 +292,7 @@ public class DailyPayComponent {
 
 			// 带回总数
 			Double price_e = Double.parseDouble(tomorrow_money_text);
-			Double take_price = Double.parseDouble(cash_register.getText().toString()) - price_e;
+			Double take_price = price_d - price_e;
 			total_take_num.setText(MyNumberUtils.numToStr(take_price));
 		} catch (Exception e) {
 			Log.e("总计算", e.getMessage());
