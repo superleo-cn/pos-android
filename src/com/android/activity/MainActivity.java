@@ -16,7 +16,7 @@ import com.googlecode.androidannotations.annotations.NoTitle;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AbstractActivity {
+public class MainActivity extends BasicActivity {
 
 	@Bean
 	FoodComponent foodComponent;

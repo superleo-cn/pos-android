@@ -2,9 +2,7 @@ package com.android.activity;
 
 import org.apache.commons.lang.StringUtils;
 
-import android.app.Activity;
 import android.view.MotionEvent;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -14,7 +12,6 @@ import com.android.component.ActivityComponent;
 import com.android.component.AppUpdateComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
-import com.android.component.ui.login.LoginComponent;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
@@ -30,7 +27,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.login)
-public class LoginActivity extends Activity {
+public class LoginActivity extends AbstractActivity {
 
 	// 通过id绑定用户名
 	@ViewById(R.id.login_name)
@@ -43,9 +40,6 @@ public class LoginActivity extends Activity {
 	// 通过id绑定管理员登录图片
 	@ViewById(R.id.image_logo_ico)
 	ImageView image_logo_ico;
-
-	@Bean
-	LoginComponent loginComponent;
 
 	@Bean
 	AppUpdateComponent appUpdateComponent;
@@ -66,10 +60,10 @@ public class LoginActivity extends Activity {
 		appUpdateComponent.updateApp();
 	}
 
-	void login(String loginType) {
+	void login(String userType) {
 		String str_login_name = StringUtils.trim(login_name.getText().toString());
 		String str_login_password = StringUtils.trim(login_password.getText().toString());
-		loginComponent.executeLogin(str_login_name, str_login_password);
+		loginComponent.executeLogin(str_login_name, str_login_password, userType);
 		return;
 	}
 

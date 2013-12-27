@@ -1,20 +1,11 @@
 package com.android.activity;
 
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
-
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.android.R;
-import com.android.common.Constants;
-import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.component.StringResComponent;
+import com.android.component.ui.setting.AccessRightComponent;
 import com.android.component.ui.setting.CollectionSynchronizationComponent;
 import com.android.component.ui.setting.DiscountSetComponent;
 import com.android.component.ui.setting.ExpenseSynchronizationComponent;
@@ -25,13 +16,11 @@ import com.android.component.ui.setting.ResetPasswordComponent;
 import com.android.component.ui.setting.ShopSynchronizationComponent;
 import com.android.component.ui.setting.SynchronizationStatusComponent;
 import com.android.component.ui.setting.TimeSetComponent;
-import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 //不需要标题
 @NoTitle
@@ -39,19 +28,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.setting)
-public class SettingActivity extends AbstractActivity {
-
-	@ViewById(R.id.r_set_admin_lay)
-	RelativeLayout r_set_admin_lay;
-
-	@ViewById(R.id.admin_set)
-	TextView admin_set;
-
-	@ViewById(R.id.btu_setting_time)
-	Button btu_setting_time;
-
-	@ViewById(R.id.setting_time)
-	RelativeLayout setting_time;
+public class SettingActivity extends BasicActivity {
 
 	@Bean
 	StringResComponent stringResComponent;
@@ -96,47 +73,12 @@ public class SettingActivity extends AbstractActivity {
 	@Bean
 	ResetPasswordComponent resetPasswordComponent;
 
+	// 权限设置组件
+	@Bean
+	AccessRightComponent accessRightComponent;
+
 	@App
 	MyApp myApp;
-
-	@AfterViews
-	public void initSetting() {
-
-		if (StringUtils.equalsIgnoreCase(myApp.getUserType(), Constants.ROLE_SUPERADMIN)) {
-			admin_set.setVisibility(View.VISIBLE);
-			r_set_admin_lay.setVisibility(View.VISIBLE);
-			setting_time.setVisibility(View.VISIBLE);
-		}
-
-	}
-
-	/***********************************************************************************/
-
-	/* 判断今天是否已经是最新数据 */
-	public boolean isLatestUpdate() {
-
-		String search_date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-
-		// List<CollectionOrder> pays =
-		// CollectionOrder.queryListByDate(search_date);
-		// if (CollectionUtils.isEmpty(pays)) {
-		// return false;
-		// }
-		//
-		// List<Map<String, String>> nums =
-		// NumListDao.getInatance(this).getList(search_date);
-		// if (!nums.isEmpty()) {
-		// return false;
-		// }
-		//
-		// HashMap<String, String> params =
-		// DailyMoneyDao.getInatance(SettingActivity.this).getList(search_date);
-		// if (!params.isEmpty()) {
-		// return false;
-		// }
-		return true;
-
-	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {

@@ -139,6 +139,7 @@ public class DailyPayComponent {
 	@AfterViews
 	public void initDailayPay() {
 		initData();
+		initSubmitButton();
 	}
 
 	public void initData() {
@@ -156,6 +157,17 @@ public class DailyPayComponent {
 		// 计算
 		compute();
 
+	}
+
+	public void initSubmitButton() {
+		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
+		Log.e("今天日期", date);
+		boolean flag = dailypaysubmitComponent.isComplete(date);
+		if (!flag) {
+			btu_id_sbumit.setVisibility(View.VISIBLE);
+		} else {
+			btu_id_sbumit.setVisibility(View.GONE);
+		}
 	}
 
 	// 提交数据窗口

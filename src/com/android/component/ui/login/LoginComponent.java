@@ -81,8 +81,8 @@ public class LoginComponent {
 	 * @param password
 	 *            密码
 	 */
-	public void executeLogin(String username, String password) {
-		new Login().doExecute(username, password, Constants.LOGIN);
+	public void executeLogin(String username, String password, String userType) {
+		new Login().execute(username, password, userType);
 	}
 
 	/**
@@ -94,15 +94,15 @@ public class LoginComponent {
 	 *            店铺ID
 	 */
 	public void executeLogout(String userId, String shopId) {
-		new Logout().doExecute(userId, shopId, Constants.LOGOUT);
+		new Logout().execute(userId, shopId);
 	}
 
-	private Integer loginLocal(String username, String password, String loginType) {
+	private Integer loginLocal(String username, String password, String userType) {
 		// 得到IP和Mac地址
 		String strIP = wifiComponent.getIPAddress();
 		String strMAC = wifiComponent.getMacAddress(context);
 
-		if (!StringUtils.equalsIgnoreCase(Constants.ROLE_SUPERADMIN, loginType)) {
+		if (!StringUtils.equalsIgnoreCase(Constants.ROLE_SUPERADMIN, userType)) {
 			User user = User.checkLogin(username, myPrefs.shopId().get());
 			if (user != null) {
 				if (StringUtils.equalsIgnoreCase(password, user.password)) {
@@ -119,13 +119,13 @@ public class LoginComponent {
 		}
 		boolean wifi_flag = SystemHelper.isConnected(activity);
 		if (wifi_flag) {
-			HashMap<String, String> params = new HashMap<String, String>();
+			Map<String, String> params = new HashMap<String, String>();
 			params.put("user.username", username);
 			params.put("user.password", password);
 			params.put("user.shop.id", myPrefs.shopId().get());
 			params.put("user.userIp", strIP);
 			params.put("user.userMac", strMAC);
-			return loginRemote(loginType, params);
+			return loginRemote(userType, params);
 		}
 		return Constants.STATUS_NETWORK_ERROR;
 	}
@@ -171,12 +171,12 @@ public class LoginComponent {
 		return data.code;
 	}
 
-	public Integer logout(String userId, String shopId, String loginType) {
+	public Integer logout(String userId, String shopId) {
 		try {
 			User user = new User();
 			user.uid = userId;
 			user.shopId = shopId;
-			auditComponent.logAudit(user, loginType);
+			auditComponent.logAudit(user, Constants.LOGOUT);
 			return Constants.STATUS_SUCCESS;
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -231,7 +231,7 @@ public class LoginComponent {
 	class Logout extends LogTaskBasic {
 		@Override
 		Integer doExecute(String... objs) {
-			return logout(objs[0], objs[1], objs[2]);
+			return logout(objs[0], objs[1]);
 		}
 	}
 

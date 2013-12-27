@@ -18,7 +18,7 @@ import com.googlecode.androidannotations.annotations.NoTitle;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.daily_pay)
-public class DailyPayActivity extends AbstractActivity {
+public class DailyPayActivity extends BasicActivity {
 
 	@Bean
 	DailyPayComponent dailyPayComponent;

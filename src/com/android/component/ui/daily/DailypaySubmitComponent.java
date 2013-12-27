@@ -64,9 +64,6 @@ public class DailypaySubmitComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
-	@ViewById(R.id.btu_id_sbumit)
-	Button btu_id_sbumit;
-
 	public void submitAll(String date) {
 		postPayList(date);
 		postNumList(date);
@@ -280,25 +277,13 @@ public class DailypaySubmitComponent {
 		take_all_price.setText(df.format(num_count));
 	}
 
-	@AfterViews
-	public void initDailypaySubmit() {
-		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-		Log.e("今天日期", date);
-		boolean flag = isComplete(date);
-		if (!flag) {
-			btu_id_sbumit.setVisibility(View.VISIBLE);
-		} else {
-			btu_id_sbumit.setVisibility(View.GONE);
-		}
-	}
-
 	/**
 	 * 判断是否已经完成
 	 * 
 	 * @param date
 	 * @return
 	 */
-	private boolean isComplete(String date) {
+	public boolean isComplete(String date) {
 		List<Expenses> expenseslist = Expenses.todayStatusList(date, Constants.DB_FAILED);
 		List<BalanceOrder> balanceOrderlist = BalanceOrder.todayStatusList(date, Constants.DB_FAILED);
 		List<CollectionOrder> collectionOrderlist = CollectionOrder.todayStatusList(date, Constants.DB_FAILED);
