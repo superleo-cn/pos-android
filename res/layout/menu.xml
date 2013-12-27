@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
-            <ImageView
+            <!-- <ImageView
                 android:id="@+id/exit_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -104,15 +104,16 @@
                 android:layout_marginLeft="30dip"
                 android:background="#00000000"
                 android:scaleType="centerInside"
-                android:src="@drawable/exit_bg" />
+                android:src="@drawable/exit_bg" /> -->
 
             <TextView
+                android:id="@+id/textDailyPay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dip"
                 android:layout_toRightOf="@+id/exit_btn"
-                android:text="@string/exit_txt"
+                android:text="@string/daily_pay"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
         </RelativeLayout>
