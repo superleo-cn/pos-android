@@ -51,15 +51,6 @@ public class CollectionOrder extends Model {
 	}
 
 	/**
-	 * 返回今天数据列表
-	 * 
-	 * @return
-	 */
-	public static List<CollectionOrder> queryListByDate(String time) {
-		return new Select().from(CollectionOrder.class).where("date = ?", time).execute();
-	}
-
-	/**
 	 * @return
 	 */
 	public static List<CollectionOrder> queryList() {
@@ -74,12 +65,13 @@ public class CollectionOrder extends Model {
 	}
 
 	/**
+	 * 返回今天数据列表
 	 * 
 	 * @param status
 	 * @return
 	 */
 	public static List<CollectionOrder> todayStatusList(String date, String status) {
-		return new Select().from(CollectionOrder.class).where("date = ? and status = ?", date, status).execute();
+		return new Select().from(CollectionOrder.class).where("date >= ? and status = ?", date, status).execute();
 	}
 
 	/**

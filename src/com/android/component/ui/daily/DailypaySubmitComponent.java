@@ -4,7 +4,6 @@
 package com.android.component.ui.daily;
 
 import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -16,18 +15,14 @@ import org.apache.commons.lang.StringUtils;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
-import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyTextUtils;
 import com.android.component.KeyboardComponent;
@@ -38,12 +33,10 @@ import com.android.domain.CollectionOrder;
 import com.android.domain.Expenses;
 import com.android.domain.ExpensesOrder;
 import com.android.mapping.StatusMapping;
-import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
-import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
@@ -74,8 +67,8 @@ public class DailypaySubmitComponent {
 	public void postPayList(String searchDate) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
-			List<ExpensesOrder> datas = ExpensesOrder.TodayList(searchDate);
-			if (!datas.isEmpty()) {
+			List<ExpensesOrder> datas = ExpensesOrder.todayStatusList(searchDate, Constants.DB_FAILED);
+			if (CollectionUtils.isNotEmpty(datas)) {
 				for (int i = 0; i < datas.size(); i++) {
 					ExpensesOrder expenses = datas.get(i);
 					params.put("consumeTransactions[" + i + "].androidId", expenses.getId() + "");
@@ -106,8 +99,8 @@ public class DailypaySubmitComponent {
 	public void postNumList(String searchDate) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
-			List<CollectionOrder> datas = CollectionOrder.queryListByDate(searchDate);
-			if (!datas.isEmpty()) {
+			List<CollectionOrder> datas = CollectionOrder.todayStatusList(searchDate, Constants.DB_FAILED);
+			if (CollectionUtils.isNotEmpty(datas)) {
 				for (int i = 0; i < datas.size(); i++) {
 					CollectionOrder collection = datas.get(i);
 					params.put("cashTransactions[" + i + "].androidId", String.valueOf(collection.getId()));
@@ -144,8 +137,8 @@ public class DailypaySubmitComponent {
 	public void postDailyMoney(final String searchDate) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
-			List<BalanceOrder> datas = BalanceOrder.TodayList(searchDate);
-			if (!datas.isEmpty()) {
+			List<BalanceOrder> datas = BalanceOrder.todayStatusList(searchDate, Constants.DB_FAILED);
+			if (CollectionUtils.isNotEmpty(datas)) {
 				for (int i = 0; i < datas.size(); i++) {
 					BalanceOrder balance = datas.get(i);
 					params.put("cashTransactions[" + i + "].androidId", balance.getId() + "");

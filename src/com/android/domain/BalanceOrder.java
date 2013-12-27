@@ -148,17 +148,8 @@ public class BalanceOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static List<BalanceOrder> TodayList(String time) {
-		return new Select().from(BalanceOrder.class).where("date = ?", time).execute();
-	}
-
-	/**
-	 * 返回今天数据列表
-	 * 
-	 * @return
-	 */
 	public static List<BalanceOrder> todayStatusList(String time, String status) {
-		return new Select().from(BalanceOrder.class).where("date = ? and status=?", time, status).execute();
+		return new Select().from(BalanceOrder.class).where("date >= ? and status=?", time, status).execute();
 	}
 
 	/**
