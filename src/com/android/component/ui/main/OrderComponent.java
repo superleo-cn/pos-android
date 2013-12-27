@@ -9,8 +9,8 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -29,7 +29,7 @@ import com.android.common.MyNumberUtils;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.dialog.design.DialogBuilder;
+import com.android.dialog.ConfirmDialog;
 import com.android.domain.Food;
 import com.android.domain.FoodOrder;
 import com.android.mapping.StatusMapping;
@@ -111,8 +111,10 @@ public class OrderComponent {
 	private boolean is_discount;
 	private boolean is_foc;
 	private double save_discount_price;
-
 	private double package_money;
+
+	// 打印框
+	Dialog dialg;
 
 	/**
 	 * 初始化订单组件
@@ -122,6 +124,8 @@ public class OrderComponent {
 	 */
 	@AfterViews
 	public void initOrder() {
+		// 初始化打印对话框
+		dialg = buildPrintDialog();
 
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
@@ -280,7 +284,7 @@ public class OrderComponent {
 		try {
 			Log.e("输入的金额", sbuff.toString().trim());
 			if (sbuff == null || sbuff.toString().trim().equals("")) {
-				sbuff.append("0");
+				sbuff.append(Constants.DEFAULT_PRICE_INT);
 			}
 			Double show_gathering = Double.parseDouble(sbuff.toString().trim());
 			if (calculatorComponent.is_maxPrice(sbuff)) {
@@ -304,7 +308,7 @@ public class OrderComponent {
 			toastComponent.show(stringResComponent.errPrice);
 		}
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			printDialog().create().show();
+			dialg.show();
 		}
 
 	}
@@ -434,13 +438,11 @@ public class OrderComponent {
 
 	}
 
-	public DialogBuilder printDialog() {
-		DialogBuilder builder = new DialogBuilder(context);
-		// builder.setTitle(R.string.message_title);
-		builder.setMessage(stringResComponent.openPrint);
-		builder.setPositiveButton(R.string.message_ok, new DialogInterface.OnClickListener() {
+	public Dialog buildPrintDialog() {
+		return new ConfirmDialog(context, StringUtils.EMPTY, stringResComponent.openPrint) {
 
-			public void onClick(DialogInterface dialog, int which) {
+			@Override
+			public void doClick() {
 				// 先打印数据，不耽误正常使用----------------------------
 				StringBuffer sb = new StringBuffer();
 				String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
@@ -463,14 +465,8 @@ public class OrderComponent {
 				// 清空数据------------------------------
 				clean();
 			}
-		});
-		builder.setNegativeButton(R.string.message_cancle, new DialogInterface.OnClickListener() {
 
-			public void onClick(DialogInterface dialog, int which) {
-				// 不做任何操作
-			}
-		});
-		return builder;
+		}.build();
 	}
 
 	public List<SelectFoodBean> getSelectDataList() {
