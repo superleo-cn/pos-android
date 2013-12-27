@@ -515,6 +515,22 @@
                                       android:textColor="#000000"
                                     android:textSize="18sp" />
 
+                                <EditText
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="5dip"
+                                    android:layout_weight="2"
+                                    android:background="@drawable/edit_bg"
+                                    android:gravity="center_vertical"
+                                    android:singleLine="true"
+                                    android:numeric="decimal"
+                                    android:textColor="#000000"
+                                    android:textSize="16sp"
+                                    android:editable="false"
+                                    android:enabled="false"
+                                    android:id="@+id/total" />
+                            </LinearLayout>
                                 <LinearLayout
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
@@ -546,29 +562,9 @@
                                         android:numeric="decimal"
                                         android:singleLine="true"
                                         android:textColor="#000000"
-                                        android:textSize="16sp" >
+                                        android:textSize="16sp" />
 
-                                        <requestFocus />
-                                    </EditText>
                                 </LinearLayout>
-
-                                <EditText
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="5dip"
-                                    android:layout_weight="2"
-                                    android:background="@drawable/edit_bg"
-                                    android:gravity="center_vertical"
-                                    android:singleLine="true"
-                                    android:numeric="decimal"
-                                    android:textColor="#000000"
-                                    android:textSize="16sp"
-                                    android:editable="false"
-                                    android:enabled="false"
-                                    android:id="@+id/total" />
-                            </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
