@@ -16,12 +16,12 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 	private List<BalanceOrder> data;
 	private Context context;
 	private LayoutInflater inflater;
-	
+
 	public BalanceQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	public List<BalanceOrder> getData() {
 		return data;
 	}
@@ -32,7 +32,7 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return data == null ? 0: data.size();
+		return data == null ? 0 : data.size();
 	}
 
 	@Override
@@ -51,15 +51,16 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.query_all_list_item, null);
 			viewHolder = new ViewHolder();
-//			viewHolder.text = (TextView) convertView.findViewById(R.id.text);
+			// viewHolder.text = (TextView) convertView.findViewById(R.id.text);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-//		BalanceOrder balance_order=data.get(position);
-//		viewHolder.text.setText(balance_order.toString());
+		// BalanceOrder balance_order=data.get(position);
+		// viewHolder.text.setText(balance_order.toString());
 		return convertView;
 	}
+
 	private final class ViewHolder {
 		TextView text;
 	}

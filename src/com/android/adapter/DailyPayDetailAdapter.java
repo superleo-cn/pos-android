@@ -14,32 +14,27 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.R;
 import com.android.bean.DailyPayDetailBean;
-import com.android.component.KeyboardComponent;
-import com.googlecode.androidannotations.annotations.Bean;
-
 
 public class DailyPayDetailAdapter extends BaseAdapter {
-	@Bean
-	KeyboardComponent keyboardComponent;
+
 	private Context context;
 	private LayoutInflater inflater;
 	private List<DailyPayDetailBean> classList;
 	private Handler handler;
 	private int index = -1;
-	public static final int CHAGE_NUM_DETAIL=1020;
+	public static final int CHAGE_NUM_DETAIL = 1020;
 	public static Map<Integer, String> hashMap_detail = new HashMap<Integer, String>();
 	private DailyPayDetailBean detailBean;
-	
-	public DailyPayDetailAdapter(Context context, List<DailyPayDetailBean> list,
-			Handler handler) {
+
+	public DailyPayDetailAdapter(Context context, List<DailyPayDetailBean> list, Handler handler) {
 		this.context = context;
 		this.classList = list;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -75,98 +70,94 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder.text_id_name = (TextView) convertView.findViewById(R.id.text_id_name);
 			viewHolder.text_id_price = (EditText) convertView.findViewById(R.id.text_id_price);
 			viewHolder.text_id_price.setTag(position);
-			
-//			viewHolder.text_id_price.setFocusable(true);
-//			viewHolder.text_id_price.setFocusableInTouchMode(true);
-//			viewHolder.text_id_price.setClickable(true);
-//			viewHolder.text_id_price.requestFocus();
-			
-			viewHolder.text_id_price.setOnTouchListener(new OnTouchListener(){
+
+			// viewHolder.text_id_price.setFocusable(true);
+			// viewHolder.text_id_price.setFocusableInTouchMode(true);
+			// viewHolder.text_id_price.setClickable(true);
+			// viewHolder.text_id_price.requestFocus();
+
+			viewHolder.text_id_price.setOnTouchListener(new OnTouchListener() {
 
 				@Override
 				public boolean onTouch(View view, MotionEvent event) {
-					 if(event.getAction() == MotionEvent.ACTION_UP) {
-						 
-	                     index= position;
+					if (event.getAction() == MotionEvent.ACTION_UP) {
 
-	             }
+						index = position;
+
+					}
 
 					return false;
-				}});
-			
-			viewHolder.text_id_price.addTextChangedListener(new CustTextWatch(viewHolder){
+				}
+			});
+
+			viewHolder.text_id_price.addTextChangedListener(new CustTextWatch(viewHolder) {
 
 				@Override
-				public void afterTextChanged(Editable s,ViewHolder holder) {
-					if(is_maxPrice(s.toString())){
+				public void afterTextChanged(Editable s, ViewHolder holder) {
+					if (is_maxPrice(s.toString())) {
 						viewHolder.text_id_price.setText("9999.99");
-						return ;
+						return;
 					}
 					int p = (Integer) viewHolder.text_id_price.getTag();
 					cacheData(s.toString(), p);
-					if(viewHolder.text_id_price.getText().toString().isEmpty()){
-						hashMap_detail.put(p, ""); 
+					if (viewHolder.text_id_price.getText().toString().isEmpty()) {
+						hashMap_detail.put(p, "");
 						Message msg = new Message();
 						msg.what = CHAGE_NUM_DETAIL;
-						msg.obj=p+"+"+"0.00";
+						msg.obj = p + "+" + "0.00";
 						handler.sendMessage(msg);
-						Log.e("输入内同唯恐了", "0.00");	
-					}else{
-						//bean.setPrice(viewHolder.text_id_price.getText().toString());			
-						
-						String price=s.toString();
-						if(s.length()==0){
-							price="0.00";
-						}else{
-							if(price.equals("")){
-								price="0.00";
+						Log.e("输入内同唯恐了", "0.00");
+					} else {
+						// bean.setPrice(viewHolder.text_id_price.getText().toString());
+
+						String price = s.toString();
+						if (s.length() == 0) {
+							price = "0.00";
+						} else {
+							if (price.equals("")) {
+								price = "0.00";
 							}
 						}
-						String now_price=price;
+						String now_price = price;
 						Log.e("变空后的价格", now_price);
-						hashMap_detail.put(p, now_price); 
-								Message msg = new Message();
-								msg.what = CHAGE_NUM_DETAIL;
-								msg.obj=p+"+"+now_price;
-								handler.sendMessage(msg);
-								Log.e("执行输入的价格", now_price);	
+						hashMap_detail.put(p, now_price);
+						Message msg = new Message();
+						msg.what = CHAGE_NUM_DETAIL;
+						msg.obj = p + "+" + now_price;
+						handler.sendMessage(msg);
+						Log.e("执行输入的价格", now_price);
 					}
 				}
-				
+
 			});
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 			viewHolder.text_id_price.setTag(position);
 		}
-		
-		
 
 		bean = classList.get(position);
 		viewHolder.text_id_name.setText(bean.getName());
 		viewHolder.text_id_price.setText(bean.getPrice());
-		
-		
-		
+
 		viewHolder.text_id_price.clearFocus();
-		 
-	    if(index!= -1 && index == position) {
-	
-	    	// 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
-	
-	    	viewHolder.text_id_price.requestFocus();
-	    }
-		
-		 
-		 if(hashMap_detail.get(position) != null){  
-			   viewHolder.text_id_price.setText(hashMap_detail.get(position));
-			   Log.e("改变值", "成功");
-			             }  
-		 convertView.setOnTouchListener(new OnTouchListener() {
-			
+
+		if (index != -1 && index == position) {
+
+			// 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
+
+			viewHolder.text_id_price.requestFocus();
+		}
+
+		if (hashMap_detail.get(position) != null) {
+			viewHolder.text_id_price.setText(hashMap_detail.get(position));
+			Log.e("改变值", "成功");
+		}
+		convertView.setOnTouchListener(new OnTouchListener() {
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-//				keyboardComponent.dismissKeyboard(v);
+				// keyboardComponent.dismissKeyboard(v);
 				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				return false;
@@ -174,54 +165,57 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		});
 		return convertView;
 	}
-	public boolean is_maxPrice(String zhi){
-		 try{
-	    	Double now_price=Double.parseDouble(zhi);
-	    	if(now_price>9999.99){
-	    		return true;
-	    	}
-		 }catch (Exception e){
-//			 Toast.makeText(context, R.string.err_price, Toast.LENGTH_SHORT).show();
-			 return false;
-		 }
-	    	return false;
-		
-	    }
+
+	public boolean is_maxPrice(String zhi) {
+		try {
+			Double now_price = Double.parseDouble(zhi);
+			if (now_price > 9999.99) {
+				return true;
+			}
+		} catch (Exception e) {
+			// Toast.makeText(context, R.string.err_price,
+			// Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		return false;
+
+	}
 
 	private final class ViewHolder {
 		TextView text_id_name;
 		EditText text_id_price;
 	}
-	
-	public void cacheData(String price,int p){
-		Log.d(">>>>>>>>>>>>>>>>>>>>>", price+"  "+p);
-		if(p>classList.size())
+
+	public void cacheData(String price, int p) {
+		Log.d(">>>>>>>>>>>>>>>>>>>>>", price + "  " + p);
+		if (p > classList.size())
 			return;
 		detailBean = classList.get(p);
 		detailBean.setPrice(price);
 		classList.set(p, detailBean);
 	}
-	private abstract class CustTextWatch implements TextWatcher{
+
+	private abstract class CustTextWatch implements TextWatcher {
 		private ViewHolder mViewHolder;
-		public CustTextWatch(ViewHolder holder){
+
+		public CustTextWatch(ViewHolder holder) {
 			this.mViewHolder = holder;
 		}
+
 		@Override
 		public void afterTextChanged(Editable s) {
-			afterTextChanged(s,mViewHolder);
+			afterTextChanged(s, mViewHolder);
 		}
 
 		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-			
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 		}
 
 		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
 		}
-		
-		public abstract void afterTextChanged(Editable s,ViewHolder holder);
+
+		public abstract void afterTextChanged(Editable s, ViewHolder holder);
 	}
 }

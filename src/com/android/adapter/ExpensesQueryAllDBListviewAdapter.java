@@ -17,12 +17,12 @@ public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 	private List<ExpensesOrder> data;
 	private Context context;
 	private LayoutInflater inflater;
-	
+
 	public ExpensesQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
-	
+
 	public List<ExpensesOrder> getData() {
 		return data;
 	}
@@ -33,7 +33,7 @@ public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return data == null ? 0: data.size();
+		return data == null ? 0 : data.size();
 	}
 
 	@Override
@@ -52,15 +52,16 @@ public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.query_all_list_item, null);
 			viewHolder = new ViewHolder();
-//			viewHolder.text = (TextView) convertView.findViewById(R.id.text);
+			// viewHolder.text = (TextView) convertView.findViewById(R.id.text);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-//		ExpensesOrder expenses_order=data.get(position);
-//		viewHolder.text.setText(expenses_order.toString());
+		// ExpensesOrder expenses_order=data.get(position);
+		// viewHolder.text.setText(expenses_order.toString());
 		return convertView;
 	}
+
 	private final class ViewHolder {
 		TextView text;
 	}

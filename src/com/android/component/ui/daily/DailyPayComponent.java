@@ -17,17 +17,14 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-impimport android.view.View.OnTouchListener;
-import android.view.inputmethod.InputMethodManager;
-ort android.widget.EditText;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
-import com.android.adaimport android.widget.ScrollView;
-pter.TakeNumerAdapter;
+import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
@@ -43,7 +40,6 @@ import com.android.component.ToastComponent;
 import com.android.dialog.design.DialogBuilder;
 import com.android.domain.CollectionOrder;
 import com.android.domain.ExpensesOrder;
-import com.android.domain.FoodOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -79,9 +75,10 @@ public class DailyPayComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
-	
+
 	@ViewById(R.id.scrollviewID)
 	ScrollView scrollviewID;
+
 	@ViewById(R.id.write_name)
 	TextView write_name;
 
@@ -89,9 +86,7 @@ public class DailyPayComponent {
 	EditText send_person;
 
 	@ViewById(R.id.daily_detail_list)
-	ListView daily_list;	
-	@ViewById(R.id.scrollviewID)
-	ScrollView scrollviewID;
+	ListView daily_list;
 
 	@ViewById(R.id.daily_num_list)
 	ListView num_list;
@@ -154,10 +149,10 @@ public class DailyPayComponent {
 		initData();
 		initSubmitButton();
 		scrollviewID.setOnTouchListener(new OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-//				keyboardComponent.dismissKeyboard(v);
+				// keyboardComponent.dismissKeyboard(v);
 				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				return false;
@@ -175,10 +170,10 @@ public class DailyPayComponent {
 
 		// 加载支付款项
 		scrollviewID.setOnTouchListener(new OnTouchListener() {
-			
+
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-//				keyboardComponent.dismissKeyboard(v);
+				// keyboardComponent.dismissKeyboard(v);
 				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 				return false;
