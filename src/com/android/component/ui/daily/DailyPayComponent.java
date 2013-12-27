@@ -12,15 +12,19 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+impimport android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
+ort android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.R;
 import com.android.adapter.DailyPayDetailAdapter;
-import com.android.adapter.TakeNumerAdapter;
+import com.android.adaimport android.widget.ScrollView;
+pter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
@@ -80,7 +84,9 @@ public class DailyPayComponent {
 	EditText send_person;
 
 	@ViewById(R.id.daily_detail_list)
-	ListView daily_list;
+	ListView daily_list;	
+	@ViewById(R.id.scrollviewID)
+	ScrollView scrollviewID;
 
 	@ViewById(R.id.daily_num_list)
 	ListView num_list;
@@ -153,6 +159,16 @@ public class DailyPayComponent {
 		cash_register.setText(MyNumberUtils.numToStr(todayReceive));
 
 		// 加载支付款项
+		scrollviewID.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+//				keyboardComponent.dismissKeyboard(v);
+				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				return false;
+			}
+		});
 		dailypaysubmitComponent.loadingExpenses(detail_classList, all_pay_price, detail_adapter, daily_list, handler);
 		text_id_all_price.setText(Constants.DEFAULT_PRICE_FLOAT);
 
