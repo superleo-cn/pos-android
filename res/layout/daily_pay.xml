@@ -320,6 +320,7 @@
                     android:orientation="horizontal" >
 
                     <ScrollView
+                        android:id="@+id/scrollviewID"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:padding="2dip" >

@@ -12,10 +12,14 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.R;
@@ -72,7 +76,9 @@ public class DailyPayComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
-
+	
+	@ViewById(R.id.scrollviewID)
+	ScrollView scrollviewID;
 	@ViewById(R.id.write_name)
 	TextView write_name;
 
@@ -140,6 +146,16 @@ public class DailyPayComponent {
 	public void initDailayPay() {
 		initData();
 		initSubmitButton();
+		scrollviewID.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+//				keyboardComponent.dismissKeyboard(v);
+				InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+				return false;
+			}
+		});
 	}
 
 	public void initData() {
