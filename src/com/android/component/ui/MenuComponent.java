@@ -90,6 +90,11 @@ public class MenuComponent {
 			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 			TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
+			if(login_name.equals("superadmin")){
+				popu_QueryAllDB.setVisibility(View.VISIBLE);
+			}else{
+				popu_QueryAllDB.setVisibility(View.GONE);
+			}
 
 			(getHiddenView(view)).setVisibility(View.GONE);
 
