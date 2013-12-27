@@ -106,7 +106,6 @@ public class OrderComponent {
 	// 输入的支付总钱
 	private StringBuffer sbuff;
 	// 显示要支付的总价钱
-	private double showTotalPrice = 0.00;
 	private boolean is_takePackage;
 
 	private boolean is_discount;
@@ -123,6 +122,7 @@ public class OrderComponent {
 	 */
 	@AfterViews
 	public void initOrder() {
+
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
 		this.selectAdapter = new SelectListAdapter(context, selectDataList);
@@ -158,9 +158,7 @@ public class OrderComponent {
 		bean.setFood_num("1");
 		selectDataList.add(bean);
 		selectAdapter.notifyDataSetChanged();
-		showTotalPrice += Double.parseDouble(foodBean.retailPrice);
-		add();
-		totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+		doCalculation();
 	}
 
 	/**
@@ -171,15 +169,13 @@ public class OrderComponent {
 	public void remove(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			Log.e("item", index + "");
-			List<Food> food_dataList = foodComponent.getFoodDataList();
-			Food bean = food_dataList.get(index);
+			Food bean = foodComponent.getFoodDataList().get(index);
 			for (int i = selectDataList.size() - 1; i >= 0; i--) {
 				SelectFoodBean remove_bean = selectDataList.get(i);
 				if (StringUtils.equalsIgnoreCase(remove_bean.getFood_dayin_code(), bean.sn)) {
 					selectDataList.remove(i);
-					showTotalPrice -= Double.parseDouble(bean.retailPrice);
 					selectAdapter.notifyDataSetChanged();
-					add();
+					doCalculation();
 					break;
 				}
 			}
@@ -191,58 +187,9 @@ public class OrderComponent {
 	 */
 	@Click(R.id.r_lay_id_take_package)
 	public void takePackage() {
-		if (is_foc) {
-			take_package.setImageResource(R.drawable.package_not_select);
-			// Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
-			is_takePackage = false;
-		} else {
-			if (!is_takePackage) {
-				List<SelectFoodBean> select_dataList = selectDataList;
-				if (CollectionUtils.isEmpty(select_dataList)) {
-					toastComponent.show(stringResComponent.noFood);
-				} else {
-					take_package.setImageResource(R.drawable.package_seclect);
-					// Toast.makeText(this, "全部打包",
-					// Toast.LENGTH_SHORT).show();
-					is_takePackage = true;
-					add();
-				}
-			} else {
-
-				take_package.setImageResource(R.drawable.package_not_select);
-				// Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
-				is_takePackage = false;
-				add();
-
-			}
-		}
-	}
-
-	/**
-	 * 免费等操作
-	 */
-	@Click(R.id.r_lay_id_foc)
-	public void foc() {
-		if (!is_foc) {
-			List<SelectFoodBean> select_dataList = selectDataList;
-			if (CollectionUtils.isEmpty(select_dataList)) {
-				toastComponent.show(stringResComponent.noFood);
-			} else {
-				foc.setImageResource(R.drawable.package_seclect);
-				// Toast.makeText(this, "免单", Toast.LENGTH_SHORT).show();
-				is_foc = true;
-				is_discount = false;
-				discount.setImageResource(R.drawable.package_not_select);
-				take_package.setImageResource(R.drawable.package_not_select);
-				is_takePackage = false;
-				add();
-			}
-		} else {
-			foc.setImageResource(R.drawable.package_not_select);
-			// Toast.makeText(this, "不免单", Toast.LENGTH_SHORT).show();
-			is_foc = false;
-			add();
-
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(take_package, foc);
+			doCalculation();
 		}
 	}
 
@@ -251,30 +198,67 @@ public class OrderComponent {
 	 */
 	@Click(R.id.r_lay_id_discount)
 	public void discount() {
-		if (is_foc) {
-			take_package.setImageResource(R.drawable.package_not_select);
-			// Toast.makeText(this, "取消了打包", Toast.LENGTH_SHORT).show();
-			is_takePackage = false;
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(discount, foc);
+			doCalculation();
+		}
+	}
+
+	/**
+	 * 免费等操作
+	 */
+	@Click(R.id.r_lay_id_foc)
+	public void foc() {
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(foc, discount, take_package);
+			doCalculation();
+		}
+	}
+
+	/**
+	 * 
+	 * @param currentView
+	 *            当前选中的菜单
+	 * @param imageViews
+	 *            要屏蔽掉的菜单
+	 */
+	private void setImageStatus(ImageView currentView, ImageView... imageViews) {
+		for (ImageView imageView : imageViews) {
+			imageView.setImageResource(R.drawable.package_not_select);
+		}
+
+		if (currentView == discount) {
+			if (is_discount) {
+				currentView.setImageResource(R.drawable.package_not_select);
+				is_discount = false;
+			} else {
+				currentView.setImageResource(R.drawable.package_seclect);
+				is_discount = true;
+				is_foc = false;
+			}
+
+		} else if (currentView == take_package) {
+			if (is_takePackage) {
+				currentView.setImageResource(R.drawable.package_not_select);
+				is_takePackage = false;
+			} else {
+				currentView.setImageResource(R.drawable.package_seclect);
+				is_takePackage = true;
+				is_foc = false;
+			}
+
 		} else {
 
-			if (!is_discount) {
-				List<SelectFoodBean> select_dataList = selectDataList;
-				if (CollectionUtils.isEmpty(select_dataList)) {
-					toastComponent.show(stringResComponent.noFood);
-				} else {
-					discount.setImageResource(R.drawable.package_seclect);
-					// Toast.makeText(this, "打折",
-					// Toast.LENGTH_SHORT).show();
-					is_discount = true;
-					add();
-				}
+			if (is_foc) {
+				currentView.setImageResource(R.drawable.package_not_select);
+				is_foc = false;
 			} else {
-				discount.setImageResource(R.drawable.package_not_select);
-				// Toast.makeText(this, "不打折", Toast.LENGTH_SHORT).show();
+				currentView.setImageResource(R.drawable.package_seclect);
 				is_discount = false;
-				add();
-
+				is_takePackage = false;
+				is_foc = true;
 			}
+
 		}
 	}
 
@@ -308,7 +292,7 @@ public class OrderComponent {
 					toastComponent.show(stringResComponent.errPrice);
 				}
 			}
-			double result = showTotalPrice;
+			double result = MyNumberUtils.strToNum(totalPrice.getText().toString());
 			Log.e("最后金额", result + "");
 			if (show_gathering > Constants.MAX_NUM_PRICE) {
 				show_gathering = Constants.MAX_NUM_PRICE;
@@ -328,32 +312,33 @@ public class OrderComponent {
 	/**
 	 * 计算总金额
 	 */
-	public void add() {
-		showTotalPrice = 0;
-		if (CollectionUtils.isEmpty(selectDataList)) {
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-		} else {
-			for (int i = 0; i < selectDataList.size(); i++) {
-				SelectFoodBean bean = selectDataList.get(i);
-				int num = Integer.parseInt(bean.getFood_num());
-				Double price = Double.parseDouble(bean.getFood_price());
-				bean.setDabao_price(0);
-				bean.setDazhe_price(0);
-				showTotalPrice += price;
-				if (is_foc) {
-					showTotalPrice = 0;
+	public void doCalculation() {
+		double showTotalPrice = 0;
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			if (is_foc) {
+				// 免费的话，全部清空
+				showTotalPrice = 0;
+				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+				for (SelectFoodBean bean : selectDataList) {
 					bean.setDabao_price(0);
 					bean.setDazhe_price(0);
-				} else {
+				}
+			} else {
+				for (SelectFoodBean bean : selectDataList) {
+					// 计算总价
+					showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
+
+					// 计算打包打折
+					int num = Integer.parseInt(bean.getFood_num());
 					double dabao = num * package_money;
 					double dazhe = num * save_discount_price;
 					String type = bean.getFood_type();
 					if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
 						if (!is_discount && is_takePackage) {
-							showTotalPrice = showTotalPrice + dabao;
+							showTotalPrice += dabao;
 							dazhe = 0;
 						} else if (is_discount && !is_takePackage) {
-							showTotalPrice = showTotalPrice - dazhe;
+							showTotalPrice -= dazhe;
 							dabao = 0;
 						} else if (!is_discount && !is_takePackage) {
 							dabao = 0;
@@ -364,13 +349,14 @@ public class OrderComponent {
 						bean.setDabao_price(dabao);
 						bean.setDazhe_price(dazhe);
 					}
+
+				}
+				if (Double.parseDouble(gathering.getText().toString()) > 0) {
+					calculatorComponent.compute_surplus();
 				}
 			}
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-			if (Double.parseDouble(gathering.getText().toString()) > 0) {
-				calculatorComponent.compute_surplus();
-			}
 		}
+		totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 	}
 
 	/**
@@ -381,19 +367,16 @@ public class OrderComponent {
 			selectDataList.clear();
 			selectAdapter.notifyDataSetChanged();
 		}
-		totalPrice.setText("0.00");
-		gathering.setText("0.00");
-		surplus.setText("0.00");
-		showTotalPrice = 0.00;
-		int sb_length = sbuff.length();
-		sbuff.delete(0, sb_length);
+		totalPrice.setText(Constants.DEFAULT_PRICE_FLOAT);
+		gathering.setText(Constants.DEFAULT_PRICE_FLOAT);
+		surplus.setText(Constants.DEFAULT_PRICE_FLOAT);
+		sbuff.delete(0, sbuff.length());
 		is_takePackage = false;
 		take_package.setImageResource(R.drawable.package_not_select);
 		is_discount = false;
 		discount.setImageResource(R.drawable.package_not_select);
 		is_foc = false;
 		foc.setImageResource(R.drawable.package_not_select);
-
 	}
 
 	// 保存数据
@@ -492,10 +475,6 @@ public class OrderComponent {
 
 	public List<SelectFoodBean> getSelectDataList() {
 		return selectDataList;
-	}
-
-	public double getShowTotalPrice() {
-		return showTotalPrice;
 	}
 
 	public TextView getGathering() {

@@ -50,24 +50,24 @@ public class FoodListAdapter extends BaseAdapter {
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
-		Food bean;
+
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.foot_list_item, null);
 			viewHolder = new ViewHolder();
+			Food bean = classList.get(position);
 			myListener = new MyListener(position);
 			viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.food_title);
+			viewHolder.titleTextView.setText(bean.title);
 			viewHolder.food_image = (ImageView) convertView.findViewById(R.id.food_image);
+			Bitmap bitmap = BitmapFactory.decodeFile(bean.picture);
+			viewHolder.food_image.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
 			viewHolder.food_btn = (ImageView) convertView.findViewById(R.id.food_btn);
+			viewHolder.food_btn.setOnClickListener(myListener);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 
-		bean = classList.get(position);
-		viewHolder.titleTextView.setText(bean.title);
-		Bitmap bitmap = BitmapFactory.decodeFile(bean.picture);
-		viewHolder.food_image.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
-		viewHolder.food_btn.setOnClickListener(myListener);
 		return convertView;
 	}
 
