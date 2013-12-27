@@ -3,8 +3,10 @@ package com.android.activity;
 import android.view.MotionEvent;
 
 import com.android.R;
+import com.android.component.ui.MenuComponent;
 import com.android.component.ui.daily.DailyPayComponent;
 import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
@@ -22,6 +24,18 @@ public class DailyPayActivity extends BasicActivity {
 
 	@Bean
 	DailyPayComponent dailyPayComponent;
+	
+	@Bean
+	public MenuComponent menuComponent;
+
+	/**
+	 * @TODO: 最后放到基类里面去
+	 * 
+	 */
+	@Click(R.id.menu_btn)
+	public void menu() {
+		menuComponent.initPopupWindow();
+	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
