@@ -2,14 +2,17 @@ package com.android.activity;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.StrictMode;
 
 import com.android.R;
+import com.android.common.MyApp;
+import com.android.component.AuditComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.ui.MenuComponent;
+import com.android.component.ui.login.LoginComponent;
 import com.android.dialog.design.DialogBuilder;
 import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -23,6 +26,15 @@ public abstract class AbstractActivity extends Activity {
 
 	@Pref
 	public SharedPreferencesComponent_ sharedPrefs;
+
+	@Bean
+	AuditComponent auditComponent;
+
+	@Bean
+	LoginComponent loginComponent;
+
+	@App
+	MyApp myApp;
 
 	@AfterInject
 	public void initAbstract() {
@@ -50,6 +62,11 @@ public abstract class AbstractActivity extends Activity {
 		CreatedDialog().create().show();
 	}
 
+	/**
+	 * 退出系统操作
+	 * 
+	 * @return
+	 */
 	public DialogBuilder CreatedDialog() {
 		DialogBuilder builder = new DialogBuilder(this);
 		builder.setTitle(R.string.message_title);
@@ -57,7 +74,8 @@ public abstract class AbstractActivity extends Activity {
 		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
-				new LogoutOperation().execute("");
+				loginComponent.executeLogout(myApp.getUserId(), myApp.getShopId());
+
 			}
 		});
 		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
@@ -66,31 +84,6 @@ public abstract class AbstractActivity extends Activity {
 			}
 		});
 		return builder;
-	}
-
-	private class LogoutOperation extends AsyncTask<String, Void, Integer> {
-
-		@Override
-		protected Integer doInBackground(String... objs) {
-			logUserAction();
-			return 1;
-		}
-
-		@Override
-		protected void onPostExecute(Integer result) {
-		}
-
-		@Override
-		protected void onPreExecute() {
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... values) {
-		}
-	}
-
-	public void logUserAction() {
-
 	}
 
 	/**

@@ -73,8 +73,28 @@ public class LoginComponent {
 		dialog = new MyProcessDialog(context, stringResComponent.loginWait);
 	}
 
-	public void executeLogin(String username, String password, String loginType) {
-		new LoginTask().execute(new String[] { username, password, loginType });
+	/**
+	 * 登录操作
+	 * 
+	 * @param username
+	 *            用户名
+	 * @param password
+	 *            密码
+	 */
+	public void executeLogin(String username, String password) {
+		new Login().doExecute(username, password, Constants.LOGIN);
+	}
+
+	/**
+	 * 注销操作
+	 * 
+	 * @param userId
+	 *            用户ID
+	 * @param shopId
+	 *            店铺ID
+	 */
+	public void executeLogout(String userId, String shopId) {
+		new Logout().doExecute(userId, shopId, Constants.LOGOUT);
 	}
 
 	private Integer loginLocal(String username, String password, String loginType) {
@@ -87,7 +107,7 @@ public class LoginComponent {
 			if (user != null) {
 				if (StringUtils.equalsIgnoreCase(password, user.password)) {
 					setLoginInfo(user);
-					auditComponent.logAudit(user, "Login");
+					auditComponent.logAudit(user, Constants.LOGIN);
 					// 启动主窗口
 					activityComponent.startMain();
 					return Constants.STATUS_SUCCESS;
@@ -151,11 +171,25 @@ public class LoginComponent {
 		return data.code;
 	}
 
-	private class LoginTask extends AsyncTask<String, Void, Integer> {
+	public Integer logout(String userId, String shopId, String loginType) {
+		try {
+			User user = new User();
+			user.uid = userId;
+			user.shopId = shopId;
+			auditComponent.logAudit(user, loginType);
+			return Constants.STATUS_SUCCESS;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return Constants.STATUS_FAILED;
+	}
+
+	abstract class LogTaskBasic extends AsyncTask<String, Void, Integer> {
+		abstract Integer doExecute(String... objs);
 
 		@Override
 		protected Integer doInBackground(String... objs) {
-			return loginLocal(objs[0], objs[1], objs[2]);
+			return doExecute(objs);
 		}
 
 		@Override
@@ -184,6 +218,20 @@ public class LoginComponent {
 
 		@Override
 		protected void onProgressUpdate(Void... values) {
+		}
+	}
+
+	class Login extends LogTaskBasic {
+		@Override
+		Integer doExecute(String... objs) {
+			return loginLocal(objs[0], objs[1], objs[2]);
+		}
+	}
+
+	class Logout extends LogTaskBasic {
+		@Override
+		Integer doExecute(String... objs) {
+			return logout(objs[0], objs[1], objs[2]);
 		}
 	}
 

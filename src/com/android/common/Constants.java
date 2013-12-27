@@ -99,6 +99,10 @@ public final class Constants {
 	public static final int STATUS_FAILED = 0;
 	public static final int STATUS_SERVER_FAILED = -1;
 	public static final int STATUS_NETWORK_ERROR = -2;
+	
+	/** 登录状态状态 */
+	public static final String LOGIN = "login";
+	public static final String LOGOUT = "logout";
 
 	/** 数据库更新操作状态 */
 	public static final String DB_SUCCESS = "1";

@@ -15,7 +15,6 @@ import com.android.component.AppUpdateComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.ui.login.LoginComponent;
-import com.android.domain.FoodOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
@@ -32,10 +31,6 @@ import com.googlecode.androidannotations.annotations.ViewById;
 // 绑定登录的layout
 @EActivity(R.layout.login)
 public class LoginActivity extends Activity {
-
-	// 通过id绑定登录按钮
-	@ViewById(R.id.login_ok)
-	Button login_ok;
 
 	// 通过id绑定用户名
 	@ViewById(R.id.login_name)
@@ -74,7 +69,7 @@ public class LoginActivity extends Activity {
 	void login(String loginType) {
 		String str_login_name = StringUtils.trim(login_name.getText().toString());
 		String str_login_password = StringUtils.trim(login_password.getText().toString());
-		loginComponent.executeLogin(str_login_name, str_login_password, loginType);
+		loginComponent.executeLogin(str_login_name, str_login_password);
 		return;
 	}
 
