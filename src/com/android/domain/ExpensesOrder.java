@@ -3,7 +3,6 @@ package com.android.domain;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.activeandroid.Model;
@@ -87,39 +86,39 @@ public class ExpensesOrder extends Model {
 	}
 
 	/**
-	 * 返回订单列表
+	 * 店员今天是否有提交完成
 	 * 
+	 * 
+	 * @param time
+	 * @param status
 	 * @return
 	 */
-	public static List<ExpensesOrder> queryListByStatus(String status) {
-		return new Select().from(ExpensesOrder.class).where("status = ?", status).execute();
+	public static List<ExpensesOrder> todayStatusList(String time, String status) {
+		return new Select().from(ExpensesOrder.class).where("date >= ? and status = ?", time, status).execute();
 	}
 
 	/**
-	 * 返回今天数据列表
+	 * 店员今天是否有提交
 	 * 
+	 * @param userId
+	 * @param shopId
+	 * @param time
 	 * @return
 	 */
-	public static List<ExpensesOrder> todayStatusList(String userId, String shopId, String time, String status) {
-		return new Select().from(ExpensesOrder.class)
-				.where("user_id =? and shop_id = ? and date >= ? and status = ?", userId, shopId, time, status).execute();
-	}
-
 	public static List<ExpensesOrder> todayList(String userId, String shopId, String time) {
 		return new Select().from(ExpensesOrder.class).where("user_id =? and shop_id = ? and date >= ?", userId, shopId, time).execute();
 	}
 
 	/**
-	 * 更新所有提交成功的
+	 * 该店是否今天完成
+	 * 
+	 * @param shopId
+	 * @param time
+	 * @param status
+	 * @return
 	 */
-	public static void updateAllByStatus() {
-		List<ExpensesOrder> expensess = queryListByStatus(Constants.DB_FAILED);
-		if (CollectionUtils.isNotEmpty(expensess)) {
-			for (ExpensesOrder expenses : expensess) {
-				expenses.status = Constants.DB_SUCCESS;
-				expenses.save();
-			}
-		}
+	public static List<ExpensesOrder> todayCompleted(String shopId, String time, String status) {
+		return new Select().from(ExpensesOrder.class).where("shop_id = ? and date >= ? and status = ?", shopId, time, status).execute();
 	}
 
 	/**

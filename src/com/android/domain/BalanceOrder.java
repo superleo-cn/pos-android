@@ -3,8 +3,6 @@ package com.android.domain;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -135,39 +133,40 @@ public class BalanceOrder extends Model {
 	}
 
 	/**
-	 * 返回订单列表
 	 * 
+	 * 店员今天是否有提交完成
+	 * 
+	 * 
+	 * @param time
+	 * @param status
 	 * @return
 	 */
-	public static List<BalanceOrder> queryListByStatus(String status) {
-		return new Select().from(BalanceOrder.class).where("status = ?", status).execute();
+	public static List<BalanceOrder> todayStatusList(String time, String status) {
+		return new Select().from(BalanceOrder.class).where(" date >= ? and status=?", time, status).execute();
 	}
 
 	/**
-	 * 返回今天数据列表
+	 * 店员今天是否有提交
 	 * 
+	 * @param userId
+	 * @param shopId
+	 * @param time
 	 * @return
 	 */
-	public static List<BalanceOrder> todayStatusList(String userId, String shopId, String time, String status) {
-		return new Select().from(BalanceOrder.class)
-				.where("userId =? and shopId = ? and date >= ? and status=?", userId, shopId, time, status).execute();
-	}
-
 	public static List<BalanceOrder> todayList(String userId, String shopId, String time) {
 		return new Select().from(BalanceOrder.class).where("userId =? and shopId = ? and date >= ?", userId, shopId, time).execute();
 	}
 
 	/**
-	 * 更新所有提交成功的
+	 * 该店是否今天完成
+	 * 
+	 * @param shopId
+	 * @param time
+	 * @param status
+	 * @return
 	 */
-	public static void updateAllByStatus() {
-		List<BalanceOrder> Balances = queryListByStatus(Constants.DB_FAILED);
-		if (CollectionUtils.isNotEmpty(Balances)) {
-			for (BalanceOrder Balance : Balances) {
-				Balance.status = Constants.DB_SUCCESS;
-				Balance.save();
-			}
-		}
+	public static List<BalanceOrder> todayCompleted(String shopId, String time, String status) {
+		return new Select().from(BalanceOrder.class).where("shopId = ? and date >= ? and status = ?", shopId, time, status).execute();
 	}
 
 	/**

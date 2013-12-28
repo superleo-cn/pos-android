@@ -58,26 +58,39 @@ public class CollectionOrder extends Model {
 	}
 
 	/**
-	 * @return
-	 */
-	public static List<CollectionOrder> queryListByStatus(String status) {
-		return new Select().from(CollectionOrder.class).where("status = ?", status).execute();
-	}
-
-	/**
-	 * 返回今天数据列表
+	 * 店员今天是否有提交完成
 	 * 
+	 * 
+	 * @param date
 	 * @param status
 	 * @return
 	 */
-	public static List<CollectionOrder> todayStatusList(String userId, String shopId, String date, String status) {
-		return new Select().from(CollectionOrder.class)
-				.where("user_id =? and shop_id = ? and date >= ? and status = ?", userId, shopId, date, status).execute();
+	public static List<CollectionOrder> todayStatusList(String date, String status) {
+		return new Select().from(CollectionOrder.class).where("date >= ? and status = ?", date, status).execute();
 	}
 
+	/**
+	 * 店员今天是否有提交
+	 * 
+	 * @param userId
+	 * @param shopId
+	 * @param date
+	 * @return
+	 */
 	public static List<CollectionOrder> todayList(String userId, String shopId, String date) {
-		return new Select().from(CollectionOrder.class)
-				.where("user_id =? and shop_id = ? and date >= ?", userId, shopId, date).execute();
+		return new Select().from(CollectionOrder.class).where("user_id =? and shop_id = ? and date >= ?", userId, shopId, date).execute();
+	}
+
+	/**
+	 * 该店是否今天完成
+	 * 
+	 * @param shopId
+	 * @param date
+	 * @param status
+	 * @return
+	 */
+	public static List<CollectionOrder> todayCompleted(String shopId, String time, String status) {
+		return new Select().from(CollectionOrder.class).where("shop_id = ? and date >= ? and status = ?", shopId, time, status).execute();
 	}
 
 	/**
@@ -105,19 +118,6 @@ public class CollectionOrder extends Model {
 			TakeNumberBean bean = number_classList.get(j);
 			bean.setPrice(StringUtils.defaultIfEmpty(bean.getNum(), Constants.DEFAULT_PRICE_INT));
 			CollectionOrder.save(bean, myApp);
-		}
-	}
-
-	/**
-	 * 更新所有提交成功的
-	 */
-	public static void updateAllByStatus() {
-		List<CollectionOrder> collectionList = queryListByStatus(Constants.DB_FAILED);
-		if (CollectionUtils.isNotEmpty(collectionList)) {
-			for (CollectionOrder collection : collectionList) {
-				collection.status = Constants.DB_SUCCESS;
-				collection.save();
-			}
 		}
 	}
 

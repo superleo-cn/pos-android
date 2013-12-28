@@ -183,7 +183,7 @@ public class DailyPayComponent {
 	public boolean isCompleted() {
 		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 		Log.e("今天日期", date);
-		boolean flag = dailypaysubmitComponent.isCompleted(date);
+		boolean flag = dailypaysubmitComponent.isCompleted(date, myApp);
 		if (!flag) {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
 		} else {
