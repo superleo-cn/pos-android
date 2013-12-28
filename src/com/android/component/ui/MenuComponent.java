@@ -3,8 +3,8 @@ package com.android.component.ui;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,7 +22,8 @@ import com.android.common.MyApp;
 import com.android.component.ActivityComponent;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.dialog.design.DialogBuilder;
+import com.android.component.ui.login.LoginComponent;
+import com.android.dialog.ConfirmDialog;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -69,6 +70,9 @@ public class MenuComponent {
 
 	@Bean
 	ActivityComponent activityComponent;
+
+	@Bean
+	LoginComponent loginComponent;
 
 	private PopupWindow popupWindow;
 
@@ -138,7 +142,7 @@ public class MenuComponent {
 			popu_exit.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					dismiss();
-					createdDialog().create().show();
+					buildExitDialog().show();
 				}
 			});
 			popu_QueryAllDB.setOnClickListener(new OnClickListener() {
@@ -190,25 +194,20 @@ public class MenuComponent {
 	}
 
 	/**
-	 * 创建退出对话框
+	 * 退出系统操作
 	 * 
 	 * @return
 	 */
-	public DialogBuilder createdDialog() {
-		DialogBuilder builder = new DialogBuilder(context);
-		builder.setTitle(R.string.message_title);
-		builder.setMessage(R.string.message_exit);
-		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
+	public Dialog buildExitDialog() {
+		return new ConfirmDialog(context, stringResComponent.messageTitle, stringResComponent.messageExit) {
 
-			public void onClick(DialogInterface dialog, int which) {
+			@Override
+			public void doClick() {
+				loginComponent.executeLogout(myApp.getUserId(), myApp.getShopId());
 				activityComponent.startLogin();
 			}
-		});
-		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
 
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-		return builder;
+		}.build();
 	}
+
 }

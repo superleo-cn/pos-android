@@ -7,15 +7,13 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -37,7 +35,8 @@ import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.dialog.design.DialogBuilder;
+import com.android.component.ui.login.LoginComponent;
+import com.android.dialog.ConfirmDialog;
 import com.android.domain.CollectionOrder;
 import com.android.domain.ExpensesOrder;
 import com.android.domain.FoodOrder;
@@ -135,6 +134,9 @@ public class DailyPayComponent {
 	@Bean
 	DailypaySubmitComponent dailypaysubmitComponent;
 
+	@Bean
+	LoginComponent loginComponent;
+
 	private List<Double> all_num_price = new ArrayList<Double>();
 	private List<Double> all_pay_price = new ArrayList<Double>();
 	private List<DailyPayDetailBean> detail_classList = new ArrayList<DailyPayDetailBean>();
@@ -148,8 +150,9 @@ public class DailyPayComponent {
 
 	@AfterViews
 	public void initDailayPay() {
-		initData();
-		initSubmitButton();
+		if (!isCompleted()) {
+			initData();
+		}
 	}
 
 	@Touch(R.id.scrollviewID)
@@ -177,37 +180,35 @@ public class DailyPayComponent {
 
 	}
 
-	public void initSubmitButton() {
+	public boolean isCompleted() {
 		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 		Log.e("今天日期", date);
-		boolean flag = dailypaysubmitComponent.isComplete(date);
+		boolean flag = dailypaysubmitComponent.isCompleted(date);
 		if (!flag) {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
 		} else {
 			btu_id_sbumit.setVisibility(View.GONE);
 		}
+		return flag;
 	}
 
-	// 提交数据窗口
-	public DialogBuilder CreatedSubmitDialog() {
-		DialogBuilder builder = new DialogBuilder(context);
-		builder.setTitle(R.string.message_title);
-		builder.setMessage(R.string.message_zhifu);
-		builder.setPositiveButton(R.string.message_ok, new android.content.DialogInterface.OnClickListener() {
+	/**
+	 * 提交数据窗口
+	 * 
+	 * @return
+	 */
+	public Dialog buildSubmitDialog() {
+		return new ConfirmDialog(context, stringResComponent.messageTitle, stringResComponent.messageZhifu) {
 
-			public void onClick(DialogInterface dialog, int which) {
+			@Override
+			public void doClick() {
 				if (doValidation()) {
 					storeAndSync();
 					btu_id_sbumit.setVisibility(View.GONE);
 				}
 			}
-		});
-		builder.setNegativeButton(R.string.message_cancle, new android.content.DialogInterface.OnClickListener() {
 
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		});
-		return builder;
+		}.build();
 	}
 
 	public boolean doValidation() {
@@ -224,7 +225,6 @@ public class DailyPayComponent {
 
 		// 带回总数金额不一致
 		Double sigle_price = Constants.DEFAULT_PRICE_NUM_FLOAT;
-		;
 		for (int i = 0; i < all_num_price.size(); i++) {
 			sigle_price += all_num_price.get(i).doubleValue();
 		}
@@ -250,25 +250,26 @@ public class DailyPayComponent {
 	public void storeAndSync() {
 		/* 提交每日支付金额 */
 		ExpensesOrder.saveExpenses(detail_classList, myApp);
-		/* 提交每日支付金额结束 */
 
 		/* 提交带回总数接口 */
 		CollectionOrder.save(number_classList, myApp);
-		/* 提交带回总数接口结束 */
-
-		// 设置成只读操作
-		setReadonly(num_list, R.id.num_id_price);
-		setReadonly(daily_list, R.id.text_id_price);
 
 		// 保存其他输入项目
 		dailypaysubmitComponent.save(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num, total,
 				noon_time, noon_turnover, noon_time, other, send_person);
 
+		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
+		dailypaysubmitComponent.submitAll(date);
+
+		// 设置成只读操作并且清空
+		setReadonly(num_list, R.id.num_id_price);
+		setReadonly(daily_list, R.id.text_id_price);
+
+		// 清空所有组件
 		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
 				send_person, other, shop_money);
 
-		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-		dailypaysubmitComponent.submitAll(date);
+		loginComponent.logout(myApp.getUserId(), myApp.getShopId());
 	}
 
 	public void compute() {
@@ -288,12 +289,12 @@ public class DailyPayComponent {
 			today_turnover.setText(MyNumberUtils.numToStr(price_d));
 
 			// 总数
-			Double total_t = price_c - price_b;
+			Double total_t = price_c + price_b;
 			total.setText(MyNumberUtils.numToStr(total_t));
 
 			// 带回总数
 			Double price_e = Double.parseDouble(tomorrow_money_text);
-			Double take_price = Double.parseDouble(cash_register.getText().toString()) - price_e;
+			Double take_price = price_c - price_e;
 			total_take_num.setText(MyNumberUtils.numToStr(take_price));
 		} catch (Exception e) {
 			Log.e("总计算", e.getMessage());
@@ -303,7 +304,7 @@ public class DailyPayComponent {
 
 	@Click(R.id.btu_id_sbumit)
 	void sbumitOnClick() {
-		CreatedSubmitDialog().create().show();
+		buildSubmitDialog().show();
 	}
 
 	@TextChange(R.id.shop_money)
@@ -328,10 +329,8 @@ public class DailyPayComponent {
 				try {
 					count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 					String str = (String) msg.obj;
-					Log.e("改变支付款价格", str);
 					int num = Integer.parseInt(str.substring(0, 1));
 					String price = str.substring(2, str.length());
-					Log.e("截取的价格", price);
 					all_pay_price.set(num, Double.parseDouble(price));
 					for (Double sigle_price : all_pay_price) {
 						count = count + sigle_price;
@@ -346,10 +345,8 @@ public class DailyPayComponent {
 			case TakeNumerAdapter.SET_NUM:
 				num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 				String str = (String) msg.obj;
-				Log.e("改变带回总数价格", str);
 				int num = Integer.parseInt(str.substring(0, 1));
 				String price = str.substring(2, str.length());
-				Log.e("截取带回的价格", price);
 				all_num_price.set(num, Double.parseDouble(price));
 				for (Double sigle_price : all_num_price) {
 					num_count = num_count + sigle_price;
@@ -373,6 +370,7 @@ public class DailyPayComponent {
 		int num_of_visible_view = view.getLastVisiblePosition() - view.getFirstVisiblePosition();
 		for (int i = 0; i <= num_of_visible_view; i++) {
 			EditText edit = (EditText) view.getChildAt(i).findViewById(r);
+			edit.setText(StringUtils.EMPTY);
 			keyboardComponent.dismissKeyboardReadonly(true, edit);
 		}
 	}

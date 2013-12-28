@@ -19,13 +19,13 @@ import com.android.common.MyApp;
 @Table(name = "tb_expenses_order")
 public class ExpensesOrder extends Model {
 
-	@Column(name = "consumptionId")
+	@Column(name = "consumption_id")
 	public String consumptionId;
 
-	@Column(name = "shopID")
+	@Column(name = "shop_id")
 	public String shopID;
 
-	@Column(name = "userID")
+	@Column(name = "user_id")
 	public String userID;
 
 	@Column(name = "price")
@@ -100,8 +100,13 @@ public class ExpensesOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static List<ExpensesOrder> todayStatusList(String time, String status) {
-		return new Select().from(ExpensesOrder.class).where("date >= ? and status = ?", time, status).execute();
+	public static List<ExpensesOrder> todayStatusList(String userId, String shopId, String time, String status) {
+		return new Select().from(ExpensesOrder.class)
+				.where("user_id =? and shop_id = ? and date >= ? and status = ?", userId, shopId, time, status).execute();
+	}
+
+	public static List<ExpensesOrder> todayList(String userId, String shopId, String time) {
+		return new Select().from(ExpensesOrder.class).where("user_id =? and shop_id = ? and date >= ?", userId, shopId, time).execute();
 	}
 
 	/**

@@ -8,6 +8,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.android.common.Constants;
 
 @Table(name = "tb_audit")
 public class Audit extends Model {
@@ -43,14 +44,13 @@ public class Audit extends Model {
 	 * @param status
 	 */
 	public static void updateByStatus(String status) {
-		List<Audit> audits = queryByStatus(status);
+		List<Audit> audits = queryByStatus(Constants.DB_FAILED);
 		if (CollectionUtils.isNotEmpty(audits)) {
 			for (Audit audit : audits) {
 				audit.status = status;
 				audit.save();
 			}
 		}
-		// ActiveAndroid.execSQL(sql, bindArgs)
 	}
 
 	public static void updateById(Long id, String status) {

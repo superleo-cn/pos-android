@@ -70,8 +70,14 @@ public class CollectionOrder extends Model {
 	 * @param status
 	 * @return
 	 */
-	public static List<CollectionOrder> todayStatusList(String date, String status) {
-		return new Select().from(CollectionOrder.class).where("date >= ? and status = ?", date, status).execute();
+	public static List<CollectionOrder> todayStatusList(String userId, String shopId, String date, String status) {
+		return new Select().from(CollectionOrder.class)
+				.where("user_id =? and shop_id = ? and date >= ? and status = ?", userId, shopId, date, status).execute();
+	}
+
+	public static List<CollectionOrder> todayList(String userId, String shopId, String date) {
+		return new Select().from(CollectionOrder.class)
+				.where("user_id =? and shop_id = ? and date >= ?", userId, shopId, date).execute();
 	}
 
 	/**
