@@ -289,12 +289,12 @@ public class DailyPayComponent {
 			today_turnover.setText(MyNumberUtils.numToStr(price_d));
 
 			// 总数
-			Double total_t = price_c - price_b;
+			Double total_t = price_c + price_b;
 			total.setText(MyNumberUtils.numToStr(total_t));
 
 			// 带回总数
 			Double price_e = Double.parseDouble(tomorrow_money_text);
-			Double take_price = price_d - price_e;
+			Double take_price = price_c - price_e;
 			total_take_num.setText(MyNumberUtils.numToStr(take_price));
 		} catch (Exception e) {
 			Log.e("总计算", e.getMessage());
