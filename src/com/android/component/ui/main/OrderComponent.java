@@ -327,6 +327,8 @@ public class OrderComponent {
 					bean.setDabao_price(0);
 					bean.setDazhe_price(0);
 				}
+				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+				calculatorComponent.compute_surplus();
 			} else {
 				for (SelectFoodBean bean : selectDataList) {
 					// 计算总价
@@ -355,12 +357,13 @@ public class OrderComponent {
 					}
 
 				}
+				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 				if (Double.parseDouble(gathering.getText().toString()) > 0) {
 					calculatorComponent.compute_surplus();
 				}
 			}
 		}
-		totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+
 	}
 
 	/**

@@ -203,8 +203,8 @@ public class DailyPayComponent {
 			@Override
 			public void doClick() {
 				if (doValidation()) {
-					storeAndSync();
 					btu_id_sbumit.setVisibility(View.GONE);
+					storeAndSync();
 				}
 			}
 
@@ -269,7 +269,7 @@ public class DailyPayComponent {
 		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
 				send_person, other, shop_money);
 
-		loginComponent.logout(myApp.getUserId(), myApp.getShopId());
+		loginComponent.executeLogout(myApp.getUserId(), myApp.getShopId());
 	}
 
 	public void compute() {
@@ -303,7 +303,7 @@ public class DailyPayComponent {
 	}
 
 	@Click(R.id.btu_id_sbumit)
-	void sbumitOnClick() {
+	void submitOnClick() {
 		buildSubmitDialog().show();
 	}
 

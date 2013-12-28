@@ -293,9 +293,9 @@ public class DailypaySubmitComponent {
 	 * @return
 	 */
 	public boolean isCompleted(String date) {
-		List<ExpensesOrder> expenseslist = ExpensesOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_SUCCESS);
-		List<BalanceOrder> balanceOrderlist = BalanceOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_SUCCESS);
-		List<CollectionOrder> collectionOrderlist = CollectionOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_SUCCESS);
+		List<ExpensesOrder> expenseslist = ExpensesOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_FAILED);
+		List<BalanceOrder> balanceOrderlist = BalanceOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_FAILED);
+		List<CollectionOrder> collectionOrderlist = CollectionOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_FAILED);
 		if (CollectionUtils.isNotEmpty(expenseslist) && CollectionUtils.isNotEmpty(balanceOrderlist)
 				&& CollectionUtils.isNotEmpty(collectionOrderlist)) {
 			return true;
