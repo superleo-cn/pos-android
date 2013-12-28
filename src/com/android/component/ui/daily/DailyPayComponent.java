@@ -35,6 +35,7 @@ import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
+import com.android.component.ui.login.LoginComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.domain.CollectionOrder;
 import com.android.domain.ExpensesOrder;
@@ -132,6 +133,9 @@ public class DailyPayComponent {
 
 	@Bean
 	DailypaySubmitComponent dailypaysubmitComponent;
+
+	@Bean
+	LoginComponent loginComponent;
 
 	private List<Double> all_num_price = new ArrayList<Double>();
 	private List<Double> all_pay_price = new ArrayList<Double>();
@@ -264,6 +268,8 @@ public class DailyPayComponent {
 		// 清空所有组件
 		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
 				send_person, other, shop_money);
+
+		loginComponent.logout(myApp.getUserId(), myApp.getShopId());
 	}
 
 	public void compute() {
