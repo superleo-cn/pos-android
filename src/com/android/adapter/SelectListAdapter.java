@@ -26,6 +26,8 @@ public class SelectListAdapter extends BaseAdapter {
 	private List<SelectFoodBean> classList;
 	private OrderComponent component;
 	private float x, ux;
+	private static long timer = 0;
+	private static final long LONG_PRESS_TIME = 100;
 
 	public SelectListAdapter(Context context, List<SelectFoodBean> list) {
 		this.context = context;
@@ -92,9 +94,9 @@ public class SelectListAdapter extends BaseAdapter {
 		convertView.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				classList.clear();
-				component.doCalculation();
-				notifyDataSetChanged();
+		        	classList.clear();
+					component.doCalculation();
+					notifyDataSetChanged();
 				return false;
 			}
 		});
