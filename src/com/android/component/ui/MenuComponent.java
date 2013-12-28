@@ -194,11 +194,6 @@ public class MenuComponent {
 	}
 
 	/**
-	 * 创建退出对话框
-	 * 
-	 * @return
-	 */
-	/**
 	 * 退出系统操作
 	 * 
 	 * @return

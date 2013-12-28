@@ -148,8 +148,13 @@ public class BalanceOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static List<BalanceOrder> todayStatusList(String time, String status) {
-		return new Select().from(BalanceOrder.class).where("date >= ? and status=?", time, status).execute();
+	public static List<BalanceOrder> todayStatusList(String userId, String shopId, String time, String status) {
+		return new Select().from(BalanceOrder.class)
+				.where("userId =? and shopId = ? and date >= ? and status=?", userId, shopId, time, status).execute();
+	}
+
+	public static List<BalanceOrder> todayList(String userId, String shopId, String time) {
+		return new Select().from(BalanceOrder.class).where("userId =? and shopId = ? and date >= ?", userId, shopId, time).execute();
 	}
 
 	/**

@@ -77,13 +77,4 @@ public class Expenses extends Model {
 		return new Select().from(Expenses.class).where("status = ?", status).execute();
 	}
 
-	/**
-	 * 返回今天数据列表
-	 * 
-	 * @return
-	 */
-	public static List<Expenses> todayStatusList(String time, String status) {
-		return new Select().from(Expenses.class).where("date = ? and status = ?", time, status).execute();
-	}
-
 }

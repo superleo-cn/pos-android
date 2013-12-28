@@ -67,15 +67,17 @@ public class DailypaySubmitComponent {
 	public void postPayList(String searchDate) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
-			List<ExpensesOrder> datas = ExpensesOrder.todayStatusList(searchDate, Constants.DB_FAILED);
+			List<ExpensesOrder> datas = ExpensesOrder
+					.todayStatusList(myApp.getUserId(), myApp.getShopId(), searchDate, Constants.DB_FAILED);
 			if (CollectionUtils.isNotEmpty(datas)) {
 				for (int i = 0; i < datas.size(); i++) {
 					ExpensesOrder expenses = datas.get(i);
-					params.put("consumeTransactions[" + i + "].androidId", expenses.getId() + "");
+					params.put("consumeTransactions[" + i + "].androidId", String.valueOf(expenses.getId()));
 					params.put("consumeTransactions[" + i + "].consumption.id", expenses.consumptionId);
 					params.put("consumeTransactions[" + i + "].shop.id", expenses.shopID);
 					params.put("consumeTransactions[" + i + "].user.id", expenses.userID);
-					params.put("consumeTransactions[" + i + "].price", expenses.price);
+					params.put("consumeTransactions[" + i + "].price",
+							StringUtils.defaultIfEmpty(expenses.price, Constants.DEFAULT_PRICE_INT));
 				}
 			}
 			// 异步请求数据
@@ -99,7 +101,8 @@ public class DailypaySubmitComponent {
 	public void postNumList(String searchDate) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
-			List<CollectionOrder> datas = CollectionOrder.todayStatusList(searchDate, Constants.DB_FAILED);
+			List<CollectionOrder> datas = CollectionOrder.todayStatusList(myApp.getUserId(), myApp.getShopId(), searchDate,
+					Constants.DB_FAILED);
 			if (CollectionUtils.isNotEmpty(datas)) {
 				for (int i = 0; i < datas.size(); i++) {
 					CollectionOrder collection = datas.get(i);
@@ -111,7 +114,8 @@ public class DailypaySubmitComponent {
 					Log.e("cashTransactions[" + i + "].shop.id", collection.shopId);
 					params.put("cashTransactions[" + i + "].user.id", collection.userId);
 					Log.e("cashTransactions[" + i + "].user.id", collection.userId);
-					params.put("cashTransactions[" + i + "].quantity", collection.quantity);
+					params.put("cashTransactions[" + i + "].quantity",
+							StringUtils.defaultIfEmpty(collection.quantity, Constants.DEFAULT_PRICE_INT));
 					Log.e("cashTransactions[" + i + "].quantity", collection.quantity);
 				}
 			}
@@ -137,24 +141,25 @@ public class DailypaySubmitComponent {
 	public void postDailyMoney(final String searchDate) {
 		try {
 			Map<String, String> params = new HashMap<String, String>();
-			List<BalanceOrder> datas = BalanceOrder.todayStatusList(searchDate, Constants.DB_FAILED);
+			List<BalanceOrder> datas = BalanceOrder.todayStatusList(myApp.getUserId(), myApp.getShopId(), searchDate, Constants.DB_FAILED);
 			if (CollectionUtils.isNotEmpty(datas)) {
-				for (int i = 0; i < datas.size(); i++) {
-					BalanceOrder balance = datas.get(i);
-					params.put("cashTransactions[" + i + "].androidId", balance.getId() + "");
-					params.put("cashTransactions[" + i + "].aOpenBalance", balance.aOpenBalance);
-					params.put("cashTransactions[" + i + "].bExpenses", balance.bExpenses);
-					params.put("cashTransactions[" + i + "].cCashCollected", balance.cCashCollected);
-					params.put("cashTransactions[" + i + "].dDailyTurnover", balance.dDailyTurnover);
-					params.put("cashTransactions[" + i + "].eNextOpenBalance", balance.eNextOpenBalance);
-					params.put("cashTransactions[" + i + "].fBringBackCash", balance.fBringBackCash);
-					params.put("cashTransactions[" + i + "].gTotalBalance", balance.gTotalBalance);
-					params.put("cashTransactions[" + i + "].middleCalculateTime", balance.middleCalculateTime);
-					params.put("cashTransactions[" + i + "].middleCalculateBalance", balance.middleCalculateBalance);
-					params.put("cashTransactions[" + i + "].calculateTime", balance.calculateTime);
-					params.put("cashTransactions[" + i + "].courier", balance.courier);
-					params.put("cashTransactions[" + i + "].others", balance.others);
-				}
+				BalanceOrder balance = datas.get(0);
+				params.put("dailySummary.androidId", String.valueOf(balance.getId()));
+				params.put("dailySummary.shop.id", balance.shopId);
+				params.put("dailySummary.user.id", balance.userId);
+				params.put("dailySummary.aOpenBalance", balance.aOpenBalance);
+				params.put("dailySummary.bExpenses", balance.bExpenses);
+				params.put("dailySummary.cCashCollected", balance.cCashCollected);
+				params.put("dailySummary.dDailyTurnover", balance.dDailyTurnover);
+				params.put("dailySummary.eNextOpenBalance", balance.eNextOpenBalance);
+				params.put("dailySummary.fBringBackCash", balance.fBringBackCash);
+				params.put("dailySummary.gTotalBalance", balance.gTotalBalance);
+				params.put("dailySummary.middleCalculateTime", balance.middleCalculateTime);
+				params.put("dailySummary.middleCalculateBalance", balance.middleCalculateBalance);
+				params.put("dailySummary.calculateTime", balance.calculateTime);
+				params.put("dailySummary.courier", balance.courier);
+				params.put("dailySummary.others", balance.others);
+				params.put("dailySummary.date", balance.date);
 			}
 			// 异步请求数据
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_DAILY_MONEY, params);
@@ -276,10 +281,10 @@ public class DailypaySubmitComponent {
 	 * @param date
 	 * @return
 	 */
-	public boolean isComplete(String date) {
-		List<Expenses> expenseslist = Expenses.todayStatusList(date, Constants.DB_FAILED);
-		List<BalanceOrder> balanceOrderlist = BalanceOrder.todayStatusList(date, Constants.DB_FAILED);
-		List<CollectionOrder> collectionOrderlist = CollectionOrder.todayStatusList(date, Constants.DB_FAILED);
+	public boolean isCompleted(String date) {
+		List<ExpensesOrder> expenseslist = ExpensesOrder.todayList(myApp.getUserId(), myApp.getShopId(), date);
+		List<BalanceOrder> balanceOrderlist = BalanceOrder.todayList(myApp.getUserId(), myApp.getShopId(), date);
+		List<CollectionOrder> collectionOrderlist = CollectionOrder.todayList(myApp.getUserId(), myApp.getShopId(), date);
 		if (CollectionUtils.isNotEmpty(expenseslist) && CollectionUtils.isNotEmpty(balanceOrderlist)
 				&& CollectionUtils.isNotEmpty(collectionOrderlist)) {
 			return true;

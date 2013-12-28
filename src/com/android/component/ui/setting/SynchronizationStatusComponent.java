@@ -50,7 +50,7 @@ public class SynchronizationStatusComponent {
 	@AfterViews
 	public void initSynchronizationStatus() {
 		/* 判断今天是否已经是最新数据 */
-		if (dailypaySubmitComponent.isComplete(today)) {
+		if (dailypaySubmitComponent.isCompleted(today)) {
 			synchronize.setText(stringResComponent.syncSucc);
 			flag = true;
 		} else {
