@@ -75,6 +75,18 @@ public class QueryAllDBAComponent {
 	@ViewById(R.id.buttonSearchID)
 	Button buttonSearchID;
 	
+	@Bean
+	public MenuComponent menuComponent;
+
+	/**
+	 * @TODO: 最后放到基类里面去
+	 * 
+	 */
+	@Click(R.id.menu_btn)
+	public void menu() {
+		menuComponent.initPopupWindow();
+	}
+	
 	
 	@AfterViews
 	void init() {
