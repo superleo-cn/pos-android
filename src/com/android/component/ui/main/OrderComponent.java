@@ -15,6 +15,7 @@ import android.util.Log;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.R;
@@ -40,6 +41,7 @@ import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.ItemClick;
+import com.googlecode.androidannotations.annotations.LongClick;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
@@ -115,7 +117,6 @@ public class OrderComponent {
 
 	// 打印框
 	Dialog dialg;
-
 	/**
 	 * 初始化订单组件
 	 * 
@@ -130,6 +131,7 @@ public class OrderComponent {
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
 		this.selectAdapter = new SelectListAdapter(context, selectDataList);
+		this.selectAdapter.setComponent(OrderComponent.this);
 		this.selectList.setAdapter(selectAdapter);
 		// 初始化订单价钱
 		sbuff = new StringBuffer();
@@ -178,6 +180,7 @@ public class OrderComponent {
 				SelectFoodBean remove_bean = selectDataList.get(i);
 				if (StringUtils.equalsIgnoreCase(remove_bean.getFood_dayin_code(), bean.sn)) {
 					selectDataList.remove(i);
+					selectAdapter.setClassList(selectDataList);
 					selectAdapter.notifyDataSetChanged();
 					doCalculation();
 					break;
@@ -185,7 +188,16 @@ public class OrderComponent {
 			}
 		}
 	}
-
+	public void remove2(int index) {
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			Log.e("item", index + "");
+					selectDataList.remove(index);
+					selectAdapter.setClassList(selectDataList);
+					selectAdapter.notifyDataSetChanged();
+					doCalculation();
+		}
+	}
+	
 	/**
 	 * 打包操作
 	 */

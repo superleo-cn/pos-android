@@ -3,30 +3,50 @@
 import java.text.DecimalFormat;
 import java.util.List;
 
-import com.android.R;
-import com.android.adapter.GiditNumberAdapter.ViewHolder;
-import com.android.bean.SelectFoodBean;
-
 import android.R.color;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.android.R;
+import com.android.bean.SelectFoodBean;
+import com.android.component.ui.main.OrderComponent;
 
 public class SelectListAdapter extends BaseAdapter {
 
 	private Context context;
 	private LayoutInflater inflater;
 	private List<SelectFoodBean> classList;
+	private OrderComponent component;
+	private float x, ux;
 
 	public SelectListAdapter(Context context, List<SelectFoodBean> list) {
 		this.context = context;
 		this.classList = list;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
+	public List<SelectFoodBean> getClassList() {
+		return classList;
+	}
+
+	public void setClassList(List<SelectFoodBean> classList) {
+		this.classList = classList;
+	}
+
+	public OrderComponent getComponent() {
+		return component;
+	}
+
+	public void setComponent(OrderComponent component) {
+		this.component = component;
 	}
 
 	public int getCount() {
@@ -44,7 +64,7 @@ public class SelectListAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		ViewHolder viewHolder;
 		SelectFoodBean bean;
@@ -68,6 +88,37 @@ public class SelectListAdapter extends BaseAdapter {
 		viewHolder.food_name.setText(bean.getFood_name());
 		viewHolder.food_num.setText("x" + bean.getFood_num());
 		viewHolder.food_price.setText("S$" + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
+
+		convertView.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				classList.clear();
+				component.doCalculation();
+				notifyDataSetChanged();
+				return false;
+			}
+		});
+
+		// 为每一个view项设置触控监听
+		convertView.setOnTouchListener(new OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				// 当按下时处理
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					// 获取按下时的x轴坐标
+					x = event.getX();
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
+					// 获取松开时的x坐标
+					ux = event.getX();
+					// 判断当前项中按钮控件不为空时
+					if (Math.abs(x - ux) > 20) {
+						component.remove2(position);
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+
 		return convertView;
 	}
 
