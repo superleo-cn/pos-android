@@ -185,6 +185,14 @@ public class OrderComponent {
 			}
 		}
 	}
+	public void remove2(int index) {
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			Log.e("item", index + "");
+					selectDataList.remove(index);
+					selectAdapter.notifyDataSetChanged();
+					doCalculation();
+		}
+	}
 
 	/**
 	 * 打包操作
