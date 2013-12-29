@@ -134,35 +134,36 @@ public class DailypaySubmitComponent {
 	/* 提交每日营业额 */
 	public void postDailyMoney(final String searchDate) {
 		try {
+			Map<String, String> params = new HashMap<String, String>();
 			List<BalanceOrder> datas = BalanceOrder.todayStatusList(searchDate, Constants.DB_FAILED);
 			if (CollectionUtils.isNotEmpty(datas)) {
-				for (BalanceOrder balance : datas) {
-					Map<String, String> params = new HashMap<String, String>();
-					params.put("dailySummary.androidId", String.valueOf(balance.getId()));
-					params.put("dailySummary.shop.id", balance.shopId);
-					params.put("dailySummary.user.id", balance.userId);
-					params.put("dailySummary.aOpenBalance", balance.aOpenBalance);
-					params.put("dailySummary.bExpenses", balance.bExpenses);
-					params.put("dailySummary.cCashCollected", balance.cCashCollected);
-					params.put("dailySummary.dDailyTurnover", balance.dDailyTurnover);
-					params.put("dailySummary.eNextOpenBalance", balance.eNextOpenBalance);
-					params.put("dailySummary.fBringBackCash", balance.fBringBackCash);
-					params.put("dailySummary.gTotalBalance", balance.gTotalBalance);
-					params.put("dailySummary.middleCalculateTime", balance.middleCalculateTime);
-					params.put("dailySummary.middleCalculateBalance", balance.middleCalculateBalance);
-					params.put("dailySummary.calculateTime", balance.calculateTime);
-					params.put("dailySummary.courier", balance.courier);
-					params.put("dailySummary.others", balance.others);
-					params.put("dailySummary.date", balance.date);
+				for (int i = 0; i < datas.size(); i++) {
+					BalanceOrder balance = datas.get(i);
+					params.put("dailySummaries[" + i + "].androidId", String.valueOf(balance.getId()));
+					params.put("dailySummaries[" + i + "].shop.id", balance.shopId);
+					params.put("dailySummaries[" + i + "].user.id", balance.userId);
+					params.put("dailySummaries[" + i + "].aOpenBalance", balance.aOpenBalance);
+					params.put("dailySummaries[" + i + "].bExpenses", balance.bExpenses);
+					params.put("dailySummaries[" + i + "].cCashCollected", balance.cCashCollected);
+					params.put("dailySummaries[" + i + "].dDailyTurnover", balance.dDailyTurnover);
+					params.put("dailySummaries[" + i + "].eNextOpenBalance", balance.eNextOpenBalance);
+					params.put("dailySummaries[" + i + "].fBringBackCash", balance.fBringBackCash);
+					params.put("dailySummaries[" + i + "].gTotalBalance", balance.gTotalBalance);
+					params.put("dailySummaries[" + i + "].middleCalculateTime", balance.middleCalculateTime);
+					params.put("dailySummaries[" + i + "].middleCalculateBalance", balance.middleCalculateBalance);
+					params.put("dailySummaries[" + i + "].calculateTime", balance.calculateTime);
+					params.put("dailySummaries[" + i + "].courier", balance.courier);
+					params.put("dailySummaries[" + i + "].others", balance.others);
+					params.put("dailySummaries[" + i + "].date", balance.date);
+				}
 
-					// 异步请求数据
-					StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_DAILY_MONEY, params);
-					if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
-						List<Long> ids = mapping.datas;
-						if (CollectionUtils.isNotEmpty(ids)) {
-							for (Long id : ids) {
-								BalanceOrder.updateByStatus(id);
-							}
+				// 异步请求数据
+				StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_DAILY_MONEY, params);
+				if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
+					List<Long> ids = mapping.datas;
+					if (CollectionUtils.isNotEmpty(ids)) {
+						for (Long id : ids) {
+							BalanceOrder.updateByStatus(id);
 						}
 					}
 				}

@@ -191,8 +191,8 @@ public class OrderComponent {
 	 */
 	@Click(R.id.r_lay_id_take_package)
 	public void takePackage() {
+		setImageStatus(take_package, foc);
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(take_package, foc);
 			doCalculation();
 		}
 	}
@@ -202,8 +202,8 @@ public class OrderComponent {
 	 */
 	@Click(R.id.r_lay_id_discount)
 	public void discount() {
+		setImageStatus(discount, foc);
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(discount, foc);
 			doCalculation();
 		}
 	}
@@ -213,8 +213,8 @@ public class OrderComponent {
 	 */
 	@Click(R.id.r_lay_id_foc)
 	public void foc() {
+		setImageStatus(foc, discount, take_package);
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(foc, discount, take_package);
 			doCalculation();
 		}
 	}
@@ -318,49 +318,47 @@ public class OrderComponent {
 	 */
 	public void doCalculation() {
 		double showTotalPrice = 0;
-		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			if (is_foc) {
-				// 免费的话，全部清空
-				showTotalPrice = 0;
-				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-				for (SelectFoodBean bean : selectDataList) {
-					bean.setDabao_price(0);
-					bean.setDazhe_price(0);
-				}
-				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-				calculatorComponent.compute_surplus();
-			} else {
-				for (SelectFoodBean bean : selectDataList) {
-					// 计算总价
-					showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
+		if (is_foc) {
+			// 免费的话，全部清空
+			showTotalPrice = 0;
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			for (SelectFoodBean bean : selectDataList) {
+				bean.setDabao_price(0);
+				bean.setDazhe_price(0);
+			}
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			calculatorComponent.compute_surplus();
+		} else {
+			for (SelectFoodBean bean : selectDataList) {
+				// 计算总价
+				showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
 
-					// 计算打包打折
-					int num = Integer.parseInt(bean.getFood_num());
-					double dabao = num * package_money;
-					double dazhe = num * save_discount_price;
-					String type = bean.getFood_type();
-					if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
-						if (!is_discount && is_takePackage) {
-							showTotalPrice += dabao;
-							dazhe = 0;
-						} else if (is_discount && !is_takePackage) {
-							showTotalPrice -= dazhe;
-							dabao = 0;
-						} else if (!is_discount && !is_takePackage) {
-							dabao = 0;
-							dazhe = 0;
-						} else if (is_discount && is_takePackage) {
-							showTotalPrice = showTotalPrice + dabao - dazhe;
-						}
-						bean.setDabao_price(dabao);
-						bean.setDazhe_price(dazhe);
+				// 计算打包打折
+				int num = Integer.parseInt(bean.getFood_num());
+				double dabao = num * package_money;
+				double dazhe = num * save_discount_price;
+				String type = bean.getFood_type();
+				if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
+					if (!is_discount && is_takePackage) {
+						showTotalPrice += dabao;
+						dazhe = 0;
+					} else if (is_discount && !is_takePackage) {
+						showTotalPrice -= dazhe;
+						dabao = 0;
+					} else if (!is_discount && !is_takePackage) {
+						dabao = 0;
+						dazhe = 0;
+					} else if (is_discount && is_takePackage) {
+						showTotalPrice = showTotalPrice + dabao - dazhe;
 					}
+					bean.setDabao_price(dabao);
+					bean.setDazhe_price(dazhe);
+				}
 
-				}
-				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-				if (Double.parseDouble(gathering.getText().toString()) > 0) {
-					calculatorComponent.compute_surplus();
-				}
+			}
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			if (Double.parseDouble(gathering.getText().toString()) > 0) {
+				calculatorComponent.compute_surplus();
 			}
 		}
 
