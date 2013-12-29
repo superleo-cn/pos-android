@@ -2,6 +2,7 @@ package com.android.activity;
 
 import org.apache.commons.lang.StringUtils;
 
+import android.content.Intent;
 import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.android.component.AppUpdateComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.ui.login.LoginComponent;
+import com.android.service.MyService_;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
@@ -60,8 +62,10 @@ public class LoginActivity extends AbstractActivity {
 	@AfterViews
 	public void init() {
 		// 启动相关组件
+		startService(new Intent(this, MyService_.class));
 		languageComponent.readLanguage();
 		appUpdateComponent.updateApp();
+
 	}
 
 	void login(String userType) {
