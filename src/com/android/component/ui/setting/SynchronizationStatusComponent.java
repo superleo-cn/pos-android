@@ -66,6 +66,7 @@ public class SynchronizationStatusComponent {
 			toastComponent.show(stringResComponent.noNeedSync);
 		} else {
 			dailypaySubmitComponent.submitAll(today);
+			toastComponent.show(stringResComponent.syncSucc);
 		}
 	}
 

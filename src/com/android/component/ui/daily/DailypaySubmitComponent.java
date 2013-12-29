@@ -297,10 +297,10 @@ public class DailypaySubmitComponent {
 		List<ExpensesOrder> expenseslist = ExpensesOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_FAILED);
 		List<BalanceOrder> balanceOrderlist = BalanceOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_FAILED);
 		List<CollectionOrder> collectionOrderlist = CollectionOrder.todayCompleted(myApp.getShopId(), date, Constants.DB_FAILED);
-		if (CollectionUtils.isNotEmpty(expenseslist) && CollectionUtils.isNotEmpty(balanceOrderlist)
-				&& CollectionUtils.isNotEmpty(collectionOrderlist)) {
-			return true;
+		if (CollectionUtils.isNotEmpty(expenseslist) || CollectionUtils.isNotEmpty(balanceOrderlist)
+				|| CollectionUtils.isNotEmpty(collectionOrderlist)) {
+			return false;
 		}
-		return false;
+		return true;
 	}
 }
