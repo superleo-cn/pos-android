@@ -130,6 +130,7 @@ public class OrderComponent {
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
 		this.selectAdapter = new SelectListAdapter(context, selectDataList);
+		selectAdapter.setComponent(OrderComponent.this);
 		this.selectList.setAdapter(selectAdapter);
 		// 初始化订单价钱
 		sbuff = new StringBuffer();
