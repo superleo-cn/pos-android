@@ -113,7 +113,7 @@ public class SelectListAdapter extends BaseAdapter {
 					ux = event.getX();
 					// 判断当前项中按钮控件不为空时
 					if (Math.abs(x - ux) > 20) {
-						component.remove2(position);
+//						component.remove2(position);
 						return true;
 					}
 				}
