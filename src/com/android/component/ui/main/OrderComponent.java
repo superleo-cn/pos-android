@@ -29,6 +29,7 @@ import com.android.common.MyNumberUtils;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
+import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.domain.Food;
 import com.android.domain.FoodOrder;
@@ -94,6 +95,9 @@ public class OrderComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
+
+	@Bean
+	WifiComponent wifiComponent;
 
 	FoodComponent foodComponent;
 
@@ -424,15 +428,17 @@ public class OrderComponent {
 			System.out.println("transactions[" + i + "].orderDate-->" + foodOrder.date);
 		}
 
-		// 异步请求数据
-		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
-		if (mapping.code == Constants.STATUS_SUCCESS) {
-			FoodOrder.updateAllByStatus();
-		} else if (mapping.code == Constants.STATUS_FAILED) {
-			List<Long> ids = mapping.datas;
-			if (CollectionUtils.isNotEmpty(ids)) {
-				for (Long id : ids) {
-					FoodOrder.updateByStatus(id);
+		if (wifiComponent.isConnected()) {
+			// 异步请求数据
+			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
+			if (mapping.code == Constants.STATUS_SUCCESS) {
+				FoodOrder.updateAllByStatus();
+			} else if (mapping.code == Constants.STATUS_FAILED) {
+				List<Long> ids = mapping.datas;
+				if (CollectionUtils.isNotEmpty(ids)) {
+					for (Long id : ids) {
+						FoodOrder.updateByStatus(id);
+					}
 				}
 			}
 		}

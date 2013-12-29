@@ -35,6 +35,7 @@ import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
+import com.android.component.WifiComponent;
 import com.android.component.ui.login.LoginComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.domain.CollectionOrder;
@@ -76,6 +77,9 @@ public class DailyPayComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
+
+	@Bean
+	WifiComponent wifiComponent;
 
 	@ViewById(R.id.scrollviewID)
 	ScrollView scrollviewID;
@@ -258,8 +262,10 @@ public class DailyPayComponent {
 		dailypaysubmitComponent.save(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num, total,
 				noon_time, noon_turnover, noon_time, other, send_person);
 
-		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-		dailypaysubmitComponent.submitAll(date);
+		if (wifiComponent.isConnected()) {
+			String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
+			dailypaysubmitComponent.submitAll(date);
+		}
 
 		// 设置成只读操作并且清空
 		setReadonly(num_list, R.id.num_id_price);

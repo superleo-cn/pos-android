@@ -10,6 +10,7 @@ import com.android.common.Constants;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
+import com.android.component.WifiComponent;
 import com.android.dialog.MyProcessDialog;
 import com.android.mapping.FoodMapping;
 import com.googlecode.androidannotations.annotations.AfterInject;
@@ -41,6 +42,9 @@ public class FoodSynchronizationComponent {
 	@RootContext
 	Context context;
 
+	@Bean
+	WifiComponent wifiComponent;
+
 	MyProcessDialog dialog;
 
 	@AfterInject
@@ -51,12 +55,17 @@ public class FoodSynchronizationComponent {
 	// 同步菜单
 	@Click(R.id.synchronization_menu_brn)
 	void foodSync() {
-		String shopId = myPrefs.shopId().get();
-		if (StringUtils.isEmpty(shopId) || StringUtils.equals(shopId, "0")) {
-			toastComponent.show(stringResComponent.settingTanweiId);
-			return;
+		if (wifiComponent.isConnected()) {
+			String shopId = myPrefs.shopId().get();
+			if (StringUtils.isEmpty(shopId) || StringUtils.equals(shopId, "0")) {
+				toastComponent.show(stringResComponent.settingTanweiId);
+				return;
+			}
+			new FoodSynchronizationTask().execute(shopId);
+		} else {
+			toastComponent.show(stringResComponent.wifiErr);
 		}
-		new FoodSynchronizationTask().execute(shopId);
+
 	}
 
 	private class FoodSynchronizationTask extends AsyncTask<String, Void, FoodMapping> {

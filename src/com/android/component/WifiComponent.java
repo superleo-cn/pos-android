@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.android.common.SystemHelper;
 import com.googlecode.androidannotations.annotations.EBean;
+import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
 
 /**
@@ -16,6 +17,9 @@ import com.googlecode.androidannotations.api.Scope;
  */
 @EBean(scope = Scope.Singleton)
 public class WifiComponent {
+
+	@RootContext
+	Context context;
 
 	public String getIPAddress() {
 		try {
@@ -28,6 +32,10 @@ public class WifiComponent {
 
 	public String getMacAddress(Context context) {
 		return SystemHelper.getLocalMacAddress(context) == null ? "0" : SystemHelper.getLocalMacAddress(context);
+	}
+
+	public boolean isConnected() {
+		return SystemHelper.isConnected(context);
 	}
 
 }

@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 
 import com.android.common.Constants;
 import com.android.common.MyApp;
-import com.android.common.SystemHelper;
 import com.android.component.ActivityComponent;
 import com.android.component.AuditComponent;
 import com.android.component.SharedPreferencesComponent_;
@@ -117,8 +116,7 @@ public class LoginComponent {
 
 			}
 		}
-		boolean wifi_flag = SystemHelper.isConnected(activity);
-		if (wifi_flag) {
+		if (wifiComponent.isConnected()) {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("user.username", username);
 			params.put("user.password", password);
