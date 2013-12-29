@@ -108,6 +108,7 @@ public class OrderComponent {
 
 	private SelectListAdapter selectAdapter;
 
+	private StringBuffer sb;
 	// 输入的支付总钱
 	private StringBuffer sbuff;
 	// 显示要支付的总价钱
@@ -313,6 +314,21 @@ public class OrderComponent {
 			toastComponent.show(stringResComponent.errPrice);
 		}
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			/**********测试打印 StringBuffer *************/
+			sb = new StringBuffer();
+			String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
+			sb.append(time + "\n\n");
+			for (int i = 0; i < selectDataList.size(); i++) {
+				SelectFoodBean bean = selectDataList.get(i);
+				String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+				String qty = "X" + bean.getFood_num() + "\n\n";
+				if (is_takePackage) {
+					foodName += "(包)";
+				}
+				sb.append(foodName + "     " + qty);
+			}
+			/**********测试打印 结束 *************/
+			
 			dialg.show();
 		}
 
@@ -460,18 +476,18 @@ public class OrderComponent {
 			@Override
 			public void doClick() {
 				// 先打印数据，不耽误正常使用----------------------------
-				StringBuffer sb = new StringBuffer();
-				String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
-				sb.append(time + "\n\n");
-				for (int i = 0; i < selectDataList.size(); i++) {
-					SelectFoodBean bean = selectDataList.get(i);
-					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-					String qty = "X" + bean.getFood_num() + "\n\n";
-					if (is_takePackage) {
-						foodName += "(包)";
-					}
-					sb.append(foodName + "     " + qty);
-				}
+//				StringBuffer sb = new StringBuffer();
+//				String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
+//				sb.append(time + "\n\n");
+//				for (int i = 0; i < selectDataList.size(); i++) {
+//					SelectFoodBean bean = selectDataList.get(i);
+//					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+//					String qty = "X" + bean.getFood_num() + "\n\n";
+//					if (is_takePackage) {
+//						foodName += "(包)";
+//					}
+//					sb.append(foodName + "     " + qty);
+//				}
 				androidPrinter.setIp(sharedPrefs.printIp().get());
 				androidPrinter.print(sb.toString());
 				// 保存数据------------------------------
