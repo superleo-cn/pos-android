@@ -55,7 +55,7 @@ public class AndroidPrinter {
 		if (connFlag == 0) {
 			connect();
 			try {
-				Thread.sleep(3000);
+				Thread.sleep(1500);
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer", "try to re-connect printer and print message: " + message);
 			}
@@ -118,6 +118,12 @@ public class AndroidPrinter {
 			wfComm.sendMsg(message, "gbk");
 			Log.d("WIFI Printer", "Print message is: " + message);
 
+			// drawer
+			byte[] tail = new byte[3];
+			tail[0] = 0x0A;
+			tail[1] = 0x0D;
+			wfComm.sndByte(tail);
+						
 			byte[] bytecmd = new byte[5];
 			bytecmd[0] = 0x1B;
 			bytecmd[1] = 0x70;
@@ -134,11 +140,7 @@ public class AndroidPrinter {
 			bits[3] = 90;
 			wfComm.sndByte(bits);
 
-			// dawer
-			byte[] tail = new byte[3];
-			tail[0] = 0x0A;
-			tail[1] = 0x0D;
-			wfComm.sndByte(tail);
+			
 		}
 	}
 
