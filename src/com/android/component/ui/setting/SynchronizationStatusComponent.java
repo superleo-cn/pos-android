@@ -78,14 +78,14 @@ public class SynchronizationStatusComponent {
 	// 同步菜单
 	@Click(R.id.btu_setting_all_tong)
 	void sync() {
-		if (wifiComponent.isConnected()) {
-			if (flag) {
-				toastComponent.show(stringResComponent.noNeedSync);
-			} else {
-				new SynchronizationTask().execute(today);
-			}
+		if (flag) {
+			toastComponent.show(stringResComponent.noNeedSync);
 		} else {
-			toastComponent.show(stringResComponent.wifiErr);
+			if (wifiComponent.isConnected()) {
+				new SynchronizationTask().execute(today);
+			} else {
+				toastComponent.show(stringResComponent.wifiErr);
+			}
 		}
 	}
 
