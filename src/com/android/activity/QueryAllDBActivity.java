@@ -1,7 +1,5 @@
-/**
- * 
- */
 package com.android.activity;
+
 import android.app.Activity;
 
 import com.android.R;
@@ -13,15 +11,15 @@ import com.googlecode.androidannotations.annotations.NoTitle;
 
 /**
  * @author jingang
- *
+ * 
  */
-//不需要标题
+// 不需要标题
 @NoTitle
-//全屏显示
+// 全屏显示
 @Fullscreen
-//绑定登录的layout
+// 绑定登录的layout
 @EActivity(R.layout.query_all_db)
-public class QueryAllDBActivity extends Activity{
+public class QueryAllDBActivity extends Activity {
 	@Bean
 	QueryAllDBAComponent queryAllDBAComponent;
 }

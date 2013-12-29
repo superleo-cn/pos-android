@@ -52,7 +52,7 @@
             android:name="com.android.activity.SettingActivity_"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
-        <service android:name=".service.MyService"></service>
+        <service android:name=".service.MyService_"></service>
     </application>
 
 </manifest>

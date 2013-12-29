@@ -98,4 +98,9 @@ public class StringResComponent {
 	@StringRes(R.string.sync_err)
 	public String syncErr;
 
+	@StringRes(R.string.all_sync_err)
+	public String allSyncErr;
+
+	@StringRes(R.string.all_sync_succ)
+	public String allSyncSucc;
 }

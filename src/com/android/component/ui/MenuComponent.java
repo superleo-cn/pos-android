@@ -56,8 +56,8 @@ public class MenuComponent {
 	@ViewById(R.id.login_name)
 	TextView login_name; // 顶部菜单栏显示的用户名字
 
-	@ViewById(R.id.shop_name1234)
-	TextView shop_name1234; // 顶部菜单栏显示的店的名称
+	@ViewById(R.id.shop_name)
+	TextView shop_name; // 顶部菜单栏显示的店的名称
 
 	@ViewById(R.id.textDailyPay)
 	TextView textDailyPay;
@@ -82,7 +82,7 @@ public class MenuComponent {
 	@AfterViews
 	public void initMenu() {
 		login_name.setText(stringResComponent.mainTitle + " " + myApp.getUsername() + ",");
-		shop_name1234.setText(myApp.getShopName() + "-" + myApp.getShopCode());
+		shop_name.setText(myApp.getShopName() + "-" + myApp.getShopCode());
 	}
 
 	/**

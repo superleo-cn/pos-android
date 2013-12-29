@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.os.StrictMode;
 
 import com.android.common.MyApp;
-import com.android.component.AuditComponent;
 import com.android.component.SharedPreferencesComponent_;
-import com.android.component.ui.login.LoginComponent;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -18,12 +15,6 @@ public abstract class AbstractActivity extends Activity {
 
 	@Pref
 	public SharedPreferencesComponent_ sharedPrefs;
-
-	@Bean
-	AuditComponent auditComponent;
-
-	@Bean
-	LoginComponent loginComponent;
 
 	@App
 	MyApp myApp;

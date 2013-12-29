@@ -32,6 +32,7 @@ import com.android.common.MyNumberUtils;
 import com.android.common.MyTextUtils;
 import com.android.component.ActivityComponent;
 import com.android.component.KeyboardComponent;
+import com.android.component.LockComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
@@ -269,8 +270,13 @@ public class DailyPayComponent {
 				noon_time, noon_turnover, noon_time, other, send_person);
 
 		if (wifiComponent.isConnected()) {
-			String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-			dailypaysubmitComponent.submitAll(date);
+			LockComponent.LOCKER.lock();
+			try {
+				String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
+				dailypaysubmitComponent.submitAll(date);
+			} finally {
+				LockComponent.LOCKER.unlock();
+			}
 		}
 	}
 

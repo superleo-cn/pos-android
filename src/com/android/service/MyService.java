@@ -3,71 +3,101 @@
  */
 package com.android.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Service;
-import android.app.WallpaperManager;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
+
+import com.android.common.DateUtils;
+import com.android.component.SharedPreferencesComponent_;
+import com.android.component.StringResComponent;
+import com.android.component.ToastComponent;
+import com.android.component.WifiComponent;
+import com.android.component.ui.daily.DailypaySubmitComponent;
+import com.android.component.ui.main.OrderComponent;
+import com.googlecode.androidannotations.annotations.Bean;
+import com.googlecode.androidannotations.annotations.EService;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
  * @author Administrator
  * 
  */
+
+@EService
 public class MyService extends Service {
-	WallpaperManager wManager;
-	private String search_date;
+
+	@Pref
+	SharedPreferencesComponent_ myPrefs;
+
+	@Bean
+	DailypaySubmitComponent dailypaySubmitComponent;
+
+	@Bean
+	OrderComponent orderComponent;
+
+	@Bean
+	WifiComponent wifiComponent;
+
+	@Bean
+	ToastComponent toastComponent;
+
+	@Bean
+	StringResComponent stringResComponent;
+
+	// run on another Thread to avoid crash
+	private Handler mHandler = new Handler();
+	// timer handling
+	private Timer mTimer = null;
 
 	@Override
-	public void onStart(Intent intent, int startId) {
-		// new UpdateOperation().execute("");
-		super.onStart(intent, startId);
-	}
-
-	private class UpdateOperation extends AsyncTask<String, Void, Integer> {
-
-		@Override
-		protected Integer doInBackground(String... objs) {
-			/** 判断今天是否是最新的 */
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			String date = df.format(new Date());
-			MyService.this.search_date = date;
-
-			// if (!isLatestData()) {
-			// post_diancai();
-			// post_payList();
-			// post_numList();
-			// post_dailyMoney();
-			// }
-			System.out.println("闹钟执行中。。。");
-			return 1;
-		}
-
-		@Override
-		protected void onPostExecute(Integer result) {
-		}
-
-		@Override
-		protected void onPreExecute() {
-		}
-
-		@Override
-		protected void onProgressUpdate(Void... values) {
-		}
+	public IBinder onBind(Intent intent) {
+		return null;
 	}
 
 	@Override
 	public void onCreate() {
-		super.onCreate();
-		// 初始化WallpaperManager
-		wManager = WallpaperManager.getInstance(MyService.this);
+		// cancel if already existed
+		if (mTimer != null) {
+			mTimer.cancel();
+		} else {
+			// recreate new
+			mTimer = new Timer();
+		}
+		// schedule task
+		mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, myPrefs.time().get());
 	}
 
-	@Override
-	public IBinder onBind(Intent arg0) {
-		return null;
-	}
+	class TimeDisplayTimerTask extends TimerTask {
 
+		@Override
+		public void run() {
+			// run on another thread
+			mHandler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					// display toast
+					if (wifiComponent.isConnected()) {
+						try {
+							String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
+							dailypaySubmitComponent.submitAll(date);
+							orderComponent.submitAll();
+							toastComponent.show(stringResComponent.allSyncSucc);
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					} else {
+						toastComponent.show(stringResComponent.allSyncErr);
+					}
+				}
+
+			});
+		}
+
+	}
 }

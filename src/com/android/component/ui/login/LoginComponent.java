@@ -158,7 +158,7 @@ public class LoginComponent {
 				user = getDbUser(remoteUser);
 			}
 			setLoginInfo(user);
-			auditComponent.logAudit(user, "Login");
+			auditComponent.logAudit(user, Constants.LOGIN);
 			// 启动主窗口
 			activityComponent.startMain();
 		}
