@@ -399,36 +399,36 @@ public class OrderComponent {
 	// 同步到服务器上去
 	@Background
 	void syncToServer() {
-		// 准备发送数据
-		Map<String, String> params = new HashMap<String, String>();
-		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
-		System.out.println("-->" + datas.size());
-		for (int i = 0; i < datas.size(); i++) {
-			FoodOrder foodOrder = datas.get(i);
-			System.out.println("f_order.getFood_flag()-->" + foodOrder.status);
-			params.put("transactions[" + i + "].androidId", String.valueOf(foodOrder.getId()));
-			System.out.println("transactions[" + i + "].androidId-->" + foodOrder.getId());
-			params.put("transactions[" + i + "].user.id", foodOrder.userId);
-			System.out.println("transactions[" + i + "].user.id-->" + foodOrder.userId);
-			params.put("transactions[" + i + "].shop.id", foodOrder.shopId);
-			System.out.println("transactions[" + i + "].shop.id-->" + foodOrder.shopId);
-			params.put("transactions[" + i + "].quantity", foodOrder.quantity);
-			System.out.println("transactions[" + i + "].quantity-->" + foodOrder.quantity);
-			params.put("transactions[" + i + "].food.id", foodOrder.foodId);
-			System.out.println("transactions[" + i + "].food.id-->" + foodOrder.foodId);
-			params.put("transactions[" + i + "].totalDiscount", foodOrder.discount);
-			System.out.println("transactions[" + i + "].totalDiscount-->" + foodOrder.discount);
-			params.put("transactions[" + i + "].totalRetailPrice", String.valueOf(foodOrder.retailPrice));
-			System.out.println("transactions[" + i + "].totalRetailPrice-->" + foodOrder.retailPrice);
-			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
-			System.out.println("transactions[" + i + "].totalPackage-->" + foodOrder.totalPackage);
-			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
-			System.out.println("transactions[" + i + "].freeOfCharge-->" + foodOrder.foc);
-			params.put("transactions[" + i + "].orderDate", foodOrder.date);
-			System.out.println("transactions[" + i + "].orderDate-->" + foodOrder.date);
-		}
-
 		if (wifiComponent.isConnected()) {
+			// 准备发送数据
+			Map<String, String> params = new HashMap<String, String>();
+			List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
+			System.out.println("-->" + datas.size());
+			for (int i = 0; i < datas.size(); i++) {
+				FoodOrder foodOrder = datas.get(i);
+				System.out.println("f_order.getFood_flag()-->" + foodOrder.status);
+				params.put("transactions[" + i + "].androidId", String.valueOf(foodOrder.getId()));
+				System.out.println("transactions[" + i + "].androidId-->" + foodOrder.getId());
+				params.put("transactions[" + i + "].user.id", foodOrder.userId);
+				System.out.println("transactions[" + i + "].user.id-->" + foodOrder.userId);
+				params.put("transactions[" + i + "].shop.id", foodOrder.shopId);
+				System.out.println("transactions[" + i + "].shop.id-->" + foodOrder.shopId);
+				params.put("transactions[" + i + "].quantity", foodOrder.quantity);
+				System.out.println("transactions[" + i + "].quantity-->" + foodOrder.quantity);
+				params.put("transactions[" + i + "].food.id", foodOrder.foodId);
+				System.out.println("transactions[" + i + "].food.id-->" + foodOrder.foodId);
+				params.put("transactions[" + i + "].totalDiscount", foodOrder.discount);
+				System.out.println("transactions[" + i + "].totalDiscount-->" + foodOrder.discount);
+				params.put("transactions[" + i + "].totalRetailPrice", String.valueOf(foodOrder.retailPrice));
+				System.out.println("transactions[" + i + "].totalRetailPrice-->" + foodOrder.retailPrice);
+				params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
+				System.out.println("transactions[" + i + "].totalPackage-->" + foodOrder.totalPackage);
+				params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
+				System.out.println("transactions[" + i + "].freeOfCharge-->" + foodOrder.foc);
+				params.put("transactions[" + i + "].orderDate", foodOrder.date);
+				System.out.println("transactions[" + i + "].orderDate-->" + foodOrder.date);
+			}
+
 			// 异步请求数据
 			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
 			if (mapping.code == Constants.STATUS_SUCCESS) {

@@ -18,6 +18,9 @@ public class StringResComponent {
 	@StringRes(R.string.login_wait)
 	public String loginWait;
 
+	@StringRes(R.string.logout_wait)
+	public String logoutWait;
+
 	@StringRes(R.string.login_quanxian)
 	public String loginQuanxian;
 

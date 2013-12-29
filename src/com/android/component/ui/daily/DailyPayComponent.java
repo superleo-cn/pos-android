@@ -43,6 +43,7 @@ import com.android.domain.ExpensesOrder;
 import com.android.domain.FoodOrder;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -154,25 +155,18 @@ public class DailyPayComponent {
 
 	@AfterViews
 	public void initDailayPay() {
+
 		if (!isCompleted()) {
-			initData();
+			// 设置记录人和送款人
+			write_name.setText(myApp.getUsername());
+			send_person.setText(myApp.getUsername());
+
+			// 收银机
+			todayReceive = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId(),
+					DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
+			cash_register.setText(MyNumberUtils.numToStr(todayReceive));
+
 		}
-	}
-
-	@Touch(R.id.scrollviewID)
-	void scrollViewTouch(MotionEvent event) {
-		keyboardComponent.dismissKeyboard(scrollviewID);
-	}
-
-	public void initData() {
-		// 设置记录人和送款人
-		write_name.setText(myApp.getUsername());
-		send_person.setText(myApp.getUsername());
-
-		// 收银机
-		todayReceive = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId(),
-				DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
-		cash_register.setText(MyNumberUtils.numToStr(todayReceive));
 
 		// 加载支付款项
 		dailypaysubmitComponent.loadingExpenses(detail_classList, all_pay_price, detail_adapter, daily_list, handler);
@@ -182,6 +176,11 @@ public class DailyPayComponent {
 		dailypaysubmitComponent.loadingCollection(number_classList, number_adapter, num_list, all_num_price, num_count, take_all_price,
 				handler);
 
+	}
+
+	@Touch(R.id.scrollviewID)
+	void scrollViewTouch(MotionEvent event) {
+		keyboardComponent.dismissKeyboard(scrollviewID);
 	}
 
 	public boolean isCompleted() {
@@ -252,6 +251,13 @@ public class DailyPayComponent {
 	 * 存储本机并且提交
 	 */
 	public void storeAndSync() {
+		storeAndSyncBackend();
+		loginComponent.executeLogout(myApp.getUserId(), myApp.getShopId());
+		activityComponent.startLogin();
+	}
+
+	@Background
+	void storeAndSyncBackend() {
 		/* 提交每日支付金额 */
 		ExpensesOrder.saveExpenses(detail_classList, myApp);
 
@@ -266,7 +272,9 @@ public class DailyPayComponent {
 			String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 			dailypaysubmitComponent.submitAll(date);
 		}
+	}
 
+	void cleanInputs() {
 		// 设置成只读操作并且清空
 		setReadonly(num_list, R.id.num_id_price);
 		setReadonly(daily_list, R.id.text_id_price);
@@ -275,7 +283,6 @@ public class DailyPayComponent {
 		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
 				send_person, other, shop_money);
 
-		loginComponent.executeLogout(myApp.getUserId(), myApp.getShopId());
 	}
 
 	public void compute() {

@@ -20,7 +20,6 @@ import com.android.component.WifiComponent;
 import com.android.dialog.MyProcessDialog;
 import com.android.domain.User;
 import com.android.mapping.UserMapping;
-import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -67,11 +66,6 @@ public class LoginComponent {
 
 	MyProcessDialog dialog;
 
-	@AfterInject
-	public void initLogin() {
-		dialog = new MyProcessDialog(context, stringResComponent.loginWait);
-	}
-
 	/**
 	 * 登录操作
 	 * 
@@ -81,6 +75,7 @@ public class LoginComponent {
 	 *            密码
 	 */
 	public void executeLogin(String username, String password, String userType) {
+		dialog = new MyProcessDialog(context, stringResComponent.loginWait);
 		new Login().execute(username, password, userType);
 	}
 
@@ -93,6 +88,7 @@ public class LoginComponent {
 	 *            店铺ID
 	 */
 	public void executeLogout(String userId, String shopId) {
+		dialog = new MyProcessDialog(context, stringResComponent.logoutWait);
 		new Logout().execute(userId, shopId);
 	}
 
