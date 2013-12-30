@@ -18,6 +18,7 @@ public class MyDialog extends Dialog {
 	public Button dialog_yes;
 	public Button dialog_no;
 	public TextView dialog_message;
+	public TextView dialog_title;
 	public TextView textDialogAllMoenyID;
 	public TextView textDialogSearchMoenyID;
 	public LinearLayout linearlayoutID;
@@ -30,5 +31,6 @@ public class MyDialog extends Dialog {
 		textDialogSearchMoenyID = (TextView) findViewById(R.id.textDialogSearchMoenyID);
 		dialog_yes = (Button) findViewById(R.id.dialog_yes);
 		dialog_no = (Button) findViewById(R.id.dialog_no);
+		dialog_title  = (TextView) findViewById(R.id.dialog_title);
 	}
 }
