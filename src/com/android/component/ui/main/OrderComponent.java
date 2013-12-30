@@ -353,6 +353,7 @@ public class OrderComponent {
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					mydialog.dismiss();
 					androidPrinter.setIp(sharedPrefs.printIp().get());
 					androidPrinter.print(sb.toString());
 					// 保存数据------------------------------
