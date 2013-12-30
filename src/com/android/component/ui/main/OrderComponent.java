@@ -12,6 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,12 +28,11 @@ import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
-import com.android.component.LockComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
-import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
+import com.android.dialog.MyDialog;
 import com.android.domain.Food;
 import com.android.domain.FoodOrder;
 import com.android.mapping.StatusMapping;
@@ -97,9 +98,6 @@ public class OrderComponent {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
-	@Bean
-	WifiComponent wifiComponent;
-
 	FoodComponent foodComponent;
 
 	CalculatorComponent calculatorComponent;
@@ -108,7 +106,6 @@ public class OrderComponent {
 
 	private SelectListAdapter selectAdapter;
 
-	private StringBuffer sb;
 	// 输入的支付总钱
 	private StringBuffer sbuff;
 	// 显示要支付的总价钱
@@ -122,6 +119,8 @@ public class OrderComponent {
 	// 打印框
 	Dialog dialg;
 
+	private MyDialog mydialog;
+
 	/**
 	 * 初始化订单组件
 	 * 
@@ -132,10 +131,12 @@ public class OrderComponent {
 	public void initOrder() {
 		// 初始化打印对话框
 		dialg = buildPrintDialog();
+		mydialog = new MyDialog(context);
 
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
 		this.selectAdapter = new SelectListAdapter(context, selectDataList);
+		selectAdapter.setComponent(OrderComponent.this);
 		this.selectList.setAdapter(selectAdapter);
 		// 初始化订单价钱
 		sbuff = new StringBuffer();
@@ -192,13 +193,22 @@ public class OrderComponent {
 		}
 	}
 
+	public void remove2(int index) {
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			Log.e("item", index + "");
+			selectDataList.remove(index);
+			selectAdapter.notifyDataSetChanged();
+			doCalculation();
+		}
+	}
+
 	/**
 	 * 打包操作
 	 */
 	@Click(R.id.r_lay_id_take_package)
 	public void takePackage() {
-		setImageStatus(take_package, foc);
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(take_package, foc);
 			doCalculation();
 		}
 	}
@@ -208,8 +218,8 @@ public class OrderComponent {
 	 */
 	@Click(R.id.r_lay_id_discount)
 	public void discount() {
-		setImageStatus(discount, foc);
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(discount, foc);
 			doCalculation();
 		}
 	}
@@ -219,8 +229,8 @@ public class OrderComponent {
 	 */
 	@Click(R.id.r_lay_id_foc)
 	public void foc() {
-		setImageStatus(foc, discount, take_package);
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(foc, discount, take_package);
 			doCalculation();
 		}
 	}
@@ -314,21 +324,47 @@ public class OrderComponent {
 			toastComponent.show(stringResComponent.errPrice);
 		}
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			/********** 测试打印 StringBuffer *************/
-			sb = new StringBuffer();
-			String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
-			sb.append(time + "\n\n");
-			for (int i = 0; i < selectDataList.size(); i++) {
-				SelectFoodBean bean = selectDataList.get(i);
-				String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-				String qty = "X" + bean.getFood_num() + "\n\n";
-				if (is_takePackage) {
-					foodName += stringResComponent.foodPackage;
+			// dialg.show();
+			mydialog.show();
+			mydialog.dialog_message.setText(stringResComponent.openPrint);
+			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
+			mydialog.dialog_message.setVisibility(View.GONE);
+			mydialog.textDialogAllMoenyID.setText("总金额:S$");
+			mydialog.textDialogSearchMoenyID.setText("找零:S$");
+			mydialog.textDialogAllMoenyID.setTextSize(50);
+			mydialog.textDialogSearchMoenyID.setTextSize(50);
+			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// 先打印数据，不耽误正常使用----------------------------
+					StringBuffer sb = new StringBuffer();
+					String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
+					sb.append(time + "\n\n");
+					for (int i = 0; i < selectDataList.size(); i++) {
+						SelectFoodBean bean = selectDataList.get(i);
+						String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+						String qty = "X" + bean.getFood_num() + "\n\n";
+						if (is_takePackage) {
+							foodName += "(包)";
+						}
+						sb.append(foodName + "     " + qty);
+					}
+					androidPrinter.setIp(sharedPrefs.printIp().get());
+					androidPrinter.print(sb.toString());
+					// 保存数据------------------------------
+					storeOrders();
+					// 同步开始------------------------------
+					syncToServer();
+					// 清空数据------------------------------
+					clean();
 				}
-				sb.append(foodName + "     " + qty);
-			}
-			dialg.show();
-			/********** 测试打印 结束 *************/
+			});
+			mydialog.dialog_no.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mydialog.dismiss();
+				}
+			});
 		}
 
 	}
@@ -338,47 +374,49 @@ public class OrderComponent {
 	 */
 	public void doCalculation() {
 		double showTotalPrice = 0;
-		if (is_foc) {
-			// 免费的话，全部清空
-			showTotalPrice = 0;
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-			for (SelectFoodBean bean : selectDataList) {
-				bean.setDabao_price(0);
-				bean.setDazhe_price(0);
-			}
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-			calculatorComponent.compute_surplus();
-		} else {
-			for (SelectFoodBean bean : selectDataList) {
-				// 计算总价
-				showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
-
-				// 计算打包打折
-				int num = Integer.parseInt(bean.getFood_num());
-				double dabao = num * package_money;
-				double dazhe = num * save_discount_price;
-				String type = bean.getFood_type();
-				if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
-					if (!is_discount && is_takePackage) {
-						showTotalPrice += dabao;
-						dazhe = 0;
-					} else if (is_discount && !is_takePackage) {
-						showTotalPrice -= dazhe;
-						dabao = 0;
-					} else if (!is_discount && !is_takePackage) {
-						dabao = 0;
-						dazhe = 0;
-					} else if (is_discount && is_takePackage) {
-						showTotalPrice = showTotalPrice + dabao - dazhe;
-					}
-					bean.setDabao_price(dabao);
-					bean.setDazhe_price(dazhe);
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			if (is_foc) {
+				// 免费的话，全部清空
+				showTotalPrice = 0;
+				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+				for (SelectFoodBean bean : selectDataList) {
+					bean.setDabao_price(0);
+					bean.setDazhe_price(0);
 				}
-
-			}
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-			if (Double.parseDouble(gathering.getText().toString()) > 0) {
+				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 				calculatorComponent.compute_surplus();
+			} else {
+				for (SelectFoodBean bean : selectDataList) {
+					// 计算总价
+					showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
+
+					// 计算打包打折
+					int num = Integer.parseInt(bean.getFood_num());
+					double dabao = num * package_money;
+					double dazhe = num * save_discount_price;
+					String type = bean.getFood_type();
+					if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
+						if (!is_discount && is_takePackage) {
+							showTotalPrice += dabao;
+							dazhe = 0;
+						} else if (is_discount && !is_takePackage) {
+							showTotalPrice -= dazhe;
+							dabao = 0;
+						} else if (!is_discount && !is_takePackage) {
+							dabao = 0;
+							dazhe = 0;
+						} else if (is_discount && is_takePackage) {
+							showTotalPrice = showTotalPrice + dabao - dazhe;
+						}
+						bean.setDabao_price(dabao);
+						bean.setDazhe_price(dazhe);
+					}
+
+				}
+				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+				if (Double.parseDouble(gathering.getText().toString()) > 0) {
+					calculatorComponent.compute_surplus();
+				}
 			}
 		}
 
@@ -415,18 +453,7 @@ public class OrderComponent {
 	// 同步到服务器上去
 	@Background
 	void syncToServer() {
-		if (wifiComponent.isConnected()) {
-			LockComponent.LOCKER.lock();
-			try {
-				submitAll();
-			} finally {
-				LockComponent.LOCKER.unlock();
-			}
-		}
-	}
-
-	// 准备发送数据
-	public void submitAll() {
+		// 准备发送数据
 		Map<String, String> params = new HashMap<String, String>();
 		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
 		System.out.println("-->" + datas.size());
@@ -467,6 +494,7 @@ public class OrderComponent {
 				}
 			}
 		}
+
 	}
 
 	public Dialog buildPrintDialog() {
@@ -474,6 +502,19 @@ public class OrderComponent {
 
 			@Override
 			public void doClick() {
+				// 先打印数据，不耽误正常使用----------------------------
+				StringBuffer sb = new StringBuffer();
+				String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
+				sb.append(time + "\n\n");
+				for (int i = 0; i < selectDataList.size(); i++) {
+					SelectFoodBean bean = selectDataList.get(i);
+					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+					String qty = "X" + bean.getFood_num() + "\n\n";
+					if (is_takePackage) {
+						foodName += "(包)";
+					}
+					sb.append(foodName + "     " + qty);
+				}
 				androidPrinter.setIp(sharedPrefs.printIp().get());
 				androidPrinter.print(sb.toString());
 				// 保存数据------------------------------
