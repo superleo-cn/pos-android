@@ -74,7 +74,7 @@ public class MenuComponent {
 	@Bean
 	LoginComponent loginComponent;
 
-	private PopupWindow popupWindow;
+	private static PopupWindow popupWindow;
 
 	/**
 	 * 显示用户和点的名称

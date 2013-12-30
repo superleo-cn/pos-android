@@ -13,7 +13,7 @@
         android:gravity="center"
         android:text="@string/diancai_name"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/popu_daily"
@@ -25,7 +25,7 @@
         android:gravity="center"
         android:text="@string/daily_pay"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:visibility="gone" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:gravity="center"
         android:text="@string/setting"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:visibility="gone" />
 
     <TextView
@@ -49,9 +49,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dip"
         android:gravity="center"
-        android:text="查询数据"
+        android:text="@string/query_db"
         android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:visibility="gone" />
 
     <TextView
@@ -65,6 +65,6 @@
         android:gravity="center"
         android:text="@string/exitApp"
         android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textSize="24sp" />
 
 </RelativeLayout>

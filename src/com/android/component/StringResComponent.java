@@ -60,6 +60,9 @@ public class StringResComponent {
 
 	@StringRes(R.string.selec_not_food)
 	public String noFood;
+	
+	@StringRes(R.string.food_package)
+	public String foodPackage;
 
 	// 设置页面用到的
 	@StringRes(R.string.toast_setting_language_succ)
