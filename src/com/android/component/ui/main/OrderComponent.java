@@ -120,9 +120,6 @@ public class OrderComponent {
 	
 	private MyDialog mydialog;
 	
-	private Double allMoeny=0.00;
-	private Double searchMoeny=0.00;
-
 	/**
 	 * 初始化订单组件
 	 * 
@@ -321,9 +318,6 @@ public class OrderComponent {
 			Double show_surplus = show_gathering - result;
 			surplus.setText(MyNumberUtils.numToStr(show_surplus));
 			
-			allMoeny = result;
-			searchMoeny  =show_surplus;
-			
 
 		} catch (Exception e) {
 			toastComponent.show(stringResComponent.errPrice);
@@ -334,10 +328,10 @@ public class OrderComponent {
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
 			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
 			mydialog.dialog_message.setVisibility(View.GONE);
-			mydialog.textDialogAllMoenyID.setText("总金额:S$"+MyNumberUtils.numToStr(allMoeny));
-			mydialog.textDialogSearchMoenyID.setText("找零:S$"+MyNumberUtils.numToStr(searchMoeny));
-			mydialog.textDialogAllMoenyID.setTextSize(100);
-			mydialog.textDialogSearchMoenyID.setTextSize(100);
+			mydialog.textDialogAllMoenyID.setText("总金额:S$");
+			mydialog.textDialogSearchMoenyID.setText("找零:S$");
+			mydialog.textDialogAllMoenyID.setTextSize(50);
+			mydialog.textDialogSearchMoenyID.setTextSize(50);
 		}
 
 	}
