@@ -107,10 +107,10 @@ public class AndroidPrinter {
 	public void startPrint(String message) {
 		if (message.length() > 0) {
 			// drawer 先弹出抽屉
-			byte[] tail = new byte[3];
-			tail[0] = 0x0A;
-			tail[1] = 0x0D;
-			wfComm.sndByte(tail);
+//			byte[] tail = new byte[3];
+//			tail[0] = 0x0A;
+//			tail[1] = 0x0D;
+//			wfComm.sndByte(tail);
 
 			byte[] bytecmd = new byte[5];
 			bytecmd[0] = 0x1B;
