@@ -3,7 +3,6 @@ package com.android.domain;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.activeandroid.Model;

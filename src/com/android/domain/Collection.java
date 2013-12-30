@@ -3,8 +3,6 @@ package com.android.domain;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -12,7 +10,6 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
-import com.android.common.MyApp;
 import com.android.mapping.CollectionMapping.CollectionRemote;
 
 @Table(name = "tb_collection")
@@ -29,7 +26,6 @@ public class Collection extends Model {
 
 	@Column(name = "date")
 	public String date;
-
 
 	@Override
 	public String toString() {
@@ -71,6 +67,7 @@ public class Collection extends Model {
 	public static List<Collection> TodayStatusList(String time, String status) {
 		return new Select().from(Collection.class).where("date = ? and status=?", time, status).execute();
 	}
+
 	/**
 	 * 删除所有带回总数
 	 */
