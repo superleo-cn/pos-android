@@ -99,7 +99,7 @@ public final class Constants {
 	public static final int STATUS_FAILED = 0;
 	public static final int STATUS_SERVER_FAILED = -1;
 	public static final int STATUS_NETWORK_ERROR = -2;
-	
+
 	/** 登录状态状态 */
 	public static final String LOGIN = "login";
 	public static final String LOGOUT = "logout";
@@ -129,4 +129,6 @@ public final class Constants {
 	public static final int OPEN_WIFI = 1006;
 	public static final int CLOSE_WIFI = 1007;
 
+	/** 默认 */
+	public static final String DEFAUL_SQL_WHERE = " 1=1 ";
 }

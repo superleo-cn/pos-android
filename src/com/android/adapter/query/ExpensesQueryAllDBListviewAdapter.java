@@ -1,4 +1,4 @@
-package com.android.adapter;
+package com.android.adapter.query;
 
 import java.util.List;
 
@@ -10,23 +10,24 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.domain.BalanceOrder;
+import com.android.domain.ExpensesOrder;
+import com.android.domain.FoodOrder;
 
-public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
-	private List<BalanceOrder> data;
+public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
+	private List<ExpensesOrder> data;
 	private Context context;
 	private LayoutInflater inflater;
 
-	public BalanceQueryAllDBListviewAdapter(Context context) {
+	public ExpensesQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public List<BalanceOrder> getData() {
+	public List<ExpensesOrder> getData() {
 		return data;
 	}
 
-	public void setData(List<BalanceOrder> data) {
+	public void setData(List<ExpensesOrder> data) {
 		this.data = data;
 	}
 
@@ -56,8 +57,8 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		// BalanceOrder balance_order=data.get(position);
-		// viewHolder.text.setText(balance_order.toString());
+		// ExpensesOrder expenses_order=data.get(position);
+		// viewHolder.text.setText(expenses_order.toString());
 		return convertView;
 	}
 

@@ -1,4 +1,4 @@
-package com.android.adapter;
+package com.android.adapter.query;
 
 import java.util.List;
 
@@ -21,6 +21,12 @@ public class FoodQueryAllDBListviewAdapter extends BaseAdapter {
 
 	public FoodQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
+	public FoodQueryAllDBListviewAdapter(Context context, List data) {
+		this.context = context;
+		this.data = data;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 

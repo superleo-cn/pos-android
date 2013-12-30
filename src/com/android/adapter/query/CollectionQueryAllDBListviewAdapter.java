@@ -1,4 +1,4 @@
-package com.android.adapter;
+package com.android.adapter.query;
 
 import java.util.List;
 

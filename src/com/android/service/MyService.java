@@ -82,7 +82,6 @@ public class MyService extends Service {
 				@Override
 				public void run() {
 					// display toast
-					toastComponent.show(stringResComponent.allSyncSucc);
 					if (wifiComponent.isConnected()) {
 						try {
 							String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);

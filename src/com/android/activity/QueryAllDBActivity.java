@@ -1,9 +1,7 @@
 package com.android.activity;
 
-import android.app.Activity;
-
 import com.android.R;
-import com.android.component.ui.QueryAllDBAComponent;
+import com.android.component.ui.query.QueryAllDBAComponent;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
@@ -19,7 +17,7 @@ import com.googlecode.androidannotations.annotations.NoTitle;
 @Fullscreen
 // 绑定登录的layout
 @EActivity(R.layout.query_all_db)
-public class QueryAllDBActivity extends Activity {
+public class QueryAllDBActivity extends BasicActivity {
 	@Bean
 	QueryAllDBAComponent queryAllDBAComponent;
 }
