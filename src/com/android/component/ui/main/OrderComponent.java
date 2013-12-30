@@ -28,9 +28,11 @@ import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
+import com.android.component.LockComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
+import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.dialog.MyDialog;
 import com.android.domain.Food;
@@ -98,6 +100,9 @@ public class OrderComponent {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
+	@Bean
+	WifiComponent wifiComponent;
+
 	FoodComponent foodComponent;
 
 	CalculatorComponent calculatorComponent;
@@ -106,6 +111,7 @@ public class OrderComponent {
 
 	private SelectListAdapter selectAdapter;
 
+	private StringBuffer sb;
 	// 输入的支付总钱
 	private StringBuffer sbuff;
 	// 显示要支付的总价钱
@@ -324,7 +330,19 @@ public class OrderComponent {
 			toastComponent.show(stringResComponent.errPrice);
 		}
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			// dialg.show();
+			// 先打印数据，不耽误正常使用----------------------------
+			sb = new StringBuffer();
+			String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
+			sb.append(time + "\n\n");
+			for (int i = 0; i < selectDataList.size(); i++) {
+				SelectFoodBean bean = selectDataList.get(i);
+				String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+				String qty = "X" + bean.getFood_num() + "\n\n";
+				if (is_takePackage) {
+					foodName += stringResComponent.foodPackage;
+				}
+				sb.append(foodName + "     " + qty);
+			}
 			mydialog.show();
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
 			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
@@ -336,19 +354,6 @@ public class OrderComponent {
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// 先打印数据，不耽误正常使用----------------------------
-					StringBuffer sb = new StringBuffer();
-					String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
-					sb.append(time + "\n\n");
-					for (int i = 0; i < selectDataList.size(); i++) {
-						SelectFoodBean bean = selectDataList.get(i);
-						String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-						String qty = "X" + bean.getFood_num() + "\n\n";
-						if (is_takePackage) {
-							foodName += "(包)";
-						}
-						sb.append(foodName + "     " + qty);
-					}
 					androidPrinter.setIp(sharedPrefs.printIp().get());
 					androidPrinter.print(sb.toString());
 					// 保存数据------------------------------
@@ -453,7 +458,18 @@ public class OrderComponent {
 	// 同步到服务器上去
 	@Background
 	void syncToServer() {
-		// 准备发送数据
+		if (wifiComponent.isConnected()) {
+			LockComponent.LOCKER.lock();
+			try {
+				submitAll();
+			} finally {
+				LockComponent.LOCKER.unlock();
+			}
+		}
+	}
+
+	// 准备发送数据
+	public void submitAll() {
 		Map<String, String> params = new HashMap<String, String>();
 		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
 		System.out.println("-->" + datas.size());
@@ -494,7 +510,6 @@ public class OrderComponent {
 				}
 			}
 		}
-
 	}
 
 	public Dialog buildPrintDialog() {
@@ -502,19 +517,6 @@ public class OrderComponent {
 
 			@Override
 			public void doClick() {
-				// 先打印数据，不耽误正常使用----------------------------
-				StringBuffer sb = new StringBuffer();
-				String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
-				sb.append(time + "\n\n");
-				for (int i = 0; i < selectDataList.size(); i++) {
-					SelectFoodBean bean = selectDataList.get(i);
-					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-					String qty = "X" + bean.getFood_num() + "\n\n";
-					if (is_takePackage) {
-						foodName += "(包)";
-					}
-					sb.append(foodName + "     " + qty);
-				}
 				androidPrinter.setIp(sharedPrefs.printIp().get());
 				androidPrinter.print(sb.toString());
 				// 保存数据------------------------------
