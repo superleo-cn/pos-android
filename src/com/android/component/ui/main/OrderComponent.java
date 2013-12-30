@@ -348,8 +348,8 @@ public class OrderComponent {
 			mydialog.dialog_message.setVisibility(View.GONE);
 			mydialog.textDialogAllMoenyID.setTextSize(60);
 			mydialog.textDialogSearchMoenyID.setTextSize(60);
-			mydialog.textDialogAllMoenyID.setText("总金额:S$"+totalPrice.getText().toString());
-		 mydialog.textDialogSearchMoenyID.setText("剩    余:S$"+surplus.getText().toString());
+			mydialog.textDialogAllMoenyID.setText("总金额:S$" + totalPrice.getText().toString());
+			mydialog.textDialogSearchMoenyID.setText("剩    余:S$" + surplus.getText().toString());
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -379,49 +379,47 @@ public class OrderComponent {
 	 */
 	public void doCalculation() {
 		double showTotalPrice = 0;
-		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			if (is_foc) {
-				// 免费的话，全部清空
-				showTotalPrice = 0;
-				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-				for (SelectFoodBean bean : selectDataList) {
-					bean.setDabao_price(0);
-					bean.setDazhe_price(0);
-				}
-				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-				calculatorComponent.compute_surplus();
-			} else {
-				for (SelectFoodBean bean : selectDataList) {
-					// 计算总价
-					showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
+		if (is_foc) {
+			// 免费的话，全部清空
+			showTotalPrice = 0;
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			for (SelectFoodBean bean : selectDataList) {
+				bean.setDabao_price(0);
+				bean.setDazhe_price(0);
+			}
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			calculatorComponent.compute_surplus();
+		} else {
+			for (SelectFoodBean bean : selectDataList) {
+				// 计算总价
+				showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
 
-					// 计算打包打折
-					int num = Integer.parseInt(bean.getFood_num());
-					double dabao = num * package_money;
-					double dazhe = num * save_discount_price;
-					String type = bean.getFood_type();
-					if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
-						if (!is_discount && is_takePackage) {
-							showTotalPrice += dabao;
-							dazhe = 0;
-						} else if (is_discount && !is_takePackage) {
-							showTotalPrice -= dazhe;
-							dabao = 0;
-						} else if (!is_discount && !is_takePackage) {
-							dabao = 0;
-							dazhe = 0;
-						} else if (is_discount && is_takePackage) {
-							showTotalPrice = showTotalPrice + dabao - dazhe;
-						}
-						bean.setDabao_price(dabao);
-						bean.setDazhe_price(dazhe);
+				// 计算打包打折
+				int num = Integer.parseInt(bean.getFood_num());
+				double dabao = num * package_money;
+				double dazhe = num * save_discount_price;
+				String type = bean.getFood_type();
+				if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
+					if (!is_discount && is_takePackage) {
+						showTotalPrice += dabao;
+						dazhe = 0;
+					} else if (is_discount && !is_takePackage) {
+						showTotalPrice -= dazhe;
+						dabao = 0;
+					} else if (!is_discount && !is_takePackage) {
+						dabao = 0;
+						dazhe = 0;
+					} else if (is_discount && is_takePackage) {
+						showTotalPrice = showTotalPrice + dabao - dazhe;
 					}
+					bean.setDabao_price(dabao);
+					bean.setDazhe_price(dazhe);
+				}
 
-				}
-				totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
-				if (Double.parseDouble(gathering.getText().toString()) > 0) {
-					calculatorComponent.compute_surplus();
-				}
+			}
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			if (Double.parseDouble(gathering.getText().toString()) > 0) {
+				calculatorComponent.compute_surplus();
 			}
 		}
 
