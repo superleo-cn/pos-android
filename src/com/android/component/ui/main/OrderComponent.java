@@ -347,11 +347,10 @@ public class OrderComponent {
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
 			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
 			mydialog.dialog_message.setVisibility(View.GONE);
-			mydialog.textDialogAllMoenyID.setTextSize(40);
-			mydialog.textDialogSearchMoenyID.setTextSize(40);
-			mydialog.dialog_title.setTextSize(50);
+			mydialog.textDialogAllMoenyID.setTextSize(60);
+			mydialog.textDialogSearchMoenyID.setTextSize(60);
 			mydialog.textDialogAllMoenyID.setText("总金额:S$"+totalPrice.getText().toString());
-			mydialog.textDialogSearchMoenyID.setText("找零:S$"+surplus.getText().toString());
+		 mydialog.textDialogSearchMoenyID.setText("剩    余:S$"+surplus.getText().toString());
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
