@@ -54,7 +54,6 @@ public class CalculatorComponent {
 	@AfterViews
 	public void initCalculator() {
 		List<String> dataList = new ArrayList<String>();
-		String delete = String.valueOf(R.string.delete);
 		String[] str = new String[] { "7", "8", "9", "4", "5", "6", "1", "2", "3", "0", ".", "C" };
 		for (int i = 0; i < str.length; i++) {
 			dataList.add(str[i]);
@@ -109,7 +108,6 @@ public class CalculatorComponent {
 			sbuff.delete(0, sb_length);
 			orderComponent.getGathering().setText("0.00");
 			orderComponent.getSurplus().setText("0.00");
-			compute_surplus();
 			break;
 		}
 

@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
@@ -21,10 +21,18 @@ public class AndroidPrinter {
 	String ip = "192.168.0.100";
 	WifiCommunication wfComm = null;
 	int connFlag = 0;
-	revMsgThread revThred = null;
-	checkPrintThread cheThread = null;
+	RevMsgThread revThred = null;
+	CheckPrintThread cheThread = null;
 	// checkPrintThread cheThread = null;
 	private static final int WFPRINTER_REVMSG = 0x06;
+
+	// print msg
+	private static final String message1 = "测试数据。。。。\n" + "1/八宝 酿豆腐\t\t\t\tQuty:1 \n" + "2/特制酿豆腐\t\t\t\tQuty:5 \n"
+			+ "3/珍珠米\t\t\t\tQuty:10 \n" + "4/虾棒墨鱼汤\t\t\t\tQuty:20 \n\n";
+	private static final String message2 = "  You have sucessfully created communications between your device and our WIFI printer.\n\n"
+			+ "  Shenzhen Zijiang Electronics Co..Ltd is a high-tech enterprise which specializes"
+			+ " in R&D,manufacturing,marketing of thermal printers and barcode scanners.\n\n"
+			+ "  Please go to our website and see details about our company :\n" + "     http://www.zjiang.com\n\n";
 
 	@AfterInject
 	public void initPrinter() {
@@ -35,27 +43,21 @@ public class AndroidPrinter {
 				connect();
 			} catch (Exception e) {
 				Log.d("WIFI Printer", "Cannot find WIFI Printer ", e);
-				Toast.makeText(context, "Cannot find WIFI Printer", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(context, "Cannot find WIFI Printer",
+				// Toast.LENGTH_SHORT).show();
 			}
 		}
 
 	}
 
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
 	// start to print
+	@Background
 	public void print(String message) {
 		// connect to printer
 		if (connFlag == 0) {
 			connect();
 			try {
-				Thread.sleep(1500);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				Log.d("WIFI Printer", "try to re-connect printer and print message: " + message);
 			}
@@ -68,12 +70,19 @@ public class AndroidPrinter {
 	}
 
 	// connect to printer
+	@Background
 	public void connect() {
 		try {
 			if (connFlag == 0) {
-				Log.d("WIFI Printer", "Connection to WIFI Printer.");
-				wfComm.initSocket(ip, 9100);
-				connFlag = 1;
+				try {
+					Thread.sleep(1000);
+					Log.d("WIFI Printer", "Connection to WIFI Printer.");
+					wfComm.initSocket(ip, 9100);
+					connFlag = 1;
+				} catch (InterruptedException e) {
+					Log.d("WIFI Printer", "try to re-connect printer and print message: " + e);
+				}
+
 			}
 		} catch (Exception ex) {
 			Log.e("WIFI Printer", "WIFI connection failed", ex);
@@ -90,40 +99,20 @@ public class AndroidPrinter {
 		}
 	}
 
+	@Background
 	public void reconnect() {
 		disconnect();
 		connect();
 	}
 
 	public void startPrint(String message) {
-		// print
-		String message1 = "测试数据。。。。\n" + "1/八宝 酿豆腐\t\t\t\tQuty:1 \n" + "2/特制酿豆腐\t\t\t\tQuty:5 \n" + "3/珍珠米\t\t\t\tQuty:10 \n"
-				+ "4/虾棒墨鱼汤\t\t\t\tQuty:20 \n\n";
-		String message2 = "  You have sucessfully created communications between your device and our WIFI printer.\n\n"
-				+ "  Shenzhen Zijiang Electronics Co..Ltd is a high-tech enterprise which specializes"
-				+ " in R&D,manufacturing,marketing of thermal printers and barcode scanners.\n\n"
-				+ "  Please go to our website and see details about our company :\n" + "     http://www.zjiang.com\n\n";
 		if (message.length() > 0) {
-			byte[] tcmd = new byte[3];
-			// tcmd[0] = 0x10;
-			// tcmd[1] = 0x04;
-			// tcmd[2] = 0x00;
-
-			// set double height and double width mode
-			tcmd[0] = 0x1b;
-			tcmd[1] = 0x21;
-			tcmd[2] = 0x10;
-
-			wfComm.sndByte(tcmd);
-			wfComm.sendMsg(message, "gbk");
-			Log.d("WIFI Printer", "Print message is: " + message);
-
-			// drawer
+			// drawer 先弹出抽屉
 			byte[] tail = new byte[3];
 			tail[0] = 0x0A;
 			tail[1] = 0x0D;
 			wfComm.sndByte(tail);
-						
+
 			byte[] bytecmd = new byte[5];
 			bytecmd[0] = 0x1B;
 			bytecmd[1] = 0x70;
@@ -132,6 +121,15 @@ public class AndroidPrinter {
 			bytecmd[4] = 0x50;
 			wfComm.sndByte(bytecmd);
 
+			// set double height and double width mode
+			byte[] tcmd = new byte[3];
+			tcmd[0] = 0x1b;
+			tcmd[1] = 0x21;
+			tcmd[2] = 0x10;
+			wfComm.sndByte(tcmd);
+			wfComm.sendMsg(message, "gbk");
+			Log.d("WIFI Printer", "Print message is: " + message);
+
 			// cut paper
 			byte[] bits = new byte[4];
 			bits[0] = 0x1D;
@@ -139,8 +137,6 @@ public class AndroidPrinter {
 			bits[2] = 0x42;
 			bits[3] = 90;
 			wfComm.sndByte(bits);
-
-			
 		}
 	}
 
@@ -150,22 +146,29 @@ public class AndroidPrinter {
 			switch (msg.what) {
 			case WifiCommunication.WFPRINTER_CONNECTED:
 				connFlag = 1;
-				Toast.makeText(context, "Connect the WIFI-printer successful", Toast.LENGTH_SHORT).show();
-				revThred = new revMsgThread();
+				// Toast.makeText(context,
+				// "Connect the WIFI-printer successful",
+				// Toast.LENGTH_SHORT).show();
+				revThred = new RevMsgThread();
 				revThred.start();
-				cheThread = new checkPrintThread();
+				cheThread = new CheckPrintThread();
 				cheThread.start();
 				break;
 			case WifiCommunication.WFPRINTER_DISCONNECTED:
 				connFlag = 0;
-				Toast.makeText(context, "Disconnect the WIFI-printer successful", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(context,
+				// "Disconnect the WIFI-printer successful",
+				// Toast.LENGTH_SHORT).show();
 				if (wfComm != null && revThred != null && cheThread != null) {
 					revThred.interrupt();
 					cheThread.interrupt();
 				}
+				reconnect();
 				break;
 			case WifiCommunication.SEND_FAILED:
-				Toast.makeText(context, "Send Data Failed,please reconnect", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(context, "Send Data Failed,please reconnect",
+				// Toast.LENGTH_SHORT).show();
+				reconnect();
 				break;
 			case WifiCommunication.WFPRINTER_CONNECTEDERR:
 				connFlag = 0;
@@ -174,14 +177,17 @@ public class AndroidPrinter {
 				if (wfComm != null && revThred != null) {
 					revThred.interrupt();
 				}
+				reconnect();
 				break;
 			case WifiCommunication.CONNECTION_LOST:
 				connFlag = 0;
-				Toast.makeText(context, "Connection lost,please reconnect", Toast.LENGTH_SHORT).show();
+				// Toast.makeText(context, "Connection lost,please reconnect",
+				// Toast.LENGTH_SHORT).show();
 				if (wfComm != null && revThred != null) {
 					revThred.interrupt();
 					// cheThread.interrupt();
 				}
+				reconnect();
 				break;
 			case WFPRINTER_REVMSG:
 				byte revData = (byte) Integer.parseInt(msg.obj.toString());
@@ -196,7 +202,7 @@ public class AndroidPrinter {
 		}
 	};
 
-	class checkPrintThread extends Thread {
+	class CheckPrintThread extends Thread {
 		@Override
 		public void run() {
 			byte[] tcmd = new byte[3];
@@ -216,7 +222,7 @@ public class AndroidPrinter {
 		}
 	}
 
-	class revMsgThread extends Thread {
+	class RevMsgThread extends Thread {
 		@Override
 		public void run() {
 			try {
@@ -236,6 +242,14 @@ public class AndroidPrinter {
 				// reconnect();
 			}
 		}
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 }

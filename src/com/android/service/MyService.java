@@ -87,12 +87,12 @@ public class MyService extends Service {
 							String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
 							dailypaySubmitComponent.submitAll(date);
 							orderComponent.submitAll();
-							toastComponent.show(stringResComponent.allSyncSucc);
+							// toastComponent.show(stringResComponent.allSyncSucc);
 						} catch (Exception ex) {
 							ex.printStackTrace();
 						}
 					} else {
-						toastComponent.show(stringResComponent.allSyncErr);
+						// toastComponent.show(stringResComponent.allSyncErr);
 					}
 				}
 
