@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -332,6 +333,38 @@ public class OrderComponent {
 			mydialog.textDialogSearchMoenyID.setText("找零:S$");
 			mydialog.textDialogAllMoenyID.setTextSize(50);
 			mydialog.textDialogSearchMoenyID.setTextSize(50);
+			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					// 先打印数据，不耽误正常使用----------------------------
+					StringBuffer sb = new StringBuffer();
+					String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
+					sb.append(time + "\n\n");
+					for (int i = 0; i < selectDataList.size(); i++) {
+						SelectFoodBean bean = selectDataList.get(i);
+						String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+						String qty = "X" + bean.getFood_num() + "\n\n";
+						if (is_takePackage) {
+							foodName += "(包)";
+						}
+						sb.append(foodName + "     " + qty);
+					}
+					androidPrinter.setIp(sharedPrefs.printIp().get());
+					androidPrinter.print(sb.toString());
+					// 保存数据------------------------------
+					storeOrders();
+					// 同步开始------------------------------
+					syncToServer();
+					// 清空数据------------------------------
+					clean();
+				}
+			});
+			mydialog.dialog_no.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mydialog.dismiss();
+				}
+			});
 		}
 
 	}
