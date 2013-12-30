@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.dialog.ConfirmDialog;
+import com.android.dialog.MyDialog;
 import com.android.domain.Food;
 import com.android.domain.FoodOrder;
 import com.android.mapping.StatusMapping;
@@ -115,6 +117,11 @@ public class OrderComponent {
 
 	// 打印框
 	Dialog dialg;
+	
+	private MyDialog mydialog;
+	
+	private String allMoeny="0.00";
+	private String searchMoeny="0.00";
 
 	/**
 	 * 初始化订单组件
@@ -126,6 +133,7 @@ public class OrderComponent {
 	public void initOrder() {
 		// 初始化打印对话框
 		dialg = buildPrintDialog();
+		mydialog =new MyDialog(context);
 
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
@@ -312,12 +320,21 @@ public class OrderComponent {
 			}
 			Double show_surplus = show_gathering - result;
 			surplus.setText(MyNumberUtils.numToStr(show_surplus));
+			
+			allMoeny = result+"";
+			searchMoeny  =show_surplus+"";
+			
 
 		} catch (Exception e) {
 			toastComponent.show(stringResComponent.errPrice);
 		}
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			dialg.show();
+//			dialg.show();
+			mydialog.show();
+			mydialog.dialog_message.setText(stringResComponent.openPrint);
+			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
+			mydialog.textDialogAllMoenyID.setText("总金额:"+allMoeny);
+			mydialog.textDialogSearchMoenyID.setText("找零:"+searchMoeny);
 		}
 
 	}
