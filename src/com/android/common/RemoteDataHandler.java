@@ -17,7 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.android.model.ResponseData;
+import com.android.bean.ResponseData;
 
 /**
  * 用于发送HTTP请求并处理响应返回的数据的Handler

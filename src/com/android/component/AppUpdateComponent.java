@@ -26,12 +26,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.R;
+import com.android.bean.ResponseData;
 import com.android.bean.VersionBean;
 import com.android.common.Constants;
 import com.android.common.RemoteDataHandler;
 import com.android.common.SystemHelper;
 import com.android.common.RemoteDataHandler.Callback;
-import com.android.model.ResponseData;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
