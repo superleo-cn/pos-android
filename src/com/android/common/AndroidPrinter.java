@@ -51,7 +51,6 @@ public class AndroidPrinter {
 	}
 
 	// start to print
-	@Background
 	public void print(String message) {
 		// connect to printer
 		if (connFlag == 0) {
