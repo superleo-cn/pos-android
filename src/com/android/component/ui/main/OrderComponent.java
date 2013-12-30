@@ -302,32 +302,6 @@ public class OrderComponent {
 	 */
 	@Click(R.id.ok_btn)
 	public void ok() {
-		try {
-			Log.e("输入的金额", sbuff.toString().trim());
-			if (sbuff == null || sbuff.toString().trim().equals("")) {
-				sbuff.append(Constants.DEFAULT_PRICE_INT);
-			}
-			Double show_gathering = Double.parseDouble(sbuff.toString().trim());
-			if (calculatorComponent.is_maxPrice(sbuff)) {
-				gathering.setText(Constants.MAX_PRICE);
-			} else {
-				try {
-					gathering.setText(MyNumberUtils.numToStr(show_gathering));
-				} catch (Exception e) {
-					toastComponent.show(stringResComponent.errPrice);
-				}
-			}
-			double result = MyNumberUtils.strToNum(totalPrice.getText().toString());
-			Log.e("最后金额", result + "");
-			if (show_gathering > Constants.MAX_NUM_PRICE) {
-				show_gathering = Constants.MAX_NUM_PRICE;
-			}
-			Double show_surplus = show_gathering - result;
-			surplus.setText(MyNumberUtils.numToStr(show_surplus));
-
-		} catch (Exception e) {
-			toastComponent.show(stringResComponent.errPrice);
-		}
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
 			sb = new StringBuffer();
