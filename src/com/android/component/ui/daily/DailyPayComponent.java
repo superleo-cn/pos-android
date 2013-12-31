@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.MenuCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,6 +38,7 @@ import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.component.WifiComponent;
+import com.android.component.ui.MenuComponent;
 import com.android.component.ui.login.LoginComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.domain.CollectionOrder;
@@ -142,6 +144,9 @@ public class DailyPayComponent {
 
 	@Bean
 	LoginComponent loginComponent;
+	
+	@Bean
+	MenuComponent menuCompat;
 
 	private List<Double> all_num_price = new ArrayList<Double>();
 	private List<Double> all_pay_price = new ArrayList<Double>();
@@ -156,6 +161,8 @@ public class DailyPayComponent {
 
 	@AfterViews
 	public void initDailayPay() {
+		
+		menuCompat.textDaily();
 
 		if (!isCompleted()) {
 			// 设置记录人和送款人

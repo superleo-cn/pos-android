@@ -60,7 +60,7 @@ public class MenuComponent {
 	TextView shop_name; // 顶部菜单栏显示的店的名称
 
 	@ViewById(R.id.textDailyPay)
-	TextView textDailyPay;
+	public TextView textDailyPay;
 
 	@Bean
 	StringResComponent stringResComponent;
@@ -159,10 +159,18 @@ public class MenuComponent {
 		popupWindow.showAsDropDown(menu, 0, -5);
 
 	}
+	
+	public void textDaily(){
+		textDailyPay.setText(stringResComponent.diancaiName);
+	}
 
 	@Click(R.id.textDailyPay)
 	void textDailyPayOnClick() {
-		activityComponent.startDailyWithTransition();
+		if(textDailyPay.getText().toString().equals(stringResComponent.diancaiName)){
+			activityComponent.startMainWithTransition();
+		}else{
+			activityComponent.startDailyWithTransition();
+		}
 	}
 
 	private void dismiss() {

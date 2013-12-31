@@ -25,7 +25,7 @@
         android:layout_toRightOf="@+id/menu_btn"
         android:text="@string/layoutLeft_title"
         android:textColor="#FFFFFF"
-        android:textSize="21sp" />
+        android:textSize="30dp" />
 
     <ImageView
         android:id="@+id/line"
@@ -57,7 +57,7 @@
         android:layout_marginLeft="5dip"
         android:layout_toRightOf="@+id/login_image"
         android:text="@string/mainTitle_txt"
-        android:textSize="18sp"
+        android:textSize="22dp"
         android:textColor="#FFFFFF" />
 
     <TextView
@@ -71,7 +71,7 @@
         android:singleLine="true"
         android:text="@string/shop_info"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="22dp"
         android:textStyle="bold" />
 
     <TextView
@@ -83,7 +83,7 @@
         android:layout_toRightOf="@+id/letout_name_tv"
         android:text="@string/layoutLeft_title"
         android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        android:textSize="22dp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -116,7 +116,8 @@
                 android:layout_toRightOf="@+id/exit_btn"
                 android:text="@string/daily_pay"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:padding="10dp"
+                android:textSize="22dp" />
         </RelativeLayout>
 
         <ImageView
