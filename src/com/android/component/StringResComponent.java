@@ -113,4 +113,10 @@ public class StringResComponent {
 	@StringRes(R.string.daily_pay)
 	public String dailyPay;
 	
+	@StringRes(R.string.total_prie)
+	public String totalPrie;
+	
+	@StringRes(R.string.surplus2)
+	public String Surplus;
+	
 }

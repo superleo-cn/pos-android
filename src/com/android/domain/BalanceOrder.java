@@ -40,15 +40,6 @@ public class BalanceOrder extends Model {
 	@Column(name = "gTotalBalance")
 	public String gTotalBalance;
 
-	@Column(name = "middleCalculateTime")
-	public String middleCalculateTime;
-
-	@Column(name = "middleCalculateBalance")
-	public String middleCalculateBalance;
-
-	@Column(name = "calculateTime")
-	public String calculateTime;
-
 	@Column(name = "courier")
 	public String courier;
 
@@ -65,9 +56,8 @@ public class BalanceOrder extends Model {
 	public String toString() {
 		return "BalanceOrder [shopId=" + shopId + ", userId=" + userId + ", aOpenBalance=" + aOpenBalance + ", bExpenses=" + bExpenses
 				+ ", cCashCollected=" + cCashCollected + ", dDailyTurnover=" + dDailyTurnover + ", eNextOpenBalance=" + eNextOpenBalance
-				+ ", fBringBackCash=" + fBringBackCash + ", gTotalBalance=" + gTotalBalance + ", middleCalculateTime="
-				+ middleCalculateTime + ", middleCalculateBalance=" + middleCalculateBalance + ", calculateTime=" + calculateTime
-				+ ", courier=" + courier + ", others=" + others + ", status=" + status + ", date=" + date + "]";
+				+ ", fBringBackCash=" + fBringBackCash + ", gTotalBalance=" + gTotalBalance + ", courier=" + courier + ", others=" + others
+				+ ", status=" + status + ", date=" + date + "]";
 	}
 
 	/**
@@ -89,9 +79,6 @@ public class BalanceOrder extends Model {
 		b_order.eNextOpenBalance = bean.eNextOpenBalance;
 		b_order.fBringBackCash = bean.fBringBackCash;
 		b_order.gTotalBalance = bean.gTotalBalance;
-		b_order.middleCalculateTime = bean.middleCalculateTime;
-		b_order.middleCalculateBalance = bean.middleCalculateBalance;
-		b_order.calculateTime = bean.calculateTime;
 		b_order.courier = bean.courier;
 		b_order.others = bean.others;
 		b_order.save();
@@ -101,8 +88,7 @@ public class BalanceOrder extends Model {
 	 * 保存每日其他数据
 	 * */
 	public static void save(String aOpenBalance, String bExpenses, String cCashCollected, String dDailyTurnover, String eNextOpenBalance,
-			String fBringBackCash, String gTotalBalance, String middleCalculateTime, String middleCalculateBalance, String calculateTime,
-			String others, String courier, MyApp myApp) {
+			String fBringBackCash, String gTotalBalance,String others, String courier, MyApp myApp) {
 		BalanceOrder bean = new BalanceOrder();
 		bean.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		bean.shopId = myApp.getShopId();// 店idmyApp.getShopid()
@@ -115,9 +101,6 @@ public class BalanceOrder extends Model {
 		bean.eNextOpenBalance = eNextOpenBalance;
 		bean.fBringBackCash = fBringBackCash;
 		bean.gTotalBalance = gTotalBalance;
-		bean.middleCalculateTime = middleCalculateTime;
-		bean.middleCalculateBalance = middleCalculateBalance;
-		bean.calculateTime = calculateTime;
 		bean.others = others;
 		bean.courier = courier;
 		bean.save();

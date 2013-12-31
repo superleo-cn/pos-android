@@ -8,6 +8,7 @@
 	<string name="total_prie">Total:</string>
 	<string name="gathering">Pay:</string>
 	<string name="surplus">Change:</string>
+	<string name="surplus2">Change</string>
 	<string name="take_package">Pack</string>
 	<string name="add_package">Pack Added</string>
 	<string name="lessen_package">Pack Removed</string>

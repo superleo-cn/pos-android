@@ -93,27 +93,6 @@
                 </LinearLayout>
             </LinearLayout>
             
-			<LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE0DC"
-                android:orientation="vertical" >
-                <Button
-                    android:id="@+id/btu_id_sbumit"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dip"
-                    android:layout_marginRight="20dip"
-                    android:layout_marginBottom="5dip"
-                    android:text="@string/message_ok"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:background="#E51212"
-                    android:padding="5dip"
-                    android:visibility="gone"
-                    android:textSize="28sp" />
-            </LinearLayout>
-          
         </LinearLayout>
 
         <LinearLayout
@@ -398,104 +377,7 @@
                                     android:textSize="16sp" />
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dip"
-                                android:orientation="horizontal" >
-
-                                <TextView
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginRight="5dip"
-                                    android:layout_weight="1"
-                                    android:gravity="center_vertical"
-                                    android:singleLine="true"
-                                    android:text="@string/noon_time"
-                                      android:textColor="#000000"
-                                    android:textSize="18sp" />
-
-                                <EditText
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="5dip"
-                                    android:layout_weight="2"
-                                    android:background="@drawable/edit_bg"
-                                    android:gravity="center_vertical"
-                                    android:singleLine="true"
-                                    android:textColor="#000000"
-                                    android:inputType="text"
-                                    android:id="@+id/noon_time"
-                                    android:textSize="16sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dip"
-                                android:orientation="horizontal" >
-
-                                <TextView
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginRight="5dip"
-                                    android:layout_weight="1"
-                                    android:gravity="center_vertical"
-                                    android:singleLine="true"
-                                    android:text="@string/noon_turnover"
-                                      android:textColor="#000000"
-                                    android:textSize="18sp" />
-
-                                <EditText
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="5dip"
-                                    android:layout_weight="2"
-                                    android:background="@drawable/edit_bg"
-                                    android:gravity="center_vertical"
-                                    android:singleLine="true"
-                                    android:textColor="#000000"
-                                    android:numeric="decimal"
-                                    android:id="@+id/noon_turnover"
-                                    android:textSize="16sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingTop="5dip"
-                                android:orientation="horizontal" >
-
-                                <TextView
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginRight="5dip"
-                                    android:layout_weight="1"
-                                    android:gravity="center_vertical"
-                                    android:singleLine="true"
-                                    android:text="@string/time"
-                                      android:textColor="#000000"
-                                    android:textSize="18sp" />
-
-                                <EditText
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="5dip"
-                                    android:layout_weight="2"
-                                    android:background="@drawable/edit_bg"
-                                    android:gravity="center_vertical"
-                                    android:singleLine="true"
-                                    android:textColor="#000000"
-                                    android:inputType="text"
-                                    android:id="@+id/time"
-                                    android:textSize="16sp" />
-                            </LinearLayout>
+                           
 
                             <LinearLayout
                                 android:layout_width="fill_parent"
@@ -633,7 +515,6 @@
                                     android:inputType="text"
                                     android:id="@+id/send_person"/>
                             </LinearLayout>
-
                             <LinearLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="240dp"
@@ -657,8 +538,29 @@
                                     android:inputType="textMultiLine"
                                     android:textSize="16sp" 
                                     android:gravity="top|left"
+                                    android:layout_weight="1"
                                     android:id="@+id/other"/>
-                            </LinearLayout>                         
+                                 <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical" >
+                <Button
+                    android:id="@+id/btu_id_sbumit"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dip"
+                    android:layout_marginRight="20dip"
+                    android:layout_marginBottom="5dip"
+                    android:text="@string/message_ok"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:background="#E51212"
+                    android:padding="5dip"
+                    android:visibility="gone"
+                    android:textSize="28sp" />
+            </LinearLayout>              
+                            </LinearLayout>       
                         </LinearLayout>
                     </ScrollView>
                 </LinearLayout>

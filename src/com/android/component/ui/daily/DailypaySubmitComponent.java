@@ -149,9 +149,9 @@ public class DailypaySubmitComponent {
 					params.put("dailySummaries[" + i + "].eNextOpenBalance", balance.eNextOpenBalance);
 					params.put("dailySummaries[" + i + "].fBringBackCash", balance.fBringBackCash);
 					params.put("dailySummaries[" + i + "].gTotalBalance", balance.gTotalBalance);
-					params.put("dailySummaries[" + i + "].middleCalculateTime", balance.middleCalculateTime);
-					params.put("dailySummaries[" + i + "].middleCalculateBalance", balance.middleCalculateBalance);
-					params.put("dailySummaries[" + i + "].calculateTime", balance.calculateTime);
+					params.put("dailySummaries[" + i + "].middleCalculateTime", StringUtils.EMPTY);
+					params.put("dailySummaries[" + i + "].middleCalculateBalance", StringUtils.EMPTY);
+					params.put("dailySummaries[" + i + "].calculateTime",StringUtils.EMPTY);
 					params.put("dailySummaries[" + i + "].courier", balance.courier);
 					params.put("dailySummaries[" + i + "].others", balance.others);
 					params.put("dailySummaries[" + i + "].date", balance.date);
@@ -178,8 +178,7 @@ public class DailypaySubmitComponent {
 	 * 保存每日其他数据
 	 * */
 	public void save(TextView shop_money, TextView text_id_all_price, TextView cash_register, TextView today_turnover,
-			TextView tomorrow_money, TextView total_take_num, TextView total, TextView noon_time, TextView noon_turnover, TextView time,
-			TextView other, TextView send_person) {
+			TextView tomorrow_money, TextView total_take_num, TextView total,TextView other, TextView send_person) {
 		String aOpenBalance = MyTextUtils.checkIntTextView(shop_money);
 		String bExpenses = MyTextUtils.checkIntTextView(text_id_all_price);
 		String cCashCollected = MyTextUtils.checkIntTextView(cash_register);
@@ -187,14 +186,11 @@ public class DailypaySubmitComponent {
 		String eNextOpenBalance = MyTextUtils.checkIntTextView(tomorrow_money);
 		String fBringBackCash = MyTextUtils.checkIntTextView(total_take_num);
 		String gTotalBalance = MyTextUtils.checkIntTextView(total);
-		String middleCalculateTime = MyTextUtils.checkIntTextView(noon_time);
-		String middleCalculateBalance = MyTextUtils.checkIntTextView(noon_turnover);
-		String calculateTime = MyTextUtils.checkIntTextView(time);
 		String others = MyTextUtils.checkIntTextView(other);
 		String courier = MyTextUtils.checkIntTextView(send_person);
 
 		BalanceOrder.save(aOpenBalance, bExpenses, cCashCollected, dDailyTurnover, eNextOpenBalance, fBringBackCash, gTotalBalance,
-				middleCalculateTime, middleCalculateBalance, calculateTime, others, courier, myApp);
+				 others, courier, myApp);
 	}
 
 	/**

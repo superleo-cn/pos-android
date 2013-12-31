@@ -124,15 +124,6 @@ public class DailyPayComponent {
 	@ViewById(R.id.total_take_num)
 	EditText total_take_num;
 
-	@ViewById(R.id.noon_time)
-	EditText noon_time;
-
-	@ViewById(R.id.noon_turnover)
-	EditText noon_turnover;
-
-	@ViewById(R.id.time)
-	EditText time;
-
 	@ViewById(R.id.btu_id_sbumit)
 	Button btu_id_sbumit;
 
@@ -274,7 +265,7 @@ public class DailyPayComponent {
 
 		// 保存其他输入项目
 		dailypaysubmitComponent.save(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num, total,
-				noon_time, noon_turnover, noon_time, other, send_person);
+				other, send_person);
 
 		if (wifiComponent.isConnected()) {
 			LockComponent.LOCKER.lock();
@@ -293,7 +284,7 @@ public class DailyPayComponent {
 		setReadonly(daily_list, R.id.text_id_price);
 
 		// 清空所有组件
-		MyTextUtils.clearTextView(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money, total_take_num,
+		MyTextUtils.clearTextView(cash_register, today_turnover, total, tomorrow_money, total_take_num,
 				send_person, other, shop_money);
 
 	}
@@ -386,9 +377,9 @@ public class DailyPayComponent {
 	};
 
 	public void dismissKeyboard() {
-		keyboardComponent.dismissKeyboard(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money,
+		keyboardComponent.dismissKeyboard(cash_register, today_turnover, total, tomorrow_money,
 				total_take_num, send_person, shop_money);
-		keyboardComponent.clearfocusKeyboard(cash_register, today_turnover, noon_time, noon_turnover, time, total, tomorrow_money,
+		keyboardComponent.clearfocusKeyboard(cash_register, today_turnover, total, tomorrow_money,
 				total_take_num, send_person, shop_money);
 	}
 
