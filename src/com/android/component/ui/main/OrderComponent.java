@@ -202,13 +202,23 @@ public class OrderComponent {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			Log.e("item", index + "");
 			if (selectDataList.size() != index + 1) {
-				if (selectDataList.get(index - 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
-						&& selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-					selectDataList.remove(index);
-					selectDataList.remove(index);
+				if(index != 0 ){
+					if (selectDataList.get(index - 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
+							&& selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+						selectDataList.remove(index);
+						selectDataList.remove(index);
+					}else{
+						selectDataList.remove(index);
+					}
 				}else{
-					selectDataList.remove(index);
+					if (selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+						selectDataList.remove(index);
+						selectDataList.remove(index);
+					}else{
+						selectDataList.remove(index);
+					}
 				}
+				
 			} else {
 				selectDataList.remove(index);
 			}
