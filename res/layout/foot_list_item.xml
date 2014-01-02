@@ -40,6 +40,7 @@
             android:background="#00000000"
             android:focusable="false"
             android:scaleType="centerInside"
+            android:visibility="gone"
             android:src="@drawable/food_btn" />
     </FrameLayout>
 
