@@ -3,10 +3,13 @@ package com.android.activity;
 import android.app.Activity;
 import android.os.StrictMode;
 
+import com.android.common.CrashHandler;
 import com.android.common.MyApp;
 import com.android.component.SharedPreferencesComponent_;
 import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -19,6 +22,9 @@ public abstract class AbstractActivity extends Activity {
 	@App
 	MyApp myApp;
 
+	@Bean
+	CrashHandler crashHandler;
+
 	@AfterInject
 	public void initAbstract() {
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // 这里可以替换为detectAll()
@@ -28,7 +34,12 @@ public abstract class AbstractActivity extends Activity {
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects() // 探测SQLite数据库操作
 				.penaltyLog() // 打印logcat
 				.penaltyDeath().build());
+		crashHandler.init(this); // 传入参数必须为Activity，否则AlertDialog将不显示。
+	}
 
+	@AfterViews
+	public void initAbstractViews() {
+		crashHandler.init(this); // 传入参数必须为Activity，否则AlertDialog将不显示。
 	}
 
 	/**

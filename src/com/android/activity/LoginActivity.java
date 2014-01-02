@@ -11,6 +11,7 @@ import com.android.R;
 import com.android.common.Constants;
 import com.android.component.ActivityComponent;
 import com.android.component.AppUpdateComponent;
+import com.android.component.DirectEmailComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
 import com.android.component.ui.login.LoginComponent;
@@ -58,6 +59,9 @@ public class LoginActivity extends AbstractActivity {
 
 	@Bean
 	LoginComponent loginComponent;
+
+	@Bean
+	DirectEmailComponent directEmailComponent;
 
 	@AfterViews
 	public void init() {
