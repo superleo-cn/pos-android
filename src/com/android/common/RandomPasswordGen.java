@@ -1,15 +1,15 @@
 package com.android.common;
 
+import java.text.ParseException;
 import java.util.ArrayList;
-
+import java.util.List;
+import java.util.prefs.InvalidPreferencesFormatException;
 //Re-use some existing exceptions so we don't have to create
 //our own.
-import java.util.prefs.InvalidPreferencesFormatException;
-import java.text.ParseException;
 
 public class RandomPasswordGen {
 	private int length;
-	
+
 	private boolean lowercaseIncluded;
 	private boolean numbersIncluded;
 	private boolean othersIncluded;
@@ -28,22 +28,19 @@ public class RandomPasswordGen {
 		uppercaseIncluded = true;
 		numbersIncluded = true;
 		othersIncluded = false;
-		
+
 		// start the ball rolling by generating a password so that
-		// we keep our data integrity 
+		// we keep our data integrity
 		// i.e. so length matches password.length());
 		generatePassword();
 	}
 
 	/**
-	 * @return true if at least one of the password generation flags
-	 * is true, otherwise returns false
+	 * @return true if at least one of the password generation flags is true,
+	 *         otherwise returns false
 	 */
 	private boolean flagsOK() {
-		return lowercaseIncluded
-			|| uppercaseIncluded
-			|| numbersIncluded
-			|| othersIncluded;
+		return lowercaseIncluded || uppercaseIncluded || numbersIncluded || othersIncluded;
 	}
 
 	/**
@@ -67,7 +64,6 @@ public class RandomPasswordGen {
 		return (char) (33 + (int) (Math.random() * 15));
 	}
 
-	
 	/**
 	 * @return a random character from '0' to '9'
 	 */
@@ -75,7 +71,10 @@ public class RandomPasswordGen {
 		return (char) (48 + (int) (Math.random() * 10));
 	}
 
-	public void generatePassword() /* throws InvalidPreferencesFormatException, ParseException */ {
+	public void generatePassword() /*
+									 * throws InvalidPreferencesFormatException,
+									 * ParseException
+									 */{
 		// clear password if necessary
 		if (password.length() != 0) {
 			password = "";
@@ -83,13 +82,13 @@ public class RandomPasswordGen {
 
 		// check to make sure at least one "type" is included
 		// for password generation if template is not defined
-		
+
 		// commented out because our setters/construcor should
 		// ensure data integrity
-		//if (!flagsOK() && template.length() == 0) {
-		//	throw new java.util.prefs.InvalidPreferencesFormatException("At least one flag must be on to generate a password");
-		//}
-		
+		// if (!flagsOK() && template.length() == 0) {
+		// throw new
+		// java.util.prefs.InvalidPreferencesFormatException("At least one flag must be on to generate a password");
+		// }
 
 		// we know length >= 1 here because setLength
 		// doesn't allow invalid lengths and the constructor
@@ -100,28 +99,30 @@ public class RandomPasswordGen {
 			length = template.length();
 			for (int i = 0; i < length; i++) {
 				switch (template.charAt(i)) {
-					case 'a' :
-						password += randomLowercase();
-						break;
+				case 'a':
+					password += randomLowercase();
+					break;
 
-					case 'A' :
-						password += randomUppercase();
-						break;
+				case 'A':
+					password += randomUppercase();
+					break;
 
-					case 'n' :
-					case 'N' :
-						password += randomNumber();
-						break;
+				case 'n':
+				case 'N':
+					password += randomNumber();
+					break;
 
-					case 'o' :
-					case 'O' :
-						password += randomOther();
-						break;
+				case 'o':
+				case 'O':
+					password += randomOther();
+					break;
 
-					// commented out because our setters/constructor
-					// should ensure data integrity
-					//default :
-					//	throw new ParseException("Password template contains an invalid character", i);
+				// commented out because our setters/constructor
+				// should ensure data integrity
+				// default :
+				// throw new
+				// ParseException("Password template contains an invalid character",
+				// i);
 				}
 			}
 		} else {
@@ -129,32 +130,32 @@ public class RandomPasswordGen {
 			// so I've created 4 "wrapper" classes that inherit from the
 			// randomCharacter interface to provide the same
 			// type of functionality.
-			
-			
+
 			// create an ArrayList to store the functions that we're allowed
 			// to call to generate the password, based on what the flags
 			// are set to.
-			ArrayList flags = new ArrayList();
+			List<randomCharacter> flags = new ArrayList<randomCharacter>();
 			if (lowercaseIncluded) {
 				flags.add(new randomLowercase());
 			}
 			if (uppercaseIncluded) {
-				flags.add(new randomUppercase());	
+				flags.add(new randomUppercase());
 			}
 			if (othersIncluded) {
-				flags.add(new randomOther());	
+				flags.add(new randomOther());
 			}
 			if (numbersIncluded) {
-				flags.add(new randomNumber());	
+				flags.add(new randomNumber());
 			}
-			
+
 			int flagLength = flags.size();
-			
+
 			for (int i = 0; i < length; i++) {
 				// get a random wrapper class from the flags ArrayList
-				// and cast it to our interface so we can call the execute method
+				// and cast it to our interface so we can call the execute
+				// method
 				// which just calls the function and returns its value.
-				password += ((randomCharacter)flags.get((int)(Math.random() * flagLength))).execute();
+				password += ((randomCharacter) flags.get((int) (Math.random() * flagLength))).execute();
 			}
 		}
 	}
@@ -179,6 +180,7 @@ public class RandomPasswordGen {
 	public String getTemplate() {
 		return template;
 	}
+
 	/**
 	 * @return lowercaseIncluded
 	 */
@@ -208,7 +210,8 @@ public class RandomPasswordGen {
 	}
 
 	/**
-	 * @param length, enforced to be a positive integer >= 3.
+	 * @param length
+	 *            , enforced to be a positive integer >= 3.
 	 */
 	public void setLength(int length) {
 		this.length = (length < 3) ? 3 : length;
@@ -220,7 +223,7 @@ public class RandomPasswordGen {
 	public void setLowercaseIncluded(boolean b) throws InvalidPreferencesFormatException {
 		lowercaseIncluded = b;
 
-		// did we turn off the last flag?  if so
+		// did we turn off the last flag? if so
 		// turn it back on and report error
 		if (b == false && !flagsOK()) {
 			lowercaseIncluded = true;
@@ -234,7 +237,7 @@ public class RandomPasswordGen {
 	public void setNumbersIncluded(boolean b) throws InvalidPreferencesFormatException {
 		numbersIncluded = b;
 
-		// did we turn off the last flag?  if so
+		// did we turn off the last flag? if so
 		// turn it back on and report error
 		if (b == false && !flagsOK()) {
 			numbersIncluded = true;
@@ -248,7 +251,7 @@ public class RandomPasswordGen {
 	public void setOthersIncluded(boolean b) throws InvalidPreferencesFormatException {
 		othersIncluded = b;
 
-		// did we turn off the last flag?  if so
+		// did we turn off the last flag? if so
 		// turn it back on and report error
 		if (b == false && !flagsOK()) {
 			othersIncluded = true;
@@ -263,27 +266,27 @@ public class RandomPasswordGen {
 		// make sure the template contains only legal characters
 		for (int i = 0; i < template.length(); i++) {
 			switch (template.charAt(i)) {
-				case 'a' :
-				case 'A' :
-				case 'n' :
-				case 'N' :
-				case 'o' :
-				case 'O' :
-					break;
-					
-				default :
-					throw new ParseException("Password template contains an invalid character", i);
+			case 'a':
+			case 'A':
+			case 'n':
+			case 'N':
+			case 'o':
+			case 'O':
+				break;
+
+			default:
+				throw new ParseException("Password template contains an invalid character", i);
 			}
 		}
 		this.template = template;
 	}
-	
+
 	/**
 	 * Clears the password template,making generation rely on the flags.
-	 *
+	 * 
 	 */
 	public void clearTemplate() {
-		template = "";	
+		template = "";
 	}
 
 	/**
@@ -292,11 +295,11 @@ public class RandomPasswordGen {
 	public void setUppercaseIncluded(boolean b) throws InvalidPreferencesFormatException {
 		uppercaseIncluded = b;
 
-		// did we turn off the last flag?  if so
+		// did we turn off the last flag? if so
 		// turn it back on and report error
 		if (b == false && !flagsOK()) {
 			uppercaseIncluded = true;
-			throw new InvalidPreferencesFormatException("At least one flag must be on to generate a password");		
+			throw new InvalidPreferencesFormatException("At least one flag must be on to generate a password");
 		}
 	}
 
@@ -333,4 +336,3 @@ public class RandomPasswordGen {
 	}
 
 }
-

@@ -7,11 +7,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.CollectionUtils;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,19 +18,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.R;
-import com.android.bean.ResponseData;
-import com.android.bean.VersionBean;
 import com.android.common.Constants;
-import com.android.common.RemoteDataHandler;
 import com.android.common.SystemHelper;
-import com.android.common.RemoteDataHandler.Callback;
+import com.android.dialog.MyUpdateDialog;
+import com.android.mapping.VersionMapping;
 import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.api.Scope;
@@ -60,6 +53,12 @@ public class AppUpdateComponent {
 	@RootContext
 	Context context;
 
+	@Bean
+	WifiComponent wifiComponent;
+
+	@Bean
+	ToastComponent toastComponent;
+
 	@AfterInject
 	public void initAppUpdate() {
 		myUpdateDialog = new MyUpdateDialog(context);
@@ -67,47 +66,42 @@ public class AppUpdateComponent {
 
 	public void updateApp() {
 		String url = Constants.URL_UPDATE_APP;
-		RemoteDataHandler.asyncGet(url, new Callback() {
-			@Override
-			public void dataLoaded(ResponseData data) {
-				if (data.getCode() == 1) {
-					String json = data.getJson();
-					ArrayList<VersionBean> datas = VersionBean.newInstanceList(json);
-					if (datas != null) {
-						final VersionBean vbean = datas.get(0);
-						final String sysAppVersion = String.valueOf(SystemHelper.getAppVersionCode(context));
-						if (!StringUtils.equalsIgnoreCase(vbean.getVersionNo(), sysAppVersion)) {
-							myUpdateDialog.dialog_message.setText("有新版本（V" + vbean.getVersionNo() + "）升级");
-							myUpdateDialog.show();
-							myUpdateDialog.dialog_yes.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									Toast.makeText(context, "开始下载", Toast.LENGTH_SHORT).show();
-									if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-										saveFileName += vbean.getName();
-										apkUrl += vbean.getName();
-										Thread downLoadThread = new Thread(mdownApkRunnable);
-										downLoadThread.start();
-									} else {
-										myUpdateDialog.dismiss();
-										Toast.makeText(context, "亲，SD卡不在了，快去找找！！", Toast.LENGTH_SHORT).show();
-									}
-								}
-							});
-							myUpdateDialog.dialog_no.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									interceptFlag = true;
-									myUpdateDialog.dismiss();
-								}
-							});
-						} else {
-							Toast.makeText(context, "当前是最新版本", Toast.LENGTH_SHORT).show();
+		if (wifiComponent.isConnected()) {
+			VersionMapping data = VersionMapping.getJSON(url);
+			if (data.code == Constants.STATUS_SUCCESS && CollectionUtils.isNotEmpty(data.datas)) {
+				final VersionMapping.Version remoteVersion = data.datas.get(0);
+				int appVersion = SystemHelper.getAppVersionCode(context);
+				if (appVersion < remoteVersion.versionNo) {
+					myUpdateDialog.dialog_message.setText("有新版本（V" + remoteVersion.description + "）升级");
+					myUpdateDialog.show();
+					myUpdateDialog.dialog_yes.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Toast.makeText(context, "开始下载", Toast.LENGTH_SHORT).show();
+							if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+								saveFileName += remoteVersion.name;
+								apkUrl += remoteVersion.name;
+								Thread downLoadThread = new Thread(mdownApkRunnable);
+								downLoadThread.start();
+							} else {
+								myUpdateDialog.dismiss();
+								toastComponent.show("亲，SD卡不在了，快去找找！！");
+							}
 						}
-					}
+					});
+					myUpdateDialog.dialog_no.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							interceptFlag = true;
+							myUpdateDialog.dismiss();
+						}
+					});
+				} else {
+					toastComponent.show("当前是最新版本.");
 				}
 			}
-		});
+		}
+
 	}
 
 	private Handler mHandler = new Handler() {
@@ -187,30 +181,6 @@ public class AppUpdateComponent {
 		i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
 		context.startActivity(i);
 
-	}
-
-	/**
-	 * 生成下载的提示框
-	 * 
-	 * @author superleo
-	 * 
-	 */
-	public static class MyUpdateDialog extends Dialog {
-		public Button dialog_yes;
-		public Button dialog_no;
-		public TextView dialog_message;
-		public ProgressBar progress;
-		public TextView shuzhi;
-
-		public MyUpdateDialog(Context context) {
-			super(context, R.style.MyProgressDialog);
-			this.setContentView(R.layout.update_dialog);
-			dialog_message = (TextView) findViewById(R.id.dialog_message);
-			dialog_yes = (Button) findViewById(R.id.dialog_yes);
-			dialog_no = (Button) findViewById(R.id.dialog_no);
-			progress = (ProgressBar) findViewById(R.id.progress);
-			shuzhi = (TextView) findViewById(R.id.shuzhi);
-		}
 	}
 
 }

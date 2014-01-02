@@ -2,6 +2,7 @@ package com.android.dialog.design;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,9 @@ public class IDialog extends AlertDialog {
 
 	private DialogView view;
 	private LayoutInflater mInflater;
-	private Context context;
 
 	protected IDialog(Context context) {
 		super(context);
-		this.context = context;
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		view = (DialogView) mInflater.inflate(R.layout.dialog, null);
 	}
@@ -57,7 +56,7 @@ public class IDialog extends AlertDialog {
 			}
 		});
 
-		super.setButton(text, listener);
+		super.setButton(DialogInterface.BUTTON_POSITIVE, text, listener);
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class IDialog extends AlertDialog {
 				}
 			}
 		});
-		super.setButton2(text, listener);
+		super.setButton(DialogInterface.BUTTON_NEGATIVE, text, listener);
 	}
 
 	@Override
@@ -89,6 +88,6 @@ public class IDialog extends AlertDialog {
 				dismiss();
 			}
 		});
-		super.setButton3(text, listener);
+		super.setButton(DialogInterface.BUTTON_NEUTRAL, text, listener);
 	}
 }

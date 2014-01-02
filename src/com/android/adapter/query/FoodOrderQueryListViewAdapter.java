@@ -14,18 +14,15 @@ import com.android.R;
 import com.android.common.MyNumberUtils;
 import com.android.domain.FoodOrder;
 
-public class FoodQueryAllDBListviewAdapter extends BaseAdapter {
+public class FoodOrderQueryListViewAdapter extends BaseAdapter {
 	private List<FoodOrder> data;
-	private Context context;
 	private LayoutInflater inflater;
 
-	public FoodQueryAllDBListviewAdapter(Context context) {
-		this.context = context;
+	public FoodOrderQueryListViewAdapter(Context context) {
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	public FoodQueryAllDBListviewAdapter(Context context, List data) {
-		this.context = context;
+	public FoodOrderQueryListViewAdapter(Context context, List<FoodOrder> data) {
 		this.data = data;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}

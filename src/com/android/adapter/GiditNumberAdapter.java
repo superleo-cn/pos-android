@@ -13,12 +13,10 @@ import com.android.R;
 
 public class GiditNumberAdapter extends BaseAdapter {
 
-	private Context context;
 	private LayoutInflater inflater;
 	private List<String> classList;
 
 	public GiditNumberAdapter(Context context, List<String> list) {
-		this.context = context;
 		this.classList = list;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
