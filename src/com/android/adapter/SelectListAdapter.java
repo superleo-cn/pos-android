@@ -105,15 +105,15 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_price.setText("S$" + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
 		}
 
-		convertView.setOnLongClickListener(new OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				classList.clear();
-				component.doCalculation();
-				notifyDataSetChanged();
-				return false;
-			}
-		});
+//		convertView.setOnLongClickListener(new OnLongClickListener() {
+//			@Override
+//			public boolean onLongClick(View v) {
+//				classList.clear();
+//				component.doCalculation();
+//				notifyDataSetChanged();
+//				return false;
+//			}
+//		});
 
 		// 为每一个view项设置触控监听
 		convertView.setOnTouchListener(new OnTouchListener() {
@@ -157,9 +157,10 @@ public class SelectListAdapter extends BaseAdapter {
 					} else if (x - ux < 0 && Math.abs(x - ux) >= 20) {
 						// Toast.makeText(context, "往右", 1).show();
 						component.remove2(position);
+						return true;
 					}
 				}
-				return false;
+				return true;
 			}
 		});
 
