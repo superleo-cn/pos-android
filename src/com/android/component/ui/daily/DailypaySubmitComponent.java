@@ -90,7 +90,7 @@ public class DailypaySubmitComponent {
 				}
 			}
 		} catch (Exception e) {
-			e.getMessage();
+			Log.e("[AndroidPrinter]", "提交每日支付错误", e);
 		}
 	}
 
@@ -103,16 +103,11 @@ public class DailypaySubmitComponent {
 				for (int i = 0; i < datas.size(); i++) {
 					CollectionOrder collection = datas.get(i);
 					params.put("cashTransactions[" + i + "].androidId", String.valueOf(collection.getId()));
-					Log.e("cashTransactions[" + i + "].androidId", String.valueOf(collection.getId()));
 					params.put("cashTransactions[" + i + "].cash.id", collection.cashId);
-					Log.e("cashTransactions[" + i + "].cash.id", collection.cashId);
 					params.put("cashTransactions[" + i + "].shop.id", collection.shopId);
-					Log.e("cashTransactions[" + i + "].shop.id", collection.shopId);
 					params.put("cashTransactions[" + i + "].user.id", collection.userId);
-					Log.e("cashTransactions[" + i + "].user.id", collection.userId);
 					params.put("cashTransactions[" + i + "].quantity",
 							StringUtils.defaultIfEmpty(collection.quantity, Constants.DEFAULT_PRICE_INT));
-					Log.e("cashTransactions[" + i + "].quantity", collection.quantity);
 				}
 			}
 			// 异步请求数据
@@ -127,7 +122,7 @@ public class DailypaySubmitComponent {
 			}
 
 		} catch (Exception e) {
-			e.getMessage();
+			Log.e("[AndroidPrinter]", "带回总数提交错误", e);
 		}
 	}
 
@@ -151,7 +146,7 @@ public class DailypaySubmitComponent {
 					params.put("dailySummaries[" + i + "].gTotalBalance", balance.gTotalBalance);
 					params.put("dailySummaries[" + i + "].middleCalculateTime", StringUtils.EMPTY);
 					params.put("dailySummaries[" + i + "].middleCalculateBalance", StringUtils.EMPTY);
-					params.put("dailySummaries[" + i + "].calculateTime",StringUtils.EMPTY);
+					params.put("dailySummaries[" + i + "].calculateTime", StringUtils.EMPTY);
 					params.put("dailySummaries[" + i + "].courier", balance.courier);
 					params.put("dailySummaries[" + i + "].others", balance.others);
 					params.put("dailySummaries[" + i + "].date", balance.date);
@@ -170,7 +165,7 @@ public class DailypaySubmitComponent {
 			}
 
 		} catch (Exception e) {
-			e.getMessage();
+			Log.e("[AndroidPrinter]", "每日营业额提交错误", e);
 		}
 	}
 
@@ -178,7 +173,7 @@ public class DailypaySubmitComponent {
 	 * 保存每日其他数据
 	 * */
 	public void save(TextView shop_money, TextView text_id_all_price, TextView cash_register, TextView today_turnover,
-			TextView tomorrow_money, TextView total_take_num, TextView total,TextView other, TextView send_person) {
+			TextView tomorrow_money, TextView total_take_num, TextView total, TextView other, TextView send_person) {
 		String aOpenBalance = MyTextUtils.checkIntTextView(shop_money);
 		String bExpenses = MyTextUtils.checkIntTextView(text_id_all_price);
 		String cCashCollected = MyTextUtils.checkIntTextView(cash_register);
@@ -189,8 +184,8 @@ public class DailypaySubmitComponent {
 		String others = MyTextUtils.checkIntTextView(other);
 		String courier = MyTextUtils.checkIntTextView(send_person);
 
-		BalanceOrder.save(aOpenBalance, bExpenses, cCashCollected, dDailyTurnover, eNextOpenBalance, fBringBackCash, gTotalBalance,
-				 others, courier, myApp);
+		BalanceOrder.save(aOpenBalance, bExpenses, cCashCollected, dDailyTurnover, eNextOpenBalance, fBringBackCash, gTotalBalance, others,
+				courier, myApp);
 	}
 
 	/**
@@ -228,7 +223,6 @@ public class DailypaySubmitComponent {
 			List<Double> all_num_price, Double num_count, TextView take_all_price, Handler handler) {
 		DecimalFormat df = new DecimalFormat(Constants.DEFAULT_PRICE_FLOAT);
 		List<Collection> datas_num = Collection.queryList();
-		Log.e("查询带回数据库", datas_num.size() + "");
 		if (datas_num != null) {
 			for (Collection collection : datas_num) {
 				TakeNumberBean bean = new TakeNumberBean();
@@ -237,7 +231,6 @@ public class DailypaySubmitComponent {
 				bean.setNum("");
 				number_classList.add(bean);
 			}
-			Log.e("打包带走", number_classList.size() + "");
 			number_adapter = new TakeNumerAdapter(context, number_classList, handler);
 			num_list.setAdapter(number_adapter);
 			try {
@@ -259,7 +252,7 @@ public class DailypaySubmitComponent {
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.e("[AndroidPrinter]", "支付页加载错误", e);
 			}
 
 		}

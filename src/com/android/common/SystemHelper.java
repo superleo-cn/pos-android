@@ -190,7 +190,7 @@ public class SystemHelper {
 				}
 			}
 		} catch (Exception e) {
-			Log.e("NetworkInfo", "Exception", e);
+			Log.e("[SystemHelper]", "网络连接获取失败", e);
 		}
 		return flag;
 	}
@@ -219,7 +219,7 @@ public class SystemHelper {
 				}
 			}
 		} catch (Exception e) {
-			Log.e("NetworkInfo", "Exception", e);
+			Log.e("[SystemHelper]", "网络连接获取失败", e);
 		}
 		return code;
 	}
@@ -238,7 +238,7 @@ public class SystemHelper {
 			versionCode = pi.versionCode;
 
 		} catch (Exception e) {
-			Log.e("VersionInfo", "Exception", e);
+			Log.e("[SystemHelper]", "版本获取失败", e);
 		}
 		return versionCode;
 	}
@@ -257,7 +257,7 @@ public class SystemHelper {
 			versionName = pi.versionName;
 
 		} catch (Exception e) {
-			Log.e("VersionInfo", "Exception", e);
+			Log.e("[SystemHelper]", "系统名称获取失败", e);
 		}
 		return versionName;
 	}
