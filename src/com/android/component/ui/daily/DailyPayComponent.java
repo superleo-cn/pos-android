@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.MenuCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.activity.MainActivity;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
@@ -151,18 +149,13 @@ public class DailyPayComponent {
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// 今日收银机
 	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
-	
+
 	MyProcessDialog dialog;
 
 	@AfterViews
 	public void initDailayPay() {
-<<<<<<< HEAD
-
-=======
-		
 		dialog = new MyProcessDialog(context, stringResComponent.Loading);
 		dialog.show();
->>>>>>> branch 'master' of https://github.com/superleo-cn/pos-android.git
 		menuCompat.textDaily();
 
 		if (!isCompleted()) {
