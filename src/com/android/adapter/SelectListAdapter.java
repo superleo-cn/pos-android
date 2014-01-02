@@ -105,15 +105,15 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_price.setText("S$" + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
 		}
 
-//		convertView.setOnLongClickListener(new OnLongClickListener() {
-//			@Override
-//			public boolean onLongClick(View v) {
-//				classList.clear();
-//				component.doCalculation();
-//				notifyDataSetChanged();
-//				return false;
-//			}
-//		});
+		// convertView.setOnLongClickListener(new OnLongClickListener() {
+		// @Override
+		// public boolean onLongClick(View v) {
+		// classList.clear();
+		// component.doCalculation();
+		// notifyDataSetChanged();
+		// return false;
+		// }
+		// });
 
 		// 为每一个view项设置触控监听
 		convertView.setOnTouchListener(new OnTouchListener() {
@@ -132,27 +132,53 @@ public class SelectListAdapter extends BaseAdapter {
 					// }
 					if (x - ux > 0 && Math.abs(x - ux) >= 20) {
 						// Toast.makeText(context, "往左", 1).show();
-						if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-							Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
-							int j = 0;
-							for (int i = 0; i < classList.size(); i++) {
-								map.put(i + j + "", classList.get(i));
-								if (i == position) {
-									SelectFoodBean foodBean = new SelectFoodBean();
-									foodBean.setFood_name(Constants.SPLIT_LINE);
-									foodBean.setFood_num("0");
-									foodBean.setFood_price("0.00");
-									j = 1;
-									map.put(i + j + "", foodBean);
+						if (classList.size() == position + 1) {
+							if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+								Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
+								int j = 0;
+								for (int i = 0; i < classList.size(); i++) {
+									map.put(i + j + "", classList.get(i));
+									if (i == position) {
+										SelectFoodBean foodBean = new SelectFoodBean();
+										foodBean.setFood_name(Constants.SPLIT_LINE);
+										foodBean.setFood_num("0");
+										foodBean.setFood_price("0.00");
+										j = 1;
+										map.put(i + j + "", foodBean);
+									}
 								}
+								j = 0;
+								classList.clear();
+								for (int z = 0; z < map.size(); z++) {
+									classList.add(map.get(z + ""));
+								}
+								notifyDataSetChanged();
 							}
-							j = 0;
-							classList.clear();
-							for (int z = 0; z < map.size(); z++) {
-								classList.add(map.get(z + ""));
+						} else {
+							if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
+									&& !classList.get(position + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+								Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
+								int j = 0;
+								for (int i = 0; i < classList.size(); i++) {
+									map.put(i + j + "", classList.get(i));
+									if (i == position) {
+										SelectFoodBean foodBean = new SelectFoodBean();
+										foodBean.setFood_name(Constants.SPLIT_LINE);
+										foodBean.setFood_num("0");
+										foodBean.setFood_price("0.00");
+										j = 1;
+										map.put(i + j + "", foodBean);
+									}
+								}
+								j = 0;
+								classList.clear();
+								for (int z = 0; z < map.size(); z++) {
+									classList.add(map.get(z + ""));
+								}
+								notifyDataSetChanged();
 							}
-							notifyDataSetChanged();
 						}
+
 						return true;
 					} else if (x - ux < 0 && Math.abs(x - ux) >= 20) {
 						// Toast.makeText(context, "往右", 1).show();

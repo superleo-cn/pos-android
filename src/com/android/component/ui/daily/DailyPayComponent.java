@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.MenuCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.activity.MainActivity;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
@@ -137,7 +135,7 @@ public class DailyPayComponent {
 
 	@Bean
 	LoginComponent loginComponent;
-	
+
 	@Bean
 	MenuComponent menuCompat;
 
@@ -151,10 +149,9 @@ public class DailyPayComponent {
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// 今日收银机
 	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
-	
+
 	@AfterViews
 	public void initDailayPay() {
-		
 		menuCompat.textDaily();
 
 		if (!isCompleted()) {
@@ -186,7 +183,7 @@ public class DailyPayComponent {
 
 	public boolean isCompleted() {
 		String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-		Log.e("今天日期", date);
+		Log.d("[SystemHelper]", "今天的日期是 [" + date + "]");
 		boolean flag = dailypaysubmitComponent.isCompleted(date, myApp);
 		if (!flag) {
 			btu_id_sbumit.setVisibility(View.VISIBLE);
@@ -286,8 +283,7 @@ public class DailyPayComponent {
 		setReadonly(daily_list, R.id.text_id_price);
 
 		// 清空所有组件
-		MyTextUtils.clearTextView(cash_register, today_turnover, total, tomorrow_money, total_take_num,
-				send_person, other, shop_money);
+		MyTextUtils.clearTextView(cash_register, today_turnover, total, tomorrow_money, total_take_num, send_person, other, shop_money);
 
 	}
 
@@ -316,8 +312,7 @@ public class DailyPayComponent {
 			Double take_price = price_c - price_e;
 			total_take_num.setText(MyNumberUtils.numToStr(take_price));
 		} catch (Exception e) {
-			Log.e("总计算", e.getMessage());
-			// e.getMessage();
+			Log.e("[DailyPayComponent]", "计算报错", e);
 		}
 	}
 
@@ -329,13 +324,11 @@ public class DailyPayComponent {
 	@TextChange(R.id.shop_money)
 	void shopmoneyTextChanged() {
 		compute();
-		Log.e("今日输出价格", "");
 	}
 
 	@TextChange(R.id.tomorrow_money)
 	void tomorrowmoneyTextChanged() {
 		compute();
-		Log.e("明日输出价格", "");
 	}
 
 	Handler handler = new Handler() {
@@ -357,7 +350,7 @@ public class DailyPayComponent {
 					text_id_all_price.setText(MyNumberUtils.numToStr(count));
 					compute();
 				} catch (Exception e) {
-					Log.e("支付款计算报错信息", e.getMessage());
+					Log.e("[DailyPayComponent]", "支付款计算报错", e);
 					toastComponent.show(stringResComponent.err_price);
 				}
 				break;
@@ -379,10 +372,8 @@ public class DailyPayComponent {
 	};
 
 	public void dismissKeyboard() {
-		keyboardComponent.dismissKeyboard(cash_register, today_turnover, total, tomorrow_money,
-				total_take_num, send_person, shop_money);
-		keyboardComponent.clearfocusKeyboard(cash_register, today_turnover, total, tomorrow_money,
-				total_take_num, send_person, shop_money);
+		keyboardComponent.dismissKeyboard(cash_register, today_turnover, total, tomorrow_money, total_take_num, send_person, shop_money);
+		keyboardComponent.clearfocusKeyboard(cash_register, today_turnover, total, tomorrow_money, total_take_num, send_person, shop_money);
 	}
 
 	public void setReadonly(ListView view, int r) {

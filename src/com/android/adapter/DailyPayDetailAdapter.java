@@ -70,20 +70,12 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 			viewHolder.text_id_name = (TextView) convertView.findViewById(R.id.text_id_name);
 			viewHolder.text_id_price = (EditText) convertView.findViewById(R.id.text_id_price);
 			viewHolder.text_id_price.setTag(position);
-
-			// viewHolder.text_id_price.setFocusable(true);
-			// viewHolder.text_id_price.setFocusableInTouchMode(true);
-			// viewHolder.text_id_price.setClickable(true);
-			// viewHolder.text_id_price.requestFocus();
-
 			viewHolder.text_id_price.setOnTouchListener(new OnTouchListener() {
 
 				@Override
 				public boolean onTouch(View view, MotionEvent event) {
 					if (event.getAction() == MotionEvent.ACTION_UP) {
-
 						index = position;
-
 					}
 
 					return false;
@@ -106,10 +98,7 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 						msg.what = CHAGE_NUM_DETAIL;
 						msg.obj = p + "+" + "0.00";
 						handler.sendMessage(msg);
-						Log.e("输入内同唯恐了", "0.00");
 					} else {
-						// bean.setPrice(viewHolder.text_id_price.getText().toString());
-
 						String price = s.toString();
 						if (s.length() == 0) {
 							price = "0.00";
@@ -119,13 +108,11 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 							}
 						}
 						String now_price = price;
-						Log.e("变空后的价格", now_price);
 						hashMap_detail.put(p, now_price);
 						Message msg = new Message();
 						msg.what = CHAGE_NUM_DETAIL;
 						msg.obj = p + "+" + now_price;
 						handler.sendMessage(msg);
-						Log.e("执行输入的价格", now_price);
 					}
 				}
 
@@ -143,15 +130,11 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 		viewHolder.text_id_price.clearFocus();
 
 		if (index != -1 && index == position) {
-
-			// 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
-
 			viewHolder.text_id_price.requestFocus();
 		}
 
 		if (hashMap_detail.get(position) != null) {
 			viewHolder.text_id_price.setText(hashMap_detail.get(position));
-			Log.e("改变值", "成功");
 		}
 		convertView.setOnTouchListener(new OnTouchListener() {
 
@@ -173,8 +156,6 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 				return true;
 			}
 		} catch (Exception e) {
-			// Toast.makeText(context, R.string.err_price,
-			// Toast.LENGTH_SHORT).show();
 			return false;
 		}
 		return false;
@@ -187,7 +168,6 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	}
 
 	public void cacheData(String price, int p) {
-		Log.d(">>>>>>>>>>>>>>>>>>>>>", price + "  " + p);
 		if (p > classList.size())
 			return;
 		detailBean = classList.get(p);

@@ -94,7 +94,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 			DecimalFormat df = new DecimalFormat("0.00");
 			viewHolder.num_price.setText(df.format(total_price));
 		} catch (Exception e) {
-			Log.e("err", "");
+			Log.e("[TakeNumerAdapter]", "转换报错", e);
 		}
 
 		viewHolder.id_price.setOnTouchListener(new OnTouchListener() {
@@ -122,48 +122,42 @@ public class TakeNumerAdapter extends BaseAdapter {
 					viewHolder.id_price.setText("9999.99");
 					return;
 				}
-				if (bean.getNum().equals(s.toString())) {
 
-				} else {
-
-					try {
-						String result = s.toString();
-						if (result == null) {
+				try {
+					String result = s.toString();
+					if (result == null) {
+						result = "0";
+					} else {
+						if (result.equals("")) {
 							result = "0";
-						} else {
-							if (result.equals("")) {
-								result = "0";
-							}
 						}
-						Double price = Double.parseDouble(viewHolder.num_id_name.getText().toString());
-						String num_tv = result;
-						bean.setNum(num_tv);
-						int num = Integer.parseInt(num_tv);
-						Double total_price = price * num;
-						DecimalFormat df = new DecimalFormat("0.00");
-						viewHolder.num_price.setText(df.format(total_price));
-						hashMap_num.put(position, result);
-						hashMap_numprice.put(position, String.valueOf(total_price));
-						Message msg = new Message();
-						msg.what = SET_NUM;
-						msg.obj = position + "+" + String.valueOf(total_price);
-						handler.sendMessage(msg);
-						Log.e("计算次数", "");
-					} catch (Exception e) {
-						Log.e("计算错误", "");
 					}
+					Double price = Double.parseDouble(viewHolder.num_id_name.getText().toString());
+					String num_tv = result;
+					bean.setNum(num_tv);
+					int num = Integer.parseInt(num_tv);
+					Double total_price = price * num;
+					DecimalFormat df = new DecimalFormat("0.00");
+					viewHolder.num_price.setText(df.format(total_price));
+					hashMap_num.put(position, result);
+					hashMap_numprice.put(position, String.valueOf(total_price));
+					Message msg = new Message();
+					msg.what = SET_NUM;
+					msg.obj = position + "+" + String.valueOf(total_price);
+					handler.sendMessage(msg);
+					Log.d("[TakeNumerAdapter]", "计算次数");
+				} catch (Exception e) {
+					Log.e("[TakeNumerAdapter]", "计算错误", e);
 				}
+
 			}
 
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				// TODO Auto-generated method stub
-				// viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
 			}
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -173,15 +167,14 @@ public class TakeNumerAdapter extends BaseAdapter {
 		if (index != -1 && index == position) {
 
 			// 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
-
 			viewHolder.id_price.requestFocus();
 			if (hashMap_num.get(position) != null) {
 				viewHolder.id_price.setText(hashMap_num.get(position));
-				Log.e("改变值", "成功");
+				Log.d("[TakeNumerAdapter]", "修改数量成功");
 			}
 			if (hashMap_numprice.get(position) != null) {
 				viewHolder.num_price.setText(hashMap_numprice.get(position));
-				Log.e("改变值", "成功");
+				Log.d("[TakeNumerAdapter]", "修改价格成功");
 			}
 		}
 
@@ -206,8 +199,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 				return true;
 			}
 		} catch (Exception e) {
-			// Toast.makeText(context, R.string.err_price,
-			// Toast.LENGTH_SHORT).show();
+			Log.e("[TakeNumerAdapter]", "价钱转换错误", e);
 			return false;
 		}
 		return false;

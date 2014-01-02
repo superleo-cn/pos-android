@@ -39,12 +39,9 @@ public class AndroidPrinter {
 		if (wfComm == null) {
 			try {
 				wfComm = new WifiCommunication(mHandler);
-				Log.d("WIFI Printer", "try to re-connect printer and print message. ");
 				connect();
 			} catch (Exception e) {
-				Log.d("WIFI Printer", "Cannot find WIFI Printer ", e);
-				// Toast.makeText(context, "Cannot find WIFI Printer",
-				// Toast.LENGTH_SHORT).show();
+				Log.e("[AndroidPrinter]", "打印机初始化错误", e);
 			}
 		}
 
@@ -58,12 +55,11 @@ public class AndroidPrinter {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				Log.d("WIFI Printer", "try to re-connect printer and print message: " + message);
+				Log.e("[AndroidPrinter]", "打印机中断", e);
 			}
 		}
 		// if conenct to WIFI printer
 		if (connFlag == 1) {
-			Log.d("WIFI Printer", "start to printer :" + message);
 			startPrint(message);
 		}
 	}
@@ -75,16 +71,16 @@ public class AndroidPrinter {
 			if (connFlag == 0) {
 				try {
 					Thread.sleep(1000);
-					Log.d("WIFI Printer", "Connection to WIFI Printer.");
+					Log.d("[AndroidPrinter]", "连接打印机");
 					wfComm.initSocket(ip, 9100);
 					connFlag = 1;
 				} catch (InterruptedException e) {
-					Log.d("WIFI Printer", "try to re-connect printer and print message: " + e);
+					Log.e("[AndroidPrinter]", "打印机中断", e);
 				}
 
 			}
 		} catch (Exception ex) {
-			Log.e("WIFI Printer", "WIFI connection failed", ex);
+			Log.e("[AndroidPrinter]", "打印机连接失败", ex);
 		}
 	}
 
@@ -94,7 +90,7 @@ public class AndroidPrinter {
 			connFlag = 0;
 			wfComm.close();
 		} catch (Exception ex) {
-			Log.e("WIFI Printer", "WIFI disconnect failed", ex);
+			Log.e("[AndroidPrinter]", "打印机关闭失败", ex);
 		}
 	}
 
@@ -107,10 +103,10 @@ public class AndroidPrinter {
 	public void startPrint(String message) {
 		if (message.length() > 0) {
 			// drawer 先弹出抽屉
-//			byte[] tail = new byte[3];
-//			tail[0] = 0x0A;
-//			tail[1] = 0x0D;
-//			wfComm.sndByte(tail);
+			// byte[] tail = new byte[3];
+			// tail[0] = 0x0A;
+			// tail[1] = 0x0D;
+			// wfComm.sndByte(tail);
 
 			byte[] bytecmd = new byte[5];
 			bytecmd[0] = 0x1B;
@@ -127,7 +123,6 @@ public class AndroidPrinter {
 			tcmd[2] = 0x10;
 			wfComm.sndByte(tcmd);
 			wfComm.sendMsg(message, "gbk");
-			Log.d("WIFI Printer", "Print message is: " + message);
 
 			// cut paper
 			byte[] bits = new byte[4];
@@ -212,11 +207,9 @@ public class AndroidPrinter {
 				while (true) {
 					wfComm.sndByte(tcmd);
 					Thread.sleep(10000);
-					Log.d("WIFI Printer", "WIFI printer is still working.");
 				}
 			} catch (InterruptedException e) {
-				Log.d("WIFI Printer", "Check Printer Error, trying to re-connect.", e);
-				// reconnect();
+				Log.e("[AndroidPrinter]", "打印机中断", e);
 			}
 		}
 	}
@@ -237,8 +230,7 @@ public class AndroidPrinter {
 					Thread.sleep(5000);
 				}
 			} catch (InterruptedException e) {
-				Log.d("WIFI Printer", "Cannot Receive Message, trying to re-connect.", e);
-				// reconnect();
+				Log.e("[AndroidPrinter]", "打印机中断", e);
 			}
 		}
 	}

@@ -85,7 +85,6 @@ public class FoodListAdapter extends BaseAdapter {
 		}
 
 		public void onClick(View v) {
-			Log.e("点击按钮", "");
 			new Thread() {
 				public void run() {
 					Message msg = new Message();

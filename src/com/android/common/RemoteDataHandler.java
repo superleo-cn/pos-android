@@ -286,18 +286,6 @@ public class RemoteDataHandler {
 						if (obj.has(_DATAS)) {
 							msg.obj = obj.getString(_DATAS);
 						}
-						// if(obj.has(_HASMORE)){
-						// msg.getData().putBoolean(_HASMORE,
-						// obj.getBoolean(_HASMORE));
-						// }
-						// if(obj.has(_COUNT)){
-						// msg.getData().putLong(_COUNT, obj.getLong(_COUNT));
-						// }
-						//
-						// if(obj.has(_RESULT)){
-						// msg.getData().putString(_RESULT,
-						// obj.getString(_RESULT));
-						// }
 					}
 				} catch (IOException e) {
 					msg.what = HttpStatus.SC_REQUEST_TIMEOUT;
@@ -533,8 +521,6 @@ public class RemoteDataHandler {
 				data.setJson((String) msg.obj);
 				data.setResult(msg.getData().getString(_RESULT));
 				data.setCount(msg.getData().getLong(_COUNT));
-				Log.d(TAG, data.toString());
-
 				callback.dataLoaded(data);
 			}
 		};
