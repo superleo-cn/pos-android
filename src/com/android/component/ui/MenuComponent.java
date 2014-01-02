@@ -103,12 +103,10 @@ public class MenuComponent {
 			} else {
 				popu_QueryAllDB.setVisibility(View.GONE);
 			}
-			if (myApp.getUsername().equalsIgnoreCase(Constants.ROLE_SUPERADMIN)
-					|| myApp.getUsername().equalsIgnoreCase(Constants.ROLE_ADMIN)
-					|| myApp.getUsername().equalsIgnoreCase(Constants.ROLE_OPERATOR)) {
-				popu_setting.setVisibility(View.VISIBLE);
-			} else {
+			if (myApp.getUserType().equalsIgnoreCase(Constants.ROLE_OPERATOR)) {
 				popu_setting.setVisibility(View.GONE);
+			} else {
+				popu_setting.setVisibility(View.VISIBLE);
 			}
 
 			(getHiddenView(view)).setVisibility(View.GONE);
