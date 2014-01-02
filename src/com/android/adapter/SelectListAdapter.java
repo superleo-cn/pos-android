@@ -99,8 +99,8 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_layout.setPadding(DisplayUtil.dip2px(context, 5), 0, DisplayUtil.dip2px(context, 5), 0);
 			viewHolder.food_name.setText(bean.getFood_name());
 		} else {
-			viewHolder.food_layout.setPadding(DisplayUtil.dip2px(context, 5), DisplayUtil.dip2px(context, 10),
-					DisplayUtil.dip2px(context, 5), DisplayUtil.dip2px(context, 5));
+			viewHolder.food_layout.setPadding(DisplayUtil.dip2px(context, 5), 0,
+					DisplayUtil.dip2px(context, 5), 0);
 			viewHolder.food_name.setText(bean.getFood_name());
 		}
 		if (bean.getFood_num().equals("0")) {
