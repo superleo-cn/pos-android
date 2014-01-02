@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.android.R;
 import com.android.activity.DailyPayActivity_;
 import com.android.activity.MainActivity_;
+import com.android.activity.QueryAllDBActivity_;
 import com.android.activity.SettingActivity_;
 import com.android.common.Constants;
 import com.android.common.MyApp;
@@ -24,6 +26,7 @@ import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.component.ui.login.LoginComponent;
 import com.android.dialog.ConfirmDialog;
+import com.android.dialog.MyProcessDialog;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -76,6 +79,8 @@ public class MenuComponent {
 
 	private PopupWindow popupWindow;
 
+	MyProcessDialog dialog;
+
 	/**
 	 * 显示用户和点的名称
 	 */
@@ -83,6 +88,7 @@ public class MenuComponent {
 	public void initMenu() {
 		login_name.setText(stringResComponent.mainTitle + " " + myApp.getUsername() + ",");
 		shop_name.setText(myApp.getShopName() + "-" + myApp.getShopCode());
+		dialog = new MyProcessDialog(context, stringResComponent.loading);
 	}
 
 	/**
@@ -116,7 +122,7 @@ public class MenuComponent {
 				@Override
 				public void onClick(View arg0) {
 					dismiss();
-					activityComponent.startMainWithTransition();
+					new SwitchActivity(MainActivity_.class).execute();
 				}
 			});
 
@@ -124,7 +130,8 @@ public class MenuComponent {
 				public void onClick(View v) {
 					dismiss();
 					if (!StringUtils.equalsIgnoreCase(Constants.ROLE_CASHIER, myApp.getUserType())) {
-						activityComponent.startSettingWithTransition();
+						dialog.show();
+						new SwitchActivity(SettingActivity_.class).execute();
 					} else {
 						toastComponent.show(stringResComponent.insufficientpermissions);
 					}
@@ -136,7 +143,7 @@ public class MenuComponent {
 				@Override
 				public void onClick(View arg0) {
 					dismiss();
-					activityComponent.startDailyWithTransition();
+					new SwitchActivity(DailyPayActivity_.class).execute();
 				}
 			});
 			popu_exit.setOnClickListener(new OnClickListener() {
@@ -149,7 +156,7 @@ public class MenuComponent {
 				@Override
 				public void onClick(View v) {
 					dismiss();
-					activityComponent.startQueryAllWithTransition();
+					new SwitchActivity(QueryAllDBActivity_.class).execute();
 				}
 			});
 		}
@@ -167,9 +174,9 @@ public class MenuComponent {
 	@Click(R.id.textDailyPay)
 	void textDailyPayOnClick() {
 		if (textDailyPay.getText().toString().equals(stringResComponent.diancaiName)) {
-			activityComponent.startMainWithTransition();
+			new SwitchActivity(MainActivity_.class).execute();
 		} else {
-			activityComponent.startDailyWithTransition();
+			new SwitchActivity(DailyPayActivity_.class).execute();
 		}
 	}
 
@@ -216,6 +223,36 @@ public class MenuComponent {
 			}
 
 		}.build();
+	}
+
+	class SwitchActivity extends AsyncTask<Class, Void, Integer> {
+
+		private Class cls = null;
+
+		public SwitchActivity(Class cls) {
+			this.cls = cls;
+
+		};
+
+		@Override
+		protected Integer doInBackground(Class... objs) {
+			activityComponent.startActivity(cls);
+			return Integer.MIN_VALUE;
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			dialog.dismiss();
+		}
+
+		@Override
+		protected void onPreExecute() {
+			dialog.show();
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+		}
 	}
 
 }

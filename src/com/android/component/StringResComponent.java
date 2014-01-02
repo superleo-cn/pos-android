@@ -15,6 +15,9 @@ import com.googlecode.androidannotations.annotations.res.StringRes;
 public class StringResComponent {
 
 	// 登录界面的用到的
+	@StringRes(R.string.loading)
+	public String loading;
+
 	@StringRes(R.string.login_wait)
 	public String loginWait;
 
@@ -60,7 +63,7 @@ public class StringResComponent {
 
 	@StringRes(R.string.selec_not_food)
 	public String noFood;
-	
+
 	@StringRes(R.string.food_package)
 	public String foodPackage;
 
@@ -106,19 +109,17 @@ public class StringResComponent {
 
 	@StringRes(R.string.all_sync_succ)
 	public String allSyncSucc;
-	
+
 	@StringRes(R.string.diancai_name)
 	public String diancaiName;
-	
+
 	@StringRes(R.string.daily_pay)
 	public String dailyPay;
-	
+
 	@StringRes(R.string.total_prie)
 	public String totalPrie;
-	
+
 	@StringRes(R.string.surplus2)
 	public String Surplus;
-	
-	@StringRes(R.string.loading_)
-	public String Loading;
+
 }

@@ -61,7 +61,7 @@ public class LanguageSetComponent {
 			languageComponent.updateLanguage(Locale.SIMPLIFIED_CHINESE);
 			languageSet.setText("中文");
 		}
-		activityComponent.startSettingWithTransition();
+		activityComponent.startSetting();
 	}
 
 	// 初始化数据

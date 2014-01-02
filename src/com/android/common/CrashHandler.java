@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Looper;
+import android.util.Log;
 
 import com.android.component.ActivityComponent;
 import com.android.component.DirectEmailComponent;
@@ -99,6 +100,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 				userInfo = myApp.getUserId() + "-" + myApp.getUsername() + "(" + myApp.getUserType() + ")";
 			}
 			String sendMsg = String.format(ERR_INFO, shopInfo, userInfo, dateTime, errorMsg);
+			Log.e("[CrashHandler]", "全局异常发生", ex);
 			directEmailComponent.sendMail(title, sendMsg);
 		}
 		return true;
