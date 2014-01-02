@@ -16,11 +16,13 @@ import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.R;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
+import com.android.common.DisplayUtil;
 import com.android.component.ui.main.OrderComponent;
 
 public class SelectListAdapter extends BaseAdapter {
@@ -77,6 +79,7 @@ public class SelectListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.select_list_item, null);
 			viewHolder = new ViewHolder();
+			viewHolder.food_layout = (LinearLayout) convertView.findViewById(R.id.food_layout);
 			viewHolder.food_name = (TextView) convertView.findViewById(R.id.food_name);
 			viewHolder.food_num = (TextView) convertView.findViewById(R.id.food_num);
 			viewHolder.food_price = (TextView) convertView.findViewById(R.id.food_price);
@@ -91,7 +94,15 @@ public class SelectListAdapter extends BaseAdapter {
 		} else {
 			convertView.setBackgroundColor(Color.LTGRAY);
 		}
-		viewHolder.food_name.setText(bean.getFood_name());
+
+		if (bean.getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+			viewHolder.food_layout.setPadding(DisplayUtil.dip2px(context, 5), 0, DisplayUtil.dip2px(context, 5), 0);
+			viewHolder.food_name.setText(bean.getFood_name());
+		} else {
+			viewHolder.food_layout.setPadding(DisplayUtil.dip2px(context, 5), 0,
+					DisplayUtil.dip2px(context, 5), 0);
+			viewHolder.food_name.setText(bean.getFood_name());
+		}
 		if (bean.getFood_num().equals("0")) {
 			viewHolder.food_num.setVisibility(View.GONE);
 		} else {
@@ -194,6 +205,7 @@ public class SelectListAdapter extends BaseAdapter {
 	}
 
 	public final class ViewHolder {
+		LinearLayout food_layout;
 		TextView food_name;
 		TextView food_num;
 		TextView food_price;

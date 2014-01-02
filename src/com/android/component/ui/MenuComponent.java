@@ -109,7 +109,7 @@ public class MenuComponent {
 			} else {
 				popu_QueryAllDB.setVisibility(View.GONE);
 			}
-			if (myApp.getUserType().equalsIgnoreCase(Constants.ROLE_OPERATOR)) {
+			if (myApp.getUserType().equalsIgnoreCase(Constants.ROLE_CASHIER)) {
 				popu_setting.setVisibility(View.GONE);
 			} else {
 				popu_setting.setVisibility(View.VISIBLE);

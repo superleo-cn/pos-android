@@ -201,7 +201,28 @@ public class OrderComponent {
 	public void remove2(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			Log.e("item", index + "");
-			selectDataList.remove(index);
+			if (selectDataList.size() != index + 1) {
+				if(index != 0 ){
+					if (selectDataList.get(index - 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
+							&& selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+						selectDataList.remove(index);
+						selectDataList.remove(index);
+					}else{
+						selectDataList.remove(index);
+					}
+				}else{
+					if (selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+						selectDataList.remove(index);
+						selectDataList.remove(index);
+					}else{
+						selectDataList.remove(index);
+					}
+				}
+				
+			} else {
+				selectDataList.remove(index);
+			}
+
 			selectAdapter.notifyDataSetChanged();
 			doCalculation();
 		}
@@ -322,8 +343,8 @@ public class OrderComponent {
 			mydialog.dialog_message.setVisibility(View.GONE);
 			mydialog.textDialogAllMoenyID.setTextSize(60);
 			mydialog.textDialogSearchMoenyID.setTextSize(60);
-			mydialog.textDialogAllMoenyID.setText(stringResComponent.totalPrie+":S$" + totalPrice.getText().toString());
-			mydialog.textDialogSearchMoenyID.setText(stringResComponent.Surplus+":S$" + surplus.getText().toString());
+			mydialog.textDialogAllMoenyID.setText(stringResComponent.totalPrie + ":S$" + totalPrice.getText().toString());
+			mydialog.textDialogSearchMoenyID.setText(stringResComponent.Surplus + ":S$" + surplus.getText().toString());
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
