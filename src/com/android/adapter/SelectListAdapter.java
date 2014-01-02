@@ -123,7 +123,6 @@ public class SelectListAdapter extends BaseAdapter {
 					}else if(x - ux <0 && Math.abs(x - ux) >= 20){
 //						Toast.makeText(context, "往右", 1).show();
 						component.remove2(position);
-						return true;
 					}
 				}
 				return false;
