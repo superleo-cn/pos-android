@@ -82,16 +82,6 @@ public class SettingActivity extends BasicActivity {
 	@App
 	MyApp myApp;
 	
-	MyProcessDialog dialog;
-	
-	@AfterViews
-	public void info(){
-		dialog = new MyProcessDialog(SettingActivity.this, stringResComponent.Loading);
-		dialog.show();
-		
-		dialog.dismiss();
-	}
-
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
 		timeSetComponent.dissmissKeyboard();

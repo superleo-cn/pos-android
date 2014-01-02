@@ -152,13 +152,9 @@ public class DailyPayComponent {
 	// 今日收银机
 	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	
-	MyProcessDialog dialog;
-
 	@AfterViews
 	public void initDailayPay() {
 		
-		dialog = new MyProcessDialog(context, stringResComponent.Loading);
-		dialog.show();
 		menuCompat.textDaily();
 
 		if (!isCompleted()) {
@@ -180,7 +176,6 @@ public class DailyPayComponent {
 		// 加载支付款项
 		dailypaysubmitComponent.loadingCollection(number_classList, number_adapter, num_list, all_num_price, num_count, take_all_price,
 				handler);
-		dialog.dismiss();
 
 	}
 

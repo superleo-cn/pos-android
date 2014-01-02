@@ -28,19 +28,13 @@ public class MainActivity extends BasicActivity {
 	@Bean
 	CalculatorComponent calculatorComponent;
 	
-	MyProcessDialog dialog;
-
 	@AfterViews
 	public void init() {
-		dialog = new MyProcessDialog(MainActivity.this, stringResComponent.Loading);
-		dialog.show();
 		// 手动依赖注入，解决循环问题
 		foodComponent.setOrderComponent(orderComponent);
 		calculatorComponent.setOrderComponent(orderComponent);
 		orderComponent.setFoodComponent(foodComponent);
 		orderComponent.setCalculatorComponent(calculatorComponent);
-		
-		dialog.dismiss();
 	}
 
 }
