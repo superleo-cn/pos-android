@@ -103,10 +103,12 @@ public class MenuComponent {
 			} else {
 				popu_QueryAllDB.setVisibility(View.GONE);
 			}
-			if (myApp.getUsername().equalsIgnoreCase(Constants.ROLE_CASHIER)) {
-				popu_setting.setVisibility(View.GONE);
-			} else {
+			if (myApp.getUsername().equalsIgnoreCase(Constants.ROLE_SUPERADMIN)
+					|| myApp.getUsername().equalsIgnoreCase(Constants.ROLE_ADMIN)
+					|| myApp.getUsername().equalsIgnoreCase(Constants.ROLE_OPERATOR)) {
 				popu_setting.setVisibility(View.VISIBLE);
+			} else {
+				popu_setting.setVisibility(View.GONE);
 			}
 
 			(getHiddenView(view)).setVisibility(View.GONE);
@@ -159,16 +161,16 @@ public class MenuComponent {
 		popupWindow.showAsDropDown(menu, 0, -5);
 
 	}
-	
-	public void textDaily(){
+
+	public void textDaily() {
 		textDailyPay.setText(stringResComponent.diancaiName);
 	}
 
 	@Click(R.id.textDailyPay)
 	void textDailyPayOnClick() {
-		if(textDailyPay.getText().toString().equals(stringResComponent.diancaiName)){
+		if (textDailyPay.getText().toString().equals(stringResComponent.diancaiName)) {
 			activityComponent.startMainWithTransition();
-		}else{
+		} else {
 			activityComponent.startDailyWithTransition();
 		}
 	}
