@@ -1,11 +1,14 @@
 ﻿package com.android.adapter;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.R.color;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,10 +17,10 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.SelectFoodBean;
+import com.android.common.Constants;
 import com.android.component.ui.main.OrderComponent;
 
 public class SelectListAdapter extends BaseAdapter {
@@ -89,18 +92,28 @@ public class SelectListAdapter extends BaseAdapter {
 			convertView.setBackgroundColor(Color.LTGRAY);
 		}
 		viewHolder.food_name.setText(bean.getFood_name());
-		viewHolder.food_num.setText("x" + bean.getFood_num());
-		viewHolder.food_price.setText("S$" + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
+		if (bean.getFood_num().equals("0")) {
+			viewHolder.food_num.setVisibility(View.GONE);
+		} else {
+			viewHolder.food_num.setVisibility(View.VISIBLE);
+			viewHolder.food_num.setText("x" + bean.getFood_num());
+		}
+		if (bean.getFood_price().equals("0.00")) {
+			viewHolder.food_price.setVisibility(View.GONE);
+		} else {
+			viewHolder.food_price.setVisibility(View.VISIBLE);
+			viewHolder.food_price.setText("S$" + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
+		}
 
-		convertView.setOnLongClickListener(new OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-		        	classList.clear();
-					component.doCalculation();
-					notifyDataSetChanged();
-				return false;
-			}
-		});
+//		convertView.setOnLongClickListener(new OnLongClickListener() {
+//			@Override
+//			public boolean onLongClick(View v) {
+//				classList.clear();
+//				component.doCalculation();
+//				notifyDataSetChanged();
+//				return false;
+//			}
+//		});
 
 		// 为每一个view项设置触控监听
 		convertView.setOnTouchListener(new OnTouchListener() {
@@ -113,19 +126,41 @@ public class SelectListAdapter extends BaseAdapter {
 					// 获取松开时的x坐标
 					ux = event.getX();
 					// 判断当前项中按钮控件不为空时
-//					if (Math.abs(x - ux) > 20) {
-//						component.remove2(position);
-//						return true;
-//					}
-					if (x - ux >0 && Math.abs(x - ux) >= 20) {
-//						Toast.makeText(context, "往左", 1).show();
+					// if (Math.abs(x - ux) > 20) {
+					// component.remove2(position);
+					// return true;
+					// }
+					if (x - ux > 0 && Math.abs(x - ux) >= 20) {
+						// Toast.makeText(context, "往左", 1).show();
+						if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+							Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
+							int j = 0;
+							for (int i = 0; i < classList.size(); i++) {
+								map.put(i + j + "", classList.get(i));
+								if (i == position) {
+									SelectFoodBean foodBean = new SelectFoodBean();
+									foodBean.setFood_name(Constants.SPLIT_LINE);
+									foodBean.setFood_num("0");
+									foodBean.setFood_price("0.00");
+									j = 1;
+									map.put(i + j + "", foodBean);
+								}
+							}
+							j = 0;
+							classList.clear();
+							for (int z = 0; z < map.size(); z++) {
+								classList.add(map.get(z + ""));
+							}
+							notifyDataSetChanged();
+						}
 						return true;
-					}else if(x - ux <0 && Math.abs(x - ux) >= 20){
-//						Toast.makeText(context, "往右", 1).show();
+					} else if (x - ux < 0 && Math.abs(x - ux) >= 20) {
+						// Toast.makeText(context, "往右", 1).show();
 						component.remove2(position);
+						return true;
 					}
 				}
-				return false;
+				return true;
 			}
 		});
 

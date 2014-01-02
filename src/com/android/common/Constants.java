@@ -131,4 +131,6 @@ public final class Constants {
 
 	/** 默认 */
 	public static final String DEFAUL_SQL_WHERE = " 1=1 ";
+	/** 分割线 */
+	public static final String SPLIT_LINE = "------------------------------------";
 }

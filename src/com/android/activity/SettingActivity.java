@@ -16,6 +16,8 @@ import com.android.component.ui.setting.ResetPasswordComponent;
 import com.android.component.ui.setting.ShopSynchronizationComponent;
 import com.android.component.ui.setting.SynchronizationStatusComponent;
 import com.android.component.ui.setting.TimeSetComponent;
+import com.android.dialog.MyProcessDialog;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -79,6 +81,16 @@ public class SettingActivity extends BasicActivity {
 
 	@App
 	MyApp myApp;
+	
+	MyProcessDialog dialog;
+	
+	@AfterViews
+	public void info(){
+		dialog = new MyProcessDialog(SettingActivity.this, stringResComponent.Loading);
+		dialog.show();
+		
+		dialog.dismiss();
+	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {

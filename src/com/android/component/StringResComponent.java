@@ -119,4 +119,6 @@ public class StringResComponent {
 	@StringRes(R.string.surplus2)
 	public String Surplus;
 	
+	@StringRes(R.string.loading_)
+	public String Loading;
 }
