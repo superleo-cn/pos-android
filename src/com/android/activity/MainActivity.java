@@ -4,6 +4,7 @@ import com.android.R;
 import com.android.component.ui.main.CalculatorComponent;
 import com.android.component.ui.main.FoodComponent;
 import com.android.component.ui.main.OrderComponent;
+import com.android.dialog.MyProcessDialog;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -26,14 +27,20 @@ public class MainActivity extends BasicActivity {
 
 	@Bean
 	CalculatorComponent calculatorComponent;
+	
+	MyProcessDialog dialog;
 
 	@AfterViews
 	public void init() {
+		dialog = new MyProcessDialog(MainActivity.this, stringResComponent.Loading);
+		dialog.show();
 		// 手动依赖注入，解决循环问题
 		foodComponent.setOrderComponent(orderComponent);
 		calculatorComponent.setOrderComponent(orderComponent);
 		orderComponent.setFoodComponent(foodComponent);
 		orderComponent.setCalculatorComponent(calculatorComponent);
+		
+		dialog.dismiss();
 	}
 
 }

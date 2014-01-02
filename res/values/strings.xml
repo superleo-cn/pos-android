@@ -107,7 +107,7 @@
 	<string name="all_sync_err">The network is not available, the data cannot sync to the Cloud.</string>
 	<string name="all_sync_succ">Data has synced successfully to the Cloud.</string>
 	<string name="register_name_digits">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>  
-	
+	<string name="loading_">加载中...</string>
 	<string name="query_db">Query</string>
 </resources>
 

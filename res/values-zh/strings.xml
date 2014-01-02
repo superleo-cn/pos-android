@@ -96,6 +96,7 @@
 	<string name="btn_quxiao">取消</string>
 	<string name="dialog_set">同步中...</string>
 	<string name="money_coin">个</string>
+	<string name="loading_">加载中...</string>
 	<string name="money_piece">张</string>
 	<string name="dialy_submit_error1">[带回总数] 和 [开店金额] 都不允许为空且不能为负数。</string>
 	<string name="dialy_submit_error2">带回总数金额不一致，请重新确认。</string>

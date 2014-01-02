@@ -22,6 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.R;
+import com.android.activity.MainActivity;
 import com.android.adapter.DailyPayDetailAdapter;
 import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
@@ -41,6 +42,7 @@ import com.android.component.WifiComponent;
 import com.android.component.ui.MenuComponent;
 import com.android.component.ui.login.LoginComponent;
 import com.android.dialog.ConfirmDialog;
+import com.android.dialog.MyProcessDialog;
 import com.android.domain.CollectionOrder;
 import com.android.domain.ExpensesOrder;
 import com.android.domain.FoodOrder;
@@ -149,10 +151,14 @@ public class DailyPayComponent {
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// 今日收银机
 	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	
+	MyProcessDialog dialog;
 
 	@AfterViews
 	public void initDailayPay() {
 		
+		dialog = new MyProcessDialog(context, stringResComponent.Loading);
+		dialog.show();
 		menuCompat.textDaily();
 
 		if (!isCompleted()) {
@@ -174,6 +180,7 @@ public class DailyPayComponent {
 		// 加载支付款项
 		dailypaysubmitComponent.loadingCollection(number_classList, number_adapter, num_list, all_num_price, num_count, take_all_price,
 				handler);
+		dialog.dismiss();
 
 	}
 
