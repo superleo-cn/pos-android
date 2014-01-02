@@ -14,6 +14,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.R;
 import com.android.bean.SelectFoodBean;
@@ -112,7 +113,15 @@ public class SelectListAdapter extends BaseAdapter {
 					// 获取松开时的x坐标
 					ux = event.getX();
 					// 判断当前项中按钮控件不为空时
-					if (Math.abs(x - ux) > 20) {
+//					if (Math.abs(x - ux) > 20) {
+//						component.remove2(position);
+//						return true;
+//					}
+					if (x - ux >0 && Math.abs(x - ux) >= 20) {
+//						Toast.makeText(context, "往左", 1).show();
+						return true;
+					}else if(x - ux <0 && Math.abs(x - ux) >= 20){
+//						Toast.makeText(context, "往右", 1).show();
 						component.remove2(position);
 						return true;
 					}
