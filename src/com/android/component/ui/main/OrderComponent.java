@@ -212,7 +212,6 @@ public class OrderComponent {
 	 */
 	public void remove(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			Log.e("item", index + "");
 			Food bean = foodComponent.getFoodDataList().get(index);
 			for (int i = selectDataList.size() - 1; i >= 0; i--) {
 				SelectFoodBean remove_bean = selectDataList.get(i);
@@ -228,7 +227,6 @@ public class OrderComponent {
 
 	public void remove2(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			Log.e("item", index + "");
 			if (selectDataList.size() != index + 1) {
 				if (index != 0) {
 					if (selectDataList.get(index - 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
@@ -493,30 +491,18 @@ public class OrderComponent {
 	public void submitAll() {
 		Map<String, String> params = new HashMap<String, String>();
 		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
-		System.out.println("-->" + datas.size());
 		for (int i = 0; i < datas.size(); i++) {
 			FoodOrder foodOrder = datas.get(i);
-			System.out.println("f_order.getFood_flag()-->" + foodOrder.status);
 			params.put("transactions[" + i + "].androidId", String.valueOf(foodOrder.getId()));
-			System.out.println("transactions[" + i + "].androidId-->" + foodOrder.getId());
 			params.put("transactions[" + i + "].user.id", foodOrder.userId);
-			System.out.println("transactions[" + i + "].user.id-->" + foodOrder.userId);
 			params.put("transactions[" + i + "].shop.id", foodOrder.shopId);
-			System.out.println("transactions[" + i + "].shop.id-->" + foodOrder.shopId);
 			params.put("transactions[" + i + "].quantity", foodOrder.quantity);
-			System.out.println("transactions[" + i + "].quantity-->" + foodOrder.quantity);
 			params.put("transactions[" + i + "].food.id", foodOrder.foodId);
-			System.out.println("transactions[" + i + "].food.id-->" + foodOrder.foodId);
 			params.put("transactions[" + i + "].totalDiscount", foodOrder.discount);
-			System.out.println("transactions[" + i + "].totalDiscount-->" + foodOrder.discount);
 			params.put("transactions[" + i + "].totalRetailPrice", String.valueOf(foodOrder.retailPrice));
-			System.out.println("transactions[" + i + "].totalRetailPrice-->" + foodOrder.retailPrice);
 			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
-			System.out.println("transactions[" + i + "].totalPackage-->" + foodOrder.totalPackage);
 			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
-			System.out.println("transactions[" + i + "].freeOfCharge-->" + foodOrder.foc);
 			params.put("transactions[" + i + "].orderDate", foodOrder.date);
-			System.out.println("transactions[" + i + "].orderDate-->" + foodOrder.date);
 		}
 
 		// 异步请求数据

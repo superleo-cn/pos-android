@@ -26,7 +26,7 @@ public class EmailComponent {
 	WifiComponent wifiComponent;
 
 	protected void sendEmail() {
-		Log.i("Send email", "");
+		Log.d("[EmailComponent]", "开始发送邮件");
 
 		String[] TO = { "amrood.admin@gmail.com" };
 		String[] CC = { "mcmohd@gmail.com" };
@@ -42,9 +42,8 @@ public class EmailComponent {
 		try {
 			activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
 			activity.finish();
-			Log.i("Finished sending email...", "");
-		} catch (android.content.ActivityNotFoundException ex) {
-			Log.e("error", "Cannot find any email client", ex);
+		} catch (Exception ex) {
+			Log.e("[EmailComponent]", "邮件发送失败", ex);
 		}
 	}
 }

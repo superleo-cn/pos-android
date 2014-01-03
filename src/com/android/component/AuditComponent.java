@@ -64,7 +64,7 @@ public class AuditComponent {
 						}
 					}
 				} catch (Exception e) {
-					Log.e("error", "LogMessage", e);
+					Log.e("[AuditComponent]", "同步登录日志报错", e);
 				}
 			}
 		}

@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import com.android.bean.ResponseData;
 
@@ -276,7 +275,6 @@ public class RemoteDataHandler {
 
 				try {
 					String json = HttpHelper.get(url);
-
 					// 注意:目前服务器返回的JSON数据串中会有特殊字符（换行、回车）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d", "");
 					JSONObject obj = new JSONObject(json);
@@ -415,7 +413,6 @@ public class RemoteDataHandler {
 				msg.getData().putBoolean("hasMore", false);
 				try {
 					String json = HttpHelper.post(url, params);
-					System.out.println("json-->" + json);
 					// 注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d", "");
 					JSONObject obj = new JSONObject(json);
@@ -472,7 +469,6 @@ public class RemoteDataHandler {
 				msg.getData().putBoolean("hasMore", false);
 				try {
 					String json = HttpHelper.post(url, params);
-					// System.out.println("json-->"+json);
 					// 注意:目前服务器返回的JSON数据串中会有特殊字符（如换行）。需要处理一下
 					json = json.replaceAll("\\x0a|\\x0d", "");
 					JSONObject obj = new JSONObject(json);

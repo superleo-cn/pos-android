@@ -11,6 +11,7 @@ package com.android.common;
 import java.io.File;
 
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.activeandroid.app.Application;
@@ -94,34 +95,34 @@ public class MyApp extends Application {
 			File f = new File(Constants.CACHE_DIR);
 
 			if (f.exists()) {
-				System.out.println("SD卡缓存目录:已存在!");
+				Log.d("[MyApp]", "SD卡缓存目录:已存在!");
 			} else {
 				if (f.mkdirs()) {
-					System.out.println("SD卡缓存目录:" + f.getAbsolutePath() + "已创建!");
+					Log.d("[MyApp]", "SD卡缓存目录:" + f.getAbsolutePath() + "已创建!");
 				} else {
-					System.out.println("SD卡缓存目录:创建失败!");
+					Log.d("[MyApp]", "SD卡缓存目录:创建失败!");
 				}
 			}
 
 			File ff = new File(Constants.CACHE_IMAGE);
 			if (ff.exists()) {
-				System.out.println("SD卡照片缓存目录:已存在!");
+				Log.d("[MyApp]", "SD卡照片缓存目录:已存在!");
 			} else {
 				if (ff.mkdirs()) {
-					System.out.println("SD卡照片缓存目录:" + ff.getAbsolutePath() + "已创建!");
+					Log.d("[MyApp]", "SD卡照片缓存目录:" + ff.getAbsolutePath() + "已创建!");
 				} else {
-					System.out.println("SD卡照片缓存目录:创建失败!");
+					Log.d("[MyApp]", "SD卡照片缓存目录:创建失败!");
 				}
 			}
 
 			File ffff = new File(Constants.CACHE_DIR_UPLOADING_IMG);
 			if (ffff.exists()) {
-				System.out.println("SD卡上传缓存目录:已存在!");
+				Log.d("[MyApp]", "SD卡上传缓存目录:已存在!");
 			} else {
 				if (ffff.mkdirs()) {
-					System.out.println("SD卡上传缓存目录:" + ffff.getAbsolutePath() + "已创建!");
+					Log.d("[MyApp]", "SD卡上传缓存目录:" + ffff.getAbsolutePath() + "已创建!");
 				} else {
-					System.out.println("SD卡上传缓存目录:创建失败!");
+					Log.d("[MyApp]", "SD卡上传缓存目录:创建失败!");
 				}
 			}
 		} else {
