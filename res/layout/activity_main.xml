@@ -116,9 +116,9 @@
                                         android:id="@+id/total_price"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="0.0"
+                                        android:text="0.00"
                                         android:textColor="#000000"
-                                        android:textSize="30sp" 
+                                        android:textSize="34sp" 
                                         android:textStyle="bold"/>
                                 </LinearLayout>
 
@@ -140,7 +140,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="0.00"
                                         android:textColor="#000000"
-                                        android:textSize="30sp" 
+                                        android:textSize="34sp" 
                                         android:textStyle="bold"/>
                                 </LinearLayout>
 
@@ -162,7 +162,7 @@
                                         android:layout_height="wrap_content"
                                         android:text="0.00"
                                         android:textColor="#E3313E"
-                                        android:textSize="30sp" 
+                                        android:textSize="34sp" 
                                         android:textStyle="bold"/>
                                 </LinearLayout>
                             </LinearLayout>
@@ -204,7 +204,7 @@
                                         android:layout_toRightOf="@+id/take_package"
                                         android:text="@string/take_package"
                                         android:textColor="#CD6715" 
-                                        android:textSize="18sp" 
+                                        android:textSize="24sp" 
                                         android:textStyle="bold"/>
                                 </RelativeLayout>
 
@@ -237,7 +237,7 @@
                                         android:layout_toRightOf="@+id/foc"
                                         android:text="@string/foc"
                                         android:textColor="#CD6715" 
-										android:textSize="18sp" 
+										android:textSize="24sp" 
                                         android:textStyle="bold"/>
                                 </RelativeLayout>
 
@@ -268,7 +268,7 @@
                                         android:layout_toRightOf="@+id/discount"
                                         android:text="@string/discount"
                                         android:textColor="#CD6715" 
-                                        android:textSize="18sp" 
+                                        android:textSize="24sp" 
                                         android:textStyle="bold"/>
                                 </RelativeLayout>
                             </LinearLayout>
@@ -332,7 +332,7 @@
                                         android:gravity="center"
                                         android:text="@string/ok"
                                         android:textColor="#ffffff"
-                                        android:textSize="30sp" 
+                                        android:textSize="40sp" 
                                         android:textStyle="bold"/>
                                     </LinearLayout>
                                 </LinearLayout>
