@@ -80,6 +80,8 @@ public class MenuComponent {
 	private PopupWindow popupWindow;
 
 	MyProcessDialog dialog;
+	
+	private TextView popu_diancai;
 
 	/**
 	 * 显示用户和点的名称
@@ -102,7 +104,7 @@ public class MenuComponent {
 			TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);
 			TextView popu_exit = (TextView) view.findViewById(R.id.popu_exit);
 			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
-			TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
+			popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 			TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
 			if (myApp.getUsername().equalsIgnoreCase(Constants.ROLE_SUPERADMIN)) {
 				popu_QueryAllDB.setVisibility(View.VISIBLE);
@@ -165,6 +167,10 @@ public class MenuComponent {
 		popupWindow.setBackgroundDrawable(new BitmapDrawable(context.getResources()));
 		popupWindow.showAsDropDown(menu, 0, -5);
 
+	}
+	
+	public void textDianCai() {
+		popu_diancai.setVisibility(View.GONE);
 	}
 
 	public void textDaily() {

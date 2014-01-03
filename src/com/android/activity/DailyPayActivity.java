@@ -35,6 +35,7 @@ public class DailyPayActivity extends BasicActivity {
 	@Click(R.id.menu_btn)
 	public void menu() {
 		menuComponent.initPopupWindow();
+		menuComponent.textDianCai();
 	}
 
 	@Override
