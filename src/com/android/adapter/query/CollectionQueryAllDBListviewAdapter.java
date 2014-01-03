@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.domain.BalanceOrder;
 import com.android.domain.CollectionOrder;
 
 public class CollectionQueryAllDBListviewAdapter extends BaseAdapter {
@@ -55,19 +55,41 @@ public class CollectionQueryAllDBListviewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.query_all_list_item, null);
+			convertView = inflater.inflate(R.layout.query_collection_list_item, null);
 			viewHolder = new ViewHolder();
-			// viewHolder.text = (TextView) convertView.findViewById(R.id.text);
+			viewHolder.list_item_title = (LinearLayout) convertView.findViewById(R.id.list_item_title);
+			viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
+			viewHolder.text_user_id = (TextView) convertView.findViewById(R.id.text_user_id);
+			viewHolder.text_quantity = (TextView) convertView.findViewById(R.id.text_quantity);
+			viewHolder.text_cash_id = (TextView) convertView.findViewById(R.id.text_cash_id);
+			viewHolder.text_date = (TextView) convertView.findViewById(R.id.text_date);
+			viewHolder.text_status = (TextView) convertView.findViewById(R.id.text_status);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		// CollectionOrder cllection_order=data.get(position);
-		// viewHolder.text.setText(cllection_order.toString());
+		if (position == 0) {
+			viewHolder.list_item_title.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.list_item_title.setVisibility(View.GONE);
+		}
+		CollectionOrder collectionOrder = data.get(position);
+		viewHolder.text_shop_id.setText(collectionOrder.shopId);
+		viewHolder.text_user_id.setText(collectionOrder.userId);
+		viewHolder.text_quantity.setText(collectionOrder.quantity);
+		viewHolder.text_cash_id.setText(collectionOrder.cashId);
+		viewHolder.text_date.setText(collectionOrder.date);
+		viewHolder.text_status.setText(collectionOrder.status);
 		return convertView;
 	}
 
 	private final class ViewHolder {
-		TextView text;
+		LinearLayout list_item_title;
+		TextView text_shop_id;
+		TextView text_user_id;
+		TextView text_quantity;
+		TextView text_cash_id;
+		TextView text_date;
+		TextView text_status;
 	}
 }

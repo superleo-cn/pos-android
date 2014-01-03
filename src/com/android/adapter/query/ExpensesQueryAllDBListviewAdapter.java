@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.R;
 import com.android.domain.ExpensesOrder;
-import com.android.domain.FoodOrder;
 
 public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 	private List<ExpensesOrder> data;
@@ -53,19 +53,41 @@ public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		if (convertView == null) {
-			convertView = inflater.inflate(R.layout.query_all_list_item, null);
+			convertView = inflater.inflate(R.layout.query_expenses_list_item, null);
 			viewHolder = new ViewHolder();
-			// viewHolder.text = (TextView) convertView.findViewById(R.id.text);
+			viewHolder.list_item_title = (LinearLayout) convertView.findViewById(R.id.list_item_title);
+			viewHolder.text_consumption_id = (TextView) convertView.findViewById(R.id.text_consumption_id);
+			viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
+			viewHolder.text_user_id = (TextView) convertView.findViewById(R.id.text_user_id);
+			viewHolder.text_price = (TextView) convertView.findViewById(R.id.text_price);
+			viewHolder.text_status = (TextView) convertView.findViewById(R.id.text_status);
+			viewHolder.text_date = (TextView) convertView.findViewById(R.id.text_date);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		// ExpensesOrder expenses_order=data.get(position);
-		// viewHolder.text.setText(expenses_order.toString());
+		if (position == 0) {
+			viewHolder.list_item_title.setVisibility(View.VISIBLE);
+		} else {
+			viewHolder.list_item_title.setVisibility(View.GONE);
+		}
+		ExpensesOrder expensesOrder = data.get(position);
+		viewHolder.text_consumption_id.setText(expensesOrder.consumptionId);
+		viewHolder.text_shop_id.setText(expensesOrder.shopID);
+		viewHolder.text_user_id.setText(expensesOrder.userID);
+		viewHolder.text_price.setText(expensesOrder.price);
+		viewHolder.text_status.setText(expensesOrder.status);
+		viewHolder.text_date.setText(expensesOrder.date);
 		return convertView;
 	}
 
 	private final class ViewHolder {
-		TextView text;
+		LinearLayout list_item_title;
+		TextView text_consumption_id;
+		TextView text_shop_id;
+		TextView text_user_id;
+		TextView text_price;
+		TextView text_status;
+		TextView text_date;
 	}
 }
