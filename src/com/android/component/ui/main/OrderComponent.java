@@ -167,23 +167,27 @@ public class OrderComponent {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				// 当按下时处理
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					// 获取按下时的x轴坐标
-					y = event.getY();
-				} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
-					// 获取松开时的x坐标
-					uy = event.getY();
-					if (y - uy > 0 && Math.abs(y - uy) >= 120) {
-//						Toast.makeText(context, "往上", 1).show();
-					}else if(y - uy < 0 && Math.abs(y - uy) >= 120){
-//						Toast.makeText(context, "往下", 1).show();
-							selectDataList.clear();
-							selectAdapter.notifyDataSetChanged();
-							doCalculation();
-					}
+//				int count=event.getPointerCount();
+//				if(count >= 2){
+					// 当按下时处理
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						// 获取按下时的x轴坐标
+						y = event.getY();
+					} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
+						// 获取松开时的x坐标
+						uy = event.getY();
+						if (y - uy > 0 && Math.abs(y - uy) >= 120) {
+//							Toast.makeText(context, "往上", 1).show();
+						}else if(y - uy < 0 && Math.abs(y - uy) >= 120){
+//							Toast.makeText(context, "往下", 1).show();
+								selectDataList.clear();
+								selectAdapter.notifyDataSetChanged();
+								doCalculation();
+								return true;
+						}
 				}
-				return true;
+//				}
+				return false;
 			}
 		});
 	}
