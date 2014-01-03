@@ -357,12 +357,16 @@ public class OrderComponent {
 			sb.append(time + "\n\n");
 			for (int i = 0; i < selectDataList.size(); i++) {
 				SelectFoodBean bean = selectDataList.get(i);
-				String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-				String qty = "X" + bean.getFood_num() + "\n\n";
-				if (is_takePackage) {
-					foodName += stringResComponent.foodPackage;
+				if (StringUtils.isEmpty(bean.getFood_id())) {
+					sb.append(bean.getFood_name() + "\n\n");
+				} else {
+					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+					String qty = "X" + bean.getFood_num() + "\n\n";
+					if (is_takePackage) {
+						foodName += stringResComponent.foodPackage;
+					}
+					sb.append(foodName + "     " + qty);
 				}
-				sb.append(foodName + "     " + qty);
 			}
 			mydialog.show();
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
