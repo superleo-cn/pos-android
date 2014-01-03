@@ -115,9 +115,10 @@
                 android:layout_marginLeft="10dip"
                 android:layout_toRightOf="@+id/exit_btn"
                 android:text="@string/daily_pay"
-                android:textColor="#FFFFFF"
+                android:textColor="#F7EA39"
                 android:padding="10dp"
-                android:textSize="22dp" />
+                android:textSize="28sp" 
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <ImageView

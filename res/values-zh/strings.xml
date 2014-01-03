@@ -9,7 +9,7 @@
     <string name="total_prie">应收款:</string>
     <string name="gathering">收款:</string>
     <string name="surplus">剩余:</string>
-    <string name="surplus2">剩    余</string>
+    <string name="surplus2">剩&#160;&#160;&#160;&#160;余</string>
     <string name="take_package">打包</string>
     <string name="add_package">+包</string>
     <string name="lessen_package">-包</string>
