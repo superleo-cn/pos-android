@@ -96,11 +96,14 @@ public class SelectListAdapter extends BaseAdapter {
 		}
 
 		if (bean.getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-			viewHolder.food_layout.setPadding(DisplayUtil.dip2px(context, 5), 0, DisplayUtil.dip2px(context, 5), 0);
+			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 13));
+			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 13));
+			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 13));
 			viewHolder.food_name.setText(bean.getFood_name());
 		} else {
-			viewHolder.food_layout.setPadding(DisplayUtil.dip2px(context, 5), 0,
-					DisplayUtil.dip2px(context, 5), 0);
+			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 25));
+			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 25));
+			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 25));
 			viewHolder.food_name.setText(bean.getFood_name());
 		}
 		if (bean.getFood_num().equals("0")) {
