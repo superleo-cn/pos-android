@@ -11,12 +11,18 @@ import android.widget.TextView;
 
 import com.android.R;
 import com.android.domain.ExpensesOrder;
+import com.android.domain.FoodOrder;
 
 public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 	private List<ExpensesOrder> data;
 	private LayoutInflater inflater;
 
 	public ExpensesQueryAllDBListviewAdapter(Context context) {
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
+	public ExpensesQueryAllDBListviewAdapter(Context context, List<ExpensesOrder> data) {
+		this.data = data;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 

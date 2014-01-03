@@ -51,6 +51,15 @@ public class QueryAllDBAComponent {
 	@Bean
 	FoodOrderQueryComponent foodOrderQueryComponent;
 
+	@Bean
+	ExpensesOrderQueryComponent expensesOrderQueryComponent;
+
+	@Bean
+	BalanceOrderQueryComponent balanceOrderQueryComponent;
+
+	@Bean
+	CollectionOrderQueryComponent collectionOrderQueryComponent;
+
 	Calendar calendar = Calendar.getInstance();
 
 	AbstractQueryComponent queryComponent;
@@ -197,14 +206,26 @@ public class QueryAllDBAComponent {
 
 	@Click(R.id.buttonExpensesOrder)
 	void QueryExpensesOrderClick() {
+		queryComponent = expensesOrderQueryComponent;
+		pagination = new Pagination();
+		searchCriteria = new SearchCriteria();
+		queryComponent.queryResult(pagination, searchCriteria);
 	}
 
 	@Click(R.id.buttonCollectionOrder)
 	void QueryCollectionOrderClick() {
+		queryComponent = collectionOrderQueryComponent;
+		pagination = new Pagination();
+		searchCriteria = new SearchCriteria();
+		queryComponent.queryResult(pagination, searchCriteria);
 	}
 
 	@Click(R.id.buttonBalanceOrder)
 	void QueryBalanceOrderClick() {
+		queryComponent = balanceOrderQueryComponent;
+		pagination = new Pagination();
+		searchCriteria = new SearchCriteria();
+		queryComponent.queryResult(pagination, searchCriteria);
 	}
 
 }

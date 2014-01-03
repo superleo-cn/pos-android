@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.android.R;
 import com.android.domain.BalanceOrder;
+import com.android.domain.ExpensesOrder;
 
 public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 	private List<BalanceOrder> data;
@@ -19,6 +20,11 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 
 	public BalanceQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
+	public BalanceQueryAllDBListviewAdapter(Context context, List<BalanceOrder> data) {
+		this.data = data;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 

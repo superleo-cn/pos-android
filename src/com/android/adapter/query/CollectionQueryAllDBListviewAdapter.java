@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.android.R;
+import com.android.domain.BalanceOrder;
 import com.android.domain.CollectionOrder;
 
 public class CollectionQueryAllDBListviewAdapter extends BaseAdapter {
@@ -19,6 +20,11 @@ public class CollectionQueryAllDBListviewAdapter extends BaseAdapter {
 
 	public CollectionQueryAllDBListviewAdapter(Context context) {
 		this.context = context;
+		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+
+	public CollectionQueryAllDBListviewAdapter(Context context, List<CollectionOrder> data) {
+		this.data = data;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
