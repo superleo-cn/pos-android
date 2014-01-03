@@ -12,12 +12,15 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.R;
 import com.android.adapter.GiditNumberAdapter;
@@ -126,6 +129,8 @@ public class OrderComponent {
 	Dialog dialg;
 
 	private MyDialog mydialog;
+	
+	private float y, uy;
 
 	/**
 	 * 初始化订单组件
@@ -157,6 +162,30 @@ public class OrderComponent {
 		}
 		GiditNumberAdapter adapter = new GiditNumberAdapter(context, dataList);
 		calucatorView.setAdapter(adapter);
+		
+		selectList.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// 当按下时处理
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					// 获取按下时的x轴坐标
+					y = event.getY();
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
+					// 获取松开时的x坐标
+					uy = event.getY();
+					if (y - uy > 0 && Math.abs(y - uy) >= 120) {
+//						Toast.makeText(context, "往上", 1).show();
+					}else if(y - uy < 0 && Math.abs(y - uy) >= 120){
+//						Toast.makeText(context, "往下", 1).show();
+							selectDataList.clear();
+							selectAdapter.notifyDataSetChanged();
+							doCalculation();
+					}
+				}
+				return true;
+			}
+		});
 	}
 
 	/**
