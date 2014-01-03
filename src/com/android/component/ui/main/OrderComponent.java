@@ -15,12 +15,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.R;
 import com.android.adapter.GiditNumberAdapter;
@@ -49,6 +47,7 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.Touch;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -129,7 +128,7 @@ public class OrderComponent {
 	Dialog dialg;
 
 	private MyDialog mydialog;
-	
+
 	private float y, uy;
 
 	/**
@@ -162,34 +161,30 @@ public class OrderComponent {
 		}
 		GiditNumberAdapter adapter = new GiditNumberAdapter(context, dataList);
 		calucatorView.setAdapter(adapter);
-		
-		selectList.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-//				int count=event.getPointerCount();
-//				if(count >= 2){
-					// 当按下时处理
-					if (event.getAction() == MotionEvent.ACTION_DOWN) {
-						// 获取按下时的x轴坐标
-						y = event.getY();
-					} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
-						// 获取松开时的x坐标
-						uy = event.getY();
-						if (y - uy > 0 && Math.abs(y - uy) >= 120) {
-//							Toast.makeText(context, "往上", 1).show();
-						}else if(y - uy < 0 && Math.abs(y - uy) >= 120){
-//							Toast.makeText(context, "往下", 1).show();
-								selectDataList.clear();
-								selectAdapter.notifyDataSetChanged();
-								doCalculation();
-								return true;
-						}
+
+	}
+
+	@Touch(R.id.select_list)
+	public void removeByTouch(MotionEvent event) {
+		int count = event.getPointerCount();
+		if (count >= 2) {
+			// 当按下时处理
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				// 获取按下时的x轴坐标
+				y = event.getY();
+			} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
+				// 获取松开时的x坐标
+				uy = event.getY();
+				if (y - uy > 0 && Math.abs(y - uy) >= 120) {
+					// Toast.makeText(context, "往上", 1).show();
+				} else if (y - uy < 0 && Math.abs(y - uy) >= 120) {
+					// Toast.makeText(context, "往下", 1).show();
+					selectDataList.clear();
+					selectAdapter.notifyDataSetChanged();
+					doCalculation();
 				}
-//				}
-				return false;
 			}
-		});
+		}
 	}
 
 	/**
@@ -235,23 +230,23 @@ public class OrderComponent {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			Log.e("item", index + "");
 			if (selectDataList.size() != index + 1) {
-				if(index != 0 ){
+				if (index != 0) {
 					if (selectDataList.get(index - 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
 							&& selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
 						selectDataList.remove(index);
 						selectDataList.remove(index);
-					}else{
+					} else {
 						selectDataList.remove(index);
 					}
-				}else{
+				} else {
 					if (selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
 						selectDataList.remove(index);
 						selectDataList.remove(index);
-					}else{
+					} else {
 						selectDataList.remove(index);
 					}
 				}
-				
+
 			} else {
 				selectDataList.remove(index);
 			}
