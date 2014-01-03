@@ -11,7 +11,7 @@ public class Pagination {
 	public List recordList = new ArrayList(); // all records
 	public long recordCount = 0; // record count
 	public long pageCount = 0; // page count
-	public int pageSize = 5; // page size
+	public int pageSize = 17; // page size
 	public int currentPage = 1; // current page
 
 	public Pagination() {
