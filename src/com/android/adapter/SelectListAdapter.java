@@ -8,6 +8,7 @@ import java.util.Map;
 import android.R.color;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -96,11 +97,13 @@ public class SelectListAdapter extends BaseAdapter {
 		}
 
 		if (bean.getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 13));
-			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 13));
-			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 13));
+			viewHolder.food_name.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 18));
+			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 18));
+			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 18));
 			viewHolder.food_name.setText(bean.getFood_name());
 		} else {
+			viewHolder.food_name.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
 			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 30));
 			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 30));
 			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 30));

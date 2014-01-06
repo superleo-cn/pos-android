@@ -6,10 +6,12 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -44,6 +46,18 @@ public class QueryAllDBAComponent {
 
 	@ViewById(R.id.endTimeID)
 	TextView endTimeID;
+
+	@ViewById(R.id.buttonFoodOrder)
+	Button foodOrderButton;
+
+	@ViewById(R.id.buttonExpensesOrder)
+	Button expensesOrderButton;
+
+	@ViewById(R.id.buttonCollectionOrder)
+	Button collectionOrderButton;
+
+	@ViewById(R.id.buttonBalanceOrder)
+	Button balanceOrderButton;
 
 	@Bean
 	public MenuComponent menuComponent;
@@ -198,6 +212,10 @@ public class QueryAllDBAComponent {
 	// 每个页卡的加载显示
 	@Click(R.id.buttonFoodOrder)
 	void QueryFoodOrderClick() {
+		foodOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
+		expensesOrderButton.setBackgroundColor(Color.WHITE);
+		collectionOrderButton.setBackgroundColor(Color.WHITE);
+		balanceOrderButton.setBackgroundColor(Color.WHITE);
 		queryComponent = foodOrderQueryComponent;
 		pagination = new Pagination();
 		searchCriteria = new SearchCriteria();
@@ -206,6 +224,10 @@ public class QueryAllDBAComponent {
 
 	@Click(R.id.buttonExpensesOrder)
 	void QueryExpensesOrderClick() {
+		foodOrderButton.setBackgroundColor(Color.WHITE);
+		expensesOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
+		collectionOrderButton.setBackgroundColor(Color.WHITE);
+		balanceOrderButton.setBackgroundColor(Color.WHITE);
 		queryComponent = expensesOrderQueryComponent;
 		pagination = new Pagination();
 		searchCriteria = new SearchCriteria();
@@ -214,6 +236,10 @@ public class QueryAllDBAComponent {
 
 	@Click(R.id.buttonCollectionOrder)
 	void QueryCollectionOrderClick() {
+		foodOrderButton.setBackgroundColor(Color.WHITE);
+		expensesOrderButton.setBackgroundColor(Color.WHITE);
+		collectionOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
+		balanceOrderButton.setBackgroundColor(Color.WHITE);
 		queryComponent = collectionOrderQueryComponent;
 		pagination = new Pagination();
 		searchCriteria = new SearchCriteria();
@@ -222,6 +248,10 @@ public class QueryAllDBAComponent {
 
 	@Click(R.id.buttonBalanceOrder)
 	void QueryBalanceOrderClick() {
+		foodOrderButton.setBackgroundColor(Color.WHITE);
+		expensesOrderButton.setBackgroundColor(Color.WHITE);
+		collectionOrderButton.setBackgroundColor(Color.WHITE);
+		balanceOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
 		queryComponent = balanceOrderQueryComponent;
 		pagination = new Pagination();
 		searchCriteria = new SearchCriteria();

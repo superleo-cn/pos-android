@@ -36,7 +36,7 @@
                     android:verticalSpacing="10dp" >
                 </GridView>
             </RelativeLayout>
-			 
+
             <RelativeLayout
                 android:id="@+id/layout_right"
                 android:layout_width="fill_parent"
@@ -68,8 +68,8 @@
                             android:cacheColorHint="#00000000"
                             android:divider="#00000000"
                             android:fadingEdge="none"
-                            android:transcriptMode="alwaysScroll" 
-                            android:scrollingCache="false" >
+                            android:scrollingCache="false"
+                            android:transcriptMode="alwaysScroll" >
                         </ListView>
                     </RelativeLayout>
                     <!--  -->
@@ -94,8 +94,8 @@
                                 android:layout_marginLeft="10dip"
                                 android:layout_marginRight="10dip"
                                 android:layout_marginTop="5dip"
-                                android:orientation="horizontal"
                                 android:background="#F8CD21"
+                                android:orientation="horizontal"
                                 android:paddingLeft="5dip"
                                 android:paddingRight="5dip"
                                 android:weightSum="3" >
@@ -118,8 +118,8 @@
                                         android:layout_height="wrap_content"
                                         android:text="0.00"
                                         android:textColor="#000000"
-                                        android:textSize="34sp" 
-                                        android:textStyle="bold"/>
+                                        android:textSize="34sp"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -140,8 +140,8 @@
                                         android:layout_height="wrap_content"
                                         android:text="0.00"
                                         android:textColor="#000000"
-                                        android:textSize="34sp" 
-                                        android:textStyle="bold"/>
+                                        android:textSize="34sp"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -162,8 +162,8 @@
                                         android:layout_height="wrap_content"
                                         android:text="0.00"
                                         android:textColor="#E3313E"
-                                        android:textSize="34sp" 
-                                        android:textStyle="bold"/>
+                                        android:textSize="34sp"
+                                        android:textStyle="bold" />
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -189,10 +189,10 @@
                                         android:id="@+id/take_package"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
                                         android:layout_marginLeft="3dip"
                                         android:background="#00000000"
                                         android:scaleType="centerInside"
-                                        android:layout_centerVertical="true"
                                         android:src="@drawable/package_not_select" />
 
                                     <TextView
@@ -203,17 +203,17 @@
                                         android:layout_marginLeft="5dip"
                                         android:layout_toRightOf="@+id/take_package"
                                         android:text="@string/take_package"
-                                        android:textColor="#CD6715" 
-                                        android:textSize="24sp" 
-                                        android:textStyle="bold"/>
+                                        android:textColor="#CD6715"
+                                        android:textSize="24sp"
+                                        android:textStyle="bold" />
                                 </RelativeLayout>
 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_foc"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:layout_marginLeft="5dip"
+                                    android:layout_weight="1"
                                     android:background="@drawable/layout_mid_bg"
                                     android:orientation="horizontal" >
 
@@ -221,12 +221,11 @@
                                         android:id="@+id/foc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
                                         android:layout_marginLeft="3dip"
                                         android:background="#00000000"
                                         android:scaleType="centerInside"
-                                        android:layout_centerVertical="true"
                                         android:src="@drawable/package_not_select" />
-  										
 
                                     <TextView
                                         android:id="@+id/tv_foc"
@@ -236,17 +235,17 @@
                                         android:layout_marginLeft="5dip"
                                         android:layout_toRightOf="@+id/foc"
                                         android:text="@string/foc"
-                                        android:textColor="#CD6715" 
-										android:textSize="24sp" 
-                                        android:textStyle="bold"/>
+                                        android:textColor="#CD6715"
+                                        android:textSize="24sp"
+                                        android:textStyle="bold" />
                                 </RelativeLayout>
 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_discount"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
                                     android:layout_marginLeft="5dip"
+                                    android:layout_weight="1"
                                     android:background="@drawable/layout_mid_bg"
                                     android:orientation="horizontal" >
 
@@ -254,9 +253,9 @@
                                         android:id="@+id/discount"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
                                         android:layout_marginLeft="3dip"
                                         android:background="#00000000"
-                                        android:layout_centerVertical="true"
                                         android:scaleType="centerInside"
                                         android:src="@drawable/package_not_select" />
 
@@ -267,9 +266,9 @@
                                         android:layout_marginLeft="5dip"
                                         android:layout_toRightOf="@+id/discount"
                                         android:text="@string/discount"
-                                        android:textColor="#CD6715" 
-                                        android:textSize="24sp" 
-                                        android:textStyle="bold"/>
+                                        android:textColor="#CD6715"
+                                        android:textSize="24sp"
+                                        android:textStyle="bold" />
                                 </RelativeLayout>
                             </LinearLayout>
 
@@ -283,7 +282,7 @@
 
                                 <LinearLayout
                                     android:layout_width="fill_parent"
-                                    android:layout_height="fill_parent"                             
+                                    android:layout_height="fill_parent"
                                     android:orientation="horizontal"
                                     android:weightSum="3" >
 
@@ -291,20 +290,20 @@
                                         android:id="@+id/digit_btn"
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
-                                        android:layout_weight="1"
+                                        android:layout_weight="0.98"
                                         android:horizontalSpacing="5dp"
                                         android:numColumns="3"
                                         android:stretchMode="columnWidth"
                                         android:verticalSpacing="5dp" />
-									<LinearLayout 
-									    android:layout_width="fill_parent"
+
+                                    <LinearLayout
+                                        android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
-									    android:layout_weight="2"
-									    android:orientation="vertical"
-									    
-									    >
-									    
-                               <!--      <Button
+                                        android:layout_weight="2"
+                                        android:orientation="vertical" >
+
+                                        <!--
+                                         <Button
                                         android:id="@+id/clear_btn"
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
@@ -318,22 +317,24 @@
                                         android:text="@string/message_cancle"
                                         android:textColor="#ffffff"
                                         android:textSize="30sp" 
-                                        android:textStyle="bold"/> -->
-                                     <Button
-                                        android:id="@+id/ok_btn"
-                                        android:layout_width="fill_parent"
-                                        android:layout_height="fill_parent"
-                                        android:layout_marginBottom="5dip"
-                                        android:layout_marginLeft="5dip"
-                                        android:layout_marginRight="5dip"
-                                        android:layout_marginTop="5dip"
-                                        android:layout_weight="2"
-                                        android:background="#E3313E"
-                                        android:gravity="center"
-                                        android:text="@string/ok"
-                                        android:textColor="#ffffff"
-                                        android:textSize="40sp" 
                                         android:textStyle="bold"/>
+                                        -->
+
+                                        <Button
+                                            android:id="@+id/ok_btn"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_marginBottom="5dip"
+                                            android:layout_marginLeft="2dip"
+                                            android:layout_marginRight="5dip"
+                                            android:layout_marginTop="5dip"
+                                            android:layout_weight="2"
+                                            android:background="#E3313E"
+                                            android:gravity="center"
+                                            android:text="@string/ok"
+                                            android:textColor="#ffffff"
+                                            android:textSize="40sp"
+                                            android:textStyle="bold" />
                                     </LinearLayout>
                                 </LinearLayout>
                             </RelativeLayout>
