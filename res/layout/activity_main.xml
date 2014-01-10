@@ -326,7 +326,7 @@
                                             android:layout_height="fill_parent"
                                             android:layout_marginBottom="5dip"
                                             android:layout_marginLeft="2dip"
-                                            android:layout_marginRight="5dip"
+                                            android:layout_marginRight="8dip"
                                             android:layout_marginTop="5dip"
                                             android:layout_weight="2"
                                             android:background="#E3313E"
