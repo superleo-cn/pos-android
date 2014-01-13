@@ -29,6 +29,7 @@ import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
+import com.android.common.MyTextUtils;
 import com.android.component.LockComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
@@ -361,11 +362,12 @@ public class OrderComponent {
 					sb.append(bean.getFood_name() + "\n\n");
 				} else {
 					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+					foodName = MyTextUtils.putDefaultValues(foodName, 20);
 					String qty = "X" + bean.getFood_num() + "\n\n";
 					if (is_takePackage) {
 						foodName += stringResComponent.foodPackage;
 					}
-					sb.append(foodName + "     " + qty);
+					sb.append(foodName + qty);
 				}
 			}
 			mydialog.show();
