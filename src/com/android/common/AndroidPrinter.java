@@ -33,6 +33,7 @@ public class AndroidPrinter {
 			+ "  Shenzhen Zijiang Electronics Co..Ltd is a high-tech enterprise which specializes"
 			+ " in R&D,manufacturing,marketing of thermal printers and barcode scanners.\n\n"
 			+ "  Please go to our website and see details about our company :\n" + "     http://www.zjiang.com\n\n";
+	private static final String message3 = "测试数据打印。。。。\n";
 
 	@AfterInject
 	public void initPrinter() {
@@ -40,6 +41,7 @@ public class AndroidPrinter {
 			try {
 				wfComm = new WifiCommunication(mHandler);
 				connect();
+				startPrint(message3);
 			} catch (Exception e) {
 				Log.e("[AndroidPrinter]", "打印机初始化错误", e);
 			}
@@ -70,10 +72,10 @@ public class AndroidPrinter {
 		try {
 			if (connFlag == 0) {
 				try {
-					Thread.sleep(1000);
 					Log.d("[AndroidPrinter]", "连接打印机");
 					wfComm.initSocket(ip, 9100);
 					connFlag = 1;
+					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					Log.e("[AndroidPrinter]", "打印机中断", e);
 				}
