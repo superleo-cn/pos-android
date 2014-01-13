@@ -51,4 +51,16 @@ public class MyTextUtils {
 			}
 		}
 	}
+
+	public static String putDefaultValues(String str, int length) {
+		StringBuilder builder = new StringBuilder(StringUtils.trimToEmpty(str));
+		if (builder.length() < length) {
+			int len = length - builder.length();
+			for (int i = 0; i < len; i++) {
+				builder.append(" ");
+			}
+		}
+		return builder.toString();
+	}
+
 }
