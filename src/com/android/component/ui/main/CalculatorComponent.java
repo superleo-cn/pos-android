@@ -131,7 +131,7 @@ public class CalculatorComponent {
 				gathering.setText(Constants.MAX_PRICE);
 			} else {
 				try {
-					gathering.setText(Double.parseDouble(sbuff.toString().trim()) + "");
+					gathering.setText(MyNumberUtils.numToStr(Double.parseDouble(sbuff.toString().trim())));
 				} catch (Exception e) {
 					toastComponent.show(stringResComponent.errPrice);
 				}
