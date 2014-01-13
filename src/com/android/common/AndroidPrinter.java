@@ -33,7 +33,7 @@ public class AndroidPrinter {
 			+ "  Shenzhen Zijiang Electronics Co..Ltd is a high-tech enterprise which specializes"
 			+ " in R&D,manufacturing,marketing of thermal printers and barcode scanners.\n\n"
 			+ "  Please go to our website and see details about our company :\n" + "     http://www.zjiang.com\n\n";
-	private static final String message3 = "测试数据打印。。。。\n";
+	private static final String message3 = "---\n";
 
 	@AfterInject
 	public void initPrinter() {
