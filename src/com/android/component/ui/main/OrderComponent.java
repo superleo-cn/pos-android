@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -362,7 +363,7 @@ public class OrderComponent {
 					sb.append(bean.getFood_name() + "\n\n");
 				} else {
 					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-					foodName = MyTextUtils.putDefaultValues(foodName, 40);
+					foodName = MyTextUtils.putTabValues(foodName, 40);
 					String qty = "X" + bean.getFood_num() + "\n\n";
 					if (is_takePackage) {
 						foodName += stringResComponent.foodPackage;
@@ -370,6 +371,7 @@ public class OrderComponent {
 					sb.append(foodName + qty);
 				}
 			}
+			Log.i("[OrderComponent] -> [Result]", sb.toString());
 			mydialog.show();
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
 			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
