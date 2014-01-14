@@ -5,14 +5,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
-import com.googlecode.androidannotations.api.Scope;
 import com.zj.wfsdk.WifiCommunication;
 
-@EBean(scope = Scope.Singleton)
+@EBean
 public class AndroidPrinter {
 
 	@RootContext
@@ -35,7 +34,7 @@ public class AndroidPrinter {
 			+ "  Please go to our website and see details about our company :\n" + "     http://www.zjiang.com\n\n";
 	private static final String message3 = "---\n";
 
-	@AfterInject
+	@AfterViews
 	public void initPrinter() {
 		if (wfComm == null) {
 			try {
