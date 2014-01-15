@@ -363,7 +363,7 @@ public class OrderComponent {
 					sb.append(bean.getFood_name() + "\n\n");
 				} else {
 					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-					foodName = MyTextUtils.putTabValues(foodName, 40);
+					foodName = MyTextUtils.stringFormat(foodName);
 					String qty = "X" + bean.getFood_num() + "\n\n";
 					if (is_takePackage) {
 						foodName += stringResComponent.foodPackage;

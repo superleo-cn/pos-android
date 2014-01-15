@@ -82,9 +82,8 @@ public class MyTextUtils {
 		return builder.toString();
 	}
 
-	public static String stringFormat(String str, int length) {
-		String result = String.format("%-30s", str);
-		return result;
+	public static String stringFormat(String str) {
+		return String.format("%-30s", str);
 	}
 
 	// GENERAL_PUNCTUATION 判断中文的“号
