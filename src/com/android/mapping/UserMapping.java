@@ -34,12 +34,7 @@ public class UserMapping extends BasicMapping<UserMapping.User> {
 	}
 
 	public static UserMapping postJSON(String url, Map<String, String> params) {
-		try {
-			return RestHelper.postJSON(url, UserMapping.class, params);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return mapping;
-
+		UserMapping result = RestHelper.postJSON(url, UserMapping.class, params);
+		return result != null ? result : mapping;
 	}
 }

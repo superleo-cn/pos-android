@@ -25,11 +25,11 @@ public class CollectionMapping extends BasicMapping<CollectionRemote> {
 
 	public static CollectionMapping getJSONAndSave(String url) {
 		try {
-			CollectionMapping CollectionMapping = RestHelper.getJSON(url, CollectionMapping.class);
-			if (CollectionMapping != null && CollectionMapping.code == Constants.STATUS_SUCCESS) {
+			CollectionMapping collectionMapping = RestHelper.getJSON(url, CollectionMapping.class);
+			if (collectionMapping != null && collectionMapping.code == Constants.STATUS_SUCCESS) {
 				// 删除历史数据
 				Collection.deleteAll();
-				List<CollectionRemote> list = CollectionMapping.datas;
+				List<CollectionRemote> list = collectionMapping.datas;
 				if (CollectionUtils.isNotEmpty(list)) {
 					for (int i = 0; i < list.size(); i++) {
 						CollectionRemote CollectionRemote = list.get(i);
@@ -37,7 +37,7 @@ public class CollectionMapping extends BasicMapping<CollectionRemote> {
 					}
 				}
 			}
-			return CollectionMapping;
+			return collectionMapping;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

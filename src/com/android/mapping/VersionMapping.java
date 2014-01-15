@@ -23,12 +23,8 @@ public class VersionMapping extends BasicMapping<VersionMapping.Version> {
 	}
 
 	public static VersionMapping getJSON(String url) {
-		try {
-			return RestHelper.getJSON(url, VersionMapping.class);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return mapping;
+		VersionMapping result = RestHelper.getJSON(url, VersionMapping.class);
+		return result != null ? result : mapping;
 
 	}
 }
