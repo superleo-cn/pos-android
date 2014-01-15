@@ -66,7 +66,6 @@ public class AndroidPrinter {
 	}
 
 	// connect to printer
-	@Background
 	public void connect() {
 		try {
 			if (connFlag == 0) {
@@ -95,7 +94,6 @@ public class AndroidPrinter {
 		}
 	}
 
-	@Background
 	public void reconnect() {
 		disconnect();
 		connect();

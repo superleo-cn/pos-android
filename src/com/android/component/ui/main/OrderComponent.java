@@ -372,6 +372,10 @@ public class OrderComponent {
 				}
 			}
 			Log.i("[OrderComponent] -> [Result]", sb.toString());
+			// connect to printer
+			androidPrinter.setIp(sharedPrefs.printIp().get());
+			androidPrinter.connect();
+			// show dialog
 			mydialog.show();
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
 			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
@@ -388,7 +392,6 @@ public class OrderComponent {
 				@Override
 				public void onClick(View v) {
 					mydialog.dismiss();
-					androidPrinter.setIp(sharedPrefs.printIp().get());
 					androidPrinter.print(sb.toString());
 					// 保存数据------------------------------
 					storeOrders();
