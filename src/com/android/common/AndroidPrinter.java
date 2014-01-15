@@ -5,10 +5,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.android.component.SharedPreferencesComponent_;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import com.googlecode.androidannotations.api.Scope;
 import com.zj.wfsdk.WifiCommunication;
 
@@ -18,7 +20,9 @@ public class AndroidPrinter {
 	@RootContext
 	Context context;
 
-	String ip = "192.168.0.100";
+	@Pref
+	SharedPreferencesComponent_ sharedPrefs;
+
 	WifiCommunication wfComm = null;
 	int connFlag = 0;
 	RevMsgThread revThred = null;
@@ -72,7 +76,7 @@ public class AndroidPrinter {
 			if (connFlag == 0) {
 				try {
 					Log.d("[AndroidPrinter]", "连接打印机");
-					wfComm.initSocket(ip, 9100);
+					wfComm.initSocket(sharedPrefs.printIp().get(), 9100);
 					connFlag = 1;
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
@@ -234,14 +238,6 @@ public class AndroidPrinter {
 				Log.e("[AndroidPrinter]", "打印机中断", e);
 			}
 		}
-	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
 	}
 
 }
