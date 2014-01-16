@@ -28,18 +28,20 @@ public class ExpensesMapping extends BasicMapping<ExpensesRemote> {
 	public static ExpensesMapping getJSONAndSave(String url) {
 		try {
 			ExpensesMapping expensesMapping = RestHelper.getJSON(url, ExpensesMapping.class);
-			if (expensesMapping != null && expensesMapping.code == Constants.STATUS_SUCCESS) {
-				// 删除历史数据
-				Expenses.deleteAll();
-				List<ExpensesRemote> list = expensesMapping.datas;
-				if (CollectionUtils.isNotEmpty(list)) {
-					for (int i = 0; i < list.size(); i++) {
-						ExpensesRemote expensesRemote = list.get(i);
-						Expenses.save(expensesRemote);
+			if (expensesMapping != null) {
+				if (expensesMapping.code == Constants.STATUS_SUCCESS) {
+					// 删除历史数据
+					Expenses.deleteAll();
+					List<ExpensesRemote> list = expensesMapping.datas;
+					if (CollectionUtils.isNotEmpty(list)) {
+						for (int i = 0; i < list.size(); i++) {
+							ExpensesRemote expensesRemote = list.get(i);
+							Expenses.save(expensesRemote);
+						}
 					}
 				}
+				return expensesMapping;
 			}
-			return expensesMapping;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

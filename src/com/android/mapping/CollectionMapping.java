@@ -26,18 +26,20 @@ public class CollectionMapping extends BasicMapping<CollectionRemote> {
 	public static CollectionMapping getJSONAndSave(String url) {
 		try {
 			CollectionMapping collectionMapping = RestHelper.getJSON(url, CollectionMapping.class);
-			if (collectionMapping != null && collectionMapping.code == Constants.STATUS_SUCCESS) {
-				// 删除历史数据
-				Collection.deleteAll();
-				List<CollectionRemote> list = collectionMapping.datas;
-				if (CollectionUtils.isNotEmpty(list)) {
-					for (int i = 0; i < list.size(); i++) {
-						CollectionRemote CollectionRemote = list.get(i);
-						Collection.save(CollectionRemote);
+			if (collectionMapping != null) {
+				if (collectionMapping.code == Constants.STATUS_SUCCESS) {
+					// 删除历史数据
+					Collection.deleteAll();
+					List<CollectionRemote> list = collectionMapping.datas;
+					if (CollectionUtils.isNotEmpty(list)) {
+						for (int i = 0; i < list.size(); i++) {
+							CollectionRemote CollectionRemote = list.get(i);
+							Collection.save(CollectionRemote);
+						}
 					}
 				}
+				return collectionMapping;
 			}
-			return collectionMapping;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

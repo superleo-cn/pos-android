@@ -26,7 +26,7 @@ public class FoodMapping extends BasicMapping<FoodRemote> {
 		public String nameZh;
 
 		public String type;
-		
+
 		public String position;
 
 		public String picture;
@@ -37,22 +37,24 @@ public class FoodMapping extends BasicMapping<FoodRemote> {
 	public static FoodMapping getJSONAndSave(String url) {
 		try {
 			FoodMapping foodMapping = RestHelper.getJSON(url, FoodMapping.class);
-			if (foodMapping != null && foodMapping.code == Constants.STATUS_SUCCESS) {
-				// 删除历史数据
-				Food.deleteAll();
-				// 下载食物数据
-				List<FoodRemote> list = foodMapping.datas;
-				if (CollectionUtils.isNotEmpty(list)) {
-					for (int i = 0; i < list.size(); i++) {
-						FoodRemote foodRemote = list.get(i);
-						String image_file = downloadImage(foodRemote, i);
-						foodRemote.picture = image_file;
-						// save Food
-						Food.save(foodRemote);
+			if (foodMapping != null) {
+				if (foodMapping.code == Constants.STATUS_SUCCESS) {
+					// 删除历史数据
+					Food.deleteAll();
+					// 下载食物数据
+					List<FoodRemote> list = foodMapping.datas;
+					if (CollectionUtils.isNotEmpty(list)) {
+						for (int i = 0; i < list.size(); i++) {
+							FoodRemote foodRemote = list.get(i);
+							String image_file = downloadImage(foodRemote, i);
+							foodRemote.picture = image_file;
+							// save Food
+							Food.save(foodRemote);
+						}
 					}
 				}
+				return foodMapping;
 			}
-			return foodMapping;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
