@@ -77,7 +77,7 @@
 
                     <TextView
                         android:id="@+id/textDialogAllMoenyTitleID"
-                        android:layout_width="400dip"
+                        android:layout_width="250dip"
                         android:layout_height="fill_parent"
                         android:gravity="left"
                         android:singleLine="true"
@@ -103,7 +103,7 @@
 
                     <TextView
                         android:id="@+id/textDialogSearchMoenyTitleID"
-                        android:layout_width="400dip"
+                        android:layout_width="250dip"
                         android:layout_height="fill_parent"
                         android:layout_marginTop="20dp"
                         android:gravity="left"
