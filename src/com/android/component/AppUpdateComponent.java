@@ -24,11 +24,10 @@ import com.android.common.Constants;
 import com.android.common.SystemHelper;
 import com.android.dialog.MyUpdateDialog;
 import com.android.mapping.VersionMapping;
-import com.googlecode.androidannotations.annotations.AfterInject;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
-import com.googlecode.androidannotations.api.Scope;
 
 /**
  * 更新组件
@@ -37,7 +36,7 @@ import com.googlecode.androidannotations.api.Scope;
  * 
  */
 // 定义成一个可以注入的组件
-@EBean(scope = Scope.Singleton)
+@EBean
 public class AppUpdateComponent {
 
 	private MyUpdateDialog myUpdateDialog = null;
@@ -59,7 +58,7 @@ public class AppUpdateComponent {
 	@Bean
 	ToastComponent toastComponent;
 
-	@AfterInject
+	@AfterViews
 	public void initAppUpdate() {
 		myUpdateDialog = new MyUpdateDialog(context);
 	}

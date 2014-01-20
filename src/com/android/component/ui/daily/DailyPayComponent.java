@@ -40,7 +40,6 @@ import com.android.component.WifiComponent;
 import com.android.component.ui.MenuComponent;
 import com.android.component.ui.login.LoginComponent;
 import com.android.dialog.ConfirmDialog;
-import com.android.dialog.MyProcessDialog;
 import com.android.domain.CollectionOrder;
 import com.android.domain.ExpensesOrder;
 import com.android.domain.FoodOrder;
@@ -205,7 +204,7 @@ public class DailyPayComponent {
 			public void doClick() {
 				if (doValidation()) {
 					btu_id_sbumit.setVisibility(View.GONE);
-					storeAndSync();
+					// storeAndSync();
 				}
 			}
 

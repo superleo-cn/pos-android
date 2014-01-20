@@ -46,7 +46,7 @@ public class TimeSetComponent {
 		editSettingTime.setText(String.valueOf(myPrefs.time().get() / 1000));
 	}
 
-	@Click(R.id.edit_setting_time)
+	@Click(R.id.btu_setting_time)
 	public void setTime() {
 		String setTime = editSettingTime.getText().toString();
 		if (StringUtils.isNotEmpty(setTime)) {

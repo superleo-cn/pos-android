@@ -9,7 +9,7 @@
     <string name="total_prie">应收款:</string>
     <string name="gathering">收款:</string>
     <string name="surplus">剩余:</string>
-    <string name="surplus2">剩&#160;&#160;&#160;&#160;余</string>
+    <string name="surplus2">剩&#160;&#160;&#160;&#160;余:</string>
     <string name="take_package">打包</string>
     <string name="add_package">+包</string>
     <string name="lessen_package">-包</string>
@@ -92,6 +92,7 @@
     <string name="toast_submmit_err">提交成功</string>
     <string name="toast_setting_succ">设置成功</string>
     <string name="toast_setting_err">设置失败</string>
+    <string name="toast_setting_shop_fail">设置失败，该店铺不存在。</string>
     <string name="toast_setting_language_succ">点击了设置语言</string>
     <string name="btu_queren">确定</string>
     <string name="btn_quxiao">取消</string>

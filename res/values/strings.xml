@@ -8,7 +8,7 @@
 	<string name="total_prie">Total:</string>
 	<string name="gathering">Pay:</string>
 	<string name="surplus">Change:</string>
-	<string name="surplus2">Change</string>
+	<string name="surplus2">Change:</string>
 	<string name="take_package">Pack</string>
 	<string name="add_package">Pack Added</string>
 	<string name="lessen_package">Pack Removed</string>
@@ -93,6 +93,7 @@
 	<string name="toast_submmit_err">Submit Error</string>
 	<string name="toast_setting_succ">Configue Successfully</string>
 	<string name="toast_setting_err">Configue Failed</string>
+	<string name="toast_setting_shop_fail">Configue Failed, the outlet is not exist.</string>
 	<string name="toast_setting_language_succ">Language configuration success</string>
 	<string name="btu_queren">Confirm</string>
 	<string name="btn_quxiao">Cancel</string>

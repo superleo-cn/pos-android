@@ -130,8 +130,6 @@ public class OrderComponent {
 
 	private MyDialog mydialog;
 
-	private float y, uy;
-
 	/**
 	 * 初始化订单组件
 	 * 
@@ -386,7 +384,7 @@ public class OrderComponent {
 			mydialog.textDialogAllMoenyTitleID.setText(stringResComponent.totalPrie);
 			mydialog.textDialogSearchMoenyTitleID.setText(stringResComponent.Surplus);
 			mydialog.textDialogAllMoenyID.setText("S$" + totalPrice.getText().toString());
-			mydialog.textDialogSearchMoenyID.setText(":S$" + surplus.getText().toString());
+			mydialog.textDialogSearchMoenyID.setText("S$" + surplus.getText().toString());
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {

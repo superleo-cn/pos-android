@@ -65,6 +65,8 @@ public final class Constants {
 	public static final String URL_LOGIN_PATH = URL_CONTEXTPATH + "/loginJson";
 	/** 登录页完整URL路径 */
 	public static final String URL_LOGIN_ADMIN_PATH = URL_CONTEXTPATH + "/loginAdminJson";
+	/** 店铺完整URL路径 */
+	public static final String URL_SHOP_PATH = URL_CONTEXTPATH + "/shops/listJson/";
 	/** 点菜单完整URL路径 */
 	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH + "/foods/listJson/";
 	/** 支付款项 */

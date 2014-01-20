@@ -52,6 +52,9 @@ public class StringResComponent {
 	@StringRes(R.string.toast_setting_err)
 	public String toastSettingErr;
 
+	@StringRes(R.string.toast_setting_shop_fail)
+	public String toastSettingShopFail;
+
 	@StringRes(R.string.err_price)
 	public String errPrice;
 
