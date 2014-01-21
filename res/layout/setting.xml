@@ -279,7 +279,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" 
                     android:layout_below="@+id/synchronization_shop_layout"
-                    android:layout_marginTop="10dip" >
+                    android:layout_marginTop="10dip" 
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/synchronization_menu"
@@ -306,7 +307,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/synchronization_menu_layout"
-                    android:layout_marginTop="10dip" >
+                    android:layout_marginTop="10dip"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/synchronization_pay"
@@ -333,7 +335,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/synchronization_pay_layout"
-                    android:layout_marginTop="10dip" >
+                    android:layout_marginTop="10dip"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/price_set"

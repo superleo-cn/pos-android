@@ -251,7 +251,16 @@ public class OrderComponent {
 			}
 
 			selectAdapter.notifyDataSetChanged();
+			if (CollectionUtils.isEmpty(selectDataList)) {
+				is_takePackage = false;
+				take_package.setImageResource(R.drawable.package_not_select);
+				is_discount = false;
+				discount.setImageResource(R.drawable.package_not_select);
+				is_foc = false;
+				foc.setImageResource(R.drawable.package_not_select);
+			}
 			doCalculation();
+
 		}
 	}
 

@@ -71,21 +71,12 @@ public class AppUpdateComponent {
 				final VersionMapping.Version remoteVersion = data.datas.get(0);
 				int appVersion = SystemHelper.getAppVersionCode(context);
 				if (appVersion < remoteVersion.versionNo) {
-					myUpdateDialog.dialog_message.setText("有新版本（V" + remoteVersion.description + "）升级");
+					myUpdateDialog.dialog_message.setText("有新版本（V" + remoteVersion.description + "），开始下载升级。");
 					myUpdateDialog.show();
 					myUpdateDialog.dialog_yes.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Toast.makeText(context, "开始下载", Toast.LENGTH_SHORT).show();
-							if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-								saveFileName += remoteVersion.name;
-								apkUrl += remoteVersion.name;
-								Thread downLoadThread = new Thread(mdownApkRunnable);
-								downLoadThread.start();
-							} else {
-								myUpdateDialog.dismiss();
-								toastComponent.show("亲，SD卡不在了，快去找找！！");
-							}
+							installApk();
 						}
 					});
 					myUpdateDialog.dialog_no.setOnClickListener(new OnClickListener() {
@@ -95,8 +86,15 @@ public class AppUpdateComponent {
 							myUpdateDialog.dismiss();
 						}
 					});
-				} else {
-					toastComponent.show("当前是最新版本.");
+					if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+						saveFileName += remoteVersion.name;
+						apkUrl += remoteVersion.name;
+						Thread downLoadThread = new Thread(mdownApkRunnable);
+						downLoadThread.start();
+					} else {
+						myUpdateDialog.dismiss();
+						toastComponent.show("亲，SD卡不在了，快去找找！！");
+					}
 				}
 			}
 		}
@@ -177,6 +175,7 @@ public class AppUpdateComponent {
 			return;
 		}
 		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
 		context.startActivity(i);
 

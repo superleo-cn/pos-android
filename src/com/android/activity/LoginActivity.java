@@ -14,6 +14,7 @@ import com.android.component.AppUpdateComponent;
 import com.android.component.DirectEmailComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.LanguageComponent;
+import com.android.component.ToastComponent;
 import com.android.component.ui.login.LoginComponent;
 import com.android.service.MyService_;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -63,13 +64,13 @@ public class LoginActivity extends AbstractActivity {
 	@Bean
 	DirectEmailComponent directEmailComponent;
 
+	@Bean
+	ToastComponent toastComponent;
+
 	@AfterViews
 	public void init() {
 		// 启动相关组件
 		startService(new Intent(this, MyService_.class));
-		languageComponent.readLanguage();
-		appUpdateComponent.updateApp();
-
 	}
 
 	void login(String userType) {
@@ -87,6 +88,12 @@ public class LoginActivity extends AbstractActivity {
 	@Click(R.id.login_ok)
 	void cashierLogin() {
 		login(Constants.ROLE_CASHIER);
+	}
+
+	protected void onResume() {
+		super.onResume();
+		languageComponent.readLanguage();
+		appUpdateComponent.updateApp();
 	}
 
 	@Override
