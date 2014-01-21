@@ -154,6 +154,12 @@ public class OrderComponent {
 				if (count >= 2) {
 					selectDataList.clear();
 					selectAdapter.notifyDataSetChanged();
+					is_takePackage = false;
+					take_package.setImageResource(R.drawable.package_not_select);
+					is_discount = false;
+					discount.setImageResource(R.drawable.package_not_select);
+					is_foc = false;
+					foc.setImageResource(R.drawable.package_not_select);
 					doCalculation();
 					return true;
 				}
@@ -223,44 +229,6 @@ public class OrderComponent {
 					break;
 				}
 			}
-		}
-	}
-
-	public void remove2(int index) {
-		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			if (selectDataList.size() != index + 1) {
-				if (index != 0) {
-					if (selectDataList.get(index - 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
-							&& selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-						selectDataList.remove(index);
-						selectDataList.remove(index);
-					} else {
-						selectDataList.remove(index);
-					}
-				} else {
-					if (selectDataList.get(index + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-						selectDataList.remove(index);
-						selectDataList.remove(index);
-					} else {
-						selectDataList.remove(index);
-					}
-				}
-
-			} else {
-				selectDataList.remove(index);
-			}
-
-			selectAdapter.notifyDataSetChanged();
-			if (CollectionUtils.isEmpty(selectDataList)) {
-				is_takePackage = false;
-				take_package.setImageResource(R.drawable.package_not_select);
-				is_discount = false;
-				discount.setImageResource(R.drawable.package_not_select);
-				is_foc = false;
-				foc.setImageResource(R.drawable.package_not_select);
-			}
-			doCalculation();
-
 		}
 	}
 
