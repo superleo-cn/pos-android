@@ -104,7 +104,10 @@ public class CalculatorComponent {
 			calulation(sbuff, ".", orderComponent.getGathering());
 			break;
 		case 11:
-			orderComponent.clean();
+			int sb_length = sbuff.length();
+			sbuff.delete(0, sb_length);
+			orderComponent.getGathering().setText("0.00");
+			orderComponent.getSurplus().setText("0.00");
 			break;
 		}
 
