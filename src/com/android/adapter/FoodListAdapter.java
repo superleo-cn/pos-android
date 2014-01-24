@@ -51,7 +51,7 @@ public class FoodListAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
 
-		if (convertView == null) {
+//		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.foot_list_item, null);
 			viewHolder = new ViewHolder();
 			Food bean = classList.get(position);
@@ -64,9 +64,9 @@ public class FoodListAdapter extends BaseAdapter {
 			viewHolder.food_btn = (ImageView) convertView.findViewById(R.id.food_btn);
 			viewHolder.food_btn.setOnClickListener(myListener);
 			convertView.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder) convertView.getTag();
-		}
+//		} else {
+//			viewHolder = (ViewHolder) convertView.getTag();
+//		}
 
 		return convertView;
 	}
