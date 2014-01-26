@@ -9,11 +9,9 @@ import android.R.color;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -33,8 +31,6 @@ public class SelectListAdapter extends BaseAdapter {
 	private List<SelectFoodBean> classList;
 	private OrderComponent component;
 	private float x, ux;
-	private static long timer = 0;
-	private static final long LONG_PRESS_TIME = 100;
 
 	public SelectListAdapter(Context context, List<SelectFoodBean> list) {
 		this.context = context;
@@ -195,7 +191,10 @@ public class SelectListAdapter extends BaseAdapter {
 								notifyDataSetChanged();
 							}
 						}
-
+						return true;
+					} else if (x - ux < 0 && Math.abs(x - ux) >= 20) {
+						// Toast.makeText(context, "往右", 1).show();
+						component.remove2(position);
 						return true;
 					}
 				}

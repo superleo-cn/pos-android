@@ -204,7 +204,7 @@ public class DailyPayComponent {
 			public void doClick() {
 				if (doValidation()) {
 					btu_id_sbumit.setVisibility(View.GONE);
-					// storeAndSync();
+					storeAndSync();
 				}
 			}
 
