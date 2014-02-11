@@ -97,6 +97,10 @@ public class ExpensesOrder extends Model {
 		return new Select().from(ExpensesOrder.class).where("date >= ? and status = ?", time, status).execute();
 	}
 
+	public static List<ExpensesOrder> statusList(String status) {
+		return new Select().from(ExpensesOrder.class).where("status = ?", status).execute();
+	}
+
 	/**
 	 * 店员今天是否有提交
 	 * 

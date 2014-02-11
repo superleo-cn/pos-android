@@ -269,7 +269,7 @@ public class DailyPayComponent {
 			LockComponent.LOCKER.lock();
 			try {
 				String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-				dailypaysubmitComponent.submitAll(date);
+				dailypaysubmitComponent.submitToday(date);
 			} finally {
 				LockComponent.LOCKER.unlock();
 			}

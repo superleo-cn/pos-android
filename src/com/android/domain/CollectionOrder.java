@@ -68,6 +68,10 @@ public class CollectionOrder extends Model {
 		return new Select().from(CollectionOrder.class).where("date >= ? and status = ?", date, status).execute();
 	}
 
+	public static List<CollectionOrder> statusList(String status) {
+		return new Select().from(CollectionOrder.class).where("status = ?", status).execute();
+	}
+
 	/**
 	 * 店员今天是否有提交
 	 * 

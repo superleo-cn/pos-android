@@ -94,7 +94,7 @@ public class SynchronizationStatusComponent {
 		@Override
 		protected Boolean doInBackground(String... objs) {
 			try {
-				dailypaySubmitComponent.submitAll(objs[0]);
+				dailypaySubmitComponent.submitToday(objs[0]);
 				return true;
 			} catch (Exception ex) {
 				return false;

@@ -85,8 +85,7 @@ public class MyService extends Service {
 					// display toast
 					if (wifiComponent.isConnected()) {
 						try {
-							String date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD);
-							dailypaySubmitComponent.submitAll(date);
+							dailypaySubmitComponent.submitAll();
 							orderComponent.submitAll();
 							// toastComponent.show(stringResComponent.allSyncSucc);
 						} catch (Exception ex) {

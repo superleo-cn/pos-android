@@ -88,7 +88,7 @@ public class BalanceOrder extends Model {
 	 * 保存每日其他数据
 	 * */
 	public static void save(String aOpenBalance, String bExpenses, String cCashCollected, String dDailyTurnover, String eNextOpenBalance,
-			String fBringBackCash, String gTotalBalance,String others, String courier, MyApp myApp) {
+			String fBringBackCash, String gTotalBalance, String others, String courier, MyApp myApp) {
 		BalanceOrder bean = new BalanceOrder();
 		bean.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		bean.shopId = myApp.getShopId();// 店idmyApp.getShopid()
@@ -126,6 +126,10 @@ public class BalanceOrder extends Model {
 	 */
 	public static List<BalanceOrder> todayStatusList(String time, String status) {
 		return new Select().from(BalanceOrder.class).where(" date >= ? and status=?", time, status).execute();
+	}
+
+	public static List<BalanceOrder> statusList(String status) {
+		return new Select().from(BalanceOrder.class).where(" status=?", status).execute();
 	}
 
 	/**

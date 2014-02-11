@@ -57,115 +57,157 @@ public class DailypaySubmitComponent {
 	@Bean
 	KeyboardComponent keyboardComponent;
 
-	public void submitAll(String date) {
+	public void submitToday(String date) {
 		postPayList(date);
 		postNumList(date);
 		postDailyMoney(date);
 	}
 
+	public void submitAll() {
+		postAllPayList();
+		postAllNumList();
+		postAllDailyMoney();
+	}
+
 	/* 提交每日支付 */
 	public void postPayList(String searchDate) {
 		try {
-			Map<String, String> params = new HashMap<String, String>();
 			List<ExpensesOrder> datas = ExpensesOrder.todayStatusList(searchDate, Constants.DB_FAILED);
-			if (CollectionUtils.isNotEmpty(datas)) {
-				for (int i = 0; i < datas.size(); i++) {
-					ExpensesOrder expenses = datas.get(i);
-					params.put("consumeTransactions[" + i + "].androidId", String.valueOf(expenses.getId()));
-					params.put("consumeTransactions[" + i + "].consumption.id", expenses.consumptionId);
-					params.put("consumeTransactions[" + i + "].shop.id", expenses.shopID);
-					params.put("consumeTransactions[" + i + "].user.id", expenses.userID);
-					params.put("consumeTransactions[" + i + "].price",
-							StringUtils.defaultIfEmpty(expenses.price, Constants.DEFAULT_PRICE_INT));
-				}
-			}
-			// 异步请求数据
-			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_PAYLIST, params);
-			if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
-				List<Long> ids = mapping.datas;
-				if (CollectionUtils.isNotEmpty(ids)) {
-					for (Long id : ids) {
-						ExpensesOrder.updateByStatus(id);
-					}
-				}
-			}
+			postPayList(datas);
 		} catch (Exception e) {
 			Log.e("[AndroidPrinter]", "提交每日支付错误", e);
+		}
+	}
+
+	public void postAllPayList() {
+		try {
+			List<ExpensesOrder> datas = ExpensesOrder.statusList(Constants.DB_FAILED);
+			postPayList(datas);
+		} catch (Exception e) {
+			Log.e("[AndroidPrinter]", "提交每日支付错误", e);
+		}
+	}
+
+	private void postPayList(List<ExpensesOrder> datas) {
+		Map<String, String> params = new HashMap<String, String>();
+		if (CollectionUtils.isNotEmpty(datas)) {
+			for (int i = 0; i < datas.size(); i++) {
+				ExpensesOrder expenses = datas.get(i);
+				params.put("consumeTransactions[" + i + "].androidId", String.valueOf(expenses.getId()));
+				params.put("consumeTransactions[" + i + "].consumption.id", expenses.consumptionId);
+				params.put("consumeTransactions[" + i + "].shop.id", expenses.shopID);
+				params.put("consumeTransactions[" + i + "].user.id", expenses.userID);
+				params.put("consumeTransactions[" + i + "].price", StringUtils.defaultIfEmpty(expenses.price, Constants.DEFAULT_PRICE_INT));
+			}
+		}
+		// 异步请求数据
+		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_PAYLIST, params);
+		if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
+			List<Long> ids = mapping.datas;
+			if (CollectionUtils.isNotEmpty(ids)) {
+				for (Long id : ids) {
+					ExpensesOrder.updateByStatus(id);
+				}
+			}
 		}
 	}
 
 	/* 提交带回总数 */
 	public void postNumList(String searchDate) {
 		try {
-			Map<String, String> params = new HashMap<String, String>();
 			List<CollectionOrder> datas = CollectionOrder.todayStatusList(searchDate, Constants.DB_FAILED);
-			if (CollectionUtils.isNotEmpty(datas)) {
-				for (int i = 0; i < datas.size(); i++) {
-					CollectionOrder collection = datas.get(i);
-					params.put("cashTransactions[" + i + "].androidId", String.valueOf(collection.getId()));
-					params.put("cashTransactions[" + i + "].cash.id", collection.cashId);
-					params.put("cashTransactions[" + i + "].shop.id", collection.shopId);
-					params.put("cashTransactions[" + i + "].user.id", collection.userId);
-					params.put("cashTransactions[" + i + "].quantity",
-							StringUtils.defaultIfEmpty(collection.quantity, Constants.DEFAULT_PRICE_INT));
-				}
-			}
-			// 异步请求数据
-			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_TAKENUM, params);
-			if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
-				List<Long> ids = mapping.datas;
-				if (CollectionUtils.isNotEmpty(ids)) {
-					for (Long id : ids) {
-						CollectionOrder.updateByStatus(id);
-					}
-				}
-			}
-
+			postNumList(datas);
 		} catch (Exception e) {
 			Log.e("[AndroidPrinter]", "带回总数提交错误", e);
+		}
+	}
+
+	public void postAllNumList() {
+		try {
+			List<CollectionOrder> datas = CollectionOrder.statusList(Constants.DB_FAILED);
+			postNumList(datas);
+		} catch (Exception e) {
+			Log.e("[AndroidPrinter]", "带回总数提交错误", e);
+		}
+	}
+
+	private void postNumList(List<CollectionOrder> datas) {
+		Map<String, String> params = new HashMap<String, String>();
+		if (CollectionUtils.isNotEmpty(datas)) {
+			for (int i = 0; i < datas.size(); i++) {
+				CollectionOrder collection = datas.get(i);
+				params.put("cashTransactions[" + i + "].androidId", String.valueOf(collection.getId()));
+				params.put("cashTransactions[" + i + "].cash.id", collection.cashId);
+				params.put("cashTransactions[" + i + "].shop.id", collection.shopId);
+				params.put("cashTransactions[" + i + "].user.id", collection.userId);
+				params.put("cashTransactions[" + i + "].quantity",
+						StringUtils.defaultIfEmpty(collection.quantity, Constants.DEFAULT_PRICE_INT));
+			}
+		}
+		// 异步请求数据
+		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_TAKENUM, params);
+		if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
+			List<Long> ids = mapping.datas;
+			if (CollectionUtils.isNotEmpty(ids)) {
+				for (Long id : ids) {
+					CollectionOrder.updateByStatus(id);
+				}
+			}
 		}
 	}
 
 	/* 提交每日营业额 */
 	public void postDailyMoney(final String searchDate) {
 		try {
-			Map<String, String> params = new HashMap<String, String>();
 			List<BalanceOrder> datas = BalanceOrder.todayStatusList(searchDate, Constants.DB_FAILED);
-			if (CollectionUtils.isNotEmpty(datas)) {
-				for (int i = 0; i < datas.size(); i++) {
-					BalanceOrder balance = datas.get(i);
-					params.put("dailySummaries[" + i + "].androidId", String.valueOf(balance.getId()));
-					params.put("dailySummaries[" + i + "].shop.id", balance.shopId);
-					params.put("dailySummaries[" + i + "].user.id", balance.userId);
-					params.put("dailySummaries[" + i + "].aOpenBalance", balance.aOpenBalance);
-					params.put("dailySummaries[" + i + "].bExpenses", balance.bExpenses);
-					params.put("dailySummaries[" + i + "].cCashCollected", balance.cCashCollected);
-					params.put("dailySummaries[" + i + "].dDailyTurnover", balance.dDailyTurnover);
-					params.put("dailySummaries[" + i + "].eNextOpenBalance", balance.eNextOpenBalance);
-					params.put("dailySummaries[" + i + "].fBringBackCash", balance.fBringBackCash);
-					params.put("dailySummaries[" + i + "].gTotalBalance", balance.gTotalBalance);
-					params.put("dailySummaries[" + i + "].middleCalculateTime", StringUtils.EMPTY);
-					params.put("dailySummaries[" + i + "].middleCalculateBalance", StringUtils.EMPTY);
-					params.put("dailySummaries[" + i + "].calculateTime", StringUtils.EMPTY);
-					params.put("dailySummaries[" + i + "].courier", balance.courier);
-					params.put("dailySummaries[" + i + "].others", balance.others);
-					params.put("dailySummaries[" + i + "].date", balance.date);
-				}
+			postDailyMoney(datas);
+		} catch (Exception e) {
+			Log.e("[AndroidPrinter]", "每日营业额提交错误", e);
+		}
+	}
 
-				// 异步请求数据
-				StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_DAILY_MONEY, params);
-				if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
-					List<Long> ids = mapping.datas;
-					if (CollectionUtils.isNotEmpty(ids)) {
-						for (Long id : ids) {
-							BalanceOrder.updateByStatus(id);
-						}
+	public void postAllDailyMoney() {
+		try {
+			List<BalanceOrder> datas = BalanceOrder.statusList(Constants.DB_FAILED);
+			postDailyMoney(datas);
+		} catch (Exception e) {
+			Log.e("[AndroidPrinter]", "每日营业额提交错误", e);
+		}
+	}
+
+	private void postDailyMoney(List<BalanceOrder> datas) {
+		Map<String, String> params = new HashMap<String, String>();
+		if (CollectionUtils.isNotEmpty(datas)) {
+			for (int i = 0; i < datas.size(); i++) {
+				BalanceOrder balance = datas.get(i);
+				params.put("dailySummaries[" + i + "].androidId", String.valueOf(balance.getId()));
+				params.put("dailySummaries[" + i + "].shop.id", balance.shopId);
+				params.put("dailySummaries[" + i + "].user.id", balance.userId);
+				params.put("dailySummaries[" + i + "].aOpenBalance", balance.aOpenBalance);
+				params.put("dailySummaries[" + i + "].bExpenses", balance.bExpenses);
+				params.put("dailySummaries[" + i + "].cCashCollected", balance.cCashCollected);
+				params.put("dailySummaries[" + i + "].dDailyTurnover", balance.dDailyTurnover);
+				params.put("dailySummaries[" + i + "].eNextOpenBalance", balance.eNextOpenBalance);
+				params.put("dailySummaries[" + i + "].fBringBackCash", balance.fBringBackCash);
+				params.put("dailySummaries[" + i + "].gTotalBalance", balance.gTotalBalance);
+				params.put("dailySummaries[" + i + "].middleCalculateTime", StringUtils.EMPTY);
+				params.put("dailySummaries[" + i + "].middleCalculateBalance", StringUtils.EMPTY);
+				params.put("dailySummaries[" + i + "].calculateTime", StringUtils.EMPTY);
+				params.put("dailySummaries[" + i + "].courier", balance.courier);
+				params.put("dailySummaries[" + i + "].others", balance.others);
+				params.put("dailySummaries[" + i + "].date", balance.date);
+			}
+
+			// 异步请求数据
+			StatusMapping mapping = StatusMapping.postJSON(Constants.URL_POST_DAILY_MONEY, params);
+			if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
+				List<Long> ids = mapping.datas;
+				if (CollectionUtils.isNotEmpty(ids)) {
+					for (Long id : ids) {
+						BalanceOrder.updateByStatus(id);
 					}
 				}
 			}
-
-		} catch (Exception e) {
-			Log.e("[AndroidPrinter]", "每日营业额提交错误", e);
 		}
 	}
 
