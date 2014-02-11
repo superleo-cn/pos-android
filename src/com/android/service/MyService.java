@@ -69,7 +69,8 @@ public class MyService extends Service {
 			mTimer = new Timer();
 		}
 		// schedule task
-		mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, myPrefs.time().get());
+		final long time = myPrefs.time().get() * 60 * 1000;
+		mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 0, time);
 	}
 
 	class TimeDisplayTimerTask extends TimerTask {

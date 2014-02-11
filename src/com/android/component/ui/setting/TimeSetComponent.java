@@ -43,7 +43,7 @@ public class TimeSetComponent {
 	// 初始化数据
 	@AfterViews
 	public void initTimeSet() {
-		editSettingTime.setText(String.valueOf(myPrefs.time().get() / 1000));
+		editSettingTime.setText(String.valueOf(myPrefs.time().get()));
 	}
 
 	@Click(R.id.btu_setting_time)
@@ -52,7 +52,7 @@ public class TimeSetComponent {
 		if (StringUtils.isNotEmpty(setTime)) {
 			dissmissKeyboard();
 			toastComponent.show(stringResComponent.toastSettingSucc);
-			myPrefs.time().put(Long.parseLong(setTime) * 1000);
+			myPrefs.time().put(Long.parseLong(setTime));
 		}
 	}
 

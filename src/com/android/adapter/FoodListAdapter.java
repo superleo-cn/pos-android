@@ -4,11 +4,11 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,7 +59,12 @@ public class FoodListAdapter extends BaseAdapter {
 			viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.food_title);
 			viewHolder.titleTextView.setText(bean.title);
 			viewHolder.food_image = (ImageView) convertView.findViewById(R.id.food_image);
-			Bitmap bitmap = BitmapFactory.decodeFile(bean.picture);
+			// reset the quality
+			final BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inJustDecodeBounds = false;
+			options.inPreferredConfig = Config.RGB_565;
+			options.inDither = true;
+			Bitmap bitmap = BitmapFactory.decodeFile(bean.picture, options);
 			viewHolder.food_image.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
 			viewHolder.food_btn = (ImageView) convertView.findViewById(R.id.food_btn);
 			viewHolder.food_btn.setOnClickListener(myListener);
