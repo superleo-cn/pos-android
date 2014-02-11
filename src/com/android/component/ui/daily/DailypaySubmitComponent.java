@@ -195,7 +195,7 @@ public class DailypaySubmitComponent {
 				params.put("dailySummaries[" + i + "].calculateTime", StringUtils.EMPTY);
 				params.put("dailySummaries[" + i + "].courier", balance.courier);
 				params.put("dailySummaries[" + i + "].others", balance.others);
-				params.put("dailySummaries[" + i + "].date", balance.date);
+				params.put("dailySummaries[" + i + "].submitDate", balance.date);
 			}
 
 			// 异步请求数据
