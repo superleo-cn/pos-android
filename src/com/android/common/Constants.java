@@ -135,4 +135,7 @@ public final class Constants {
 	public static final String DEFAUL_SQL_WHERE = " 1=1 ";
 	/** 分割线 */
 	public static final String SPLIT_LINE = "---------------------------------";
+
+	/** 默认最多一次提交50条数据 */
+	public static final int SYCN_SIZE = 50;
 }

@@ -231,7 +231,7 @@ public class OrderComponent {
 			}
 		}
 	}
-	
+
 	// 右键删除
 	public void remove2(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
@@ -270,7 +270,6 @@ public class OrderComponent {
 
 		}
 	}
-
 
 	/**
 	 * 打包操作
@@ -520,7 +519,7 @@ public class OrderComponent {
 	// 准备发送数据
 	public void submitAll() {
 		Map<String, String> params = new HashMap<String, String>();
-		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED);
+		List<FoodOrder> datas = FoodOrder.queryListByStatus(Constants.DB_FAILED, Constants.SYCN_SIZE);
 		for (int i = 0; i < datas.size(); i++) {
 			FoodOrder foodOrder = datas.get(i);
 			params.put("transactions[" + i + "].androidId", String.valueOf(foodOrder.getId()));
@@ -537,9 +536,7 @@ public class OrderComponent {
 
 		// 异步请求数据
 		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
-		if (mapping.code == Constants.STATUS_SUCCESS) {
-			FoodOrder.updateAllByStatus();
-		} else if (mapping.code == Constants.STATUS_FAILED) {
+		if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
 			List<Long> ids = mapping.datas;
 			if (CollectionUtils.isNotEmpty(ids)) {
 				for (Long id : ids) {

@@ -65,6 +65,16 @@ public class FoodOrder extends Model {
 	}
 
 	/**
+	 * 返回食物订单列表 50 条
+	 * 
+	 * @param status
+	 * @return
+	 */
+	public static List<FoodOrder> queryListByStatus(String status, int size) {
+		return new Select().from(FoodOrder.class).where("status = ?", status).limit("0, " + size).execute();
+	}
+
+	/**
 	 * 返回全部食物订单列表
 	 * 
 	 * @return
@@ -121,7 +131,7 @@ public class FoodOrder extends Model {
 	 * 更新所以提交成功的
 	 */
 	public static void updateAllByStatus() {
-		List<FoodOrder> foodOrders = queryListByStatus(Constants.DB_FAILED);
+		List<FoodOrder> foodOrders = queryListByStatus(Constants.DB_FAILED, Constants.SYCN_SIZE);
 		if (CollectionUtils.isNotEmpty(foodOrders)) {
 			for (FoodOrder foodOrder : foodOrders) {
 				foodOrder.status = Constants.DB_SUCCESS;
