@@ -24,6 +24,7 @@
             android:textColor="#000000"
             android:textSize="18sp" />
 
+        <!--  
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -34,7 +35,8 @@
             android:text="shop_id"
             android:textColor="#000000"
             android:textSize="18sp" />
-
+		-->
+		
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -96,7 +98,8 @@
             android:singleLine="true"
             android:textColor="#000000"
             android:textSize="18sp" />
-
+        
+        <!--    
         <TextView
             android:id="@+id/text_shop_id"
             android:layout_width="fill_parent"
@@ -106,7 +109,8 @@
             android:background="#FFFFFF"
             android:singleLine="true"
             android:textColor="#000000"
-            android:textSize="18sp" />
+            android:textSize="18sp" />    
+       	-->
 
         <TextView
             android:id="@+id/text_user_id"

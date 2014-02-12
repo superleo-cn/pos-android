@@ -4,6 +4,7 @@
 package com.android.component.ui.daily;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -23,8 +24,10 @@ import com.android.adapter.TakeNumerAdapter;
 import com.android.bean.DailyPayDetailBean;
 import com.android.bean.TakeNumberBean;
 import com.android.common.Constants;
+import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyTextUtils;
+import com.android.component.DirectEmailComponent;
 import com.android.component.KeyboardComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.domain.BalanceOrder;
@@ -32,6 +35,7 @@ import com.android.domain.Collection;
 import com.android.domain.CollectionOrder;
 import com.android.domain.Expenses;
 import com.android.domain.ExpensesOrder;
+import com.android.domain.User;
 import com.android.mapping.StatusMapping;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
@@ -56,6 +60,9 @@ public class DailypaySubmitComponent {
 
 	@Bean
 	KeyboardComponent keyboardComponent;
+
+	@Bean
+	DirectEmailComponent directEmailComponent;
 
 	public void submitToday(String date) {
 		postPayList(date);
@@ -205,8 +212,25 @@ public class DailypaySubmitComponent {
 				if (CollectionUtils.isNotEmpty(ids)) {
 					for (Long id : ids) {
 						BalanceOrder.updateByStatus(id);
+						sendMail(id);
 					}
 				}
+			}
+		}
+	}
+
+	private void sendMail(Long id) {
+		BalanceOrder bo = BalanceOrder.getBalanceOrderById(id);
+		if (bo != null) {
+			String dateTime = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+			User user = User.getUserById(Long.parseLong(bo.userId));
+			if (user != null) {
+				String shopInfo = user.shopId + "-" + user.shopName + "(" + user.shopCode + ")";
+				String userInfo = user.getId() + "-" + user.username + "(" + user.usertype + ")";
+				String title = String.format(Constants.DAILY_SUM_TITLE, shopInfo, userInfo, dateTime);
+				String sendMsg = String.format(Constants.DAILY_SUM_INFO, bo.bExpenses, bo.cCashCollected, bo.fBringBackCash,
+						bo.dDailyTurnover, bo.gTotalBalance);
+				directEmailComponent.sendMail(title, sendMsg, Constants.RECEIVE_DAILY_SUM_EMAIL);
 			}
 		}
 	}

@@ -46,4 +46,14 @@ public class User extends Model {
 		return new Select().from(User.class).where("username = ? and shop_id = ?", username, shopId).executeSingle();
 	}
 
+	/**
+	 * 根据ID得到User
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static User getUserById(Long id) {
+		return Model.load(User.class, id);
+	}
+
 }

@@ -53,8 +53,8 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
-	// public static final String HOST = "192.168.0.14";
+	public static final String HOST =  "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
+	//public static final String HOST = "laiyiwan.emd.com.sg";
 	/** 服务器端口号 */
 	public static final String PORT = ":8080";
 	/** 应用上下文名 */
@@ -138,4 +138,20 @@ public final class Constants {
 
 	/** 默认最多一次提交50条数据 */
 	public static final int SYCN_SIZE = 25;
+
+	/** email setting */
+	public static final String ENV = "[UAT]";
+	public static final String ERR_TITLE = Constants.ENV + "Android POS Issue at [%s]";
+	public static final String ERR_INFO = "Outlet [%s] User [%s] got some issue at [%s], the detail information is [%s]";
+	
+	public static final String DAILY_SUM_TITLE = Constants.ENV + "Outlet [%s] User [%s] closing at [%s]";
+	public static final String DAILY_SUM_INFO = "Total Expenses: [%s]\nCash in Drawer: [%s]\nCash collected: [%s]\nTurnover: [%s]\nTotal: [%s]";
+
+	public static final String mailFrom = "support@weebo.com.sg";
+	public static final String mailFromName = "Support";
+	public static final String username = "support@weebo.com.sg";
+	public static final String password = "sgweeboteam";
+
+	public static final String RECEIVE_EMAIL = "possupport@weebo.com.sg";
+	public static final String RECEIVE_DAILY_SUM_EMAIL = "lihui@weebo.com.sg";
 }

@@ -58,7 +58,7 @@ public class CollectionQueryAllDBListviewAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.query_collection_list_item, null);
 			viewHolder = new ViewHolder();
 			viewHolder.list_item_title = (LinearLayout) convertView.findViewById(R.id.list_item_title);
-			viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
+			//viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
 			viewHolder.text_user_id = (TextView) convertView.findViewById(R.id.text_user_id);
 			viewHolder.text_quantity = (TextView) convertView.findViewById(R.id.text_quantity);
 			viewHolder.text_cash_id = (TextView) convertView.findViewById(R.id.text_cash_id);
@@ -74,7 +74,7 @@ public class CollectionQueryAllDBListviewAdapter extends BaseAdapter {
 			viewHolder.list_item_title.setVisibility(View.GONE);
 		}
 		CollectionOrder collectionOrder = data.get(position);
-		viewHolder.text_shop_id.setText(collectionOrder.shopId);
+		//viewHolder.text_shop_id.setText(collectionOrder.shopId);
 		viewHolder.text_user_id.setText(collectionOrder.userId);
 		viewHolder.text_quantity.setText(collectionOrder.quantity);
 		viewHolder.text_cash_id.setText(collectionOrder.cashId);
@@ -85,7 +85,7 @@ public class CollectionQueryAllDBListviewAdapter extends BaseAdapter {
 
 	private final class ViewHolder {
 		LinearLayout list_item_title;
-		TextView text_shop_id;
+		//TextView text_shop_id;
 		TextView text_user_id;
 		TextView text_quantity;
 		TextView text_cash_id;

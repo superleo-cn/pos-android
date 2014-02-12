@@ -157,6 +157,16 @@ public class BalanceOrder extends Model {
 	}
 
 	/**
+	 * 根据ID得到BalanceOrder
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public static BalanceOrder getBalanceOrderById(Long id) {
+		return Model.load(BalanceOrder.class, id);
+	}
+
+	/**
 	 * 按照ID更新数据
 	 * 
 	 * @param androidId

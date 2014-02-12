@@ -53,8 +53,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	private static CrashHandler INSTANCE = new CrashHandler();
 	private Context mContext;
 	private Thread.UncaughtExceptionHandler mDefaultHandler;
-	public static final String ERR_TITLE = "Android POS Issue at [%s]";
-	public static final String ERR_INFO = "Outlet [%s] User [%s] got some issue at [%s], the detail information is [%s]";
 
 	public static CrashHandler getInstance() {
 		return INSTANCE;
@@ -94,14 +92,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			String userInfo = StringUtils.EMPTY;
 			String dateTime = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
 			String errorMsg = getStackTrace(ex);
-			String title = String.format(ERR_TITLE, dateTime);
+			String title = String.format(Constants.ERR_TITLE, dateTime);
 			if (myApp != null) {
 				shopInfo = myApp.getShopId() + "-" + myApp.getShopName() + "(" + myApp.getShopCode() + ")";
 				userInfo = myApp.getUserId() + "-" + myApp.getUsername() + "(" + myApp.getUserType() + ")";
 			}
-			String sendMsg = String.format(ERR_INFO, shopInfo, userInfo, dateTime, errorMsg);
+			String sendMsg = String.format(Constants.ERR_INFO, shopInfo, userInfo, dateTime, errorMsg);
 			Log.e("[CrashHandler]", "全局异常发生", ex);
-			directEmailComponent.sendMail(title, sendMsg);
+			directEmailComponent.sendMail(title, sendMsg, Constants.RECEIVE_EMAIL);
 		}
 		return true;
 	}

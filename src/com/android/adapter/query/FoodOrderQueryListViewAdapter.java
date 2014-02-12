@@ -58,7 +58,7 @@ public class FoodOrderQueryListViewAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.list_item_title = (LinearLayout) convertView.findViewById(R.id.list_item_title);
 			viewHolder.text_food_id = (TextView) convertView.findViewById(R.id.text_food_id);
-			viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
+			//viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
 			viewHolder.text_user_id = (TextView) convertView.findViewById(R.id.text_user_id);
 			viewHolder.text_retail_price = (TextView) convertView.findViewById(R.id.text_retail_price);
 			viewHolder.text_quantity = (TextView) convertView.findViewById(R.id.text_quantity);
@@ -78,7 +78,7 @@ public class FoodOrderQueryListViewAdapter extends BaseAdapter {
 		}
 		FoodOrder food_order = data.get(position);
 		viewHolder.text_food_id.setText(food_order.foodId);
-		viewHolder.text_shop_id.setText(food_order.shopId);
+		//viewHolder.text_shop_id.setText(food_order.shopId);
 		viewHolder.text_user_id.setText(food_order.userId);
 		viewHolder.text_retail_price.setText(MyNumberUtils.numToStr(food_order.retailPrice));
 		viewHolder.text_quantity.setText(food_order.quantity);
@@ -93,7 +93,7 @@ public class FoodOrderQueryListViewAdapter extends BaseAdapter {
 	private final class ViewHolder {
 		LinearLayout list_item_title;
 		TextView text_food_id;
-		TextView text_shop_id;
+		//TextView text_shop_id;
 		TextView text_user_id;
 		TextView text_retail_price;
 		TextView text_quantity;

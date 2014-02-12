@@ -57,7 +57,7 @@ public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.list_item_title = (LinearLayout) convertView.findViewById(R.id.list_item_title);
 			viewHolder.text_consumption_id = (TextView) convertView.findViewById(R.id.text_consumption_id);
-			viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
+			//viewHolder.text_shop_id = (TextView) convertView.findViewById(R.id.text_shop_id);
 			viewHolder.text_user_id = (TextView) convertView.findViewById(R.id.text_user_id);
 			viewHolder.text_price = (TextView) convertView.findViewById(R.id.text_price);
 			viewHolder.text_status = (TextView) convertView.findViewById(R.id.text_status);
@@ -73,7 +73,7 @@ public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 		}
 		ExpensesOrder expensesOrder = data.get(position);
 		viewHolder.text_consumption_id.setText(expensesOrder.consumptionId);
-		viewHolder.text_shop_id.setText(expensesOrder.shopID);
+		//viewHolder.text_shop_id.setText(expensesOrder.shopID);
 		viewHolder.text_user_id.setText(expensesOrder.userID);
 		viewHolder.text_price.setText(expensesOrder.price);
 		viewHolder.text_status.setText(expensesOrder.status);
@@ -84,7 +84,7 @@ public class ExpensesQueryAllDBListviewAdapter extends BaseAdapter {
 	private final class ViewHolder {
 		LinearLayout list_item_title;
 		TextView text_consumption_id;
-		TextView text_shop_id;
+		//TextView text_shop_id;
 		TextView text_user_id;
 		TextView text_price;
 		TextView text_status;

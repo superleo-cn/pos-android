@@ -58,7 +58,7 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 			convertView = inflater.inflate(R.layout.query_balance_list_item, null);
 			viewHolder = new ViewHolder();
 			viewHolder.list_item_title = (LinearLayout) convertView.findViewById(R.id.list_item_title);
-			viewHolder.text_shopId = (TextView) convertView.findViewById(R.id.text_shopId);
+			//viewHolder.text_shopId = (TextView) convertView.findViewById(R.id.text_shopId);
 			viewHolder.text_userId = (TextView) convertView.findViewById(R.id.text_userId);
 			viewHolder.text_aOpenBalance = (TextView) convertView.findViewById(R.id.text_aOpenBalance);
 			viewHolder.text_bExpenses = (TextView) convertView.findViewById(R.id.text_bExpenses);
@@ -81,7 +81,7 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 			viewHolder.list_item_title.setVisibility(View.GONE);
 		}
 		BalanceOrder balanceOrder = data.get(position);
-		viewHolder.text_shopId.setText(balanceOrder.shopId);
+		//viewHolder.text_shopId.setText(balanceOrder.shopId);
 		viewHolder.text_userId.setText(balanceOrder.userId);
 		viewHolder.text_aOpenBalance.setText(balanceOrder.aOpenBalance);
 		viewHolder.text_bExpenses.setText(balanceOrder.bExpenses);
@@ -99,7 +99,7 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 
 	private final class ViewHolder {
 		LinearLayout list_item_title;
-		TextView text_shopId;
+		//TextView text_shopId;
 		TextView text_userId;
 		TextView text_aOpenBalance;
 		TextView text_bExpenses;
