@@ -25,8 +25,8 @@ public class AndroidPrinter {
 
 	WifiCommunication wfComm = null;
 	int connFlag = 0;
-	//RevMsgThread revThred = null;
-	//CheckPrintThread cheThread = null;
+	RevMsgThread revThred = null;
+	CheckPrintThread cheThread = null;
 	// checkPrintThread cheThread = null;
 	private static final int WFPRINTER_REVMSG = 0x06;
 
@@ -58,7 +58,7 @@ public class AndroidPrinter {
 		if (connFlag == 0) {
 			connect();
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				Log.e("[AndroidPrinter]", "打印机中断", e);
 			}
@@ -78,7 +78,7 @@ public class AndroidPrinter {
 					Log.d("[AndroidPrinter]", "连接打印机");
 					wfComm.initSocket(sharedPrefs.printIp().get(), 9100);
 					connFlag = 1;
-					Thread.sleep(1000);
+					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					Log.e("[AndroidPrinter]", "打印机中断", e);
 				}
@@ -148,46 +148,45 @@ public class AndroidPrinter {
 				// Toast.makeText(context,
 				// "Connect the WIFI-printer successful",
 				// Toast.LENGTH_SHORT).show();
-				//revThred = new RevMsgThread();
-				//revThred.start();
-				//cheThread = new CheckPrintThread();
-				//cheThread.start();
+				revThred = new RevMsgThread();
+				revThred.start();
+				cheThread = new CheckPrintThread();
+				cheThread.start();
 				break;
 			case WifiCommunication.WFPRINTER_DISCONNECTED:
 				connFlag = 0;
 				// Toast.makeText(context,
 				// "Disconnect the WIFI-printer successful",
 				// Toast.LENGTH_SHORT).show();
-//				if (wfComm != null && revThred != null && cheThread != null) {
-//					revThred.interrupt();
-//					cheThread.interrupt();
-//				}
-//				reconnect();
+				if (wfComm != null && revThred != null && cheThread != null) {
+					revThred.interrupt();
+					cheThread.interrupt();
+				}
+				reconnect();
 				break;
 			case WifiCommunication.SEND_FAILED:
-				connFlag = 0;
 				// Toast.makeText(context, "Send Data Failed,please reconnect",
 				// Toast.LENGTH_SHORT).show();
-//				reconnect();
+				reconnect();
 				break;
 			case WifiCommunication.WFPRINTER_CONNECTEDERR:
 				connFlag = 0;
 				// Toast.makeText(context, "Connect the WIFI printer get error",
 				// Toast.LENGTH_SHORT).show();
-//				if (wfComm != null && revThred != null) {
-//					revThred.interrupt();
-//				}
-//				reconnect();
+				if (wfComm != null && revThred != null) {
+					revThred.interrupt();
+				}
+				reconnect();
 				break;
 			case WifiCommunication.CONNECTION_LOST:
 				connFlag = 0;
 				// Toast.makeText(context, "Connection lost,please reconnect",
 				// Toast.LENGTH_SHORT).show();
-//				if (wfComm != null && revThred != null) {
-//					revThred.interrupt();
-//					// cheThread.interrupt();
-//				}
-//				reconnect();
+				if (wfComm != null && revThred != null) {
+					revThred.interrupt();
+					// cheThread.interrupt();
+				}
+				reconnect();
 				break;
 			case WFPRINTER_REVMSG:
 				byte revData = (byte) Integer.parseInt(msg.obj.toString());
