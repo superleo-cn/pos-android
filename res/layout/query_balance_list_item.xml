@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/list_item_title"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="#000000"
         android:orientation="horizontal"
         android:visibility="gone" >
@@ -16,11 +16,11 @@
         <!--  
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="shopId"
             android:textColor="#000000"
             android:textSize="18sp" />
@@ -28,132 +28,132 @@
 		
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="userId"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="aOpenBalance"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="bExpenses"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="cCashCollected"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="dDailyTurnover"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="eNextOpenBalance"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="fBringBackCash"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="gTotalBalance"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="courier"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="others"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="status"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="date"
             android:textColor="#000000"
             android:textSize="18sp" />
@@ -161,7 +161,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="#000000"
         android:orientation="horizontal" >
 
@@ -169,11 +169,11 @@
         <TextView
             android:id="@+id/text_shopId"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
         -->
@@ -181,132 +181,132 @@
         <TextView
             android:id="@+id/text_userId"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_aOpenBalance"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_bExpenses"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_cCashCollected"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_dDailyTurnover"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_eNextOpenBalance"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_fBringBackCash"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_gTotalBalance"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_courier"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_others"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_status"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_date"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="0.000075dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
-            android:singleLine="true"
+            android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
     </LinearLayout>
