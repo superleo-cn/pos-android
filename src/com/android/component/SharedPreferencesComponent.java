@@ -24,7 +24,7 @@ public interface SharedPreferencesComponent {
 	@DefaultString("0")
 	String shopId();
 
-	@DefaultLong(60)
+	@DefaultLong(30)
 	long time();
 
 }

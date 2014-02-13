@@ -54,7 +54,7 @@ public final class Constants {
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
 	public static final String HOST =  "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
-	//public static final String HOST = "laiyiwan.emd.com.sg";
+	//public static final String HOST = "localhost";
 	/** 服务器端口号 */
 	public static final String PORT = ":8080";
 	/** 应用上下文名 */
@@ -145,7 +145,7 @@ public final class Constants {
 	public static final String ERR_INFO = "Outlet [%s] User [%s] got some issue at [%s], the detail information is [%s]";
 	
 	public static final String DAILY_SUM_TITLE = Constants.ENV + "Outlet [%s] User [%s] closing at [%s]";
-	public static final String DAILY_SUM_INFO = "Total Expenses: [%s]\nCash in Drawer: [%s]\nCash collected: [%s]\nTurnover: [%s]\nTotal: [%s]";
+	public static final String DAILY_SUM_INFO = "Total Expenses: $%s\nCash in Drawer: $%s\nCash collected: $%s\nTurnover: $%s\nTotal: $%s";
 
 	public static final String mailFrom = "support@weebo.com.sg";
 	public static final String mailFromName = "Support";
