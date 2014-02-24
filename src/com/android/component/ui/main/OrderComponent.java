@@ -523,6 +523,7 @@ public class OrderComponent {
 		for (int i = 0; i < datas.size(); i++) {
 			FoodOrder foodOrder = datas.get(i);
 			params.put("transactions[" + i + "].androidId", String.valueOf(foodOrder.getId()));
+			params.put("transactions[" + i + "].transactionId", foodOrder.orderId);
 			params.put("transactions[" + i + "].user.id", foodOrder.userId);
 			params.put("transactions[" + i + "].shop.id", foodOrder.shopId);
 			params.put("transactions[" + i + "].quantity", foodOrder.quantity);
