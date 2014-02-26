@@ -14,9 +14,13 @@ import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
 import com.android.common.MyApp;
+import com.android.common.SystemHelper;
 
 @Table(name = "tb_food_order")
 public class FoodOrder extends Model {
+
+	@Column(name = "order_id")
+	public String orderId;
 
 	@Column(name = "user_id")
 	public String userId;
@@ -50,9 +54,9 @@ public class FoodOrder extends Model {
 
 	@Override
 	public String toString() {
-		return "FoodOrder [android_id=" + getId() + ", user_id=" + userId + ", shop_id=" + shopId + ", retail_price=" + retailPrice
-				+ ", quantity=" + quantity + ", foodid=" + foodId + ", discount=" + discount + ", total_package=" + totalPackage + ", foc="
-				+ foc + ", date " + date + "]";
+		return "FoodOrder [android_id=" + getId() + ", order_id=" + orderId + ", user_id=" + userId + ", shop_id=" + shopId
+				+ ", retail_price=" + retailPrice + ", quantity=" + quantity + ", foodid=" + foodId + ", discount=" + discount
+				+ ", total_package=" + totalPackage + ", foc=" + foc + ", date " + date + "]";
 	}
 
 	/**
@@ -109,6 +113,7 @@ public class FoodOrder extends Model {
 			FoodOrder food_order = new FoodOrder();
 			food_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
 			food_order.shopId = myApp.getShopId();// 店idmyApp.getShopid()
+			food_order.orderId = SystemHelper.getUuid();
 			food_order.totalPackage = String.valueOf(bean.getDabao_price());// 打包钱数
 			food_order.discount = String.valueOf(bean.getDazhe_price()); // 打折钱数
 			food_order.userId = myApp.getUserId();// 用户id

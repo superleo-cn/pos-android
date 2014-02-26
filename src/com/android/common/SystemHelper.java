@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.UUID;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -298,5 +299,11 @@ public class SystemHelper {
 		WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 		WifiInfo info = wifi.getConnectionInfo();
 		return info.getMacAddress();
+	}
+	
+	
+	public static String getUuid(){
+		String uuid = UUID.randomUUID().toString();
+		return String.valueOf(uuid);
 	}
 }
