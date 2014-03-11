@@ -31,7 +31,7 @@ public class RestHelper {
 				// 注意:目前服务器返回的JSON数据串中会有特殊字符（换行、回车）。需要处理一下
 				return gson.fromJson(cleanJSON(json), t);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -44,7 +44,7 @@ public class RestHelper {
 			if (StringUtils.isNotEmpty(json) && !StringUtils.equalsIgnoreCase("null", json)) {
 				return gson.fromJson(cleanJSON(json), t);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

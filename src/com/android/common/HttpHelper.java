@@ -81,14 +81,14 @@ public class HttpHelper {
 			// 设置最大连接数
 			ConnManagerParams.setMaxTotalConnections(httpParams, 100);
 			// 设置获取连接的最大等待时间
-			ConnManagerParams.setTimeout(httpParams, 60000);
+			ConnManagerParams.setTimeout(httpParams, 10000);//60000
 			// 设置每个路由最大连接数
 			ConnPerRouteBean connPerRoute = new ConnPerRouteBean(80);
 			ConnManagerParams.setMaxConnectionsPerRoute(httpParams, connPerRoute);
 			// 设置连接超时时间
-			HttpConnectionParams.setConnectionTimeout(httpParams, 20000);
+			HttpConnectionParams.setConnectionTimeout(httpParams, 10000);//20000
 			// 设置读取超时时间
-			HttpConnectionParams.setSoTimeout(httpParams, 30000);
+			HttpConnectionParams.setSoTimeout(httpParams, 10000);//10000
 
 			SchemeRegistry schreg = new SchemeRegistry();
 			schreg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));

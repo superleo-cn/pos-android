@@ -2,7 +2,7 @@
     android:id="@+id/layout_top"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#D15C2A"
+    android:background="#252932"
     android:paddingBottom="5dip"
     android:paddingTop="5dip" >
 
@@ -113,9 +113,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dip"
-                android:layout_toRightOf="@+id/exit_btn"
                 android:text="@string/daily_pay"
-                android:textColor="#F7EA39"
+                android:textColor="#CA5126"
                 android:padding="10dp"
                 android:textSize="28sp" 
                 android:textStyle="bold" />
