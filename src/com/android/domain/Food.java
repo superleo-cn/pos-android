@@ -11,12 +11,15 @@ import com.android.mapping.FoodMapping;
 
 @Table(name = "tb_food")
 public class Food extends Model {
-	
+
 	@Column(name = "foodId")
 	public String foodId;
 
 	@Column(name = "sn")
 	public String sn;
+
+	@Column(name = "bar_code")
+	public String barCode;
 
 	@Column(name = "name")
 	public String name;
@@ -33,13 +36,16 @@ public class Food extends Model {
 	@Column(name = "retail_price")
 	public String retailPrice;
 
-	//非数据库字段
+	@Column(name = "flag")
+	public String flag;
+
+	// 非数据库字段
 	public String title;
-	
+
 	@Override
 	public String toString() {
-		return "Food [type=" + type + ", name=" + name + ", nameZh=" + nameZh + ",  sn=" + sn + ", retail_price=" + retailPrice
-				+ ", picture=" + picture + "]";
+		return "Food [type=" + type + ", barCode =" + barCode + ", name=" + name + ", nameZh=" + nameZh + ",  sn=" + sn + ", retail_price="
+				+ retailPrice + ", picture=" + picture + ", flag=" + flag + "]";
 	}
 
 	/**
@@ -60,12 +66,14 @@ public class Food extends Model {
 		// save Food
 		Food food = new Food();
 		food.foodId = foodRemote.id;
+		food.barCode = foodRemote.barCode;
 		food.name = foodRemote.name;
 		food.nameZh = foodRemote.nameZh;
 		food.picture = foodRemote.picture;
 		food.retailPrice = foodRemote.retailPrice;
 		food.sn = foodRemote.sn;
 		food.type = foodRemote.type;
+		food.flag = foodRemote.flag;
 		food.save();
 	}
 

@@ -20,6 +20,8 @@ public class FoodMapping extends BasicMapping<FoodRemote> {
 		public String id;
 
 		public String sn;
+		
+		public String barCode;
 
 		public String name;
 
@@ -32,6 +34,8 @@ public class FoodMapping extends BasicMapping<FoodRemote> {
 		public String picture;
 
 		public String retailPrice;
+		
+		public String flag;
 	}
 
 	public static FoodMapping getJSONAndSave(String url) {

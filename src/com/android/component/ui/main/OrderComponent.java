@@ -31,6 +31,7 @@ import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
 import com.android.common.MyTextUtils;
+import com.android.component.KeyboardComponent;
 import com.android.component.LockComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
@@ -66,6 +67,9 @@ public class OrderComponent {
 
 	@App
 	MyApp myApp; // 注入 MyApp
+	
+	@ViewById(R.id.bar_code_text) // 扫描
+	TextView barCodeText;
 
 	@ViewById(R.id.total_price)
 	TextView totalPrice; // 总价格
@@ -105,6 +109,9 @@ public class OrderComponent {
 
 	@Bean
 	WifiComponent wifiComponent;
+	
+	@Bean
+	KeyboardComponent keyboardComponent;
 
 	FoodComponent foodComponent;
 
@@ -268,6 +275,19 @@ public class OrderComponent {
 			}
 			doCalculation();
 
+		}
+	}
+	
+	@Click(R.id.bar_code_btn)
+	public void sann(){
+		List<Food> foodList =  foodComponent.getFoodDataList();
+		String sannId = StringUtils.trim(barCodeText.getText().toString());
+		if(StringUtils.isNotEmpty(sannId)){
+			for(Food food : foodList){
+				if(StringUtils.equals(food.barCode, sannId)){
+					order(food);
+				}
+			}
 		}
 	}
 
@@ -563,7 +583,11 @@ public class OrderComponent {
 
 		}.build();
 	}
-
+	
+	public void dissmissKeyboard() {
+		keyboardComponent.dismissKeyboard(barCodeText);
+	}
+	
 	public List<SelectFoodBean> getSelectDataList() {
 		return selectDataList;
 	}

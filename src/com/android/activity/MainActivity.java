@@ -1,5 +1,7 @@
 package com.android.activity;
 
+import android.view.MotionEvent;
+
 import com.android.R;
 import com.android.component.ui.main.CalculatorComponent;
 import com.android.component.ui.main.FoodComponent;
@@ -34,6 +36,12 @@ public class MainActivity extends BasicActivity {
 		calculatorComponent.setOrderComponent(orderComponent);
 		orderComponent.setFoodComponent(foodComponent);
 		orderComponent.setCalculatorComponent(calculatorComponent);
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent event) {
+		orderComponent.dissmissKeyboard();
+		return super.dispatchTouchEvent(event);
 	}
 
 }
