@@ -2,10 +2,11 @@
     android:id="@+id/layout_top"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#001233"
+    android:background="#111f39"
     android:paddingBottom="5dip"
     android:paddingTop="5dip" >
-<!-- 252932 -->
+<!-- 252932 
+-->
     <ImageView
         android:id="@+id/menu_btn"
         android:layout_width="wrap_content"

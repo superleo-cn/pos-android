@@ -86,11 +86,14 @@ public class SelectListAdapter extends BaseAdapter {
 		}
 
 		bean = classList.get(position);
-		if (position % 2 == 0) {
-			convertView.setBackgroundColor(color.white);
-		} else {
-			convertView.setBackgroundColor(Color.LTGRAY);
-		}
+		/*
+		 * Modify by Lihui on 12-Mar-2014, due to transparent background replaced 
+		 */
+//		if (position % 2 == 0) {
+//			convertView.setBackgroundColor(color.white);
+//		} else {
+//			convertView.setBackgroundColor(Color.LTGRAY);
+//		}
 
 		if (bean.getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
 			viewHolder.food_name.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
