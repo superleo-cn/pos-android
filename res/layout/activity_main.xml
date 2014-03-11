@@ -72,14 +72,14 @@
                             android:transcriptMode="alwaysScroll" >
                         </ListView>
                     </RelativeLayout>
-                    <!--  -->
+                    <!-- #252932  -->
 
                     <ScrollView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_marginTop="5dip"
                         android:layout_weight="1"
-                        android:background="#252932" >
+                        android:background="#001233" >
 
                         <RelativeLayout
                             android:layout_width="fill_parent"
