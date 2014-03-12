@@ -231,16 +231,11 @@
                                 android:id="@+id/layout_mid"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-<<<<<<< HEAD
                                 android:layout_below="@+id/layout_scann"
                                 android:layout_marginLeft="10dip"
                                 android:layout_marginRight="10dip"
-=======
-                                android:layout_below="@+id/layout_tp"
->>>>>>> branch 'temp' of https://github.com/superleo-cn/pos-android.git
                                 android:layout_marginTop="5dip"
                                 android:orientation="horizontal" >
-
                                 <!--                                 
                                 android:layout_marginLeft="10dip"
                                 android:layout_marginRight="10dip"
