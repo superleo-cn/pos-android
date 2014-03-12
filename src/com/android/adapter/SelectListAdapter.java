@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.R.color;
+import org.apache.commons.lang.StringUtils;
+
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -95,7 +95,7 @@ public class SelectListAdapter extends BaseAdapter {
 //			convertView.setBackgroundColor(Color.LTGRAY);
 //		}
 
-		if (bean.getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+		if (StringUtils.equalsIgnoreCase(bean.getFood_name(), Constants.SPLIT_LINE)) {
 			viewHolder.food_name.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 18));
 			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 18));
@@ -108,13 +108,13 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 30));
 			viewHolder.food_name.setText(bean.getFood_name());
 		}
-		if (bean.getFood_num().equals("0")) {
+		if (StringUtils.equals(bean.getFood_num(), "0")) {
 			viewHolder.food_num.setVisibility(View.GONE);
 		} else {
 			viewHolder.food_num.setVisibility(View.VISIBLE);
 			viewHolder.food_num.setText("x" + bean.getFood_num());
 		}
-		if (bean.getFood_price().equals("0.00")) {
+		if (StringUtils.equals(bean.getFood_price(), "0.00")) {
 			viewHolder.food_price.setVisibility(View.GONE);
 		} else {
 			viewHolder.food_price.setVisibility(View.VISIBLE);

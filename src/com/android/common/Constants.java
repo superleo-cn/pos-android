@@ -142,8 +142,8 @@ public final class Constants {
 
 	/** email setting */
 	public static final String ENV = "[UAT]";
-	public static final String ERR_TITLE = Constants.ENV + "Android POS Issue at [%s]";
-	public static final String ERR_INFO = "Outlet [%s] User [%s] got some issue at [%s], the detail information is [%s]";
+	public static final String ERR_TITLE = Constants.ENV + "Android Stall Issue at [%s]";
+	public static final String ERR_INFO = "Stall [%s] User [%s] got some issue at [%s], the detail information is [%s]";
 	
 	public static final String DAILY_SUM_TITLE = Constants.ENV + "Outlet [%s] User [%s] closing at [%s]";
 	public static final String DAILY_SUM_INFO = "Total Expenses: $%s\nCash in Drawer: $%s\nCash collected: $%s\nTurnover: $%s\nTotal: $%s";

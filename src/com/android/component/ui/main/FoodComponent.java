@@ -41,6 +41,8 @@ public class FoodComponent {
 
 	private List<Food> foodDataList;
 
+	private List<Food> foodDataListDisplay;
+
 	private OrderComponent orderComponent;
 
 	/**
@@ -53,6 +55,7 @@ public class FoodComponent {
 	@AfterViews
 	public void initFood() {
 		this.foodDataList = Food.queryList();
+		this.foodDataListDisplay = Food.queryListByDisplay();
 		String type = sharedPrefs.language().get();
 		for (Food food : foodDataList) {
 			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
@@ -61,14 +64,21 @@ public class FoodComponent {
 				food.title = food.name;
 			}
 		}
-		FoodListAdapter adapter = new FoodListAdapter(context, foodDataList, handler);
+		for (Food food : foodDataListDisplay) {
+			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+				food.title = food.nameZh;
+			} else {
+				food.title = food.name;
+			}
+		}
+		FoodListAdapter adapter = new FoodListAdapter(context, foodDataListDisplay, handler);
 		foodView.setAdapter(adapter);
 	}
 
 	// 点菜操作
 	@ItemClick(R.id.food_list)
 	void foodPanel(int position) {
-		Food foodBean = foodDataList.get(position);
+		Food foodBean = foodDataListDisplay.get(position);
 		orderComponent.order(foodBean);
 	}
 

@@ -58,6 +58,15 @@ public class Food extends Model {
 	}
 
 	/**
+	 * 返回食物显示列表
+	 * 
+	 * @return
+	 */
+	public static List<Food> queryListByDisplay() {
+		return new Select().from(Food.class).where("flag = 'true'").execute();
+	}
+
+	/**
 	 * 保存食物
 	 * 
 	 * @param foodRemote
