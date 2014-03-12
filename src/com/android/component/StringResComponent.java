@@ -61,9 +61,6 @@ public class StringResComponent {
 	@StringRes(R.string.open_print)
 	public String openPrint;
 
-	@StringRes(R.string.mainTitle_txt)
-	public String mainTitle;
-
 	@StringRes(R.string.selec_not_food)
 	public String noFood;
 

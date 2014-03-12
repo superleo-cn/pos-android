@@ -88,7 +88,7 @@ public class MenuComponent {
 	 */
 	@AfterViews
 	public void initMenu() {
-		login_name.setText(stringResComponent.mainTitle + " " + myApp.getUsername() + ",");
+		login_name.setText(myApp.getUsername() + ",");
 		shop_name.setText(myApp.getShopName() + "-" + myApp.getShopCode());
 		dialog = new MyProcessDialog(context, stringResComponent.loading);
 	}

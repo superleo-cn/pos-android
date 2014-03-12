@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff" >
+    android:background="@drawable/food_bg" >
 
     <TextView
         android:id="@+id/food_title"
@@ -10,8 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dip"
         android:layout_marginTop="5dip"
-        android:textColor="#000000"
-        android:textSize="22sp" />
+        android:textColor="#FFFFFF"
+        android:textSize="28sp" />
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -27,8 +27,9 @@
             android:layout_height="165dip"
             android:layout_gravity="bottom"
             android:layout_marginBottom="10dip"
-            android:background="#00000000"
             android:scaleType="fitXY" />
+        
+        <!-- android:src="@drawable/food_bg" -->
 
         <ImageView
             android:id="@+id/food_btn"
@@ -36,7 +37,6 @@
             android:layout_height="60dip"
             android:layout_gravity="left|bottom"
             android:layout_marginBottom="10dip"
-            android:background="#00000000"
             android:focusable="false"
             android:scaleType="centerInside"
             android:visibility="gone"

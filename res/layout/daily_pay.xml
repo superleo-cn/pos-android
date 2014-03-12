@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E6E6E6" >
+    android:background="@drawable/main_background" >
+    <!-- android:background="#E6E6E6"  -->
 
  	<include layout="@layout/menu"/>
 
@@ -14,6 +15,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:layout_marginTop="5dip" >
+    
 
        <LinearLayout
             android:layout_width="fill_parent"
@@ -25,33 +27,32 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="#001233"
+                android:background="#111f39"
                 android:gravity="center"
                 android:text="@string/dail_detail"
-                android:textColor="#EFEFF7"
+                android:textColor="#FFFFFF"
                 android:padding="10dip"
                 android:textSize="20sp" />
 
             <ListView
                 android:id="@+id/daily_detail_list"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="0dip"
                 android:layout_weight="1"
-                android:background="#FFFFFF"
+                android:background="@drawable/cart" 
                 android:cacheColorHint="#00000000"
                 android:divider="@null"
                 android:listSelector="#00000000" />
-             
+            
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#EAE0DC"
                 android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FFFFFF"
+                    android:background="#111f39"
                     android:orientation="horizontal"
                     android:padding="5dip" >
 
@@ -62,21 +63,21 @@
 						android:layout_marginLeft="10dip"
                         android:singleLine="true"
                         android:text="@string/allcount"
-                        android:textColor="#370E07"
+                        android:textColor="#CA5126"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                     <RelativeLayout
                          android:layout_width="fill_parent"
                          android:layout_height="wrap_content"
-                         android:layout_weight="1">
+                         android:layout_weight="1" >
                     
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_toLeftOf="@+id/text_id_all_price"
                         android:singleLine="true"
-                        android:text="S$"
-                        android:textColor="#370E07"
+                        android:text="@string/SGD"
+                        android:textColor="#CA5126"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -87,7 +88,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="5dip"
                         android:text=""
-                        android:textColor="#370E07"
+                        android:textColor="#CA5126"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                     </RelativeLayout>
@@ -107,7 +108,7 @@
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="#001233"
+                android:background="#111f39"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
@@ -153,7 +154,6 @@
                         android:layout_marginLeft="5dip"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="A BEN"
                         android:textColor="#CA5126"
                         android:textSize="18sp"
                         android:textStyle="bold" 
@@ -187,7 +187,7 @@
                         android:layout_marginLeft="5dip"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="S$"
+                        android:text="@string/SGD"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -218,8 +218,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:background="#CC997C"
+                    android:background="@drawable/cart" 
                     android:orientation="vertical" >
+                    <!--  android:background="#CC997C" -->
 					 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -228,8 +229,8 @@
                         android:paddingLeft="10dip"
                         android:singleLine="true"
                         android:text="@string/take_number"
-                        android:textColor="#370E07"
-                        android:textSize="18sp"
+                        android:textColor="#FFFFFF"  
+                        android:textSize="22sp"
                         android:textStyle="bold" />
 
                     <ListView
@@ -252,10 +253,10 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="10dip"
                         android:singleLine="true"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:text="@string/take_all_price"
+                        android:textColor= "#CA5126"
                          />
                     <RelativeLayout 
                         android:layout_width="fill_parent"
@@ -269,11 +270,11 @@
                         android:gravity="center_vertical"
                         android:singleLine="true"
                         android:focusable="false"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
+                        android:textColor="#CA5126"
+                        android:textSize="20sp"
                         android:textStyle="bold" 
                         android:layout_toLeftOf="@+id/take_all_price"
-                        android:text="S$"/>
+                        android:text="@string/SGD"/>
                      <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -281,7 +282,7 @@
                         android:gravity="center_vertical"
                         android:singleLine="true"
                         android:focusable="false"
-                        android:textColor="#000000"
+                        android:textColor="#CA5126"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:layout_alignParentRight="true"
@@ -296,8 +297,9 @@
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="5dip"
                     android:layout_weight="1"
-                    android:background="#CC997C"
+                    android:background="@drawable/cart" 
                     android:orientation="horizontal" >
+                    <!--  android:background="#CC997C" -->
 
                     <ScrollView
                         android:id="@+id/scrollviewID"
@@ -324,7 +326,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/cash_register"
-                                    android:textColor="#000000"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="18sp" />
 
                                 <EditText
@@ -359,7 +361,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/today_turnover"
-                                     android:textColor="#000000"
+                                     android:textColor="#FFFFFF"
                                     android:textSize="18sp" />
                                 <EditText
                                     android:layout_width="fill_parent"
@@ -395,7 +397,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/total"
-                                      android:textColor="#000000"
+                                      android:textColor="#FFFFFF"
                                     android:textSize="18sp" />
 
                                 <EditText
@@ -430,7 +432,7 @@
                                         android:gravity="center_vertical"
                                         android:singleLine="true"
                                         android:text="@string/tomorrow_money"
-                                        android:textColor="#000000"
+                                        android:textColor="#FFFFFF"
                                         android:textSize="18sp" />
 
                                     <EditText
@@ -463,7 +465,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/total_take_num"
-                                      android:textColor="#000000"
+                                      android:textColor="#FFFFFF"
                                     android:textSize="18sp" />
 
                                 <EditText
@@ -498,7 +500,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/send_person"
-                                    android:textColor="#000000"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="18sp" />
 
                                 <EditText
@@ -528,7 +530,7 @@
                                     android:gravity="center_vertical"
                                     android:singleLine="true"
                                     android:text="@string/other"
-                                    android:textColor="#000000"
+                                    android:textColor="#FFFFFF"
                                     android:textSize="18sp"/>
 
                                 <EditText
@@ -556,7 +558,7 @@
                     android:text="@string/message_ok"
                     android:textColor="#FFFFFF"
                     android:textStyle="bold"
-                    android:background="#E51212"
+                    android:background="#CA5126"
                     android:padding="5dip"
                     android:visibility="gone"
                     android:textSize="28sp" />
