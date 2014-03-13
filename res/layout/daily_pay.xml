@@ -239,7 +239,7 @@
                         android:layout_height="fill_parent"
                         android:layout_margin="10dip"
                         android:layout_weight="1"
-                        android:background="@drawable/richang_r_l_m_bg"
+
                         android:cacheColorHint="#00000000"
                         android:divider="@null" />
                     <RelativeLayout 
