@@ -80,11 +80,11 @@ public class OrderComponent {
 	@ViewById(R.id.surplus)
 	TextView surplus; // 找回
 
-	@ViewById(R.id.take_package)
-	ImageView take_package; // 打包选项
+	//@ViewById(R.id.take_package)
+	//ImageView take_package; // 打包选项
 
-	@ViewById(R.id.foc)
-	ImageView foc; // FOC
+	//@ViewById(R.id.foc)
+	//ImageView foc; // FOC
 
 	@ViewById(R.id.discount)
 	ImageView discount; // 打折选项
@@ -162,11 +162,11 @@ public class OrderComponent {
 					selectDataList.clear();
 					selectAdapter.notifyDataSetChanged();
 					is_takePackage = false;
-					take_package.setImageResource(R.drawable.package_not_select);
+					//take_package.setImageResource(R.drawable.package_not_select);
 					is_discount = false;
 					discount.setImageResource(R.drawable.package_not_select);
 					is_foc = false;
-					foc.setImageResource(R.drawable.package_not_select);
+					//foc.setImageResource(R.drawable.package_not_select);
 					doCalculation();
 					return true;
 				}
@@ -267,11 +267,11 @@ public class OrderComponent {
 			selectAdapter.notifyDataSetChanged();
 			if (CollectionUtils.isEmpty(selectDataList)) {
 				is_takePackage = false;
-				take_package.setImageResource(R.drawable.package_not_select);
+				//take_package.setImageResource(R.drawable.package_not_select);
 				is_discount = false;
 				discount.setImageResource(R.drawable.package_not_select);
 				is_foc = false;
-				foc.setImageResource(R.drawable.package_not_select);
+				//foc.setImageResource(R.drawable.package_not_select);
 			}
 			doCalculation();
 
@@ -294,13 +294,13 @@ public class OrderComponent {
 	/**
 	 * 打包操作
 	 */
-	@Click(R.id.r_lay_id_take_package)
-	public void takePackage() {
-		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(take_package, foc);
-			doCalculation();
-		}
-	}
+//	@Click(R.id.r_lay_id_take_package)
+//	public void takePackage() {
+//		if (CollectionUtils.isNotEmpty(selectDataList)) {
+//			setImageStatus(take_package, foc);
+//			doCalculation();
+//		}
+//	}
 
 	/**
 	 * 打折等操作
@@ -308,7 +308,7 @@ public class OrderComponent {
 	@Click(R.id.r_lay_id_discount)
 	public void discount() {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(discount, foc);
+			setImageStatus(discount, discount);
 			doCalculation();
 		}
 	}
@@ -316,13 +316,13 @@ public class OrderComponent {
 	/**
 	 * 免费等操作
 	 */
-	@Click(R.id.r_lay_id_foc)
-	public void foc() {
-		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(foc, discount, take_package);
-			doCalculation();
-		}
-	}
+//	@Click(R.id.r_lay_id_foc)
+//	public void foc() {
+//		if (CollectionUtils.isNotEmpty(selectDataList)) {
+//			setImageStatus(foc, discount, take_package);
+//			doCalculation();
+//		}
+//	}
 
 	/**
 	 * 
@@ -343,16 +343,6 @@ public class OrderComponent {
 			} else {
 				currentView.setImageResource(R.drawable.package_seclect);
 				is_discount = true;
-				is_foc = false;
-			}
-
-		} else if (currentView == take_package) {
-			if (is_takePackage) {
-				currentView.setImageResource(R.drawable.package_not_select);
-				is_takePackage = false;
-			} else {
-				currentView.setImageResource(R.drawable.package_seclect);
-				is_takePackage = true;
 				is_foc = false;
 			}
 
@@ -508,11 +498,11 @@ public class OrderComponent {
 		surplus.setText(Constants.DEFAULT_PRICE_FLOAT);
 		sbuff.delete(0, sbuff.length());
 		is_takePackage = false;
-		take_package.setImageResource(R.drawable.package_not_select);
+		//take_package.setImageResource(R.drawable.package_not_select);
 		is_discount = false;
 		discount.setImageResource(R.drawable.package_not_select);
 		is_foc = false;
-		foc.setImageResource(R.drawable.package_not_select);
+		//foc.setImageResource(R.drawable.package_not_select);
 	}
 
 	// 保存数据

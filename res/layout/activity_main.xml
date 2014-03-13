@@ -240,6 +240,7 @@
                                 android:layout_marginRight="10dip"
                                 
                                  -->
+                                <!--  
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_take_package"
                                     android:layout_width="fill_parent"
@@ -300,7 +301,8 @@
                                         android:textSize="24sp"
                                         android:textStyle="bold" />
                                 </RelativeLayout>
-
+                                --> 
+                                
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_discount"
                                     android:layout_width="fill_parent"
