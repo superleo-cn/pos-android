@@ -173,67 +173,16 @@
                                 </LinearLayout>
                             </LinearLayout>
                             
-                            <LinearLayout
-                                android:id="@+id/layout_scann"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/layout_tp"
-                                android:layout_marginLeft="10dip"
-                                android:layout_marginRight="10dip"
-                                android:layout_marginTop="5dip"
-                                android:orientation="horizontal" >
-
-                                <RelativeLayout
-                                    android:id="@+id/r_lay_id_bar_code"
-                                    android:layout_width="fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:background="@drawable/layout_mid_bg"
-                                    android:orientation="horizontal" >
-
-                                    <TextView
-                                        android:id="@+id/bar_code"
-                                        android:layout_width="80dip"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="5dip"
-                                        android:text="Barcode"
-                                        android:textColor="#CD6715"
-                                        android:textSize="20sp"
-                                        android:textStyle="bold" />
-                                    
-                                    <EditText
-				                        android:id="@+id/bar_code_text"
-				                        android:layout_width="200dip"
-				                        android:layout_height="wrap_content"
-				                        android:background="@drawable/edit_bg"
-				                        android:layout_marginLeft="65dip"
-				                        android:layout_marginRight="20dip"
-				                        android:numeric="integer"
-				                        android:layout_toRightOf="@+id/bar_code" />
-                                    
-                                   	<Button
-                                        android:id="@+id/bar_code_btn"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="5dip"
-                                        android:background="#E3313E"
-                                        android:gravity="center"
-                                        android:text="Search"
-                                        android:layout_toRightOf="@+id/bar_code_text"
-                                        android:textColor="#ffffff"
-                                        android:textSize="20sp" 
-                                        android:textStyle="bold"/>
-                                </RelativeLayout>
-                            </LinearLayout>
+                           
                             
                             <LinearLayout
                                 android:id="@+id/layout_mid"
                                 android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/layout_scann"
+                                android:layout_height="wrap_content"                           
                                 android:layout_marginLeft="10dip"
                                 android:layout_marginRight="10dip"
                                 android:layout_marginTop="5dip"
+                                android:layout_below="@+id/layout_tp"
                                 android:orientation="horizontal" >
                                 <!--                                 
                                 android:layout_marginLeft="10dip"
@@ -302,13 +251,44 @@
                                         android:textStyle="bold" />
                                 </RelativeLayout>
                                 --> 
-                                
+                      
+                              	<RelativeLayout
+                                    android:id="@+id/r_lay_id_bar_code"                                
+                                    android:layout_width="0dip"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/layout_mid_bg"
+                                    android:orientation="horizontal" >
+                                     
+                                    
+                                    <EditText
+				                        android:id="@+id/bar_code_text"
+				                  		android:layout_width="220dip"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="5dip"				                     
+				                        android:background="@drawable/edit_bg"				        
+				                        android:inputType="text"
+				                         />
+                                 	
+                                   	<Button
+                                        android:id="@+id/bar_code_btn"
+                                        android:layout_width="70dip"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="5dip"                 
+                                        android:layout_marginTop="3dip"
+                                        android:layout_toRightOf="@+id/bar_code_text"
+                                        android:text="Scan"                                       
+                                        android:textColor="#CD6715"
+                                        android:textSize="15sp" 
+                                        android:textStyle="bold"/>
+                                </RelativeLayout>
+                          
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_discount"
-                                    android:layout_width="fill_parent"
+                                    android:layout_width="140dip"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dip"
-                                    android:layout_weight="1"
+                                    android:layout_marginLeft="5dip"                                
                                     android:background="@drawable/layout_mid_bg"
                                     android:orientation="horizontal" >
 
@@ -354,6 +334,7 @@
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
                                         android:layout_weight="0.98"
+                                        android:layout_marginLeft="5dip"    
                                         android:horizontalSpacing="5dp"
                                         android:numColumns="3"
                                         android:stretchMode="columnWidth"
@@ -370,14 +351,13 @@
 	                                        android:id="@+id/clear_btn"
 	                                        android:layout_width="fill_parent"
 	                                        android:layout_height="fill_parent"
-	                                        android:layout_marginBottom="5dip"
-	                                        android:layout_marginLeft="5dip"
-	                                        android:layout_marginRight="5dip"
 	                                        android:layout_marginTop="5dip"
+	                                        android:layout_marginLeft="5dip"
+	                                        android:layout_marginRight="5dip"	                                       
 	                                        android:layout_weight="1"
 	                                        android:background="#E3313E"
 	                                        android:gravity="center"
-	                                        android:text="@string/message_cancle"
+	                                        android:text="@string/message_card"
 	                                        android:textColor="#ffffff"
 	                                        android:textSize="30sp" 
 	                                        android:textStyle="bold"/>
@@ -387,9 +367,8 @@
                                             android:layout_width="fill_parent"
                                             android:layout_height="fill_parent"
                                             android:layout_marginBottom="5dip"
-
                                             android:layout_marginTop="5dip"
-                                            android:layout_weight="2"
+                                            android:layout_weight="1"
                                             android:background="#E3313E"
                                             android:gravity="center"
                                             android:text="@string/ok"

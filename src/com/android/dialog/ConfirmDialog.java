@@ -43,7 +43,7 @@ public abstract class ConfirmDialog {
 				doClick();
 			}
 		});
-		builder.setNegativeButton(R.string.message_cancle, new DialogInterface.OnClickListener() {
+		builder.setNegativeButton(R.string.message_card, new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
 				// 不做任何操作

@@ -23,7 +23,7 @@
     <string name="message_exit">您确定退出应用程序？</string>
     <string name="err_price">请输入正确金额</string>
     <string name="message_ok">现金</string>
-    <string name="message_cancle">信用卡</string>
+    <string name="message_card">CARD</string>
     <string name="login_name">用户名：</string>
     <string name="login_password">密\u3000码：</string>
     <string name="dail_detail">支付款项</string>
