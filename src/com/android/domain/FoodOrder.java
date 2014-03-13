@@ -45,6 +45,9 @@ public class FoodOrder extends Model {
 
 	@Column(name = "foc")
 	public String foc;
+	
+	@Column(name = "order_type")
+	public String orderType;
 
 	@Column(name = "status")
 	public String status;
@@ -108,7 +111,7 @@ public class FoodOrder extends Model {
 	 * @param myApp
 	 * @param is_foc
 	 */
-	public static void save(SelectFoodBean bean, MyApp myApp, boolean is_foc) {
+	public static void save(SelectFoodBean bean, MyApp myApp, boolean is_foc, String orderType) {
 		if (StringUtils.isNotEmpty(bean.getFood_id()) && !StringUtils.equals(bean.getFood_id(), "0")) {
 			FoodOrder food_order = new FoodOrder();
 			food_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
@@ -127,6 +130,7 @@ public class FoodOrder extends Model {
 			food_order.retailPrice = totalRetailPrice;// 收钱数
 			food_order.foodId = bean.getFood_id();// 食物id
 			food_order.quantity = bean.getFood_num();// 数量
+			food_order.orderType = orderType;
 			food_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
 			food_order.save();
 		}

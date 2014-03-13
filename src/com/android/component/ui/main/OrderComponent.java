@@ -370,12 +370,22 @@ public class OrderComponent {
 	void calulatorPanel(int position) {
 		calculatorComponent.calculation(sbuff, position);
 	}
+	
+	
+	@Click(R.id.clear_btn)
+	public void creidtCardBtn() {
+		doPay("CARD");
+	}
 
 	/**
 	 * 确定打印
 	 */
 	@Click(R.id.ok_btn)
 	public void ok() {
+		doPay("CASH");
+	}
+	
+	private void doPay(final String orderType){
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
 			sb = new StringBuffer();
@@ -417,7 +427,7 @@ public class OrderComponent {
 					mydialog.dismiss();
 					androidPrinter.print(sb.toString());
 					// 保存数据------------------------------
-					storeOrders();
+					storeOrders(orderType);
 					// 同步开始------------------------------
 					syncToServer();
 					// 清空数据------------------------------
@@ -431,7 +441,6 @@ public class OrderComponent {
 				}
 			});
 		}
-
 	}
 
 	/**
@@ -506,10 +515,10 @@ public class OrderComponent {
 	}
 
 	// 保存数据
-	void storeOrders() {
+	void storeOrders(String orderType) {
 		for (int i = 0; i < selectDataList.size(); i++) {
 			SelectFoodBean bean = selectDataList.get(i);
-			FoodOrder.save(bean, myApp, is_foc);
+			FoodOrder.save(bean, myApp, is_foc, orderType);
 		}
 	}
 
@@ -543,6 +552,7 @@ public class OrderComponent {
 			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
 			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
 			params.put("transactions[" + i + "].orderDate", foodOrder.date);
+			params.put("transactions[" + i + "].type", foodOrder.orderType);
 		}
 
 		// 异步请求数据
@@ -562,13 +572,13 @@ public class OrderComponent {
 
 			@Override
 			public void doClick() {
-				androidPrinter.print(sb.toString());
-				// 保存数据------------------------------
-				storeOrders();
-				// 同步开始------------------------------
-				syncToServer();
-				// 清空数据------------------------------
-				clean();
+//				androidPrinter.print(sb.toString());
+//				// 保存数据------------------------------
+//				storeOrders();
+//				// 同步开始------------------------------
+//				syncToServer();
+//				// 清空数据------------------------------
+//				clean();
 			}
 
 		}.build();
