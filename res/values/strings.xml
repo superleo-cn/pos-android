@@ -110,6 +110,7 @@
 	<string name="register_name_digits">._0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLIMNOPQRSTUVWXYZ</string>  
 	<string name="query_db">Query</string>
 	<string name="SGD">S$</string>
+	<string name="scan">SCAN</string>
 </resources>
 
 

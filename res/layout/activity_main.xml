@@ -255,16 +255,15 @@
                               	<RelativeLayout
                                     android:id="@+id/r_lay_id_bar_code"                                
                                     android:layout_width="0dip"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="fill_parent"
                                     android:layout_weight="1"
-                                    android:background="@drawable/layout_mid_bg"
                                     android:orientation="horizontal" >
                                      
                                     
                                     <EditText
 				                        android:id="@+id/bar_code_text"
 				                  		android:layout_width="220dip"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="fill_parent"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="5dip"				                     
 				                        android:background="@drawable/edit_bg"				        
@@ -273,22 +272,23 @@
                                  	
                                    	<Button
                                         android:id="@+id/bar_code_btn"
-                                        android:layout_width="70dip"
-                                        android:layout_height="wrap_content"
+                                        android:layout_width="110dip"
+                                        android:layout_height="fill_parent"
                                         android:layout_marginLeft="5dip"                 
                                         android:layout_marginTop="3dip"
                                         android:layout_toRightOf="@+id/bar_code_text"
-                                        android:text="Scan"                                       
+                                        android:text="@string/scan"                                       
                                         android:textColor="#CD6715"
-                                        android:textSize="15sp" 
-                                        android:textStyle="bold"/>
+                                        android:textSize="16sp" 
+                                        android:textStyle="bold"
+                                         />
                                 </RelativeLayout>
                           
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_discount"
-                                    android:layout_width="140dip"
+                                    android:layout_width="150dip"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="5dip"                                
+                                    android:layout_marginLeft="10dip"                                
                                     android:background="@drawable/layout_mid_bg"
                                     android:orientation="horizontal" >
 
@@ -343,6 +343,10 @@
                                     <LinearLayout
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
+                                       	android:layout_marginTop="5dip"
+                                        android:layout_marginRight="15dip"
+                                        android:layout_marginLeft="3dip"
+                                        android:layout_marginBottom="5dip"
                                         android:layout_weight="2"
                                         android:orientation="vertical" >
 
@@ -350,10 +354,7 @@
                                         <Button
 	                                        android:id="@+id/clear_btn"
 	                                        android:layout_width="fill_parent"
-	                                        android:layout_height="fill_parent"
-	                                        android:layout_marginTop="5dip"
-	                                        android:layout_marginLeft="5dip"
-	                                        android:layout_marginRight="5dip"	                                       
+	                                        android:layout_height="fill_parent"	                                                                  
 	                                        android:layout_weight="1"
 	                                        android:background="#E3313E"
 	                                        android:gravity="center"
@@ -366,14 +367,13 @@
                                             android:id="@+id/ok_btn"
                                             android:layout_width="fill_parent"
                                             android:layout_height="fill_parent"
-                                            android:layout_marginBottom="5dip"
-                                            android:layout_marginTop="5dip"
                                             android:layout_weight="1"
+                                            android:layout_marginTop="2dip"
                                             android:background="#E3313E"
                                             android:gravity="center"
                                             android:text="@string/ok"
                                             android:textColor="#ffffff"
-                                            android:textSize="40sp"
+                                            android:textSize="30sp"
                                             android:textStyle="bold" />
                                         <!--                                             android:layout_marginLeft="2dip"
                                             android:layout_marginRight="8dip" -->
