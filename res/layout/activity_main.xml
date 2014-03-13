@@ -289,7 +289,7 @@
                                     android:layout_width="150dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dip"                                
-                                    android:background="@drawable/layout_mid_bg"
+        
                                     android:orientation="horizontal" >
 
                                     <ImageView
