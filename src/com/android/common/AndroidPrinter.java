@@ -1,5 +1,7 @@
 package com.android.common;
 
+import org.apache.commons.lang.StringUtils;
+
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -53,7 +55,7 @@ public class AndroidPrinter {
 	}
 
 	// start to print
-	public void print(String message) {
+	public void print(String message, String type) {
 		// connect to printer
 		if (connFlag == 0) {
 			connect();
@@ -65,7 +67,7 @@ public class AndroidPrinter {
 		}
 		// if conenct to WIFI printer
 		if (connFlag == 1) {
-			startPrint(message);
+			startPrint(message, type);
 		}
 	}
 
@@ -105,7 +107,15 @@ public class AndroidPrinter {
 		connect();
 	}
 
-	public void startPrint(String message) {
+	public void startPrint(String message, String type) {
+		if (StringUtils.equals("CASH", type)) {
+			printWithDrawer(message);
+		} else {
+			printOnly(message);
+		}
+	}
+
+	public void printWithDrawer(String message) {
 		if (message.length() > 0) {
 			// drawer 先弹出抽屉
 			// byte[] tail = new byte[3];
@@ -136,6 +146,22 @@ public class AndroidPrinter {
 			bits[2] = 0x42;
 			bits[3] = 90;
 			wfComm.sndByte(bits);
+		}
+	}
+
+	public void printOnly(String message) {
+		if (message.length() > 0) {
+			byte[] tcmd = new byte[3];
+			tcmd[0] = 0x10;
+			tcmd[1] = 0x04;
+			tcmd[2] = 0x00; // ºÏ≤‚ «∑Ò”–÷Ω÷∏¡Ó
+			wfComm.sndByte(tcmd);
+			wfComm.sendMsg(message, "gbk");
+
+			byte[] tail = new byte[3];
+			tail[0] = 0x0A;
+			tail[1] = 0x0D;
+			wfComm.sndByte(tail);
 		}
 	}
 

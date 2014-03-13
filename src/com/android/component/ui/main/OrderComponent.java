@@ -425,7 +425,7 @@ public class OrderComponent {
 				@Override
 				public void onClick(View v) {
 					mydialog.dismiss();
-					androidPrinter.print(sb.toString());
+					androidPrinter.print(sb.toString(), orderType);
 					// 保存数据------------------------------
 					storeOrders(orderType);
 					// 同步开始------------------------------
