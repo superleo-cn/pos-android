@@ -190,7 +190,6 @@ public class OrderComponent {
 		        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
 		            (keyCode == KeyEvent.KEYCODE_ENTER)) {
 		        	sann();
-		        	barCodeText.setText("");
 		        	return false;
 		        }
 		        return true;
@@ -302,6 +301,7 @@ public class OrderComponent {
 				}
 			}
 		}
+		barCodeText.setText("");
 	}
 
 	/**
