@@ -21,7 +21,9 @@
 	<string name="message_title">Message Title</string>
 	<string name="message_exit">Do you want to logout POS?</string>
 	<string name="err_price">Wrong Price</string>
-	<string name="message_ok">Cash</string>
+	<string name="message_ok">OK</string>
+	<string name="message_cancel">Cancel</string>
+	<string name="message_cash">CASH</string>
 	<string name="message_card">CARD</string>
 	<string name="login_name">Username：</string>
 	<string name="login_password">Password：</string>

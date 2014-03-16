@@ -12,7 +12,7 @@
     <string name="take_package">打包</string>
     <string name="add_package">+包</string>
     <string name="lessen_package">-包</string>
-    <string name="ok">现金</string>
+    <string name="ok">确定</string>
     <string name="diancai_name">点菜单</string>
     <string name="foc">FOC</string>
     <string name="discount">折扣</string>
@@ -22,7 +22,9 @@
     <string name="message_title">温馨提示</string>
     <string name="message_exit">您确定退出应用程序？</string>
     <string name="err_price">请输入正确金额</string>
-    <string name="message_ok">现金</string>
+    <string name="message_ok">确定</string>
+    <string name="message_cancel">取消</string>
+    <string name="message_cash">现金</string>
     <string name="message_card">信用卡</string>
     <string name="login_name">用户名：</string>
     <string name="login_password">密\u3000码：</string>
