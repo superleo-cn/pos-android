@@ -278,9 +278,10 @@
                                         android:layout_marginTop="3dip"
                                         android:layout_toRightOf="@+id/bar_code_text"
                                         android:text="@string/scan"                                       
-                                        android:textColor="#CD6715"
+                                        android:textColor="#FFFFFF"
                                         android:textSize="16sp" 
                                         android:textStyle="bold"
+                                        android:background="@drawable/tong_btu_bg"   
                                          />
                                 </RelativeLayout>
                           
@@ -319,7 +320,7 @@
                                 android:layout_height="fill_parent"
                                 android:layout_below="@+id/layout_mid"
                              
-                                android:layout_marginTop="1dip" >
+                                android:layout_marginTop="5dip" >
 <!--    android:layout_marginLeft="7dip"
                                 android:layout_marginRight="7dip"
  -->
@@ -356,10 +357,10 @@
 	                                        android:layout_width="fill_parent"
 	                                        android:layout_height="fill_parent"	                                                                  
 	                                        android:layout_weight="1"
-	                                        android:background="#E3313E"
+	                                        android:background="@drawable/larger_btu_bg"
 	                                        android:gravity="center"
 	                                        android:text="@string/message_card"
-	                                        android:textColor="#ffffff"
+	                                        android:textColor="#FFFFFF"
 	                                        android:textSize="30sp" 
 	                                        android:textStyle="bold"/>
 
@@ -369,7 +370,7 @@
                                             android:layout_height="fill_parent"
                                             android:layout_weight="1"
                                             android:layout_marginTop="2dip"
-                                            android:background="#E3313E"
+                                            android:background="@drawable/larger_btu_bg"
                                             android:gravity="center"
                                             android:text="@string/ok"
                                             android:textColor="#ffffff"
