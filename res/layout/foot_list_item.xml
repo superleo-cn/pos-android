@@ -11,7 +11,7 @@
         android:layout_marginLeft="10dip"
         android:layout_marginTop="5dip"
         android:textColor="#FFFFFF"
-        android:textSize="28sp" />
+        android:textSize="18sp" />
 
     <FrameLayout
         android:layout_width="fill_parent"

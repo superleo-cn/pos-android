@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">来一碗</string>
+    <string name="app_name">Weebo</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 	<string name="exit_txt">Exit</string>
@@ -12,13 +12,13 @@
 	<string name="add_package">Pack Added</string>
 	<string name="lessen_package">Pack Removed</string>
 	<string name="ok">OK</string>
-	<string name="diancai_name">Point of Sales</string>
+	<string name="diancai_name">Shopping List</string>
 	<string name="foc">FOC</string>
 	<string name="discount">Discount</string>
 	<string name="setting">Setting</string>
 	<string name="exitApp">Exit</string>
 	<string name="allcount">Total Expenses</string>
-	<string name="message_title">Message Title</string>
+	<string name="message_title"></string>
 	<string name="message_exit">Do you want to logout POS?</string>
 	<string name="err_price">Wrong Price</string>
 	<string name="message_ok">OK</string>

@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">来一碗</string>
+    <string name="app_name">炜博</string>
     <string name="menu_settings">配置页面</string>
     <string name="title_activity_main">收款页面</string>
     <string name="exit_txt">退出</string>
@@ -13,7 +13,7 @@
     <string name="add_package">+包</string>
     <string name="lessen_package">-包</string>
     <string name="ok">确定</string>
-    <string name="diancai_name">点菜单</string>
+    <string name="diancai_name">购物单</string>
     <string name="foc">FOC</string>
     <string name="discount">折扣</string>
     <string name="setting">设置</string>
