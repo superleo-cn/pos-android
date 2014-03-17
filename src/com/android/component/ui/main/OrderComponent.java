@@ -72,8 +72,8 @@ public class OrderComponent {
 	@App
 	MyApp myApp; // 注入 MyApp
 
-	@ViewById(R.id.bar_code_text)
 	// 扫描
+	@ViewById(R.id.bar_code_text)
 	TextView barCodeText;
 
 	@ViewById(R.id.total_price)
@@ -195,9 +195,9 @@ public class OrderComponent {
 			}
 		});
 
-		barCodeText.setFocusableInTouchMode(true);
-		barCodeText.setFocusable(true);
-		barCodeText.requestFocus();
+//		barCodeText.setFocusableInTouchMode(true);
+//		barCodeText.setFocusable(true);
+//		barCodeText.requestFocus();
 
 	}
 
