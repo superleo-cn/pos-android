@@ -480,11 +480,13 @@ public class OrderComponent {
 					if (is_discount) {
 						dazhe = price * (1 - save_discount_price);
 						showTotalPrice += (price * save_discount_price);
-					} else {
+					}else {
 						showTotalPrice += price;
 					}
 					bean.setDabao_price(dabao);
 					bean.setDazhe_price(dazhe);
+				} else {
+					showTotalPrice += price;
 				}
 
 			}
