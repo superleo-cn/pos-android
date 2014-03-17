@@ -67,6 +67,7 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 			viewHolder.text_eNextOpenBalance = (TextView) convertView.findViewById(R.id.text_eNextOpenBalance);
 			viewHolder.text_fBringBackCash = (TextView) convertView.findViewById(R.id.text_fBringBackCash);
 			viewHolder.text_gTotalBalance = (TextView) convertView.findViewById(R.id.text_gTotalBalance);
+			viewHolder.text_hCard = (TextView) convertView.findViewById(R.id.text_hCard);
 			viewHolder.text_courier = (TextView) convertView.findViewById(R.id.text_courier);
 			viewHolder.text_others = (TextView) convertView.findViewById(R.id.text_others);
 			viewHolder.text_status = (TextView) convertView.findViewById(R.id.text_status);
@@ -90,6 +91,7 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 		viewHolder.text_eNextOpenBalance.setText(balanceOrder.eNextOpenBalance);
 		viewHolder.text_fBringBackCash.setText(balanceOrder.fBringBackCash);
 		viewHolder.text_gTotalBalance.setText(balanceOrder.gTotalBalance);
+		viewHolder.text_hCard.setText(balanceOrder.hCard);
 		viewHolder.text_courier.setText(balanceOrder.courier);
 		viewHolder.text_others.setText(balanceOrder.others);
 		viewHolder.text_status.setText(balanceOrder.status);
@@ -108,6 +110,7 @@ public class BalanceQueryAllDBListviewAdapter extends BaseAdapter {
 		TextView text_eNextOpenBalance;
 		TextView text_fBringBackCash;
 		TextView text_gTotalBalance;
+		TextView text_hCard;
 		TextView text_courier;
 		TextView text_others;
 		TextView text_status;

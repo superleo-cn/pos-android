@@ -95,9 +95,9 @@ public class FoodOrder extends Model {
 	 * 
 	 * @return
 	 */
-	public static Double totalRetailCollection(String userId, String shopId, String date) {
+	public static Double totalRetailCollection(String type, String userId, String shopId, String date) {
 		FoodOrder food = new Select("sum(retail_price) as retail_price").from(FoodOrder.class)
-				.where("user_id = ? and shop_id = ? and date >= ? ", userId, shopId, date).groupBy("user_id, shop_id").executeSingle();
+				.where("user_id = ? and shop_id = ? and date >= ? and order_type = ? ", userId, shopId, date, type).groupBy("user_id, shop_id").executeSingle();
 		if (food != null) {
 			return food.retailPrice;
 		}

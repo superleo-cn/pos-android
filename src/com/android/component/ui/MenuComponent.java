@@ -89,7 +89,11 @@ public class MenuComponent {
 	@AfterViews
 	public void initMenu() {
 		login_name.setText(myApp.getUsername() + ",");
-		shop_name.setText(myApp.getShopName() + "-" + myApp.getShopCode());
+		if(myApp.isSuperAdmin()){
+			shop_name.setText("");
+		}else{
+			shop_name.setText(myApp.getShopName() + "-" + myApp.getShopCode());
+		}
 		dialog = new MyProcessDialog(context, stringResComponent.loading);
 	}
 

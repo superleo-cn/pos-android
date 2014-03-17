@@ -197,6 +197,7 @@ public class DailypaySubmitComponent {
 				params.put("dailySummaries[" + i + "].eNextOpenBalance", balance.eNextOpenBalance);
 				params.put("dailySummaries[" + i + "].fBringBackCash", balance.fBringBackCash);
 				params.put("dailySummaries[" + i + "].gTotalBalance", balance.gTotalBalance);
+				params.put("dailySummaries[" + i + "].hCard", balance.hCard);
 				params.put("dailySummaries[" + i + "].middleCalculateTime", StringUtils.EMPTY);
 				params.put("dailySummaries[" + i + "].middleCalculateBalance", StringUtils.EMPTY);
 				params.put("dailySummaries[" + i + "].calculateTime", StringUtils.EMPTY);
@@ -228,8 +229,8 @@ public class DailypaySubmitComponent {
 				String shopInfo = user.shopId + "-" + user.shopName + "(" + user.shopCode + ")";
 				String userInfo = user.getId() + "-" + user.username + "(" + user.usertype + ")";
 				String title = String.format(Constants.DAILY_SUM_TITLE, shopInfo, userInfo, dateTime);
-				String sendMsg = String.format(Constants.DAILY_SUM_INFO, bo.bExpenses, bo.cCashCollected, bo.fBringBackCash,
-						bo.dDailyTurnover, bo.gTotalBalance);
+				String sendMsg = String.format(Constants.DAILY_SUM_INFO, bo.bExpenses, bo.cCashCollected, bo.gTotalBalance,
+						bo.fBringBackCash, bo.dDailyTurnover, bo.gTotalBalance);
 				directEmailComponent.sendMail(title, sendMsg, Constants.RECEIVE_DAILY_SUM_EMAIL);
 			}
 		}
@@ -239,7 +240,7 @@ public class DailypaySubmitComponent {
 	 * 保存每日其他数据
 	 * */
 	public void save(TextView shop_money, TextView text_id_all_price, TextView cash_register, TextView today_turnover,
-			TextView tomorrow_money, TextView total_take_num, TextView total, TextView other, TextView send_person) {
+			TextView tomorrow_money, TextView total_take_num, TextView total,  TextView card, TextView other, TextView send_person) {
 		String aOpenBalance = MyTextUtils.checkIntTextView(shop_money);
 		String bExpenses = MyTextUtils.checkIntTextView(text_id_all_price);
 		String cCashCollected = MyTextUtils.checkIntTextView(cash_register);
@@ -247,10 +248,10 @@ public class DailypaySubmitComponent {
 		String eNextOpenBalance = MyTextUtils.checkIntTextView(tomorrow_money);
 		String fBringBackCash = MyTextUtils.checkIntTextView(total_take_num);
 		String gTotalBalance = MyTextUtils.checkIntTextView(total);
+		String hCard = MyTextUtils.checkIntTextView(card);
 		String others = MyTextUtils.checkIntTextView(other);
 		String courier = MyTextUtils.checkIntTextView(send_person);
-
-		BalanceOrder.save(aOpenBalance, bExpenses, cCashCollected, dDailyTurnover, eNextOpenBalance, fBringBackCash, gTotalBalance, others,
+		BalanceOrder.save(aOpenBalance, bExpenses, cCashCollected, dDailyTurnover, eNextOpenBalance, fBringBackCash, gTotalBalance, hCard, others,
 				courier, myApp);
 	}
 

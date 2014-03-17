@@ -37,6 +37,7 @@
 	<string name="take_number">Daily Collections</string>
 	<string name="cash_register">C:Cash Register</string>
 	<string name="today_turnover">D:Daily Turnover</string>
+	<string name="today_card">H:Card</string>
 	<string name="setting_tanwei_id">Outlet ID:</string>
 	<string name="noon_time">Lunch Time</string>
 	<string name="noon_turnover">Lunch Sales</string>

@@ -38,6 +38,7 @@
     <string name="take_number">带回总数</string>
     <string name="cash_register">C:收银机</string>
     <string name="today_turnover">D:今日营业额</string>
+    <string name="today_card">H:信用卡</string>
     <string name="setting_tanwei_id">您还没有设置摊位ID，请先设置</string>
     <string name="noon_time">中午计算时间</string>
     <string name="noon_turnover">中午业绩</string>

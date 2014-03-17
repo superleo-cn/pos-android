@@ -40,6 +40,9 @@ public class BalanceOrder extends Model {
 	@Column(name = "gTotalBalance")
 	public String gTotalBalance;
 
+	@Column(name = "hCard")
+	public String hCard;
+
 	@Column(name = "courier")
 	public String courier;
 
@@ -79,6 +82,7 @@ public class BalanceOrder extends Model {
 		b_order.eNextOpenBalance = bean.eNextOpenBalance;
 		b_order.fBringBackCash = bean.fBringBackCash;
 		b_order.gTotalBalance = bean.gTotalBalance;
+		b_order.hCard = bean.hCard;
 		b_order.courier = bean.courier;
 		b_order.others = bean.others;
 		b_order.save();
@@ -88,7 +92,7 @@ public class BalanceOrder extends Model {
 	 * 保存每日其他数据
 	 * */
 	public static void save(String aOpenBalance, String bExpenses, String cCashCollected, String dDailyTurnover, String eNextOpenBalance,
-			String fBringBackCash, String gTotalBalance, String others, String courier, MyApp myApp) {
+			String fBringBackCash, String gTotalBalance, String hCard, String others, String courier, MyApp myApp) {
 		BalanceOrder bean = new BalanceOrder();
 		bean.status = Constants.DB_FAILED;// 是否成功 1是 0否
 		bean.shopId = myApp.getShopId();// 店idmyApp.getShopid()
@@ -101,6 +105,7 @@ public class BalanceOrder extends Model {
 		bean.eNextOpenBalance = eNextOpenBalance;
 		bean.fBringBackCash = fBringBackCash;
 		bean.gTotalBalance = gTotalBalance;
+		bean.hCard = hCard;
 		bean.others = others;
 		bean.courier = courier;
 		bean.save();

@@ -33,6 +33,7 @@ public class MyApp extends Application {
 	private String userType = "";
 	private String shopName = "";
 	private String shopCode = "";
+	private boolean superAdmin = false;
 
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
@@ -86,6 +87,14 @@ public class MyApp extends Application {
 
 	public String getShopId() {
 		return myPrefs.shopId().get();
+	}
+
+	public boolean isSuperAdmin() {
+		return superAdmin;
+	}
+
+	public void setSuperAdmin(boolean superAdmin) {
+		this.superAdmin = superAdmin;
 	}
 
 	// 创建SD卡缓存目录

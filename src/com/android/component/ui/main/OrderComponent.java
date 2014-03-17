@@ -386,7 +386,7 @@ public class OrderComponent {
 
 	@Click(R.id.clear_btn)
 	public void creidtCardBtn() {
-		doPay("CARD");
+		doPay(Constants.PAYTYPE_CARD);
 	}
 
 	/**
@@ -394,7 +394,7 @@ public class OrderComponent {
 	 */
 	@Click(R.id.ok_btn)
 	public void ok() {
-		doPay("CASH");
+		doPay(Constants.PAYTYPE_CASH);
 	}
 
 	private void doPay(final String orderType) {
@@ -476,17 +476,17 @@ public class OrderComponent {
 				double price = MyNumberUtils.strToNum(bean.getFood_price());
 				double dabao = 0;
 				double dazhe = 0;
-				String type = bean.getFood_type();
-				if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
-					if (is_discount) {
-						dazhe = price * (1 - save_discount_price);
-						showTotalPrice += (price * save_discount_price);
-					}else{
-						showTotalPrice += price;
-					}
-					bean.setDabao_price(dabao);
-					bean.setDazhe_price(dazhe);
+//				String type = bean.getFood_type();
+//				if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
+				if (is_discount) {
+					dazhe = price * (1 - save_discount_price);
+					showTotalPrice += (price * save_discount_price);
+				}else{
+					showTotalPrice += price;
 				}
+				bean.setDabao_price(dabao);
+				bean.setDazhe_price(dazhe);
+//				}
 
 			}
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));

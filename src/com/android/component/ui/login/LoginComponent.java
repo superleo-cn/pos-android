@@ -235,7 +235,9 @@ public class LoginComponent {
 		myApp.setUserType(user.usertype);
 		myApp.setShopName(user.shopName);
 		myApp.setShopCode(user.shopCode);
-
+		if (StringUtils.equals(Constants.ROLE_SUPERADMIN, user.usertype)) {
+			myApp.setSuperAdmin(true);
+		}
 	}
 
 	public User getDbUser(UserMapping.User user) {

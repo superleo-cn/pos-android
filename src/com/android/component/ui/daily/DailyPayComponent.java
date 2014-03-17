@@ -113,12 +113,18 @@ public class DailyPayComponent {
 
 	@ViewById(R.id.cash_register)
 	EditText cash_register;
+	
+	@ViewById(R.id.today_card)
+	EditText today_card;
 
 	@ViewById(R.id.today_turnover)
 	EditText today_turnover;
 
 	@ViewById(R.id.total)
 	EditText total;
+
+	@ViewById(R.id.today_card)
+	EditText card;
 
 	@ViewById(R.id.total_take_num)
 	EditText total_take_num;
@@ -148,7 +154,9 @@ public class DailyPayComponent {
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// 今日收银机
 	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
-
+	// 信用卡
+	Double todayCard = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	
 	@AfterViews
 	public void initDailayPay() {
 		menuCompat.textDaily();
@@ -159,9 +167,13 @@ public class DailyPayComponent {
 			send_person.setText(myApp.getUsername());
 
 			// 收银机
-			todayReceive = FoodOrder.totalRetailCollection(myApp.getUserId(), myApp.getShopId(),
+			todayReceive = FoodOrder.totalRetailCollection(Constants.PAYTYPE_CASH, myApp.getUserId(), myApp.getShopId(),
 					DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
+			todayCard = FoodOrder.totalRetailCollection(Constants.PAYTYPE_CARD, myApp.getUserId(), myApp.getShopId(),
+					DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
+			
 			cash_register.setText(MyNumberUtils.numToStr(todayReceive));
+			today_card.setText(MyNumberUtils.numToStr(todayCard));
 
 		}
 
@@ -263,7 +275,7 @@ public class DailyPayComponent {
 
 		// 保存其他输入项目
 		dailypaysubmitComponent.save(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num, total,
-				other, send_person);
+				card, other, send_person);
 
 		if (wifiComponent.isConnected()) {
 			LockComponent.LOCKER.lock();

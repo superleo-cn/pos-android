@@ -232,6 +232,17 @@
             android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
+        
+         <TextView
+            android:id="@+id/text_hCard"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="false"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/text_eNextOpenBalance"
