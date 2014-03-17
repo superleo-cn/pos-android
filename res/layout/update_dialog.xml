@@ -90,7 +90,7 @@
                 android:layout_width="42dp"
                 android:layout_height="fill_parent"
                 android:layout_margin="2dp"
-                android:background="@drawable/tong_btu_bg"
+                android:background="@drawable/tong_btu_bg3"
                 android:gravity="center"
                 android:text="@string/btu_queren">
             </Button>
@@ -101,7 +101,7 @@
                 android:layout_width="42dp"
                 android:layout_height="fill_parent"
                 android:layout_margin="2dp"
-                android:background="@drawable/tong_btu_bg2"
+                android:background="@drawable/tong_btu_bg3"
                 android:gravity="center"
                 android:text="@string/btn_quxiao">
             </Button>

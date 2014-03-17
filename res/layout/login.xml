@@ -66,8 +66,7 @@
                     android:textColor="#81635E"
                     android:singleLine="true"
                     android:digits="@string/register_name_digits"
-                    android:textSize="20sp" 
-                    android:text="superadmin"/>
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
