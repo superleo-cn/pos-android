@@ -67,7 +67,7 @@
                     android:singleLine="true"
                     android:digits="@string/register_name_digits"
                     android:textSize="20sp" 
-                    android:text="f1"/>
+                    android:text="superadmin"/>
             </LinearLayout>
 
             <LinearLayout
