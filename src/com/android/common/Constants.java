@@ -116,8 +116,7 @@ public final class Constants {
 	public static final String FOC_NO = "0";
 
 	/** 食物种类 */
-	public static final String FOOD_STAPLE = "STAPLE";
-	public static final String FOOD_DISH = "DISH";
+	public static final String MEMBER = "MEMBER";
 
 	public static final String PAYTYPE_CASH = "CASH";
 	public static final String PAYTYPE_CARD = "CARD";

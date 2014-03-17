@@ -156,6 +156,8 @@ public class DailyPayComponent {
 	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// 信用卡
 	Double todayCard = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	// total
+	Double totalMoney = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	
 	@AfterViews
 	public void initDailayPay() {
@@ -171,6 +173,8 @@ public class DailyPayComponent {
 					DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
 			todayCard = FoodOrder.totalRetailCollection(Constants.PAYTYPE_CARD, myApp.getUserId(), myApp.getShopId(),
 					DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
+			
+			totalMoney = todayReceive + todayCard;
 			
 			cash_register.setText(MyNumberUtils.numToStr(todayReceive));
 			today_card.setText(MyNumberUtils.numToStr(todayCard));
@@ -214,10 +218,10 @@ public class DailyPayComponent {
 
 			@Override
 			public void doClick() {
-				if (doValidation()) {
+				//if (doValidation()) {
 					btu_id_sbumit.setVisibility(View.GONE);
 					storeAndSync();
-				}
+				//}
 			}
 
 		}.build();
@@ -306,12 +310,12 @@ public class DailyPayComponent {
 			String all_price = text_id_all_price.getText().toString();
 			// 收银机
 			cash_register
-					.setText(MyNumberUtils.numToStr(todayReceive + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
+					.setText(MyNumberUtils.numToStr(totalMoney + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
 
 			// 今日营业额
 			Double price_b = Double.parseDouble(all_price);
 			Double price_c = Double.parseDouble(cash_register.getText().toString());
-			Double price_d = todayReceive;
+			Double price_d = totalMoney;
 			today_turnover.setText(MyNumberUtils.numToStr(price_d));
 
 			// 总数

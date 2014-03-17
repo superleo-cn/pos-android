@@ -183,23 +183,22 @@ public class OrderComponent {
 		sbuff = new StringBuffer();
 		save_discount_price = MyNumberUtils.strToNum(sharedPrefs.discount().get());
 		package_money = MyNumberUtils.strToNum(sharedPrefs.packageCost().get());
-		
+
 		barCodeText.setOnKeyListener(new OnKeyListener() {
-		    public boolean onKey(View v, int keyCode, KeyEvent event) {
-		        // If the event is a key-down event on the "enter" button
-		        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-		            (keyCode == KeyEvent.KEYCODE_ENTER)) {
-		        	sann();
-		        	return false;
-		        }
-		        return true;
-		    }
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// If the event is a key-down event on the "enter" button
+				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+					sann();
+					return false;
+				}
+				return true;
+			}
 		});
-		
+
 		barCodeText.setFocusableInTouchMode(true);
 		barCodeText.setFocusable(true);
 		barCodeText.requestFocus();
-		
+
 	}
 
 	//
@@ -476,17 +475,17 @@ public class OrderComponent {
 				double price = MyNumberUtils.strToNum(bean.getFood_price());
 				double dabao = 0;
 				double dazhe = 0;
-//				String type = bean.getFood_type();
-//				if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
-				if (is_discount) {
-					dazhe = price * (1 - save_discount_price);
-					showTotalPrice += (price * save_discount_price);
-				}else{
-					showTotalPrice += price;
+				String type = bean.getFood_type();
+				if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
+					if (is_discount) {
+						dazhe = price * (1 - save_discount_price);
+						showTotalPrice += (price * save_discount_price);
+					} else {
+						showTotalPrice += price;
+					}
+					bean.setDabao_price(dabao);
+					bean.setDazhe_price(dazhe);
 				}
-				bean.setDabao_price(dabao);
-				bean.setDazhe_price(dazhe);
-//				}
 
 			}
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
