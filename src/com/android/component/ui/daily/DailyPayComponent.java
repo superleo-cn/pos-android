@@ -153,7 +153,7 @@ public class DailyPayComponent {
 	private Double num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	private Double count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// 今日收银机
-	Double todayReceive = Constants.DEFAULT_PRICE_NUM_FLOAT;
+	Double todayReceive1 = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// 信用卡
 	Double todayCard = Constants.DEFAULT_PRICE_NUM_FLOAT;
 	// total
@@ -169,14 +169,14 @@ public class DailyPayComponent {
 			send_person.setText(myApp.getUsername());
 
 			// 收银机
-			todayReceive = FoodOrder.totalRetailCollection(Constants.PAYTYPE_CASH, myApp.getUserId(), myApp.getShopId(),
+			todayReceive1 = FoodOrder.totalRetailCollection(Constants.PAYTYPE_CASH, myApp.getUserId(), myApp.getShopId(),
 					DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
 			todayCard = FoodOrder.totalRetailCollection(Constants.PAYTYPE_CARD, myApp.getUserId(), myApp.getShopId(),
 					DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD));
 			
-			totalMoney = todayReceive + todayCard;
+			totalMoney = todayReceive1 + todayCard;
 			
-			cash_register.setText(MyNumberUtils.numToStr(todayReceive));
+			cash_register.setText(MyNumberUtils.numToStr(todayReceive1));
 			today_card.setText(MyNumberUtils.numToStr(todayCard));
 
 		}
@@ -310,21 +310,22 @@ public class DailyPayComponent {
 			String all_price = text_id_all_price.getText().toString();
 			// 收银机
 			cash_register
-					.setText(MyNumberUtils.numToStr(totalMoney + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
+					.setText(MyNumberUtils.numToStr(todayReceive1 + Double.parseDouble(shop_money_text) - Double.parseDouble(all_price)));
 
 			// 今日营业额
 			Double price_b = Double.parseDouble(all_price);
 			Double price_c = Double.parseDouble(cash_register.getText().toString());
+			Double price_h = Double.parseDouble(today_card.getText().toString());
 			Double price_d = totalMoney;
 			today_turnover.setText(MyNumberUtils.numToStr(price_d));
 
 			// 总数
-			Double total_t = price_c + price_b;
+			Double total_t = price_c + price_h + price_b;
 			total.setText(MyNumberUtils.numToStr(total_t));
 
 			// 带回总数
 			Double price_e = Double.parseDouble(tomorrow_money_text);
-			Double take_price = price_c - price_e;
+			Double take_price = price_c + price_h - price_e;
 			total_take_num.setText(MyNumberUtils.numToStr(take_price));
 		} catch (Exception e) {
 			Log.e("[DailyPayComponent]", "计算报错", e);
