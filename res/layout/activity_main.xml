@@ -372,7 +372,7 @@
                                             android:layout_marginTop="2dip"
                                             android:background="@drawable/larger_btu_bg"
                                             android:gravity="center"
-                                            android:text="@string/ok"
+                                            android:text="@string/message_cash"
                                             android:textColor="#ffffff"
                                             android:textSize="30sp"
                                             android:textStyle="bold" />

@@ -12,7 +12,7 @@ public interface SharedPreferencesComponent {
 	@DefaultString("zh")
 	String language();
 
-	@DefaultString("0.5")
+	@DefaultString("0.9")
 	String discount();
 
 	@DefaultString("0.2")

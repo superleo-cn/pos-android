@@ -473,25 +473,16 @@ public class OrderComponent {
 		} else {
 			for (SelectFoodBean bean : selectDataList) {
 				// 计算总价
-				showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price());
-
-				// 计算打包打折
-				int num = Integer.parseInt(bean.getFood_num());
-				double dabao = num * package_money;
-				double dazhe = num * save_discount_price;
+				double price = MyNumberUtils.strToNum(bean.getFood_price());
+				double dabao = 0;
+				double dazhe = 0;
 				String type = bean.getFood_type();
 				if (StringUtils.equalsIgnoreCase(type, Constants.FOOD_DISH)) {
-					if (!is_discount && is_takePackage) {
-						showTotalPrice += dabao;
-						dazhe = 0;
-					} else if (is_discount && !is_takePackage) {
-						showTotalPrice -= dazhe;
-						dabao = 0;
-					} else if (!is_discount && !is_takePackage) {
-						dabao = 0;
-						dazhe = 0;
-					} else if (is_discount && is_takePackage) {
-						showTotalPrice = showTotalPrice + dabao - dazhe;
+					if (is_discount) {
+						dazhe = price * (1 - save_discount_price);
+						showTotalPrice += (price * save_discount_price);
+					}else{
+						showTotalPrice += price;
 					}
 					bean.setDabao_price(dabao);
 					bean.setDazhe_price(dazhe);

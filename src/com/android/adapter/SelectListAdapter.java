@@ -103,9 +103,9 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_name.setText(bean.getFood_name());
 		} else {
 			viewHolder.food_name.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
-			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 30));
-			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 30));
-			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 30));
+			viewHolder.food_name.setTextSize(DisplayUtil.sp2px(context, 26));
+			viewHolder.food_num.setTextSize(DisplayUtil.sp2px(context, 26));
+			viewHolder.food_price.setTextSize(DisplayUtil.sp2px(context, 26));
 			viewHolder.food_name.setText(bean.getFood_name());
 		}
 		if (StringUtils.equals(bean.getFood_num(), "0")) {
