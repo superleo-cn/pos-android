@@ -218,16 +218,32 @@ public class OrderComponent {
 	 * @param foodBean
 	 */
 	public void order(Food foodBean) {
-		SelectFoodBean bean = new SelectFoodBean();
-		bean.setFood_name(foodBean.title);
-		bean.setFood_price(foodBean.retailPrice);
-		bean.setFood_dayin_code(foodBean.sn);
-		bean.setFood_id(foodBean.foodId);
-		bean.setFood_type(foodBean.type);
-		bean.setFood_num("1");
-		selectDataList.add(bean);
+		orderFood(selectDataList, foodBean);
 		selectAdapter.notifyDataSetChanged();
 		doCalculation();
+	}
+	
+	
+	private void orderFood(List<SelectFoodBean> list, Food food){
+		boolean flag = false;
+		if(CollectionUtils.isNotEmpty(list) && food != null){
+			for(SelectFoodBean obj : list){
+				if(StringUtils.equalsIgnoreCase(obj.getFood_dayin_code(), food.sn)){
+					flag = true;
+					obj.setFood_num(String.valueOf(Integer.parseInt(obj.getFood_num()) + 1));
+				}
+			}
+		}
+		if(!flag){
+			SelectFoodBean bean = new SelectFoodBean();
+			bean.setFood_name(food.title);
+			bean.setFood_price(food.retailPrice);
+			bean.setFood_dayin_code(food.sn);
+			bean.setFood_id(food.foodId);
+			bean.setFood_type(food.type);
+			bean.setFood_num("1");
+			list.add(bean);
+		}
 	}
 
 	/**
@@ -472,7 +488,8 @@ public class OrderComponent {
 		} else {
 			for (SelectFoodBean bean : selectDataList) {
 				// 计算总价
-				double price = MyNumberUtils.strToNum(bean.getFood_price());
+				int num = Integer.parseInt(bean.getFood_num());
+				double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
 				double dabao = 0;
 				double dazhe = 0;
 				String type = bean.getFood_type();
