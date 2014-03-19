@@ -325,7 +325,7 @@ public class DailyPayComponent {
 
 			// 带回总数
 			Double price_e = Double.parseDouble(tomorrow_money_text);
-			Double take_price = price_c + price_h - price_e;
+			Double take_price = price_c - price_e;
 			total_take_num.setText(MyNumberUtils.numToStr(take_price));
 		} catch (Exception e) {
 			Log.e("[DailyPayComponent]", "计算报错", e);
