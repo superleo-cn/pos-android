@@ -450,8 +450,8 @@ public class OrderComponent {
 			mydialog.textDialogSearchMoenyTitleID.setTextSize(60);
 			mydialog.textDialogAllMoenyTitleID.setText(stringResComponent.totalPrie);
 			mydialog.textDialogSearchMoenyTitleID.setText(stringResComponent.Surplus);
-			mydialog.textDialogAllMoenyID.setText("S$" + totalPrice.getText().toString());
-			mydialog.textDialogSearchMoenyID.setText("S$" + surplus.getText().toString());
+			mydialog.textDialogAllMoenyID.setText(Constants.DOLLAR + totalPrice.getText().toString());
+			mydialog.textDialogSearchMoenyID.setText(Constants.DOLLAR + surplus.getText().toString());
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {

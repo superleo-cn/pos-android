@@ -118,7 +118,7 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_price.setVisibility(View.GONE);
 		} else {
 			viewHolder.food_price.setVisibility(View.VISIBLE);
-			viewHolder.food_price.setText("S$" + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
+			viewHolder.food_price.setText(Constants.DOLLAR + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
 		}
 
 		// convertView.setOnLongClickListener(new OnLongClickListener() {

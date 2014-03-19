@@ -141,6 +141,9 @@ public final class Constants {
 
 	/** 默认最多一次提交50条数据 */
 	public static final int SYCN_SIZE = 25;
+	
+	/** 金额单位 */
+	public static final String DOLLAR = "S$";
 
 	/** email setting */
 	public static final String ENV = "[UAT]";
