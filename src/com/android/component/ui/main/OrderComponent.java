@@ -190,14 +190,19 @@ public class OrderComponent {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					sann();
 					return false;
+				} else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_DEL) {
+					String str = barCodeText.getText().toString();
+					if (StringUtils.length(str) > 0) {
+						barCodeText.setText(str.substring(0, str.length() - 1));
+					}
 				}
 				return true;
 			}
 		});
 
-//		barCodeText.setFocusableInTouchMode(true);
-//		barCodeText.setFocusable(true);
-//		barCodeText.requestFocus();
+		// barCodeText.setFocusableInTouchMode(true);
+		// barCodeText.setFocusable(true);
+		// barCodeText.requestFocus();
 
 	}
 
@@ -222,19 +227,18 @@ public class OrderComponent {
 		selectAdapter.notifyDataSetChanged();
 		doCalculation();
 	}
-	
-	
-	private void orderFood(List<SelectFoodBean> list, Food food){
+
+	private void orderFood(List<SelectFoodBean> list, Food food) {
 		boolean flag = false;
-		if(CollectionUtils.isNotEmpty(list) && food != null){
-			for(SelectFoodBean obj : list){
-				if(StringUtils.equalsIgnoreCase(obj.getFood_dayin_code(), food.sn)){
+		if (CollectionUtils.isNotEmpty(list) && food != null) {
+			for (SelectFoodBean obj : list) {
+				if (StringUtils.equalsIgnoreCase(obj.getFood_dayin_code(), food.sn)) {
 					flag = true;
 					obj.setFood_num(String.valueOf(Integer.parseInt(obj.getFood_num()) + 1));
 				}
 			}
 		}
-		if(!flag){
+		if (!flag) {
 			SelectFoodBean bean = new SelectFoodBean();
 			bean.setFood_name(food.title);
 			bean.setFood_price(food.retailPrice);
@@ -497,7 +501,7 @@ public class OrderComponent {
 					if (is_discount) {
 						dazhe = price * (1 - save_discount_price);
 						showTotalPrice += (price * save_discount_price);
-					}else {
+					} else {
 						showTotalPrice += price;
 					}
 					bean.setDabao_price(dabao);

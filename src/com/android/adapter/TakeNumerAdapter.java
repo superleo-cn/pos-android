@@ -57,7 +57,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		final TakeNumberBean bean;
-		if (convertView == null) {
+		//if (convertView == null) {
 			convertView = inflater.inflate(R.layout.num_list_item, null);
 			viewHolder = new ViewHolder();
 			viewHolder.num_id_name = (TextView) convertView.findViewById(R.id.num_id_name);
@@ -65,9 +65,9 @@ public class TakeNumerAdapter extends BaseAdapter {
 			viewHolder.num_price = (TextView) convertView.findViewById(R.id.num_price);
 			viewHolder.danwei = (TextView) convertView.findViewById(R.id.danwei);
 			convertView.setTag(viewHolder);
-		} else {
-			viewHolder = (ViewHolder) convertView.getTag();
-		}
+		//} else {
+			//viewHolder = (ViewHolder) convertView.getTag();
+		//}
 
 		bean = classList.get(position);
 		viewHolder.num_id_name.setText(new DecimalFormat("0.00").format(Double.parseDouble(bean.getPrice() == "" ? "0" : bean.getPrice()))
@@ -143,7 +143,7 @@ public class TakeNumerAdapter extends BaseAdapter {
 					hashMap_numprice.put(position, String.valueOf(total_price));
 					Message msg = new Message();
 					msg.what = SET_NUM;
-					msg.obj = position + "+" + String.valueOf(total_price);
+					msg.obj = position + "," + String.valueOf(total_price);
 					handler.sendMessage(msg);
 					Log.d("[TakeNumerAdapter]", "计算次数");
 				} catch (Exception e) {

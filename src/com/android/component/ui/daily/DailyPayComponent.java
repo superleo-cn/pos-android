@@ -373,9 +373,9 @@ public class DailyPayComponent {
 			case TakeNumerAdapter.SET_NUM:
 				num_count = Constants.DEFAULT_PRICE_NUM_FLOAT;
 				String str = (String) msg.obj;
-				int num = Integer.parseInt(str.substring(0, 1));
-				String price = str.substring(2, str.length());
-				all_num_price.set(num, Double.parseDouble(price));
+				String []arr = str.split(",");
+				int num = Integer.parseInt(arr[0]);
+				all_num_price.set(num, Double.parseDouble(arr[1]));
 				for (Double sigle_price : all_num_price) {
 					num_count = num_count + sigle_price;
 				}
