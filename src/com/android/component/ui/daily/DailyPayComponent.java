@@ -123,9 +123,6 @@ public class DailyPayComponent {
 	@ViewById(R.id.total)
 	EditText total;
 
-	@ViewById(R.id.today_card)
-	EditText card;
-
 	@ViewById(R.id.total_take_num)
 	EditText total_take_num;
 
@@ -279,7 +276,7 @@ public class DailyPayComponent {
 
 		// 保存其他输入项目
 		dailypaysubmitComponent.save(shop_money, text_id_all_price, cash_register, today_turnover, tomorrow_money, total_take_num, total,
-				card, other, send_person);
+				today_card, other, send_person);
 
 		if (wifiComponent.isConnected()) {
 			LockComponent.LOCKER.lock();
@@ -388,8 +385,8 @@ public class DailyPayComponent {
 	};
 
 	public void dismissKeyboard() {
-		keyboardComponent.dismissKeyboard(cash_register, today_turnover, total, tomorrow_money, total_take_num, send_person, shop_money);
-		keyboardComponent.clearfocusKeyboard(cash_register, today_turnover, total, tomorrow_money, total_take_num, send_person, shop_money);
+		keyboardComponent.dismissKeyboard(cash_register, today_turnover, today_card, total, tomorrow_money, total_take_num, send_person, shop_money);
+		keyboardComponent.clearfocusKeyboard(cash_register, today_turnover, today_card, total, tomorrow_money, total_take_num, send_person, shop_money);
 	}
 
 	public void setReadonly(ListView view, int r) {
