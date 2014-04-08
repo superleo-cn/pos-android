@@ -69,7 +69,7 @@ public final class Constants {
 	/** 店铺完整URL路径 */
 	public static final String URL_SHOP_PATH = URL_CONTEXTPATH + "/shops/listJson/";
 	/** 点菜单完整URL路径 */
-	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH + "/foods/listExtJson/";
+	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH + "/foods/listJson/";
 	/** 支付款项 */
 	public static final String URL_PAY_DETAIL = URL_CONTEXTPATH + "/consumptions/listJson/";
 	/** 带回总数 */
