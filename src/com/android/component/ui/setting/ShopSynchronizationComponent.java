@@ -13,7 +13,7 @@ import com.android.component.ToastComponent;
 import com.android.dialog.MyProcessDialog;
 import com.android.mapping.CollectionMapping;
 import com.android.mapping.ExpensesMapping;
-import com.android.mapping.FoodAllMapping;
+import com.android.mapping.FoodMapping;
 import com.android.mapping.ShopMapping;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.AfterViews;
@@ -84,7 +84,7 @@ public class ShopSynchronizationComponent {
 		@Override
 		protected Integer doInBackground(String... objs) {
 			String url = Constants.URL_FOODSLIST_PATH + objs[0];
-			FoodAllMapping foodMapping = FoodAllMapping.getJSONAndSave(url);
+			FoodMapping foodMapping = FoodMapping.getJSONAndSave(url);
 			if (foodMapping.code != Constants.STATUS_SUCCESS) {
 				return foodMapping.code;
 			}
