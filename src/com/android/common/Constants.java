@@ -11,16 +11,16 @@ import android.os.Environment;
 
 /**
  * @author hjgang
- * @category 全局变量
+ * @category 全局�?��?
  * @日期 2013年11月11日
- * @时间 下午 22:46:37
+ * @时间 下�?� 22:46:37
  * @年份 2013
  */
 public final class Constants {
-	/** 系统初始化配置文件名 */
+	/** 系统�?始化�?置文件�?? */
 	public static final String SYSTEM_INIT_FILE_NAME = "android_pos_ini";
 	public static final String FLAG = "com.android";
-	/** 用于标识请求照相功能的activity结果码 */
+	/** 用于标识请求照相功能的activity结果�? */
 	public static final int RESULT_CODE_CAMERA = 1;
 	/** 图片类型 */
 	public static final String IMAGE_UNSPECIFIED = "image/*";
@@ -47,18 +47,18 @@ public final class Constants {
 	private Constants() {
 	}
 
-	/** 加载情况分页参数 */
+	/** 加载情况分页�?�数 */
 	public static final int PARAM_PAGENO = 1;
 	public static final int PARAM_PAGESIZE = 10;
-	/** 与服务器端连接的协议名 */
+	/** 与�?务器端连接的�??议�?? */
 	public static final String PROTOCOL = "http://";
-	/** 服务器IP */
+	/** �?务器IP */
 	public static final String HOST =  "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
-	//public static final String HOST  = "192.168.0.123";
+	//public static final String HOST  = "192.168.0.14";
 	//public static final String HOST = "localhost";
-	/** 服务器端口号 */
+	/** �?务器端�?��?� */
 	public static final String PORT = ":8080";
-	/** 应用上下文名 */
+	/** 应用上下文�?? */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */
 	public static final String URL_CONTEXTPATH = PROTOCOL + HOST + PORT;
@@ -68,62 +68,62 @@ public final class Constants {
 	public static final String URL_LOGIN_ADMIN_PATH = URL_CONTEXTPATH + "/loginAdminJson";
 	/** 店铺完整URL路径 */
 	public static final String URL_SHOP_PATH = URL_CONTEXTPATH + "/shops/listJson/";
-	/** 点菜单完整URL路径 */
-	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH + "/foods/listJson/";
+	/** 点�?��?�完整URL路径 */
+	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH + "/foods/listExtJson/";
 	/** 支付款项 */
 	public static final String URL_PAY_DETAIL = URL_CONTEXTPATH + "/consumptions/listJson/";
 	/** 带回总数 */
 	public static final String URL_TAKE_DNUM = URL_CONTEXTPATH + "/cashs/listJson/";
-	/** 点菜单提交 */
+	/** 点�?��?��??交 */
 	public static final String URL_FOOD_ORDER = URL_CONTEXTPATH + "/transactions/submit";
 
 	/** 软件更新 */
 	public static final String URL_UPDATE_APP = URL_CONTEXTPATH + "/checkUpdate";
 	/** 软件下载 */
 	public static final String URL_UPDATE_APP_DOWN = URL_CONTEXTPATH + "/versions/";
-	/** 服务器登录记录 */
+	/** �?务器登录记录 */
 	public static final String URL_LOGIN_AUDIT = URL_CONTEXTPATH + "/audits/submit";
 
-	/** 提交每日支付款 */
+	/** �??交�?日支付款 */
 	public static final String URL_POST_PAYLIST = URL_CONTEXTPATH + "/consumeTransactions/submit";
-	/** 带回总数接口 */
+	/** 带回总数接�?� */
 	public static final String URL_POST_TAKENUM = URL_CONTEXTPATH + "/cashTransactions/submit";
-	/** 带回总数接口 */
+	/** 带回总数接�?� */
 	public static final String URL_POST_DAILY_MONEY = URL_CONTEXTPATH + "/dailySummarys/submit";
 
-	/** 登录角色配置 */
+	/** 登录角色�?置 */
 	public static final String ROLE_SUPERADMIN = "SUPERADMIN";
 	public static final String ROLE_CASHIER = "CASHIER";
 	public static final String ROLE_ADMIN = "ADMIN";
 	public static final String ROLE_OPERATOR = "OPERATOR";
 
-	/** 登录角色配置 */
+	/** 登录角色�?置 */
 	public static final int STATUS_SUCCESS = 1;
 	public static final int STATUS_FAILED = 0;
 	public static final int STATUS_SERVER_FAILED = -1;
 	public static final int STATUS_NETWORK_ERROR = -2;
 
-	/** 登录状态状态 */
+	/** 登录状�?状�? */
 	public static final String LOGIN = "login";
 	public static final String LOGOUT = "logout";
 
-	/** 数据库更新操作状态 */
+	/** 数�?�库更新�?作状�? */
 	public static final String DB_SUCCESS = "1";
 	public static final String DB_FAILED = "0";
 
-	/** 是否免费状态 */
+	/** 是�?��?费状�? */
 	public static final String FOC_YES = "1";
 	public static final String FOC_NO = "0";
 
-	/** 食物种类 */
+	/** 食物�?类 */
 	public static final String FOOD_STAPLE = "STAPLE";
 	public static final String FOOD_DISH = "DISH";
 
-	/** 最大金额 */
+	/** 最大金�? */
 	public static final String MAX_PRICE = "9999.99";
 	public static final Double MAX_NUM_PRICE = 9999.99;
 
-	/** 默认金额 */
+	/** 默认金�? */
 	public static final String DEFAULT_PRICE_FLOAT = "0.00";
 	public static final String DEFAULT_PRICE_INT = "0";
 	public static final double DEFAULT_PRICE_NUM_FLOAT = 0.00;
@@ -137,7 +137,7 @@ public final class Constants {
 	/** 分割线 */
 	public static final String SPLIT_LINE = "---------------------------------";
 
-	/** 默认最多一次提交50条数据 */
+	/** 默认最多一次�??交50�?�数�?� */
 	public static final int SYCN_SIZE = 25;
 
 	/** email setting */
