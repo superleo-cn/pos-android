@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/food_image"
             android:layout_width="fill_parent"
-            android:layout_height="165dip"
+            android:layout_height="140dip"
             android:layout_gravity="bottom"
             android:layout_marginBottom="10dip"
             android:background="#00000000"
@@ -29,6 +29,7 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/food_title_bg"
         android:layout_alignParentBottom="true"
+        android:paddingLeft="10dip"
         android:textSize="22sp" />
         <ImageView
             android:id="@+id/food_btn"
