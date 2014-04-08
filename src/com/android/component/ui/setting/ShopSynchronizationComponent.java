@@ -25,7 +25,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
- * 店铺ID�?�步�?作
+ * 店铺ID同步操作
  * 
  * @author superleo
  * 
