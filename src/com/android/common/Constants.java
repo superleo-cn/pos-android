@@ -54,7 +54,7 @@ public final class Constants {
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
 	public static final String HOST =  "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
-	//public static final String HOST  = "192.168.0.123";
+	//public static final String HOST  = "192.168.0.14";
 	//public static final String HOST = "localhost";
 	/** 服务器端口号 */
 	public static final String PORT = ":8080";
