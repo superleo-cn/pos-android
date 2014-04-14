@@ -64,6 +64,8 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 		public String status;
 
 		public String position;
+		
+		public CategoryRemote category;
 	}
 
 	public static FoodAllMapping getJSONAndSave(String url) {
