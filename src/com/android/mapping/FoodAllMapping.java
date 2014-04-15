@@ -87,12 +87,7 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 			if (foodMapping != null) {
 				if (foodMapping.code == Constants.STATUS_SUCCESS) {
 					Remotes remotes = foodMapping.datas;
-					// 这里放你的代码
-					// 保存
-					System.out.println(remotes.attributes);
-					System.out.println(remotes.foods);
-					System.out.println(remotes.categories);
-					
+
 					// 删除历史数据
 					FoodR.deleteAll();
 					// 删除历史数据
