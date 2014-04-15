@@ -51,12 +51,23 @@ public class FoodOrder extends Model {
 
 	@Column(name = "date")
 	public String date;
+	
+	@Column(name = "attributesID")
+	public String attributesID;
+	
+	@Column(name = "attributesContext")
+	public String attributesContext;
+
 
 	@Override
 	public String toString() {
-		return "FoodOrder [android_id=" + getId() + ", order_id=" + orderId + ", user_id=" + userId + ", shop_id=" + shopId
-				+ ", retail_price=" + retailPrice + ", quantity=" + quantity + ", foodid=" + foodId + ", discount=" + discount
-				+ ", total_package=" + totalPackage + ", foc=" + foc + ", date " + date + "]";
+		return "FoodOrder [orderId=" + orderId + ", userId=" + userId
+				+ ", shopId=" + shopId + ", retailPrice=" + retailPrice
+				+ ", quantity=" + quantity + ", foodId=" + foodId
+				+ ", discount=" + discount + ", totalPackage=" + totalPackage
+				+ ", foc=" + foc + ", status=" + status + ", date=" + date
+				+ ", attributesID=" + attributesID + ", attributesContext="
+				+ attributesContext + "]";
 	}
 
 	/**
@@ -127,6 +138,8 @@ public class FoodOrder extends Model {
 			food_order.retailPrice = totalRetailPrice;// 收钱数
 			food_order.foodId = bean.getFood_id();// 食物id
 			food_order.quantity = bean.getFood_num();// 数量
+			food_order.attributesID = bean.getAttributesID();// 属性ID
+			food_order.attributesContext = bean.getAttributesContext();// 属性名字
 			food_order.date = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
 			food_order.save();
 		}

@@ -5,9 +5,17 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+
 import com.android.common.Constants;
 import com.android.common.HttpHelper;
 import com.android.common.RestHelper;
+import com.android.domain.AttributesR;
 import com.android.domain.CategoriesR;
 import com.android.domain.FoodR;
 import com.android.mapping.FoodAllMapping.Remotes;
@@ -89,6 +97,7 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 					FoodR.deleteAll();
 					// 删除历史数据
 					CategoriesR.deleteAll();
+					AttributesR.deleteAll();
 					// 下载食物数据
 					List<FoodRemote> foodlist = remotes.foods;
 					if (CollectionUtils.isNotEmpty(foodlist)) {
@@ -109,6 +118,15 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 							CategoriesR.save(categoryRemote);
 						}
 					}
+					
+					// 下载食物数据
+					List<RemoteAttribute> attributelist = remotes.attributes;
+					if (CollectionUtils.isNotEmpty(attributelist)) {
+						for (int i = 0; i < attributelist.size(); i++) {
+							RemoteAttribute attributeRemote = attributelist.get(i);
+							AttributesR.save(attributeRemote);
+						}
+					}
 				}
 				return foodMapping;
 			}
@@ -118,7 +136,7 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 		return mapping;
 
 	}
-
+	
 	/**
 	 * 下载图片
 	 * 

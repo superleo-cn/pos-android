@@ -8,7 +8,6 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.android.mapping.FoodAllMapping;
-import com.android.mapping.FoodMapping;
 
 @Table(name = "tb_food")
 public class FoodR extends Model {
@@ -36,6 +35,10 @@ public class FoodR extends Model {
 	
 	@Column(name = "categorysID")
 	public String categorysID;
+	
+	public String attributesID;
+	
+	public String attributesContext;
 
 	//非数据库字段
 	public String title;
@@ -44,8 +47,10 @@ public class FoodR extends Model {
 	public String toString() {
 		return "FoodR [foodId=" + foodId + ", sn=" + sn + ", name=" + name
 				+ ", nameZh=" + nameZh + ", type=" + type + ", picture="
-				+ picture + ", retailPrice=" + retailPrice + ", categoryID="
-				+ categorysID + ", title=" + title + "]";
+				+ picture + ", retailPrice=" + retailPrice + ", categorysID="
+				+ categorysID + ", attributesID=" + attributesID
+				+ ", attributesContext=" + attributesContext + ", title="
+				+ title + "]";
 	}
 
 	/**
@@ -54,7 +59,7 @@ public class FoodR extends Model {
 	 * @return
 	 */
 	public static List<FoodR> queryIDList(String foodId) {
-		return new Select().from(Food.class).where("categorysID = ?",foodId).execute();
+		return new Select().from(FoodR.class).where("categorysID = ?",foodId).execute();
 	}
 	
 	/**

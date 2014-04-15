@@ -11,6 +11,9 @@ public class SelectFoodBean {
 	private double dabao_price;
 	private double dazhe_price;
 	
+	private String attributesID;
+	private String attributesContext;
+	
 	public String getFood_id() {
 		return food_id;
 	}
@@ -59,13 +62,28 @@ public class SelectFoodBean {
 	public void setFood_type(String food_type) {
 		this.food_type = food_type;
 	}
+	
+	public String getAttributesID() {
+		return attributesID;
+	}
+	public void setAttributesID(String attributesID) {
+		this.attributesID = attributesID;
+	}
+	public String getAttributesContext() {
+		return attributesContext;
+	}
+	public void setAttributesContext(String attributesContext) {
+		this.attributesContext = attributesContext;
+	}
 	@Override
 	public String toString() {
 		return "SelectFoodBean [food_name=" + food_name + ", food_num="
 				+ food_num + ", food_price=" + food_price
 				+ ", food_dayin_code=" + food_dayin_code + ", food_id="
-				+ food_id + ", dabao_price=" + dabao_price + ", dazhe_price="
-				+ dazhe_price + "]";
+				+ food_id + ", food_type=" + food_type + ", dabao_price="
+				+ dabao_price + ", dazhe_price=" + dazhe_price
+				+ ", attributesID=" + attributesID + ", attributesContext="
+				+ attributesContext + "]";
 	}
 	
 }

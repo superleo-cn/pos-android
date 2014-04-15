@@ -1,11 +1,14 @@
 package com.android.component.ui.main;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -13,8 +16,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
+import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -25,8 +34,8 @@ import android.widget.TextView;
 import com.android.R;
 import com.android.adapter.FoodListAdapter;
 import com.android.component.SharedPreferencesComponent_;
+import com.android.domain.AttributesR;
 import com.android.domain.CategoriesR;
-import com.android.domain.Food;
 import com.android.domain.FoodR;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EBean;
@@ -84,7 +93,7 @@ public class FoodComponent {
 		buttonTitleID.setText(Html.fromHtml(bean.title));
 		HorizontalScrollView horizontalScrollViewID = (HorizontalScrollView) leftView.findViewById(R.id.horizontalScrollViewID);
 		LinearLayout linearLayout = new LinearLayout(context);
-		for (FoodR food : foodDataList) {
+		for (final FoodR food : foodDataList) {
 			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
 				food.title = food.nameZh;
 			} else {
@@ -102,6 +111,24 @@ public class FoodComponent {
 			Bitmap bitmap = BitmapFactory.decodeFile(food.picture, options);
 			food_image.setImageDrawable(new BitmapDrawable(context.getResources(), bitmap));
 			linearLayout.addView(leftitemView);
+			leftitemView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					orderComponent.order(food);
+				}
+			});
+			leftitemView.setOnLongClickListener(new OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					List<AttributesR> list = AttributesR.queryIDList(food.foodId);
+					if(list.size() != 0){
+						showDialog(food,context,list);
+						return false;
+					}else{
+						return true;
+					}
+				}
+			});
 		}
 		
 //		FoodListAdapter adapter = new FoodListAdapter(context, foodDataList, handler);
@@ -112,10 +139,77 @@ public class FoodComponent {
 		}
 	}
 
+	/**
+	 * 显示属性的AlertDialog
+	 * @param context
+	 * */
+	 private void showDialog(final FoodR food,Context context,List<AttributesR> list) { 
+		final List<AttributesR> attributesList = new ArrayList<AttributesR>();
+		String type = sharedPrefs.language().get();
+		LinearLayout EntryView = new LinearLayout(context);
+		EntryView.setGravity(Gravity.CENTER);
+		if(list.size()!= 0){
+		for(int i = 0; i< list.size() ;i ++){
+			final AttributesR bean = list.get(i);
+			CheckBox checkBox = new CheckBox(context);
+			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+				bean.title = bean.nameZh;
+			} else {
+				bean.title = bean.name;
+			}
+			checkBox.setText(bean.title);
+			EntryView.addView(checkBox);
+			
+			checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					if(isChecked){
+						attributesList.add(bean);
+					}else{
+						attributesList.remove(bean);
+					}
+				}
+			});
+			
+		}
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setCancelable(false);
+		builder.setTitle("添加属性");
+		builder.setView(EntryView);
+		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				String attributesID = "";
+				String attributesContext = "";
+				for(int i = 0 ; i <attributesList.size() ; i ++){
+					AttributesR bean = attributesList.get(i);
+					if(i >= attributesList.size()-1){
+						attributesID += bean.attributesRID;
+						attributesContext += bean.title;
+					}else{
+						attributesID += bean.attributesRID+",";
+						attributesContext += bean.title+",";
+					}
+				}
+//				attributesID = attributesID.substring(0, attributesID.lastIndexOf(",")-1);
+//				attributesContext = attributesContext.substring(0, attributesContext.lastIndexOf(",")-1);
+				food.attributesID = attributesID;
+				food.attributesContext=attributesContext;
+				orderComponent.order(food);
+			}
+		});
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			}
+		});
+		builder.show();
+		}
+	 }
+	
+	
 	// 点菜操作
 	@ItemClick(R.id.food_list)
 	void foodPanel(int position) {
-		FoodR foodBean = foodDataList.get(position);
+//		FoodR foodBean = foodDataList.get(position);
 //		orderComponent.order(foodBean);
 	}
 

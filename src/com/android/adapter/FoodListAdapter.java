@@ -18,18 +18,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.domain.Food;
+import com.android.domain.FoodR;
 
 public class FoodListAdapter extends BaseAdapter {
 
 	private Context context;
 	private LayoutInflater inflater;
-	private List<Food> classList;
+	private List<FoodR> classList;
 	private Handler handler;
 	private MyListener myListener;
 	public static final int LESS_DATALIST = 1004;
 
-	public FoodListAdapter(Context context, List<Food> list, Handler handler) {
+	public FoodListAdapter(Context context, List<FoodR> list, Handler handler) {
 		this.context = context;
 		this.classList = list;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -54,7 +54,7 @@ public class FoodListAdapter extends BaseAdapter {
 //		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.foot_list_item, null);
 			viewHolder = new ViewHolder();
-			Food bean = classList.get(position);
+			FoodR bean = classList.get(position);
 			myListener = new MyListener(position);
 			viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.food_title);
 			viewHolder.titleTextView.setText(bean.title);

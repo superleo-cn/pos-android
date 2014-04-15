@@ -38,7 +38,6 @@ import com.android.component.ToastComponent;
 import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.dialog.MyDialog;
-import com.android.domain.Food;
 import com.android.domain.FoodOrder;
 import com.android.domain.FoodR;
 import com.android.mapping.StatusMapping;
@@ -200,7 +199,7 @@ public class OrderComponent {
 	 * 
 	 * @param foodBean
 	 */
-	public void order(Food foodBean) {
+	public void order(FoodR foodBean) {
 		SelectFoodBean bean = new SelectFoodBean();
 		bean.setFood_name(foodBean.title);
 		bean.setFood_price(foodBean.retailPrice);
@@ -208,6 +207,8 @@ public class OrderComponent {
 		bean.setFood_id(foodBean.foodId);
 		bean.setFood_type(foodBean.type);
 		bean.setFood_num("1");
+		bean.setAttributesID(foodBean.attributesID);
+		bean.setAttributesContext(foodBean.attributesContext);
 		selectDataList.add(bean);
 		selectAdapter.notifyDataSetChanged();
 		doCalculation();
@@ -378,6 +379,10 @@ public class OrderComponent {
 					sb.append(bean.getFood_name() + "\n\n");
 				} else {
 					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+					if(bean.getAttributesContext() != null && !bean.getAttributesContext().equals("")
+							&& !bean.getAttributesContext().equals("null")){
+						foodName += "(" + bean.getAttributesContext()+")";
+					}
 					foodName = MyTextUtils.stringFormat(foodName);
 					String qty = "X" + bean.getFood_num() + "\n\n";
 					if (is_takePackage) {
@@ -534,6 +539,7 @@ public class OrderComponent {
 			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
 			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
 			params.put("transactions[" + i + "].orderDate", foodOrder.date);
+			params.put("transactions[" + i + "].attributeIds", foodOrder.attributesID);
 		}
 
 		// 异步请求数据
