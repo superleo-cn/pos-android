@@ -22,4 +22,7 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+    <style name="dialog" parent="@android:style/Theme.Dialog">  
+        <item name="android:textSize">30sp</item>  
+    </style>  
 </resources>

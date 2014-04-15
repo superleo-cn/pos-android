@@ -13,14 +13,14 @@
         >
     <ImageView
         android:id="@+id/food_image"
-        android:layout_width="195dp"
-        android:layout_height="195dp"
+        android:layout_width="160dp"
+        android:layout_height="150dp"
         android:layout_gravity="bottom"
         android:background="#00000000"
         android:scaleType="fitXY" />
      <TextView
         android:id="@+id/food_title"
-        android:layout_width="185dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/food_image"
         android:background="#000000"

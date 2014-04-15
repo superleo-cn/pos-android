@@ -16,10 +16,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -91,7 +94,15 @@ public class FoodComponent {
 		View leftView = LinearLayout.inflate(context, R.layout.main_left_view, null);
 		Button buttonTitleID = (Button) leftView.findViewById(R.id.buttonTitleID);
 		buttonTitleID.setText(Html.fromHtml(bean.title));
-		HorizontalScrollView horizontalScrollViewID = (HorizontalScrollView) leftView.findViewById(R.id.horizontalScrollViewID);
+		final HorizontalScrollView horizontalScrollViewID = (HorizontalScrollView) leftView.findViewById(R.id.horizontalScrollViewID);
+		
+		buttonTitleID.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				horizontalScrollViewID.smoothScrollTo(0,0);
+			}
+		});
+		
 		LinearLayout linearLayout = new LinearLayout(context);
 		for (final FoodR food : foodDataList) {
 			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
@@ -152,6 +163,7 @@ public class FoodComponent {
 		for(int i = 0; i< list.size() ;i ++){
 			final AttributesR bean = list.get(i);
 			CheckBox checkBox = new CheckBox(context);
+			checkBox.setTextSize(25);
 			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
 				bean.title = bean.nameZh;
 			} else {
@@ -172,7 +184,8 @@ public class FoodComponent {
 			});
 			
 		}
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.dialog);  
+		AlertDialog.Builder builder = new AlertDialog.Builder(contextThemeWrapper);
 		builder.setCancelable(false);
 		builder.setTitle("添加属性");
 		builder.setView(EntryView);
@@ -201,7 +214,12 @@ public class FoodComponent {
 			public void onClick(DialogInterface dialog, int whichButton) {
 			}
 		});
-		builder.show();
+		AlertDialog dialog =builder.create();
+		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+		params.width = 800;
+		params.height = 700;
+		dialog.getWindow().setAttributes(params);
+		dialog.show();
 		}
 	 }
 	
