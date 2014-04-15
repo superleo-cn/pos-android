@@ -3,9 +3,13 @@ package com.android.mapping;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import com.android.common.Constants;
 import com.android.common.HttpHelper;
 import com.android.common.RestHelper;
+import com.android.domain.CategoriesR;
+import com.android.domain.FoodR;
 import com.android.mapping.FoodAllMapping.Remotes;
 
 public class FoodAllMapping extends BasicExMapping<Remotes> {
@@ -80,6 +84,31 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 					System.out.println(remotes.attributes);
 					System.out.println(remotes.foods);
 					System.out.println(remotes.categories);
+					
+					// 删除历史数据
+					FoodR.deleteAll();
+					// 删除历史数据
+					CategoriesR.deleteAll();
+					// 下载食物数据
+					List<FoodRemote> foodlist = remotes.foods;
+					if (CollectionUtils.isNotEmpty(foodlist)) {
+						for (int i = 0; i < foodlist.size(); i++) {
+							FoodRemote foodRemote = foodlist.get(i);
+							String image_file = downloadImage(foodRemote, i);
+							foodRemote.picture = image_file;
+							// save Food
+							FoodR.save(foodRemote);
+						}
+					}
+					
+					// 下载食物数据
+					List<CategoryRemote> list = remotes.categories;
+					if (CollectionUtils.isNotEmpty(list)) {
+						for (int i = 0; i < list.size(); i++) {
+							CategoryRemote categoryRemote = list.get(i);
+							CategoriesR.save(categoryRemote);
+						}
+					}
 				}
 				return foodMapping;
 			}

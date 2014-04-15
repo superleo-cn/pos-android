@@ -40,6 +40,7 @@ import com.android.dialog.ConfirmDialog;
 import com.android.dialog.MyDialog;
 import com.android.domain.Food;
 import com.android.domain.FoodOrder;
+import com.android.domain.FoodR;
 import com.android.mapping.StatusMapping;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
@@ -219,7 +220,7 @@ public class OrderComponent {
 	 */
 	public void remove(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			Food bean = foodComponent.getFoodDataList().get(index);
+			FoodR bean = foodComponent.getFoodDataList().get(index);
 			for (int i = selectDataList.size() - 1; i >= 0; i--) {
 				SelectFoodBean remove_bean = selectDataList.get(i);
 				if (StringUtils.equalsIgnoreCase(remove_bean.getFood_dayin_code(), bean.sn)) {
