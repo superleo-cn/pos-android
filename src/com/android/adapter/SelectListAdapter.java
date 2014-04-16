@@ -123,6 +123,8 @@ public class SelectListAdapter extends BaseAdapter {
 				&& !bean.getAttributesContext().equals("null")){
 			viewHolder.textShuXing.setVisibility(View.VISIBLE);
 			viewHolder.textShuXing.setText("("+bean.getAttributesContext()+")");
+		}else{
+			viewHolder.textShuXing.setVisibility(View.GONE);
 		}
 		// convertView.setOnLongClickListener(new OnLongClickListener() {
 		// @Override
