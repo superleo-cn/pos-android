@@ -23,8 +23,9 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/food_image"
-        android:background="#000000"
+        android:background="@drawable/food_title_bg"
         android:textColor="#FFFFFF"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:paddingLeft="5dip" />
 </RelativeLayout>
 </RelativeLayout>

@@ -158,12 +158,13 @@ public class FoodComponent {
 		final List<AttributesR> attributesList = new ArrayList<AttributesR>();
 		String type = sharedPrefs.language().get();
 		LinearLayout EntryView = new LinearLayout(context);
+		EntryView.setPadding(10, 10, 10, 10);
 		EntryView.setGravity(Gravity.CENTER);
 		if(list.size()!= 0){
 		for(int i = 0; i< list.size() ;i ++){
 			final AttributesR bean = list.get(i);
 			CheckBox checkBox = new CheckBox(context);
-			checkBox.setTextSize(25);
+			checkBox.setTextSize(35);
 			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
 				bean.title = bean.nameZh;
 			} else {
@@ -215,10 +216,10 @@ public class FoodComponent {
 			}
 		});
 		AlertDialog dialog =builder.create();
-		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-		params.width = 800;
-		params.height = 700;
-		dialog.getWindow().setAttributes(params);
+//		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+//		params.width = 800;
+//		params.height = 700;
+//		dialog.getWindow().setAttributes(params);
 		dialog.show();
 		}
 	 }
