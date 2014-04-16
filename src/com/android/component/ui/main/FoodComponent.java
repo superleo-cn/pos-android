@@ -188,33 +188,63 @@ public class FoodComponent {
 		ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.dialog);  
 		AlertDialog.Builder builder = new AlertDialog.Builder(contextThemeWrapper);
 		builder.setCancelable(false);
-		builder.setTitle("添加属性");
-		builder.setView(EntryView);
-		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				String attributesID = "";
-				String attributesContext = "";
-				for(int i = 0 ; i <attributesList.size() ; i ++){
-					AttributesR bean = attributesList.get(i);
-					if(i >= attributesList.size()-1){
-						attributesID += bean.attributesRID;
-						attributesContext += bean.title;
-					}else{
-						attributesID += bean.attributesRID+",";
-						attributesContext += bean.title+",";
+		if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+			builder.setTitle("添加属性");
+			builder.setView(EntryView);
+			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					String attributesID = "";
+					String attributesContext = "";
+					for(int i = 0 ; i <attributesList.size() ; i ++){
+						AttributesR bean = attributesList.get(i);
+						if(i >= attributesList.size()-1){
+							attributesID += bean.attributesRID;
+							attributesContext += bean.title;
+						}else{
+							attributesID += bean.attributesRID+",";
+							attributesContext += bean.title+",";
+						}
 					}
+//					attributesID = attributesID.substring(0, attributesID.lastIndexOf(",")-1);
+//					attributesContext = attributesContext.substring(0, attributesContext.lastIndexOf(",")-1);
+					food.attributesID = attributesID;
+					food.attributesContext=attributesContext;
+					orderComponent.order(food);
 				}
-//				attributesID = attributesID.substring(0, attributesID.lastIndexOf(",")-1);
-//				attributesContext = attributesContext.substring(0, attributesContext.lastIndexOf(",")-1);
-				food.attributesID = attributesID;
-				food.attributesContext=attributesContext;
-				orderComponent.order(food);
-			}
-		});
-		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-			}
-		});
+			});
+			builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+				}
+			});
+		} else {
+			builder.setTitle("Add attributes");
+			builder.setView(EntryView);
+			builder.setPositiveButton("confirm", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					String attributesID = "";
+					String attributesContext = "";
+					for(int i = 0 ; i <attributesList.size() ; i ++){
+						AttributesR bean = attributesList.get(i);
+						if(i >= attributesList.size()-1){
+							attributesID += bean.attributesRID;
+							attributesContext += bean.title;
+						}else{
+							attributesID += bean.attributesRID+",";
+							attributesContext += bean.title+",";
+						}
+					}
+//					attributesID = attributesID.substring(0, attributesID.lastIndexOf(",")-1);
+//					attributesContext = attributesContext.substring(0, attributesContext.lastIndexOf(",")-1);
+					food.attributesID = attributesID;
+					food.attributesContext=attributesContext;
+					orderComponent.order(food);
+				}
+			});
+			builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+				}
+			});
+		}
 		AlertDialog dialog =builder.create();
 //		WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
 //		params.width = 800;

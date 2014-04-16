@@ -80,6 +80,7 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_name = (TextView) convertView.findViewById(R.id.food_name);
 			viewHolder.food_num = (TextView) convertView.findViewById(R.id.food_num);
 			viewHolder.food_price = (TextView) convertView.findViewById(R.id.food_price);
+			viewHolder.textShuXing = (TextView) convertView.findViewById(R.id.textShuXing);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -118,6 +119,11 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_price.setText("S$" + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
 		}
 
+		if(bean.getAttributesContext()!=null && !bean.getAttributesContext().equals("")
+				&& !bean.getAttributesContext().equals("null")){
+			viewHolder.textShuXing.setVisibility(View.VISIBLE);
+			viewHolder.textShuXing.setText("("+bean.getAttributesContext()+")");
+		}
 		// convertView.setOnLongClickListener(new OnLongClickListener() {
 		// @Override
 		// public boolean onLongClick(View v) {
@@ -210,5 +216,6 @@ public class SelectListAdapter extends BaseAdapter {
 		TextView food_name;
 		TextView food_num;
 		TextView food_price;
+		TextView textShuXing;
 	}
 }
