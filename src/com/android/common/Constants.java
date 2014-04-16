@@ -76,6 +76,8 @@ public final class Constants {
 	public static final String URL_TAKE_DNUM = URL_CONTEXTPATH + "/cashs/listJson/";
 	/** 点菜单提交 */
 	public static final String URL_FOOD_ORDER = URL_CONTEXTPATH + "/transactions/submit";
+	/** 点菜单和属性提交 */
+	public static final String URL_FOOD_ORDER_ATTR = URL_CONTEXTPATH + "/transactions/storeWithAttrs";
 
 	/** 软件更新 */
 	public static final String URL_UPDATE_APP = URL_CONTEXTPATH + "/checkUpdate";

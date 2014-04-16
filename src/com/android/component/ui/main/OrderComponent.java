@@ -543,7 +543,7 @@ public class OrderComponent {
 		}
 
 		// 异步请求数据
-		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
+		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER_ATTR, params);
 		if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
 			List<Long> ids = mapping.datas;
 			if (CollectionUtils.isNotEmpty(ids)) {
