@@ -6,7 +6,6 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/dialog_panel"
         android:layout_width="800dp"
         android:layout_height="500dp"
         android:layout_marginLeft="5dp"
@@ -16,14 +15,12 @@
         android:padding="20dip" >
 
         <LinearLayout
-            android:id="@+id/dialog_title_panel"
             android:layout_width="fill_parent"
             android:layout_height="96dp"
             android:layout_marginTop="10dp"
             android:visibility="gone" >
 
             <TextView
-                android:id="@+id/dialog_title"
                 style="@style/StyleBarTitle"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -35,46 +32,19 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dialog_title_panel"
             android:layout_marginTop="50dp"
             android:orientation="vertical" >
 
-            <LinearLayout
-                android:id="@+id/dialog_message_panel"
+            <GridView
+                android:id="@+id/gridViewID"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:columnWidth="5dip"
+                android:numColumns="3"
+                android:stretchMode="columnWidth"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="30dp"
-                android:visibility="gone" >
-
-                <TextView
-                    android:id="@+id/dialog_message"
-                    style="@style/StyleBarTitle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:gravity="center"
-                    android:text="welcome to china"
-                    android:textSize="25dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearlayoutID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/dialog_message_panel"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                android:visibility="visible" >
-                <LinearLayout 
-                    android:id="@+id/listview"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
-                
-            </LinearLayout>
+                android:layout_marginTop="30dp" />
         </LinearLayout>
 
         <LinearLayout

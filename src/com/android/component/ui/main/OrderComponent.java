@@ -110,7 +110,7 @@ public class OrderComponent {
 
 	CalculatorComponent calculatorComponent;
 
-	private List<SelectFoodBean> selectDataList;
+	public List<SelectFoodBean> selectDataList;
 
 	private SelectListAdapter selectAdapter;
 
