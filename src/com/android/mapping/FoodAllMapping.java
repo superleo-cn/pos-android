@@ -50,6 +50,8 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 		public String id;
 
 		public String sn;
+		
+		public String barCode;
 
 		public String name;
 

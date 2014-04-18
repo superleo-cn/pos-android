@@ -6,27 +6,19 @@ import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.CalendarContract.Colors;
 import android.text.Html;
 import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -72,7 +64,7 @@ public class FoodComponent {
 
 	private List<FoodR> foodDataList;
 
-	private List<Food> foodDataListDisplay;
+	private List<FoodR> foodDataListDisplay;
 
 	private OrderComponent orderComponent;
 
@@ -86,8 +78,8 @@ public class FoodComponent {
 	@AfterViews
 	public void initFood() {
 		
-		this.foodDataList = Food.queryList();
-		this.foodDataListDisplay = Food.queryListByDisplay();
+		this.foodDataList = FoodR.queryList();
+		this.foodDataListDisplay = FoodR.queryListByDisplay();
 
 		String type = sharedPrefs.language().get();
 		List<CategoriesR> categoriesList =  CategoriesR.queryList();
@@ -151,8 +143,7 @@ public class FoodComponent {
 				}
 			});
 		}
-<<<<<<< HEAD
-		for (Food food : foodDataListDisplay) {
+		for (FoodR food : foodDataListDisplay) {
 			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
 				food.title = food.nameZh;
 			} else {
@@ -161,7 +152,6 @@ public class FoodComponent {
 		}
 		FoodListAdapter adapter = new FoodListAdapter(context, foodDataListDisplay, handler);
 		foodView.setAdapter(adapter);
-=======
 		
 //		FoodListAdapter adapter = new FoodListAdapter(context, foodDataList, handler);
 //		foodView.setAdapter(adapter);
@@ -169,7 +159,6 @@ public class FoodComponent {
 		layout_left.addView(leftView);
 
 		}
->>>>>>> refs/heads/3.x
 	}
 
 	/**
@@ -309,13 +298,8 @@ public class FoodComponent {
 	// 点菜操作
 	@ItemClick(R.id.food_list)
 	void foodPanel(int position) {
-<<<<<<< HEAD
-		Food foodBean = foodDataListDisplay.get(position);
-		orderComponent.order(foodBean);
-=======
-//		FoodR foodBean = foodDataList.get(position);
+//		Food foodBean = foodDataListDisplay.get(position);
 //		orderComponent.order(foodBean);
->>>>>>> refs/heads/3.x
 	}
 
 	Handler handler = new Handler() {

@@ -17,6 +17,9 @@ public class FoodR extends Model {
 
 	@Column(name = "sn")
 	public String sn;
+	
+	@Column(name = "bar_code")
+	public String barCode;
 
 	@Column(name = "name")
 	public String name;
@@ -70,6 +73,15 @@ public class FoodR extends Model {
 	public static List<FoodR> queryList() {
 		return new Select().from(FoodR.class).execute();
 	}
+	
+	/**
+	 * 返回食物显示列表
+	 * 
+	 * @return
+	 */
+	public static List<FoodR> queryListByDisplay() {
+		return new Select().from(FoodR.class).where("flag = 'true'").execute();
+	}
 
 	/**
 	 * 保存食物
@@ -80,6 +92,7 @@ public class FoodR extends Model {
 		// save Food
 		FoodR food = new FoodR();
 		food.foodId = foodRemote.id;
+		food.barCode = foodRemote.barCode;
 		food.name = foodRemote.name;
 		food.nameZh = foodRemote.nameZh;
 		food.picture = foodRemote.picture;

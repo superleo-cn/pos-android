@@ -16,7 +16,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.widget.GridView;
@@ -25,8 +24,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.activity.MyGridView;
-import com.android.adapter.GiditNumberAdapter;
 import com.android.adapter.SelectListAdapter;
 import com.android.bean.SelectFoodBean;
 import com.android.common.AndroidPrinter;
@@ -222,10 +219,6 @@ public class OrderComponent {
 	 * 
 	 * @param foodBean
 	 */
-<<<<<<< HEAD
-	public void order(Food foodBean) {
-		orderFood(selectDataList, foodBean);
-=======
 	public void order(FoodR foodBean) {
 		SelectFoodBean bean = new SelectFoodBean();
 		bean.setFood_name(foodBean.title);
@@ -237,12 +230,11 @@ public class OrderComponent {
 		bean.setAttributesID(foodBean.attributesID);
 		bean.setAttributesContext(foodBean.attributesContext);
 		selectDataList.add(bean);
->>>>>>> refs/heads/3.x
 		selectAdapter.notifyDataSetChanged();
 		doCalculation();
 	}
 
-	private void orderFood(List<SelectFoodBean> list, Food food) {
+	private void orderFood(List<SelectFoodBean> list, FoodR food) {
 		boolean flag = false;
 		if (CollectionUtils.isNotEmpty(list) && food != null) {
 			for (SelectFoodBean obj : list) {
@@ -325,10 +317,10 @@ public class OrderComponent {
 
 	@Click(R.id.bar_code_btn)
 	public void sann() {
-		List<Food> foodList = foodComponent.getFoodDataList();
+		List<FoodR> foodList = foodComponent.getFoodDataList();
 		String sannId = StringUtils.trim(barCodeText.getText().toString());
 		if (StringUtils.isNotEmpty(sannId)) {
-			for (Food food : foodList) {
+			for (FoodR food : foodList) {
 				if (StringUtils.equals(food.barCode, sannId)) {
 					order(food);
 				}
