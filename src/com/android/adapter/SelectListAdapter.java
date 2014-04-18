@@ -35,10 +35,12 @@ public class SelectListAdapter extends BaseAdapter {
 	private List<SelectFoodBean> classList;
 	private OrderComponent component;
 	private float x, ux;
+	private String type;
 
-	public SelectListAdapter(Context context, List<SelectFoodBean> list) {
+	public SelectListAdapter(Context context, List<SelectFoodBean> list,String type) {
 		this.context = context;
 		this.classList = list;
+		this.type = type;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -159,7 +161,7 @@ public class SelectListAdapter extends BaseAdapter {
 						// Toast.makeText(context, "往左", 1).show();
 						List<AttributesR> list = AttributesR.queryIDList(bean.getFood_id());
 						final MyAttrbutesDialog attrbutesDialog = new MyAttrbutesDialog(context);
-						final AttrbutesGridViewAdapter adapter = new AttrbutesGridViewAdapter(context, null);
+						final AttrbutesGridViewAdapter adapter = new AttrbutesGridViewAdapter(context, type);
 						adapter.setClassList(list);
 						if(list.size()!= 0){
 							attrbutesDialog.gridViewID.setAdapter(adapter);
