@@ -1,4 +1,4 @@
-﻿﻿package com.android.adapter;
+﻿package com.android.adapter;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
