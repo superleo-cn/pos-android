@@ -141,10 +141,10 @@ public class OrderComponent {
 		// 初始化打印对话框
 		dialg = buildPrintDialog();
 		mydialog = new MyDialog(context);
-
+		String type = sharedPrefs.language().get();
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
-		this.selectAdapter = new SelectListAdapter(context, selectDataList);
+		this.selectAdapter = new SelectListAdapter(context, selectDataList,type);
 		selectAdapter.setComponent(OrderComponent.this);
 		this.selectList.setAdapter(selectAdapter);
 		this.selectList.setOnTouchListener(new OnTouchListener() {

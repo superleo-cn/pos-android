@@ -77,12 +77,11 @@ public class AttrbutesGridViewAdapter extends BaseAdapter {
 		}
 		
 		final AttributesR bean = classList.get(position);
-//		if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
-//			bean.title = bean.nameZh;
-//		} else {
-//			bean.title = bean.name;
-//		}
-		bean.title = bean.nameZh;
+		if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+			bean.title = bean.nameZh;
+		} else {
+			bean.title = bean.name;
+		}
 		viewHolder.checkboxID.setText(bean.title);
 		viewHolder.checkboxID.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override

@@ -127,6 +127,8 @@ public class FoodComponent {
 			leftitemView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					food.attributesID = "";
+					food.attributesContext= "";
 					orderComponent.order(food);
 				}
 			});
