@@ -62,6 +62,8 @@ public class FoodComponent {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
+	private List<FoodR> foodDataAllList;
+	
 	private List<FoodR> foodDataList;
 
 	private List<FoodR> foodDataListDisplay;
@@ -77,11 +79,16 @@ public class FoodComponent {
 	 */
 	@AfterViews
 	public void initFood() {
-		
-		this.foodDataList = FoodR.queryList();
-		this.foodDataListDisplay = FoodR.queryListByDisplay();
-
 		String type = sharedPrefs.language().get();
+		this.foodDataAllList = FoodR.queryList();
+		for (final FoodR food : foodDataAllList) {
+			if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+				food.title = food.nameZh;
+			} else {
+				food.title = food.name;
+			}
+		}
+		this.foodDataListDisplay = FoodR.queryListByDisplay();
 		List<CategoriesR> categoriesList =  CategoriesR.queryList();
 		for(int i = 0 ; i< categoriesList.size(); i ++){
 		CategoriesR bean =  categoriesList.get(i);
@@ -159,6 +166,10 @@ public class FoodComponent {
 		layout_left.addView(leftView);
 
 		}
+	}
+
+	public List<FoodR> getFoodDataAllList() {
+		return foodDataAllList;
 	}
 
 	/**

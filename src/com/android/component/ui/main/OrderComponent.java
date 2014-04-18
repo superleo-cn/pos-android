@@ -317,7 +317,7 @@ public class OrderComponent {
 
 	@Click(R.id.bar_code_btn)
 	public void sann() {
-		List<FoodR> foodList = foodComponent.getFoodDataList();
+		List<FoodR> foodList = foodComponent.getFoodDataAllList();
 		String sannId = StringUtils.trim(barCodeText.getText().toString());
 		if (StringUtils.isNotEmpty(sannId)) {
 			for (FoodR food : foodList) {

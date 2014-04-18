@@ -29,6 +29,9 @@ public class FoodR extends Model {
 
 	@Column(name = "type")
 	public String type;
+	
+	@Column(name = "flag")
+	public String flag;
 
 	@Column(name = "picture")
 	public String picture;
