@@ -54,8 +54,7 @@ public final class Constants {
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
 	public static final String HOST = "f1.weebo.com.sg";
-	// public static final String HOST = "192.168.0.17";
-	// public static final String HOST = "localhost";
+
 	/** 服务器端口号 */
 	public static final String PORT = ":80";
 	/** 应用上下文名 */
@@ -69,13 +68,15 @@ public final class Constants {
 	/** 店铺完整URL路径 */
 	public static final String URL_SHOP_PATH = URL_CONTEXTPATH + "/shops/listJson/";
 	/** 点菜单完整URL路径 */
-	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH + "/foods/listJson/";
+	public static final String URL_FOODSLIST_PATH = URL_CONTEXTPATH + "/foods/listExtJson/";
 	/** 支付款项 */
 	public static final String URL_PAY_DETAIL = URL_CONTEXTPATH + "/consumptions/listJson/";
 	/** 带回总数 */
 	public static final String URL_TAKE_DNUM = URL_CONTEXTPATH + "/cashs/listJson/";
 	/** 点菜单提交 */
 	public static final String URL_FOOD_ORDER = URL_CONTEXTPATH + "/transactions/submit";
+	/** 点菜单和属性提交 */
+	public static final String URL_FOOD_ORDER_ATTR = URL_CONTEXTPATH + "/transactions/storeWithAttrs";
 
 	/** 软件更新 */
 	public static final String URL_UPDATE_APP = URL_CONTEXTPATH + "/checkUpdate";

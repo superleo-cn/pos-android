@@ -43,8 +43,8 @@ import com.android.component.ToastComponent;
 import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.dialog.MyDialog;
-import com.android.domain.Food;
 import com.android.domain.FoodOrder;
+import com.android.domain.FoodR;
 import com.android.mapping.StatusMapping;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
@@ -122,7 +122,7 @@ public class OrderComponent {
 
 	CalculatorComponent calculatorComponent;
 
-	private List<SelectFoodBean> selectDataList;
+	public List<SelectFoodBean> selectDataList;
 
 	private SelectListAdapter selectAdapter;
 
@@ -153,10 +153,10 @@ public class OrderComponent {
 		// 初始化打印对话框
 		dialg = buildPrintDialog();
 		mydialog = new MyDialog(context);
-
+		String type = sharedPrefs.language().get();
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
-		this.selectAdapter = new SelectListAdapter(context, selectDataList);
+		this.selectAdapter = new SelectListAdapter(context, selectDataList,type);
 		selectAdapter.setComponent(OrderComponent.this);
 		this.selectList.setAdapter(selectAdapter);
 		this.selectList.setOnTouchListener(new OnTouchListener() {
@@ -222,8 +222,22 @@ public class OrderComponent {
 	 * 
 	 * @param foodBean
 	 */
+<<<<<<< HEAD
 	public void order(Food foodBean) {
 		orderFood(selectDataList, foodBean);
+=======
+	public void order(FoodR foodBean) {
+		SelectFoodBean bean = new SelectFoodBean();
+		bean.setFood_name(foodBean.title);
+		bean.setFood_price(foodBean.retailPrice);
+		bean.setFood_dayin_code(foodBean.sn);
+		bean.setFood_id(foodBean.foodId);
+		bean.setFood_type(foodBean.type);
+		bean.setFood_num("1");
+		bean.setAttributesID(foodBean.attributesID);
+		bean.setAttributesContext(foodBean.attributesContext);
+		selectDataList.add(bean);
+>>>>>>> refs/heads/3.x
 		selectAdapter.notifyDataSetChanged();
 		doCalculation();
 	}
@@ -257,7 +271,7 @@ public class OrderComponent {
 	 */
 	public void remove(int index) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			Food bean = foodComponent.getFoodDataList().get(index);
+			FoodR bean = foodComponent.getFoodDataList().get(index);
 			for (int i = selectDataList.size() - 1; i >= 0; i--) {
 				SelectFoodBean remove_bean = selectDataList.get(i);
 				if (StringUtils.equalsIgnoreCase(remove_bean.getFood_dayin_code(), bean.sn)) {
@@ -428,6 +442,10 @@ public class OrderComponent {
 					sb.append(bean.getFood_name() + "\n\n");
 				} else {
 					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
+					if(bean.getAttributesContext() != null && !bean.getAttributesContext().equals("")
+							&& !bean.getAttributesContext().equals("null")){
+						foodName += "(" + bean.getAttributesContext()+")";
+					}
 					foodName = MyTextUtils.stringFormat(foodName);
 					String qty = "X" + bean.getFood_num() + "\n\n";
 					if (is_takePackage) {
@@ -578,10 +596,11 @@ public class OrderComponent {
 			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
 			params.put("transactions[" + i + "].orderDate", foodOrder.date);
 			params.put("transactions[" + i + "].type", foodOrder.orderType);
+			params.put("transactions[" + i + "].attributeIds", foodOrder.attributesID);
 		}
 
 		// 异步请求数据
-		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER, params);
+		StatusMapping mapping = StatusMapping.postJSON(Constants.URL_FOOD_ORDER_ATTR, params);
 		if (mapping.code == Constants.STATUS_SUCCESS || mapping.code == Constants.STATUS_FAILED) {
 			List<Long> ids = mapping.datas;
 			if (CollectionUtils.isNotEmpty(ids)) {

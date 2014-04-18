@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -22,8 +23,11 @@ import com.android.R;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.DisplayUtil;
+import com.android.component.SharedPreferencesComponent_;
 import com.android.component.ui.main.OrderComponent;
-
+import com.android.dialog.MyAttrbutesDialog;
+import com.android.domain.AttributesR;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 public class SelectListAdapter extends BaseAdapter {
 
 	private Context context;
@@ -31,10 +35,12 @@ public class SelectListAdapter extends BaseAdapter {
 	private List<SelectFoodBean> classList;
 	private OrderComponent component;
 	private float x, ux;
+	private String type;
 
-	public SelectListAdapter(Context context, List<SelectFoodBean> list) {
+	public SelectListAdapter(Context context, List<SelectFoodBean> list,String type) {
 		this.context = context;
 		this.classList = list;
+		this.type = type;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
@@ -72,7 +78,7 @@ public class SelectListAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
 		ViewHolder viewHolder;
-		SelectFoodBean bean;
+		final SelectFoodBean bean;
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.select_list_item, null);
 			viewHolder = new ViewHolder();
@@ -80,6 +86,7 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_name = (TextView) convertView.findViewById(R.id.food_name);
 			viewHolder.food_num = (TextView) convertView.findViewById(R.id.food_num);
 			viewHolder.food_price = (TextView) convertView.findViewById(R.id.food_price);
+			viewHolder.textShuXing = (TextView) convertView.findViewById(R.id.textShuXing);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -121,6 +128,13 @@ public class SelectListAdapter extends BaseAdapter {
 			viewHolder.food_price.setText(Constants.DOLLAR + new DecimalFormat("0.00").format(Double.parseDouble(bean.getFood_price())));
 		}
 
+		if(bean.getAttributesContext()!=null && !bean.getAttributesContext().equals("")
+				&& !bean.getAttributesContext().equals("null")){
+			viewHolder.textShuXing.setVisibility(View.VISIBLE);
+			viewHolder.textShuXing.setText("("+bean.getAttributesContext()+")");
+		}else{
+			viewHolder.textShuXing.setVisibility(View.GONE);
+		}
 		// convertView.setOnLongClickListener(new OnLongClickListener() {
 		// @Override
 		// public boolean onLongClick(View v) {
@@ -148,52 +162,95 @@ public class SelectListAdapter extends BaseAdapter {
 					// }
 					if (x - ux > 0 && Math.abs(x - ux) >= 20) {
 						// Toast.makeText(context, "往左", 1).show();
-						if (classList.size() == position + 1) {
-							if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-								Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
-								int j = 0;
-								for (int i = 0; i < classList.size(); i++) {
-									map.put(i + j + "", classList.get(i));
-									if (i == position) {
-										SelectFoodBean foodBean = new SelectFoodBean();
-										foodBean.setFood_name(Constants.SPLIT_LINE);
-										foodBean.setFood_num("0");
-										foodBean.setFood_price("0.00");
-										j = 1;
-										map.put(i + j + "", foodBean);
+						List<AttributesR> list = AttributesR.queryIDList(bean.getFood_id());
+						final MyAttrbutesDialog attrbutesDialog = new MyAttrbutesDialog(context);
+						final AttrbutesGridViewAdapter adapter = new AttrbutesGridViewAdapter(context, type);
+						adapter.setClassList(list);
+						if(list.size()!= 0){
+							attrbutesDialog.gridViewID.setAdapter(adapter);
+							adapter.notifyDataSetChanged();
+							attrbutesDialog.show();
+							}
+						attrbutesDialog.dialog_yes.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								attrbutesDialog.dismiss();
+								SelectFoodBean foodBean = bean;
+								String attributesID = "";
+								String attributesContext = "";
+								for(int i = 0 ; i <adapter.attributesList.size() ; i ++){
+									AttributesR abean = adapter.attributesList.get(i);
+									if(i >= adapter.attributesList.size()-1){
+										attributesID += abean.attributesRID;
+										attributesContext += abean.title;
+									}else{
+										attributesID += abean.attributesRID+",";
+										attributesContext += abean.title+",";
 									}
 								}
-								j = 0;
-								classList.clear();
-								for (int z = 0; z < map.size(); z++) {
-									classList.add(map.get(z + ""));
-								}
+								foodBean.setAttributesID(attributesID);;
+								foodBean.setAttributesContext(attributesContext);;
+								classList.remove(bean);
+								classList.add(foodBean);
+								component.selectDataList.remove(bean);
+								component.selectDataList.add(foodBean);
 								notifyDataSetChanged();
 							}
-						} else {
-							if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
-									&& !classList.get(position + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
-								Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
-								int j = 0;
-								for (int i = 0; i < classList.size(); i++) {
-									map.put(i + j + "", classList.get(i));
-									if (i == position) {
-										SelectFoodBean foodBean = new SelectFoodBean();
-										foodBean.setFood_name(Constants.SPLIT_LINE);
-										foodBean.setFood_num("0");
-										foodBean.setFood_price("0.00");
-										j = 1;
-										map.put(i + j + "", foodBean);
-									}
-								}
-								j = 0;
-								classList.clear();
-								for (int z = 0; z < map.size(); z++) {
-									classList.add(map.get(z + ""));
-								}
-								notifyDataSetChanged();
+						});
+						attrbutesDialog.dialog_no.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								attrbutesDialog.dismiss();
 							}
-						}
+						});
+						
+//						if (classList.size() == position + 1) {
+//							if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+//								Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
+//								int j = 0;
+//								for (int i = 0; i < classList.size(); i++) {
+//									map.put(i + j + "", classList.get(i));
+//									if (i == position) {
+//										SelectFoodBean foodBean = new SelectFoodBean();
+//										foodBean.setFood_name(Constants.SPLIT_LINE);
+//										foodBean.setFood_num("0");
+//										foodBean.setFood_price("0.00");
+//										j = 1;
+//										map.put(i + j + "", foodBean);
+//									}
+//								}
+//								j = 0;
+//								classList.clear();
+//								for (int z = 0; z < map.size(); z++) {
+//									classList.add(map.get(z + ""));
+//								}
+//								notifyDataSetChanged();
+//							}
+//						} else {
+//							if (!classList.get(position).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)
+//									&& !classList.get(position + 1).getFood_name().equalsIgnoreCase(Constants.SPLIT_LINE)) {
+//								Map<String, SelectFoodBean> map = new HashMap<String, SelectFoodBean>();
+//								int j = 0;
+//								for (int i = 0; i < classList.size(); i++) {
+//									map.put(i + j + "", classList.get(i));
+//									if (i == position) {
+//										SelectFoodBean foodBean = new SelectFoodBean();
+//										foodBean.setFood_name(Constants.SPLIT_LINE);
+//										foodBean.setFood_num("0");
+//										foodBean.setFood_price("0.00");
+//										j = 1;
+//										map.put(i + j + "", foodBean);
+//									}
+//								}
+//								j = 0;
+//								classList.clear();
+//								for (int z = 0; z < map.size(); z++) {
+//									classList.add(map.get(z + ""));
+//								}
+//								notifyDataSetChanged();
+//							}
+//						}
 						return true;
 					} else if (x - ux < 0 && Math.abs(x - ux) >= 20) {
 						// Toast.makeText(context, "往右", 1).show();
@@ -213,5 +270,6 @@ public class SelectListAdapter extends BaseAdapter {
 		TextView food_name;
 		TextView food_num;
 		TextView food_price;
+		TextView textShuXing;
 	}
 }

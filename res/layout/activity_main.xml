@@ -21,12 +21,18 @@
             android:layout_height="fill_parent"
             android:weightSum="5" >
 
-            <RelativeLayout
-                android:id="@+id/layout_left"
+            <ScrollView 
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="2" >
-
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" >
+		<LinearLayout
+		    android:id="@+id/layout_left"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"/>
                 <GridView
                     android:id="@+id/food_list"
                     android:layout_width="fill_parent"
@@ -34,10 +40,11 @@
                     android:descendantFocusability="blocksDescendants"
                     android:horizontalSpacing="5dp"
                     android:numColumns="4"
+                    android:visibility="gone"
                     android:verticalSpacing="10dp" >
                 </GridView>
             </RelativeLayout>
-
+</ScrollView>
             <RelativeLayout
                 android:id="@+id/layout_right"
                 android:layout_width="fill_parent"

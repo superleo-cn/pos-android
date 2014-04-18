@@ -12,7 +12,7 @@ import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.component.WifiComponent;
 import com.android.dialog.MyProcessDialog;
-import com.android.mapping.FoodMapping;
+import com.android.mapping.FoodAllMapping;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
@@ -68,16 +68,16 @@ public class FoodSynchronizationComponent {
 
 	}
 
-	private class FoodSynchronizationTask extends AsyncTask<String, Void, FoodMapping> {
+	private class FoodSynchronizationTask extends AsyncTask<String, Void, FoodAllMapping> {
 
 		@Override
-		protected FoodMapping doInBackground(String... objs) {
+		protected FoodAllMapping doInBackground(String... objs) {
 			String url = Constants.URL_FOODSLIST_PATH + objs[0];
-			return FoodMapping.getJSONAndSave(url);
+			return FoodAllMapping.getJSONAndSave(url);
 		}
 
 		@Override
-		protected void onPostExecute(FoodMapping mapping) {
+		protected void onPostExecute(FoodAllMapping mapping) {
 			dialog.dismiss();
 			switch (mapping.code) {
 			case Constants.STATUS_FAILED:
