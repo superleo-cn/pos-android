@@ -37,7 +37,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:descendantFocusability="blocksDescendants"
-                    android:horizontalSpacing="5dp"
+                    android:horizontalSpacing="4dp"
                     android:numColumns="4"
                     android:visibility="gone"
                     android:verticalSpacing="10dp" >
