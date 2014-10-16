@@ -50,14 +50,14 @@ public class QueryAllDBAComponent {
 	@ViewById(R.id.buttonFoodOrder)
 	Button foodOrderButton;
 
-	@ViewById(R.id.buttonExpensesOrder)
-	Button expensesOrderButton;
-
-	@ViewById(R.id.buttonCollectionOrder)
-	Button collectionOrderButton;
-
-	@ViewById(R.id.buttonBalanceOrder)
-	Button balanceOrderButton;
+//	@ViewById(R.id.buttonExpensesOrder)
+//	Button expensesOrderButton;
+//
+//	@ViewById(R.id.buttonCollectionOrder)
+//	Button collectionOrderButton;
+//
+//	@ViewById(R.id.buttonBalanceOrder)
+//	Button balanceOrderButton;
 
 	@Bean
 	public MenuComponent menuComponent;
@@ -213,49 +213,49 @@ public class QueryAllDBAComponent {
 	@Click(R.id.buttonFoodOrder)
 	void QueryFoodOrderClick() {
 		foodOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
-		expensesOrderButton.setBackgroundColor(Color.WHITE);
-		collectionOrderButton.setBackgroundColor(Color.WHITE);
-		balanceOrderButton.setBackgroundColor(Color.WHITE);
+//		expensesOrderButton.setBackgroundColor(Color.WHITE);
+//		collectionOrderButton.setBackgroundColor(Color.WHITE);
+//		balanceOrderButton.setBackgroundColor(Color.WHITE);
 		queryComponent = foodOrderQueryComponent;
 		pagination = new Pagination();
 		searchCriteria = new SearchCriteria();
 		queryComponent.queryResult(pagination, searchCriteria);
 	}
 
-	@Click(R.id.buttonExpensesOrder)
-	void QueryExpensesOrderClick() {
-		foodOrderButton.setBackgroundColor(Color.WHITE);
-		expensesOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
-		collectionOrderButton.setBackgroundColor(Color.WHITE);
-		balanceOrderButton.setBackgroundColor(Color.WHITE);
-		queryComponent = expensesOrderQueryComponent;
-		pagination = new Pagination();
-		searchCriteria = new SearchCriteria();
-		queryComponent.queryResult(pagination, searchCriteria);
-	}
+//	@Click(R.id.buttonExpensesOrder)
+//	void QueryExpensesOrderClick() {
+//		foodOrderButton.setBackgroundColor(Color.WHITE);
+//		expensesOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
+//		collectionOrderButton.setBackgroundColor(Color.WHITE);
+//		balanceOrderButton.setBackgroundColor(Color.WHITE);
+//		queryComponent = expensesOrderQueryComponent;
+//		pagination = new Pagination();
+//		searchCriteria = new SearchCriteria();
+//		queryComponent.queryResult(pagination, searchCriteria);
+//	}
 
-	@Click(R.id.buttonCollectionOrder)
-	void QueryCollectionOrderClick() {
-		foodOrderButton.setBackgroundColor(Color.WHITE);
-		expensesOrderButton.setBackgroundColor(Color.WHITE);
-		collectionOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
-		balanceOrderButton.setBackgroundColor(Color.WHITE);
-		queryComponent = collectionOrderQueryComponent;
-		pagination = new Pagination();
-		searchCriteria = new SearchCriteria();
-		queryComponent.queryResult(pagination, searchCriteria);
-	}
+//	@Click(R.id.buttonCollectionOrder)
+//	void QueryCollectionOrderClick() {
+//		foodOrderButton.setBackgroundColor(Color.WHITE);
+//		expensesOrderButton.setBackgroundColor(Color.WHITE);
+//		collectionOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
+//		balanceOrderButton.setBackgroundColor(Color.WHITE);
+//		queryComponent = collectionOrderQueryComponent;
+//		pagination = new Pagination();
+//		searchCriteria = new SearchCriteria();
+//		queryComponent.queryResult(pagination, searchCriteria);
+//	}
 
-	@Click(R.id.buttonBalanceOrder)
-	void QueryBalanceOrderClick() {
-		foodOrderButton.setBackgroundColor(Color.WHITE);
-		expensesOrderButton.setBackgroundColor(Color.WHITE);
-		collectionOrderButton.setBackgroundColor(Color.WHITE);
-		balanceOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
-		queryComponent = balanceOrderQueryComponent;
-		pagination = new Pagination();
-		searchCriteria = new SearchCriteria();
-		queryComponent.queryResult(pagination, searchCriteria);
-	}
+//	@Click(R.id.buttonBalanceOrder)
+//	void QueryBalanceOrderClick() {
+//		foodOrderButton.setBackgroundColor(Color.WHITE);
+//		expensesOrderButton.setBackgroundColor(Color.WHITE);
+//		collectionOrderButton.setBackgroundColor(Color.WHITE);
+//		balanceOrderButton.setBackgroundColor(Color.rgb(209, 91, 41));
+//		queryComponent = balanceOrderQueryComponent;
+//		pagination = new Pagination();
+//		searchCriteria = new SearchCriteria();
+//		queryComponent.queryResult(pagination, searchCriteria);
+//	}
 
 }

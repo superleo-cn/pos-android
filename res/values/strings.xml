@@ -23,8 +23,9 @@
 	<string name="err_price">Wrong Price</string>
 	<string name="message_ok">OK</string>
 	<string name="message_cancel">Cancel</string>
-	<string name="message_cash">CASH</string>
+	<string name="message_cash">Checkout</string>
 	<string name="message_card">CARD</string>
+	<string name="message_print_list">Print List</string>
 	<string name="login_name">Username：</string>
 	<string name="login_password">Password：</string>
 	<string name="dail_detail">Expenses</string>

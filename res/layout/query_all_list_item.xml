@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="0.000075dip"
+            android:layout_margin="0.0001dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
             android:singleLine="false"
@@ -81,6 +81,7 @@
             android:textColor="#000000"
             android:textSize="18sp" />
 
+        <!-- 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -91,6 +92,18 @@
             android:text="foc"
             android:textColor="#000000"
             android:textSize="18sp" />
+         
+      	 <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="false"
+            android:text="total_package"
+            android:textColor="#000000"
+            android:textSize="18sp" />   
+      	-->
 
         <TextView
             android:layout_width="fill_parent"
@@ -100,17 +113,6 @@
             android:background="#FFFFFF"
             android:singleLine="false"
             android:text="discount"
-            android:textColor="#000000"
-            android:textSize="18sp" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="0.000075dip"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:singleLine="false"
-            android:text="total_package"
             android:textColor="#000000"
             android:textSize="18sp" />
 
@@ -148,7 +150,7 @@
             android:id="@+id/text_order_id"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="0.000075dip"
+            android:layout_margin="0.0001dip"
             android:layout_weight="1"
             android:background="#FFFFFF"
             android:singleLine="false"
@@ -212,16 +214,7 @@
             android:textColor="#000000"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/text_foc"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="0.000075dip"
-            android:layout_weight="1"
-            android:background="#FFFFFF"
-            android:singleLine="false"
-            android:textColor="#000000"
-            android:textSize="18sp" />
+       
 
         <TextView
             android:id="@+id/text_discount"
@@ -234,6 +227,19 @@
             android:textColor="#000000"
             android:textSize="18sp" />
 
+        <!--  
+        
+       	<TextView
+            android:id="@+id/text_foc"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="0.000075dip"
+            android:layout_weight="1"
+            android:background="#FFFFFF"
+            android:singleLine="false"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+        
         <TextView
             android:id="@+id/text_total_package"
             android:layout_width="fill_parent"
@@ -244,6 +250,7 @@
             android:singleLine="false"
             android:textColor="#000000"
             android:textSize="18sp" />
+       	-->
 
         <TextView
             android:id="@+id/text_status"

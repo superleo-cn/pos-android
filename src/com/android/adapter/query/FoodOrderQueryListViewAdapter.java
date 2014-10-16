@@ -63,9 +63,9 @@ public class FoodOrderQueryListViewAdapter extends BaseAdapter {
 			viewHolder.text_user_id = (TextView) convertView.findViewById(R.id.text_user_id);
 			viewHolder.text_retail_price = (TextView) convertView.findViewById(R.id.text_retail_price);
 			viewHolder.text_quantity = (TextView) convertView.findViewById(R.id.text_quantity);
-			viewHolder.text_foc = (TextView) convertView.findViewById(R.id.text_foc);
+			//viewHolder.text_foc = (TextView) convertView.findViewById(R.id.text_foc);
 			viewHolder.text_discount = (TextView) convertView.findViewById(R.id.text_discount);
-			viewHolder.text_total_package = (TextView) convertView.findViewById(R.id.text_total_package);
+			//viewHolder.text_total_package = (TextView) convertView.findViewById(R.id.text_total_package);
 			viewHolder.text_status = (TextView) convertView.findViewById(R.id.text_status);
 			viewHolder.text_date = (TextView) convertView.findViewById(R.id.text_date);
 			convertView.setTag(viewHolder);
@@ -84,9 +84,9 @@ public class FoodOrderQueryListViewAdapter extends BaseAdapter {
 		viewHolder.text_user_id.setText(food_order.userId);
 		viewHolder.text_retail_price.setText(MyNumberUtils.numToStr(food_order.retailPrice));
 		viewHolder.text_quantity.setText(food_order.quantity);
-		viewHolder.text_foc.setText(food_order.foc);
+		//viewHolder.text_foc.setText(food_order.foc);
 		viewHolder.text_discount.setText(food_order.discount);
-		viewHolder.text_total_package.setText(food_order.totalPackage);
+		//viewHolder.text_total_package.setText(food_order.totalPackage);
 		viewHolder.text_status.setText(food_order.status);
 		viewHolder.text_date.setText(food_order.date);
 		return convertView;
@@ -100,9 +100,9 @@ public class FoodOrderQueryListViewAdapter extends BaseAdapter {
 		TextView text_user_id;
 		TextView text_retail_price;
 		TextView text_quantity;
-		TextView text_foc;
+		//TextView text_foc;
 		TextView text_discount;
-		TextView text_total_package;
+		//TextView text_total_package;
 		TextView text_status;
 		TextView text_date;
 	}

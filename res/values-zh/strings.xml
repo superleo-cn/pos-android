@@ -24,8 +24,9 @@
     <string name="err_price">请输入正确金额</string>
     <string name="message_ok">确定</string>
     <string name="message_cancel">取消</string>
-    <string name="message_cash">现金</string>
+    <string name="message_cash">结账</string>
     <string name="message_card">信用卡</string>
+    <string name="message_print_list">下单</string>
     <string name="login_name">用户名：</string>
     <string name="login_password">密\u3000码：</string>
     <string name="dail_detail">支付款项</string>

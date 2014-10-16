@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_background" >
-    <!--  android:background="#E6E6E6"  -->
 
+    <!-- android:background="#E6E6E6" -->
     <include layout="@layout/menu" />
 
     <RelativeLayout
@@ -21,30 +21,34 @@
             android:layout_height="fill_parent"
             android:weightSum="5" >
 
-            <ScrollView 
+            <ScrollView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="2" >
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
-		<LinearLayout
-		    android:id="@+id/layout_left"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"/>
-                <GridView
-                    android:id="@+id/food_list"
+
+                <RelativeLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:descendantFocusability="blocksDescendants"
-                    android:horizontalSpacing="5dp"
-                    android:numColumns="4"
-                    android:visibility="gone"
-                    android:verticalSpacing="10dp" >
-                </GridView>
-            </RelativeLayout>
-</ScrollView>
+                    android:layout_height="fill_parent" >
+
+                    <LinearLayout
+                        android:id="@+id/layout_left"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical" />
+
+                    <GridView
+                        android:id="@+id/food_list"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:descendantFocusability="blocksDescendants"
+                        android:horizontalSpacing="5dp"
+                        android:numColumns="4"
+                        android:verticalSpacing="10dp"
+                        android:visibility="gone" >
+                    </GridView>
+                </RelativeLayout>
+            </ScrollView>
+
             <RelativeLayout
                 android:id="@+id/layout_right"
                 android:layout_width="fill_parent"
@@ -72,7 +76,7 @@
                             android:layout_marginBottom="20dip"
                             android:layout_marginLeft="20dip"
                             android:layout_marginRight="20dip"
-                            android:layout_marginTop="16dip"                       
+                            android:layout_marginTop="16dip"
                             android:cacheColorHint="#FFFFFF"
                             android:divider="#FFFFFF"
                             android:fadingEdge="none"
@@ -80,18 +84,19 @@
                             android:transcriptMode="alwaysScroll" >
                         </ListView>
                     </RelativeLayout>
-                    <!-- #252932  -->
+                    <!-- #252932 -->
 
                     <ScrollView
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:layout_marginTop="5dip"
-                        android:layout_weight="1">
-                         
-						<!-- android:background="#001233" -->
+                        android:layout_weight="1" >
+
+                        <!-- android:background="#001233" -->
+
                         <RelativeLayout
                             android:layout_width="fill_parent"
-                            android:layout_height="fill_parent" 
+                            android:layout_height="fill_parent"
                             android:background="@drawable/cart" >
 
                             <!-- android:background="@drawable/result_background" -->
@@ -100,19 +105,17 @@
                                 android:id="@+id/layout_tp"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dip"
                                 android:layout_marginLeft="10dip"
                                 android:layout_marginRight="10dip"
+                                android:layout_marginTop="5dip"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
                                 android:paddingLeft="5dip"
                                 android:paddingRight="5dip"
-                                android:orientation="horizontal"
-                                android:gravity="center_vertical"
                                 android:weightSum="3" >
 
-                                <!-- 
-                                android:background="#B8BEBF"
-                                
-                                 -->
+<!--                                 android:background="#B8BEBF" -->
+
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -179,24 +182,22 @@
                                         android:textStyle="bold" />
                                 </LinearLayout>
                             </LinearLayout>
-                            
-                           
-                            
+
                             <LinearLayout
                                 android:id="@+id/layout_mid"
                                 android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"                           
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/layout_tp"
                                 android:layout_marginLeft="10dip"
                                 android:layout_marginRight="10dip"
                                 android:layout_marginTop="5dip"
-                                android:layout_below="@+id/layout_tp"
                                 android:orientation="horizontal" >
-                                <!--                                 
+
+                                <!--
                                 android:layout_marginLeft="10dip"
-                                android:layout_marginRight="10dip"
+                                android:layout_marginRight="10dip"                                -->
                                 
-                                 -->
-                                <!--  
+                                <!-- 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_take_package"
                                     android:layout_width="fill_parent"
@@ -227,6 +228,7 @@
                                         android:textStyle="bold" />
                                 </RelativeLayout>
  
+                               
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_foc"
                                     android:layout_width="fill_parent"
@@ -256,48 +258,43 @@
                                         android:textColor="#CD6715"
                                         android:textSize="24sp"
                                         android:textStyle="bold" />
-                                </RelativeLayout>
-                                --> 
-                      
-                              	<RelativeLayout
-                                    android:id="@+id/r_lay_id_bar_code"                                
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:id="@+id/r_lay_id_bar_code"
                                     android:layout_width="0dip"
                                     android:layout_height="fill_parent"
                                     android:layout_weight="1"
                                     android:orientation="horizontal" >
-                                     
-                                    
+
                                     <EditText
-				                        android:id="@+id/bar_code_text"
-				                  		android:layout_width="220dip"
+                                        android:id="@+id/bar_code_text"
+                                        android:layout_width="220dip"
                                         android:layout_height="fill_parent"
                                         android:layout_centerVertical="true"
-                                        android:layout_marginLeft="5dip"				                     
-				                        android:background="@drawable/edit_bg"				        
-				                        android:inputType="text"
-				                         />
-                                 	
-                                   	<Button
+                                        android:layout_marginLeft="5dip"
+                                        android:background="@drawable/edit_bg"
+                                        android:inputType="text" />
+
+                                    <Button
                                         android:id="@+id/bar_code_btn"
                                         android:layout_width="110dip"
                                         android:layout_height="fill_parent"
-                                        android:layout_marginLeft="5dip"                 
+                                        android:layout_marginLeft="5dip"
                                         android:layout_marginTop="3dip"
                                         android:layout_toRightOf="@+id/bar_code_text"
-                                        android:text="@string/scan"                                       
+                                        android:background="@drawable/tong_btu_bg"
+                                        android:text="@string/scan"
                                         android:textColor="#FFFFFF"
-                                        android:textSize="16sp" 
-                                        android:textStyle="bold"
-                                        android:background="@drawable/tong_btu_bg"   
-                                         />
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
                                 </RelativeLayout>
-                          
+								-->
+                                
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_discount"
                                     android:layout_width="150dip"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dip"                                
-        
+                                    android:layout_marginLeft="10dip"
                                     android:orientation="horizontal" >
 
                                     <ImageView
@@ -326,11 +323,13 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
                                 android:layout_below="@+id/layout_mid"
-                             
                                 android:layout_marginTop="5dip" >
-<!--    android:layout_marginLeft="7dip"
-                                android:layout_marginRight="7dip"
- -->
+
+                                <!--
+        android:layout_marginLeft="7dip"
+                                android:layout_marginRight="7dip"
+                                -->
+
                                 <LinearLayout
                                     android:layout_width="fill_parent"
                                     android:layout_height="fill_parent"
@@ -341,8 +340,8 @@
                                         android:id="@+id/digit_btn"
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
+                                        android:layout_marginLeft="5dip"
                                         android:layout_weight="0.98"
-                                        android:layout_marginLeft="5dip"    
                                         android:horizontalSpacing="5dp"
                                         android:numColumns="3"
                                         android:stretchMode="columnWidth"
@@ -351,40 +350,41 @@
                                     <LinearLayout
                                         android:layout_width="fill_parent"
                                         android:layout_height="fill_parent"
-                                       	android:layout_marginTop="5dip"
-                                        android:layout_marginRight="15dip"
-                                        android:layout_marginLeft="3dip"
                                         android:layout_marginBottom="5dip"
+                                        android:layout_marginLeft="3dip"
+                                        android:layout_marginRight="15dip"
+                                        android:layout_marginTop="5dip"
                                         android:layout_weight="2"
                                         android:orientation="vertical" >
 
-                                        
                                         <Button
-	                                        android:id="@+id/clear_btn"
-	                                        android:layout_width="fill_parent"
-	                                        android:layout_height="fill_parent"	                                                                  
-	                                        android:layout_weight="1"
-	                                        android:background="@drawable/larger_btu_bg"
-	                                        android:gravity="center"
-	                                        android:text="@string/message_card"
-	                                        android:textColor="#FFFFFF"
-	                                        android:textSize="30sp" 
-	                                        android:textStyle="bold"/>
+                                            android:id="@+id/clear_btn"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/larger_btu_bg"
+                                            android:gravity="center"
+                                            android:text="@string/message_card"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="30sp"
+                                            android:textStyle="bold" />
 
                                         <Button
                                             android:id="@+id/ok_btn"
                                             android:layout_width="fill_parent"
                                             android:layout_height="fill_parent"
-                                            android:layout_weight="1"
                                             android:layout_marginTop="2dip"
+                                            android:layout_weight="1"
                                             android:background="@drawable/larger_btu_bg"
                                             android:gravity="center"
                                             android:text="@string/message_cash"
                                             android:textColor="#ffffff"
                                             android:textSize="30sp"
                                             android:textStyle="bold" />
-                                        <!--                                             android:layout_marginLeft="2dip"
-                                            android:layout_marginRight="8dip" -->
+                                        <!--
+                                            android:layout_marginLeft="2dip"
+                                            android:layout_marginRight="8dip"
+                                        -->
                                     </LinearLayout>
                                 </LinearLayout>
                             </RelativeLayout>

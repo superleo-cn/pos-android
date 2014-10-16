@@ -1,12 +1,14 @@
 package com.android.common;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.commons.lang.StringUtils;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
+import com.RT_Printer.WIFI.WifiPrintDriver;
 import com.android.component.SharedPreferencesComponent_;
 import com.googlecode.androidannotations.annotations.AfterInject;
 import com.googlecode.androidannotations.annotations.Background;
@@ -14,7 +16,6 @@ import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import com.googlecode.androidannotations.api.Scope;
-import com.zj.wfsdk.WifiCommunication;
 
 @EBean(scope = Scope.Singleton)
 public class AndroidPrinter {
@@ -25,27 +26,12 @@ public class AndroidPrinter {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
-	WifiCommunication wfComm = null;
 	int connFlag = 0;
-	RevMsgThread revThred = null;
-	CheckPrintThread cheThread = null;
-	// checkPrintThread cheThread = null;
-	private static final int WFPRINTER_REVMSG = 0x06;
-
-	// print msg
-	private static final String message1 = "测试数据。。。。\n" + "1/八宝 酿豆腐\t\t\t\tQuty:1 \n" + "2/特制酿豆腐\t\t\t\tQuty:5 \n"
-			+ "3/珍珠米\t\t\t\tQuty:10 \n" + "4/虾棒墨鱼汤\t\t\t\tQuty:20 \n\n";
-	private static final String message2 = "  You have sucessfully created communications between your device and our WIFI printer.\n\n"
-			+ "  Shenzhen Zijiang Electronics Co..Ltd is a high-tech enterprise which specializes"
-			+ " in R&D,manufacturing,marketing of thermal printers and barcode scanners.\n\n"
-			+ "  Please go to our website and see details about our company :\n" + "     http://www.zjiang.com\n\n";
-	private static final String message3 = "---\n";
 
 	@AfterInject
 	public void initPrinter() {
-		if (wfComm == null) {
+		if (connFlag == 0) {
 			try {
-				wfComm = new WifiCommunication(mHandler);
 				connect();
 			} catch (Exception e) {
 				Log.e("[AndroidPrinter]", "打印机初始化错误", e);
@@ -78,13 +64,20 @@ public class AndroidPrinter {
 			if (connFlag == 0) {
 				try {
 					Log.d("[AndroidPrinter]", "连接打印机");
-					wfComm.initSocket(sharedPrefs.printIp().get(), 9100);
+					if (!WifiPrintDriver.WIFISocket(sharedPrefs.printIp().get(), 9100)) {
+						WifiPrintDriver.Close();
+						connFlag = 0;
+						return;
+					}
+					if (WifiPrintDriver.IsNoConnection()) {
+						connFlag = 0;
+						return;
+					}
 					connFlag = 1;
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
+				} catch (Exception e) {
 					Log.e("[AndroidPrinter]", "打印机中断", e);
 				}
-
+				connFlag = 0;
 			}
 		} catch (Exception ex) {
 			Log.e("[AndroidPrinter]", "打印机连接失败", ex);
@@ -94,11 +87,11 @@ public class AndroidPrinter {
 	// disconnect to printer
 	public void disconnect() {
 		try {
-			connFlag = 0;
-			wfComm.close();
+			WifiPrintDriver.Close();
 		} catch (Exception ex) {
 			Log.e("[AndroidPrinter]", "打印机关闭失败", ex);
 		}
+		connFlag = 0;
 	}
 
 	@Background
@@ -108,6 +101,14 @@ public class AndroidPrinter {
 	}
 
 	public void startPrint(String message, String type) {
+		InputStream in = null;
+		try {
+			in = context.getResources().getAssets().open("Weebo.jpg");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		WifiPrintDriver.printImage();
 		if (StringUtils.equals("CASH", type)) {
 			printWithDrawer(message);
 		} else {
@@ -116,153 +117,29 @@ public class AndroidPrinter {
 	}
 
 	public void printWithDrawer(String message) {
-		if (message.length() > 0) {
-			// drawer 先弹出抽屉
-			// byte[] tail = new byte[3];
-			// tail[0] = 0x0A;
-			// tail[1] = 0x0D;
-			// wfComm.sndByte(tail);
-
-			byte[] bytecmd = new byte[5];
-			bytecmd[0] = 0x1B;
-			bytecmd[1] = 0x70;
-			bytecmd[2] = 0x00;
-			bytecmd[3] = 0x40;
-			bytecmd[4] = 0x50;
-			wfComm.sndByte(bytecmd);
-
-			// set double height and double width mode
-			byte[] tcmd = new byte[3];
-			tcmd[0] = 0x1b;
-			tcmd[1] = 0x21;
-			tcmd[2] = 0x10;
-			wfComm.sndByte(tcmd);
-			wfComm.sendMsg(message, "gbk");
-
-			// cut paper
-			byte[] bits = new byte[4];
-			bits[0] = 0x1D;
-			bits[1] = 0x56;
-			bits[2] = 0x42;
-			bits[3] = 90;
-			wfComm.sndByte(bits);
+		if (message != null && message.length() > 0) {
+			WifiPrintDriver.Begin();
+			WifiPrintDriver.ImportData(message);
+			WifiPrintDriver.ImportData("\r");
+			WifiPrintDriver.LF();
+			WifiPrintDriver.LF();
+			WifiPrintDriver.excute();
+			WifiPrintDriver.ClearData();
+			WifiPrintDriver.OpenDrawer((byte) 0X00, (byte) 0X00, (byte) 0X10);
+			WifiPrintDriver.excute();
+			WifiPrintDriver.ClearData();
 		}
 	}
 
 	public void printOnly(String message) {
-		if (message.length() > 0) {
-			byte[] tcmd = new byte[3];
-			tcmd[0] = 0x10;
-			tcmd[1] = 0x04;
-			tcmd[2] = 0x00; // ºÏ≤‚ «∑Ò”–÷Ω÷∏¡Ó
-			wfComm.sndByte(tcmd);
-			wfComm.sendMsg(message, "gbk");
-
-			byte[] tail = new byte[3];
-			tail[0] = 0x0A;
-			tail[1] = 0x0D;
-			wfComm.sndByte(tail);
-		}
-	}
-
-	private final Handler mHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case WifiCommunication.WFPRINTER_CONNECTED:
-				connFlag = 1;
-				// Toast.makeText(context,
-				// "Connect the WIFI-printer successful",
-				// Toast.LENGTH_SHORT).show();
-				revThred = new RevMsgThread();
-				revThred.start();
-				cheThread = new CheckPrintThread();
-				cheThread.start();
-				break;
-			case WifiCommunication.WFPRINTER_DISCONNECTED:
-				connFlag = 0;
-				// Toast.makeText(context,
-				// "Disconnect the WIFI-printer successful",
-				// Toast.LENGTH_SHORT).show();
-				if (wfComm != null && revThred != null && cheThread != null) {
-					revThred.interrupt();
-					cheThread.interrupt();
-				}
-				reconnect();
-				break;
-			case WifiCommunication.SEND_FAILED:
-				// Toast.makeText(context, "Send Data Failed,please reconnect",
-				// Toast.LENGTH_SHORT).show();
-				reconnect();
-				break;
-			case WifiCommunication.WFPRINTER_CONNECTEDERR:
-				connFlag = 0;
-				// Toast.makeText(context, "Connect the WIFI printer get error",
-				// Toast.LENGTH_SHORT).show();
-				if (wfComm != null && revThred != null) {
-					revThred.interrupt();
-				}
-				reconnect();
-				break;
-			case WifiCommunication.CONNECTION_LOST:
-				connFlag = 0;
-				// Toast.makeText(context, "Connection lost,please reconnect",
-				// Toast.LENGTH_SHORT).show();
-				if (wfComm != null && revThred != null) {
-					revThred.interrupt();
-					// cheThread.interrupt();
-				}
-				reconnect();
-				break;
-			case WFPRINTER_REVMSG:
-				byte revData = (byte) Integer.parseInt(msg.obj.toString());
-				if (((revData >> 6) & 0x01) == 0x01)
-					// Toast.makeText(getApplicationContext(),
-					// "The printer have no paper", Toast.LENGTH_SHORT)
-					// .show();
-					break;
-			default:
-				break;
-			}
-		}
-	};
-
-	class CheckPrintThread extends Thread {
-		@Override
-		public void run() {
-			byte[] tcmd = new byte[3];
-			tcmd[0] = 0x10;
-			tcmd[1] = 0x04;
-			tcmd[2] = 0x04;
-			try {
-				while (true) {
-					wfComm.sndByte(tcmd);
-					Thread.sleep(10000);
-				}
-			} catch (InterruptedException e) {
-				Log.e("[AndroidPrinter]", "打印机中断", e);
-			}
-		}
-	}
-
-	class RevMsgThread extends Thread {
-		@Override
-		public void run() {
-			try {
-				Message msg = new Message();
-				int revData;
-				while (true) {
-					revData = wfComm.revByte();
-					if (revData != -1) {
-						msg = mHandler.obtainMessage(WFPRINTER_REVMSG);
-						msg.obj = revData;
-						mHandler.sendMessage(msg);
-					}
-					Thread.sleep(5000);
-				}
-			} catch (InterruptedException e) {
-				Log.e("[AndroidPrinter]", "打印机中断", e);
-			}
+		if (message != null && message.length() > 0) {
+			WifiPrintDriver.Begin();
+			WifiPrintDriver.ImportData(message);
+			WifiPrintDriver.ImportData("\r");
+			WifiPrintDriver.LF();
+			WifiPrintDriver.LF();
+			WifiPrintDriver.excute();
+			WifiPrintDriver.ClearData();
 		}
 	}
 

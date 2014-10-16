@@ -62,8 +62,8 @@ public class MenuComponent {
 	@ViewById(R.id.shop_name)
 	TextView shop_name; // 顶部菜单栏显示的店的名称
 
-	@ViewById(R.id.textDailyPay)
-	public TextView textDailyPay;
+//	@ViewById(R.id.textDailyPay)
+//	public TextView textDailyPay;
 
 	@Bean
 	StringResComponent stringResComponent;
@@ -107,7 +107,7 @@ public class MenuComponent {
 			popupWindow.setOutsideTouchable(true);
 			TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);
 			TextView popu_exit = (TextView) view.findViewById(R.id.popu_exit);
-			TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
+			//TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 			popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 			TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
 			if (myApp.getUsername().equalsIgnoreCase(Constants.ROLE_SUPERADMIN)) {
@@ -144,14 +144,14 @@ public class MenuComponent {
 				}
 			});
 
-			popu_daily.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					dismiss();
-					new SwitchActivity(DailyPayActivity_.class).execute();
-				}
-			});
+//			popu_daily.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View arg0) {
+//					dismiss();
+//					new SwitchActivity(DailyPayActivity_.class).execute();
+//				}
+//			});
 			popu_exit.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					dismiss();
@@ -178,17 +178,17 @@ public class MenuComponent {
 	}
 
 	public void textDaily() {
-		textDailyPay.setText(stringResComponent.diancaiName);
+		//textDailyPay.setText(stringResComponent.diancaiName);
 	}
 
-	@Click(R.id.textDailyPay)
-	void textDailyPayOnClick() {
-		if (textDailyPay.getText().toString().equals(stringResComponent.diancaiName)) {
-			new SwitchActivity(MainActivity_.class).execute();
-		} else {
-			new SwitchActivity(DailyPayActivity_.class).execute();
-		}
-	}
+//	@Click(R.id.textDailyPay)
+//	void textDailyPayOnClick() {
+//		if (textDailyPay.getText().toString().equals(stringResComponent.diancaiName)) {
+//			new SwitchActivity(MainActivity_.class).execute();
+//		} else {
+//			new SwitchActivity(DailyPayActivity_.class).execute();
+//		}
+//	}
 
 	private void dismiss() {
 		if (popupWindow.isShowing()) {
@@ -203,14 +203,15 @@ public class MenuComponent {
 	 * @return
 	 */
 	private View getHiddenView(View view) {
-		TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
+		//TextView popu_daily = (TextView) view.findViewById(R.id.popu_daily);
 		TextView popu_diancai = (TextView) view.findViewById(R.id.popu_diancai);
 		TextView popu_setting = (TextView) view.findViewById(R.id.popu_setting);
 		TextView popu_QueryAllDB = (TextView) view.findViewById(R.id.popu_QueryAllDB);
 		if (activity instanceof MainActivity_) {
 			return popu_diancai;
 		} else if (activity instanceof DailyPayActivity_) {
-			return popu_daily;
+			//return popu_daily;
+			return popu_diancai;
 		} else if (activity instanceof SettingActivity_) {
 			return popu_setting;
 		} else {
