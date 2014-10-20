@@ -74,8 +74,10 @@ public class AndroidPrinter {
 		WifiPrintDriver.Begin();
 
 		if (StringUtils.equals(type, Constants.PLACE_ORDER)) {
+			printOrderDate();
 			printWithDrawer(message, false);
 			feedAndCutPaper();
+			printOrderDate();
 			printWithDrawer(message, false);
 			feedAndCutPaper();
 		} else {
@@ -153,6 +155,16 @@ public class AndroidPrinter {
 		setNormal();
 		printContent("时间(Time): " + time);
 		printSpace();
+		printLine();
+		printSpace();
+	}
+	
+	private void printOrderDate() {
+		String time = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+		setNormal();
+		printContent("下单时间(Order Time): " + time);
+		printSpace();
+		setNormal();
 		printLine();
 		printSpace();
 	}
