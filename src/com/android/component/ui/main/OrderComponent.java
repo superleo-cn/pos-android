@@ -1,7 +1,6 @@
 package com.android.component.ui.main;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +11,9 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -28,10 +25,8 @@ import com.android.adapter.SelectListAdapter;
 import com.android.bean.SelectFoodBean;
 import com.android.common.AndroidPrinter;
 import com.android.common.Constants;
-import com.android.common.DateUtils;
 import com.android.common.MyApp;
 import com.android.common.MyNumberUtils;
-import com.android.common.MyTextUtils;
 import com.android.component.KeyboardComponent;
 import com.android.component.LockComponent;
 import com.android.component.SharedPreferencesComponent_;
@@ -70,8 +65,8 @@ public class OrderComponent {
 	MyApp myApp; // 注入 MyApp
 
 	// 扫描
-//	@ViewById(R.id.bar_code_text)
-//	TextView barCodeText;
+	// @ViewById(R.id.bar_code_text)
+	// TextView barCodeText;
 
 	@ViewById(R.id.total_price)
 	TextView totalPrice; // 总价格
@@ -82,11 +77,11 @@ public class OrderComponent {
 	@ViewById(R.id.surplus)
 	TextView surplus; // 找回
 
-//	@ViewById(R.id.take_package)
-//	ImageView take_package; // 打包选项
+	// @ViewById(R.id.take_package)
+	// ImageView take_package; // 打包选项
 
-	//@ViewById(R.id.foc)
-	//ImageView foc; // FOC
+	// @ViewById(R.id.foc)
+	// ImageView foc; // FOC
 
 	@ViewById(R.id.discount)
 	ImageView discount; // 打折选项
@@ -153,7 +148,7 @@ public class OrderComponent {
 		String type = sharedPrefs.language().get();
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
-		this.selectAdapter = new SelectListAdapter(context, selectDataList,type);
+		this.selectAdapter = new SelectListAdapter(context, selectDataList, type);
 		selectAdapter.setComponent(OrderComponent.this);
 		this.selectList.setAdapter(selectAdapter);
 		this.selectList.setOnTouchListener(new OnTouchListener() {
@@ -181,21 +176,23 @@ public class OrderComponent {
 		save_discount_price = MyNumberUtils.strToNum(sharedPrefs.discount().get());
 		package_money = MyNumberUtils.strToNum(sharedPrefs.packageCost().get());
 
-//		barCodeText.setOnKeyListener(new OnKeyListener() {
-//			public boolean onKey(View v, int keyCode, KeyEvent event) {
-//				// If the event is a key-down event on the "enter" button
-//				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//					sann();
-//					return false;
-//				} else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_DEL) {
-//					String str = barCodeText.getText().toString();
-//					if (StringUtils.length(str) > 0) {
-//						barCodeText.setText(str.substring(0, str.length() - 1));
-//					}
-//				}
-//				return true;
-//			}
-//		});
+		// barCodeText.setOnKeyListener(new OnKeyListener() {
+		// public boolean onKey(View v, int keyCode, KeyEvent event) {
+		// // If the event is a key-down event on the "enter" button
+		// if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode ==
+		// KeyEvent.KEYCODE_ENTER)) {
+		// sann();
+		// return false;
+		// } else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode ==
+		// KeyEvent.KEYCODE_DEL) {
+		// String str = barCodeText.getText().toString();
+		// if (StringUtils.length(str) > 0) {
+		// barCodeText.setText(str.substring(0, str.length() - 1));
+		// }
+		// }
+		// return true;
+		// }
+		// });
 
 		// barCodeText.setFocusableInTouchMode(true);
 		// barCodeText.setFocusable(true);
@@ -315,30 +312,30 @@ public class OrderComponent {
 		}
 	}
 
-//	@Click(R.id.bar_code_btn)
-//	public void sann() {
-//		List<FoodR> foodList = foodComponent.getFoodDataAllList();
-//		String sannId = StringUtils.trim(barCodeText.getText().toString());
-//		if (StringUtils.isNotEmpty(sannId)) {
-//			for (FoodR food : foodList) {
-//				if (StringUtils.equals(food.barCode, sannId)) {
-//					order(food);
-//				}
-//			}
-//		}
-//		barCodeText.setText("");
-//	}
+	// @Click(R.id.bar_code_btn)
+	// public void sann() {
+	// List<FoodR> foodList = foodComponent.getFoodDataAllList();
+	// String sannId = StringUtils.trim(barCodeText.getText().toString());
+	// if (StringUtils.isNotEmpty(sannId)) {
+	// for (FoodR food : foodList) {
+	// if (StringUtils.equals(food.barCode, sannId)) {
+	// order(food);
+	// }
+	// }
+	// }
+	// barCodeText.setText("");
+	// }
 
 	/**
 	 * 打包操作
 	 */
-//	 @Click(R.id.r_lay_id_take_package)
-//	 public void takePackage() {
-//		 if (CollectionUtils.isNotEmpty(selectDataList)) {
-//			 setImageStatus(take_package, foc);
-//			 doCalculation();
-//		 }
-//	 }
+	// @Click(R.id.r_lay_id_take_package)
+	// public void takePackage() {
+	// if (CollectionUtils.isNotEmpty(selectDataList)) {
+	// setImageStatus(take_package, foc);
+	// doCalculation();
+	// }
+	// }
 
 	/**
 	 * 打折等操作
@@ -354,13 +351,13 @@ public class OrderComponent {
 	/**
 	 * 免费等操作
 	 */
-//	 @Click(R.id.r_lay_id_foc)
-//	 public void foc() {
-//		 if (CollectionUtils.isNotEmpty(selectDataList)) {
-//			 setImageStatus(foc, discount, take_package);
-//			 doCalculation();
-//		 }
-//	 }
+	// @Click(R.id.r_lay_id_foc)
+	// public void foc() {
+	// if (CollectionUtils.isNotEmpty(selectDataList)) {
+	// setImageStatus(foc, discount, take_package);
+	// doCalculation();
+	// }
+	// }
 
 	/**
 	 * 
@@ -426,24 +423,13 @@ public class OrderComponent {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
 			sb = new StringBuffer();
-			String time = DateUtils.dateToStr(new Date(), DateUtils.DD_MM_YYYY_HH_MM);
-			sb.append(time + "\n\n");
-			for (int i = 0; i < selectDataList.size(); i++) {
-				SelectFoodBean bean = selectDataList.get(i);
-				if (StringUtils.isEmpty(bean.getFood_id())) {
-					sb.append(bean.getFood_name() + "\n\n");
-				} else {
-					String foodName = bean.getFood_dayin_code() + " / " + bean.getFood_name();
-					if(bean.getAttributesContext() != null && !bean.getAttributesContext().equals("")
-							&& !bean.getAttributesContext().equals("null")){
-						foodName += "(" + bean.getAttributesContext()+")";
-					}
-					foodName = MyTextUtils.stringFormat(foodName);
-					String qty = "X" + bean.getFood_num() + "\n\n";
-					if (is_takePackage) {
-						foodName += stringResComponent.foodPackage;
-					}
-					sb.append(foodName + qty);
+			sb.append("名称(Item)\t数量(Qty)\t价格(Amount)\n");
+			if (selectDataList != null) {
+				for (SelectFoodBean bean : selectDataList) {
+					String foodName = bean.getFood_name();
+					String price = "$" + bean.getFood_price();
+					String qty = bean.getFood_num();
+					sb.append(foodName + "\t\tX" + qty + "\t\t" + price + "\n");
 				}
 			}
 			Log.i("[OrderComponent] -> [Result]", sb.toString());
@@ -466,7 +452,8 @@ public class OrderComponent {
 				@Override
 				public void onClick(View v) {
 					mydialog.dismiss();
-					androidPrinter.print(sb.toString(), orderType);
+					androidPrinter.print(sb.toString(), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+							.toString(), orderType);
 					// 保存数据------------------------------
 					storeOrders(orderType);
 					// 同步开始------------------------------
@@ -542,11 +529,11 @@ public class OrderComponent {
 		surplus.setText(Constants.DEFAULT_PRICE_FLOAT);
 		sbuff.delete(0, sbuff.length());
 		is_takePackage = false;
-//		take_package.setImageResource(R.drawable.package_not_select);
+		// take_package.setImageResource(R.drawable.package_not_select);
 		is_discount = false;
 		discount.setImageResource(R.drawable.package_not_select);
 		is_foc = false;
-		//foc.setImageResource(R.drawable.package_not_select);
+		// foc.setImageResource(R.drawable.package_not_select);
 	}
 
 	// 保存数据
@@ -621,7 +608,7 @@ public class OrderComponent {
 	}
 
 	public void dissmissKeyboard() {
-		//keyboardComponent.dismissKeyboard(barCodeText);
+		// keyboardComponent.dismissKeyboard(barCodeText);
 	}
 
 	public List<SelectFoodBean> getSelectDataList() {

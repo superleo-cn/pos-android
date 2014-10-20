@@ -55,7 +55,6 @@ public class PrintSetComponent {
 	public void setPrintIP() {
 		String ip = printOneEdit.getText().toString();
 		myPrefs.printIp().put(ip);
-		androidPrinter.reconnect();
 		dissmissKeyboard();
 		toastComponent.show(stringResComponent.toastSettingSucc);
 	}

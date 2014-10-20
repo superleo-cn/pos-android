@@ -1,7 +1,6 @@
 package com.android.common;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -11,7 +10,6 @@ import android.util.Log;
 import com.RT_Printer.WIFI.WifiPrintDriver;
 import com.android.component.SharedPreferencesComponent_;
 import com.googlecode.androidannotations.annotations.AfterInject;
-import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
@@ -26,62 +24,41 @@ public class AndroidPrinter {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
-	int connFlag = 0;
-
 	@AfterInject
 	public void initPrinter() {
-		if (connFlag == 0) {
-			try {
-				connect();
-			} catch (Exception e) {
-				Log.e("[AndroidPrinter]", "打印机初始化错误", e);
-			}
-		}
 
 	}
 
-	// start to print
-	public void print(String message, String type) {
-		// connect to printer
-		if (connFlag == 0) {
-			connect();
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				Log.e("[AndroidPrinter]", "打印机中断", e);
+	public void print(String message, String cost, String paid, String remain, String type) {
+		try {
+			Log.d("[AndroidPrinter]", "连接打印机");
+			if (connect()) {
+				startPrint(message, cost, paid, remain, type);
+				disconnect();
+			} else {
+				disconnect();
 			}
-		}
-		// if conenct to WIFI printer
-		if (connFlag == 1) {
-			startPrint(message, type);
+		} catch (Exception e) {
+			Log.e("[AndroidPrinter]", "打印机中断", e);
 		}
 	}
 
 	// connect to printer
-	@Background
-	public void connect() {
+	public boolean connect() {
 		try {
-			if (connFlag == 0) {
-				try {
-					Log.d("[AndroidPrinter]", "连接打印机");
-					if (!WifiPrintDriver.WIFISocket(sharedPrefs.printIp().get(), 9100)) {
-						WifiPrintDriver.Close();
-						connFlag = 0;
-						return;
-					}
-					if (WifiPrintDriver.IsNoConnection()) {
-						connFlag = 0;
-						return;
-					}
-					connFlag = 1;
-				} catch (Exception e) {
-					Log.e("[AndroidPrinter]", "打印机中断", e);
-				}
-				connFlag = 0;
+			Log.d("[AndroidPrinter]", "连接打印机");
+			if (!WifiPrintDriver.WIFISocket(sharedPrefs.printIp().get(), 9100)) {
+				WifiPrintDriver.Close();
+				return false;
 			}
-		} catch (Exception ex) {
-			Log.e("[AndroidPrinter]", "打印机连接失败", ex);
+			if (WifiPrintDriver.IsNoConnection()) {
+				return false;
+			}
+			return true;
+		} catch (Exception e) {
+			Log.e("[AndroidPrinter]", "打印机中断", e);
 		}
+		return false;
 	}
 
 	// disconnect to printer
@@ -91,56 +68,117 @@ public class AndroidPrinter {
 		} catch (Exception ex) {
 			Log.e("[AndroidPrinter]", "打印机关闭失败", ex);
 		}
-		connFlag = 0;
 	}
 
-	@Background
-	public void reconnect() {
-		disconnect();
-		connect();
-	}
-
-	public void startPrint(String message, String type) {
-		InputStream in = null;
-		try {
-			in = context.getResources().getAssets().open("Weebo.jpg");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		WifiPrintDriver.printImage();
+	public void startPrint(String message, String cost, String paid, String remain, String type) {
+		WifiPrintDriver.Begin();
+		printHeader();
+		printTransaction();
 		if (StringUtils.equals("CASH", type)) {
-			printWithDrawer(message);
+			printWithDrawer(message, true);
 		} else {
-			printOnly(message);
+			printWithDrawer(message, false);
+		}
+		printLine();
+		printSpace();
+		printFooter(cost, paid, remain);
+		feedAndCutPaper();
+	}
+
+	public void printWithDrawer(String message, boolean flag) {
+		if (StringUtils.isNotEmpty(message)) {
+			setNormal();
+			printContent(message);
+			if (flag) {
+				WifiPrintDriver.OpenDrawer((byte) 0X00, (byte) 0X00, (byte) 0X10);
+				WifiPrintDriver.excute();
+				WifiPrintDriver.ClearData();
+			}
 		}
 	}
 
-	public void printWithDrawer(String message) {
-		if (message != null && message.length() > 0) {
-			WifiPrintDriver.Begin();
-			WifiPrintDriver.ImportData(message);
-			WifiPrintDriver.ImportData("\r");
-			WifiPrintDriver.LF();
-			WifiPrintDriver.LF();
-			WifiPrintDriver.excute();
-			WifiPrintDriver.ClearData();
-			WifiPrintDriver.OpenDrawer((byte) 0X00, (byte) 0X00, (byte) 0X10);
-			WifiPrintDriver.excute();
-			WifiPrintDriver.ClearData();
-		}
+	private void printHeader() {
+		// InputStream in = null;
+		// try {
+		// in = context.getResources().getAssets().open("Weebo.jpg");
+		// BufferedInputStream bis = new BufferedInputStream(in);
+		// Bitmap bitmap = BitmapFactory.decodeStream(bis);
+		// //
+		// byte[] start = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		// 0x1B, 0x40, 0x1B, 0x33, 0x00 };
+		// WifiPrintDriver.ImportData(start, start.length);
+		// WifiPrintDriver.excute();
+		// WifiPrintDriver.ClearData();
+		// //
+		// byte[] byteImage = Utils.getReadBitMapBytes(bitmap);
+		// WifiPrintDriver.ImportData(byteImage, byteImage.length);
+		// WifiPrintDriver.excute();
+		// WifiPrintDriver.ClearData();
+		//
+		// } catch (IOException ex) {
+		// Log.e("[AndroidPrinter]", "图片打印失败", ex);
+		// }
+
+		setLarge();
+		printContent("账单(Bill)");
+		printSpace();
+		printSpace();
 	}
 
-	public void printOnly(String message) {
-		if (message != null && message.length() > 0) {
-			WifiPrintDriver.Begin();
-			WifiPrintDriver.ImportData(message);
-			WifiPrintDriver.ImportData("\r");
-			WifiPrintDriver.LF();
-			WifiPrintDriver.LF();
-			WifiPrintDriver.excute();
-			WifiPrintDriver.ClearData();
-		}
+	private void printFooter(String cost, String paid, String remain) {
+		setNormal();
+		printContent("\t\t\t总计(Total):\t$" + cost);
+		printSpace();
+		// printContent("付款(payment): " + paid);
+		// printSpace();
+		// printContent("找零(remain): " + remain);
+		// printSpace();
+	}
+
+	private void printTransaction() {
+		String billNo = DateUtils.dateToStr(new Date(), DateUtils.YYYYMMDD_HH_MM_SS);
+		String time = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
+		setNormal();
+		printContent("单号(SN): B" + billNo);
+		printSpace();
+		setNormal();
+		printContent("时间(Time): " + time);
+		printSpace();
+		printLine();
+		printSpace();
+	}
+
+	private void printLine() {
+		printContent("----------------------------------------------");
+	}
+
+	private void printContent(String msg) {
+		WifiPrintDriver.ImportData(msg);
+		WifiPrintDriver.excute();
+		WifiPrintDriver.ClearData();
+	}
+
+	private void printSpace() {
+		WifiPrintDriver.LF();
+		WifiPrintDriver.excute();
+		WifiPrintDriver.ClearData();
+	}
+
+	private void feedAndCutPaper() {
+		WifiPrintDriver.FeedAndCutPaper((byte) 0x20);
+		WifiPrintDriver.excute();
+		WifiPrintDriver.ClearData();
+	}
+
+	private void setNormal() {
+		WifiPrintDriver.SetAlignMode((byte) 0);
+		WifiPrintDriver.SetFontEnlarge((byte) 0x00);
+	}
+
+	private void setLarge() {
+		WifiPrintDriver.SetAlignMode((byte) 1);// 居中对齐
+		WifiPrintDriver.SetLineSpacing((byte) 50);
+		WifiPrintDriver.SetFontEnlarge((byte) 0x11);// 字体放大
 	}
 
 }
