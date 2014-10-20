@@ -72,17 +72,26 @@ public class AndroidPrinter {
 
 	public void startPrint(String message, String cost, String paid, String remain, String type) {
 		WifiPrintDriver.Begin();
-		printHeader();
-		printTransaction();
-		if (StringUtils.equals("CASH", type)) {
-			printWithDrawer(message, true);
-		} else {
+
+		if (StringUtils.equals(type, Constants.PLACE_ORDER)) {
 			printWithDrawer(message, false);
+			feedAndCutPaper();
+			printWithDrawer(message, false);
+			feedAndCutPaper();
+		} else {
+			printHeader();
+			printTransaction();
+			if (StringUtils.equals(type, Constants.PAYTYPE_CASH)) {
+				printWithDrawer(message, true);
+			} else {
+				printWithDrawer(message, false);
+			}
+			printLine();
+			printSpace();
+			printFooter(cost, paid, remain);
+			feedAndCutPaper();
 		}
-		printLine();
-		printSpace();
-		printFooter(cost, paid, remain);
-		feedAndCutPaper();
+
 	}
 
 	public void printWithDrawer(String message, boolean flag) {

@@ -491,8 +491,8 @@ public class OrderComponent {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
 			printList = getPrintList();
-			Log.i("[OrderComponent] -> [Result]", sb.toString());
-			androidPrinter.print(sb.toString(), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+			Log.i("[OrderComponent] -> [Result]", printList.toString());
+			androidPrinter.print(printList.toString(), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 					.toString(), orderType);
 		}
 	}
