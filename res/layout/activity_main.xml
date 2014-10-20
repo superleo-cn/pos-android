@@ -226,9 +226,9 @@
                                         android:textColor="#CD6715"
                                         android:textSize="24sp"
                                         android:textStyle="bold" />
-                                </RelativeLayout>
+                                </RelativeLayout> -->
  
-                               
+                               <!-- 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_foc"
                                     android:layout_width="fill_parent"
@@ -258,7 +258,9 @@
                                         android:textColor="#CD6715"
                                         android:textSize="24sp"
                                         android:textStyle="bold" />
-                                </RelativeLayout>
+                                </RelativeLayout> -->
+                                
+                                <!-- 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_bar_code"
                                     android:layout_width="0dip"
@@ -326,9 +328,7 @@
                                 android:layout_marginTop="5dip" >
 
                                 <!--
-        android:layout_marginLeft="7dip"
-                                android:layout_marginRight="7dip"
-                                -->
+        android:layout_marginLeft="7dip" android:layout_marginRight="7dip" -->
 
                                 <LinearLayout
                                     android:layout_width="fill_parent"
@@ -357,8 +357,20 @@
                                         android:layout_weight="2"
                                         android:orientation="vertical" >
 
+                                         <Button
+                                            android:id="@+id/order_btn"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/larger_btu_bg"
+                                            android:gravity="center"
+                                            android:text="@string/message_order"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="30sp"
+                                            android:textStyle="bold" />
+                                         
                                         <Button
-                                            android:id="@+id/clear_btn"
+                                            android:id="@+id/card_btn"
                                             android:layout_width="fill_parent"
                                             android:layout_height="fill_parent"
                                             android:layout_weight="1"
