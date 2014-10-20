@@ -121,6 +121,7 @@ public final class Constants {
 
 	public static final String PAYTYPE_CASH = "CASH";
 	public static final String PAYTYPE_CARD = "CARD";
+	public static final String PLACE_ORDER = "ORDER";
 
 	/** 最大金额 */
 	public static final String MAX_PRICE = "9999.99";

@@ -25,6 +25,7 @@
 	<string name="message_cancel">Cancel</string>
 	<string name="message_cash">Checkout</string>
 	<string name="message_card">CARD</string>
+	<string name="message_order">ORDER</string>
 	<string name="message_print_list">Print List</string>
 	<string name="login_name">Username：</string>
 	<string name="login_password">Password：</string>
