@@ -432,13 +432,13 @@ public class OrderComponent {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
 			sb = new StringBuffer();
-			sb.append("名称(Item)\t数量(Qty)\t价格(Amount)\n");
+			sb.append("名称(Item)\t\t数量(Qty)\t价格(Amount)\n");
 			if (selectDataList != null) {
 				for (SelectFoodBean bean : selectDataList) {
-					String foodName = bean.getFood_name();
+					String foodName = bean.getFood_name() + "\n";
 					String price = "$" + bean.getFood_price();
 					String qty = bean.getFood_num();
-					sb.append(foodName + "\t\tX" + qty + "\t\t" + price + "\n");
+					sb.append(foodName + "\t\t\tX" + qty + "\t\t" + price + "\n");
 				}
 			}
 			Log.i("[OrderComponent] -> [Result]", sb.toString());
