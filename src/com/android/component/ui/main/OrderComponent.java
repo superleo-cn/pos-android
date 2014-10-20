@@ -494,6 +494,7 @@ public class OrderComponent {
 			Log.i("[OrderComponent] -> [Result]", printList.toString());
 			androidPrinter.print(printList.toString(), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 					.toString(), orderType);
+			clean();
 		}
 	}
 
