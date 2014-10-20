@@ -118,6 +118,7 @@ public class OrderComponent {
 
 	private SelectListAdapter selectAdapter;
 
+	private StringBuffer printList;
 	private StringBuffer sb;
 	// 输入的支付总钱
 	private StringBuffer sbuff;
@@ -412,7 +413,7 @@ public class OrderComponent {
 
 	@Click(R.id.order_btn)
 	public void placeOrderBtn() {
-		doPay(Constants.PLACE_ORDER);
+		doOrder(Constants.PLACE_ORDER);
 	}
 	
 	@Click(R.id.card_btn)
@@ -427,20 +428,26 @@ public class OrderComponent {
 	public void ok() {
 		doPay(Constants.PAYTYPE_CASH);
 	}
-
+	
+	
+	private StringBuffer getPrintList(){
+		StringBuffer sb = new StringBuffer();
+		sb.append("名称(Item)\t数量(Qty)\t价格(Amount)\n");
+		if (selectDataList != null) {
+			for (SelectFoodBean bean : selectDataList) {
+				String foodName = bean.getFood_name() + "\n";
+				String price = "$" + bean.getFood_price();
+				String qty = bean.getFood_num();
+				sb.append(foodName + "\t\t\tX" + qty + "\t\t" + price + "\n");
+			}
+		}
+		return sb;
+	}
+	
 	private void doPay(final String orderType) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
-			sb = new StringBuffer();
-			sb.append("名称(Item)\t\t数量(Qty)\t价格(Amount)\n");
-			if (selectDataList != null) {
-				for (SelectFoodBean bean : selectDataList) {
-					String foodName = bean.getFood_name() + "\n";
-					String price = "$" + bean.getFood_price();
-					String qty = bean.getFood_num();
-					sb.append(foodName + "\t\t\tX" + qty + "\t\t" + price + "\n");
-				}
-			}
+			sb = getPrintList();
 			Log.i("[OrderComponent] -> [Result]", sb.toString());
 			// connect to printer
 			// androidPrinter.connect();
@@ -477,6 +484,16 @@ public class OrderComponent {
 					mydialog.dismiss();
 				}
 			});
+		}
+	}
+
+	private void doOrder(final String orderType) {
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			// 先打印数据，不耽误正常使用----------------------------
+			printList = getPrintList();
+			Log.i("[OrderComponent] -> [Result]", sb.toString());
+			androidPrinter.print(sb.toString(), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+					.toString(), orderType);
 		}
 	}
 
