@@ -405,8 +405,17 @@ public class OrderComponent {
 	void calulatorPanel(int position) {
 		calculatorComponent.calculation(sbuff, position);
 	}
+	
+	/*
+	 * Button used for place an order
+	 */
 
-	@Click(R.id.clear_btn)
+	@Click(R.id.order_btn)
+	public void placeOrderBtn() {
+		doPay(Constants.PLACE_ORDER);
+	}
+	
+	@Click(R.id.card_btn)
 	public void creidtCardBtn() {
 		doPay(Constants.PAYTYPE_CARD);
 	}

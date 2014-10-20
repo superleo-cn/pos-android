@@ -53,7 +53,7 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "f1.weebo.com.sg";
+	public static final String HOST = "pos.emd.com.sg";
 
 	/** 服务器端口号 */
 	public static final String PORT = ":80";
@@ -121,6 +121,7 @@ public final class Constants {
 
 	public static final String PAYTYPE_CASH = "CASH";
 	public static final String PAYTYPE_CARD = "CARD";
+	public static final String PLACE_ORDER = "ORDER";
 
 	/** 最大金额 */
 	public static final String MAX_PRICE = "9999.99";
