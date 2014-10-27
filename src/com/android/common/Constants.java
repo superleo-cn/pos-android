@@ -53,11 +53,11 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST =  "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
-	//public static final String HOST  = "192.168.0.14";
+	//public static final String HOST =  "ec2-54-254-145-129.ap-southeast-1.compute.amazonaws.com";
+	public static final String HOST  = "laiyiwan.emd.com.sg";
 	//public static final String HOST = "localhost";
 	/** 服务器端口号 */
-	public static final String PORT = ":8080";
+	public static final String PORT = ":80";
 	/** 应用上下文名 */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */

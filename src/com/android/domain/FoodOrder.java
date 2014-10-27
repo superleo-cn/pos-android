@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
@@ -156,6 +157,15 @@ public class FoodOrder extends Model {
 			food_order.status = Constants.DB_SUCCESS;
 			food_order.save();
 		}
+	}
+
+	/**
+	 * 删除历史数据
+	 * 
+	 * @param time
+	 */
+	public static void deleteByDate(String time) {
+		new Delete().from(FoodOrder.class).where("date < ?", time).execute();
 	}
 
 }

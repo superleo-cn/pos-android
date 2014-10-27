@@ -137,4 +137,13 @@ public class ExpensesOrder extends Model {
 			expenses.save();
 		}
 	}
+
+	/**
+	 * 删除历史数据
+	 * 
+	 * @param time
+	 */
+	public static void deleteByDate(String time) {
+		new Delete().from(ExpensesOrder.class).where("date < ?", time).execute();
+	}
 }

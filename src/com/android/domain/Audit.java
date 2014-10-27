@@ -7,6 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.android.common.Constants;
 
@@ -57,6 +58,15 @@ public class Audit extends Model {
 		Audit audit = Audit.load(Audit.class, id);
 		audit.status = status;
 		audit.save();
+	}
+
+	/**
+	 * 删除历史数据
+	 * 
+	 * @param time
+	 */
+	public static void deleteByDate(String time) {
+		new Delete().from(Audit.class).where("actionDate < ?", time).execute();
 	}
 
 }
