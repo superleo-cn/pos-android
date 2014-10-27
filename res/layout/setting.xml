@@ -151,7 +151,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/take_price"
+                    android:id="@+id/take_price_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dip"
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:visibility="gone"
                     android:layout_marginTop="10dip"
-                    android:layout_below="@+id/take_price" >
+                    android:layout_below="@+id/take_price_layout" >
 
                     <TextView
                         android:id="@+id/tv123"
@@ -251,7 +251,7 @@
                         android:layout_toRightOf="@+id/synchronization_shop" />
 
                     <Button
-                        android:id="@+id/synchronization_shop_brn"
+                        android:id="@+id/synchronization_shop_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
@@ -262,9 +262,122 @@
                         android:text="@string/synchronize_btn" /> 
                     
                 </RelativeLayout>
+           
+                 
+     
+                 <RelativeLayout
+                    android:id="@+id/shop_address_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/synchronization_shop_layout"
+                    android:layout_marginTop="10dip" >
+                    
+                    <TextView
+                        android:id="@+id/shop_address"
+                        android:layout_width="200dip"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/shop_address"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
+
+                    <EditText                      
+                        android:id="@+id/shop_address_edit"
+                        android:layout_width="450dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="65dip"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/edit_bg"
+                        android:layout_toRightOf="@+id/shop_address" />
+                    
+                </RelativeLayout>
+           
+
+             <RelativeLayout
+                    android:id="@+id/shop_contact_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/shop_address_layout"
+                    android:layout_marginTop="10dip" >
+                    
+                    <TextView
+                        android:id="@+id/shop_contact"
+                        android:layout_width="200dip"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/shop_contact"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
+
+                    <EditText                     
+                        android:id="@+id/shop_contact_edit"
+                        android:layout_width="450dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="65dip"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/edit_bg"
+                        android:layout_toRightOf="@+id/shop_contact"  />
+                </RelativeLayout>
+               
+  				<RelativeLayout
+                    android:id="@+id/shop_website_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/shop_contact_layout"
+                    android:layout_marginTop="10dip" >
+                    
+                    <TextView
+                        android:id="@+id/shop_website"
+                        android:layout_width="200dip"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/shop_website"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
+
+                    <EditText                      
+                        android:id="@+id/shop_website_edit"
+                        android:layout_width="450dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="65dip"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/edit_bg"
+                        android:layout_toRightOf="@+id/shop_website" />                   
+                </RelativeLayout>
+                
+  				<RelativeLayout
+                    android:id="@+id/shop_email_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/shop_website_layout"
+                    android:layout_marginTop="10dip" >
+                    
+                    <TextView
+                        android:id="@+id/shop_email"
+                        android:layout_width="200dip"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/shop_email"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
+
+                    <EditText                      
+                        android:id="@+id/shop_email_edit"
+                        android:layout_width="450dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="65dip"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/edit_bg"
+                        android:layout_toRightOf="@+id/shop_email" />   
+                </RelativeLayout>
                 
             </RelativeLayout>
-
+            
+            
             <TextView
                 android:id="@+id/admin_set"
                 android:layout_width="fill_parent"

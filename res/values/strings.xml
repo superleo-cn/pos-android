@@ -72,6 +72,10 @@
 	
 	<string name="synchronization_menu">Menu Sync</string>
 	<string name="synchronization_shop">Outlet ID</string>
+	<string name="shop_address">Address</string>
+	<string name="shop_contact">Contact</string>
+	<string name="shop_website">Website</string>
+	<string name="shop_email">Email</string>
 	<string name="synchronization_pay">Express Sync</string>
 	<string name="price_set">Price</string>
 	<string name="pass_set">Reset</string>

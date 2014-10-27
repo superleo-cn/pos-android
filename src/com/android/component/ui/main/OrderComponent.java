@@ -432,7 +432,7 @@ public class OrderComponent {
 	
 	private StringBuffer getPrintList(){
 		StringBuffer sb = new StringBuffer();
-		sb.append("名称(Item)\t数量(Qty)\t价格(Amount)\n");
+		sb.append("Item(名称)\tQty(数量)\tAmount(价格)\n");
 		if (selectDataList != null) {
 			for (SelectFoodBean bean : selectDataList) {
 				String foodName = bean.getFood_name() + "\n";

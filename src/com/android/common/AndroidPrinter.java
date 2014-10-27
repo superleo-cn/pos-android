@@ -15,6 +15,8 @@ import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import com.googlecode.androidannotations.api.Scope;
 
+
+
 @EBean(scope = Scope.Singleton)
 public class AndroidPrinter {
 
@@ -24,6 +26,9 @@ public class AndroidPrinter {
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
 
+	@Pref
+	SharedPreferencesComponent_ myPrefs;
+	
 	@AfterInject
 	public void initPrinter() {
 
@@ -75,10 +80,12 @@ public class AndroidPrinter {
 
 		if (StringUtils.equals(type, Constants.PLACE_ORDER)) {
 			printOrderDate();
-			printWithDrawer(message, false);
+			printOrder(message);
+//			printWithDrawer(message, false);
 			feedAndCutPaper();
 			printOrderDate();
-			printWithDrawer(message, false);
+			printOrder(message);
+//			printWithDrawer(message, false);
 			feedAndCutPaper();
 		} else {
 			printHeader();
@@ -98,16 +105,23 @@ public class AndroidPrinter {
 
 	public void printWithDrawer(String message, boolean flag) {
 		if (StringUtils.isNotEmpty(message)) {
-			setNormal();
+			setNormal();	
 			printContent(message);
 			if (flag) {
 				WifiPrintDriver.OpenDrawer((byte) 0X00, (byte) 0X00, (byte) 0X10);
 				WifiPrintDriver.excute();
 				WifiPrintDriver.ClearData();
-			}
+			}			
 		}
 	}
-
+	public void printOrder(String message) {
+		if (StringUtils.isNotEmpty(message)) {
+			WifiPrintDriver.SetAlignMode((byte) 0);// 左对齐
+			WifiPrintDriver.SetLineSpacing((byte) 20);
+			WifiPrintDriver.SetFontEnlarge((byte) 0x00);// 字体放大	
+			printContent(message);						
+		}
+	}
 	private void printHeader() {
 		// InputStream in = null;
 		// try {
@@ -131,29 +145,39 @@ public class AndroidPrinter {
 		// }
 
 		setLarge();
-		printContent("账单(Bill)");
+		printContent(myPrefs.shopAddress().get());
 		printSpace();
+		printSpace();
+		setNormal();
+		printContent("Address(地址）: "+myPrefs.shopAddress().get());
+		printSpace();
+		printContent("Contact（电话）: "+myPrefs.shopContact().get());
+		printSpace();
+		if(!myPrefs.shopWebsite().get().isEmpty())
+		printContent("Website（网站）: " + myPrefs.shopWebsite().get());
+		printSpace();
+		printLine();
 		printSpace();
 	}
 
 	private void printFooter(String cost, String paid, String remain) {
-		setNormal();
-		printContent("\t\t\t总计(Total):\t$" + cost);
+		setNormal();			
+		printContent("\t\t\tTotal(总计):\t$" + cost);
 		printSpace();
-		// printContent("付款(payment): " + paid);
-		// printSpace();
-		// printContent("找零(remain): " + remain);
-		// printSpace();
+		 printContent("\t\t\tPayment(付款):\t$" + paid);
+		 printSpace();
+		 printContent("\t\t\tChange(找零):\t$" + remain);
+		 printSpace();
 	}
 
-	private void printTransaction() {
-		String billNo = DateUtils.dateToStr(new Date(), DateUtils.YYYYMMDD_HH_MM_SS);
+	private void printTransaction() {		
+		String billNo = DateUtils.dateToStr(new Date(), DateUtils.YYYYMMDD_HH_MM_SS );
 		String time = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
 		setNormal();
-		printContent("单号(SN): B" + billNo);
+		printContent("SN(单号): B" + billNo);
 		printSpace();
 		setNormal();
-		printContent("时间(Time): " + time);
+		printContent("Time(时间): " + time);
 		printSpace();
 		printLine();
 		printSpace();
@@ -162,7 +186,7 @@ public class AndroidPrinter {
 	private void printOrderDate() {
 		String time = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
 		setNormal();
-		printContent("下单时间(Order Time): " + time);
+		printContent("Order Time(下单时间): " + time);
 		printSpace();
 		setNormal();
 		printLine();
@@ -201,5 +225,7 @@ public class AndroidPrinter {
 		WifiPrintDriver.SetLineSpacing((byte) 50);
 		WifiPrintDriver.SetFontEnlarge((byte) 0x11);// 字体放大
 	}
+
+	
 
 }

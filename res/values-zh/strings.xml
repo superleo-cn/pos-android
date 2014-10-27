@@ -71,6 +71,10 @@
     <string name="admin_set">超级管理员配置</string>
     <string name="synchronization_menu">点菜单同步</string>
     <string name="synchronization_shop">摊位ID</string>
+    <string name="shop_address">地址</string>
+	<string name="shop_contact">电话</string>
+	<string name="shop_website">网站</string>
+	<string name="shop_email">邮件</string>
     <string name="synchronization_pay">支付款同步</string>
     <string name="price_set">现金配置</string>
     <string name="pass_set">密    码</string>
