@@ -6,6 +6,7 @@ import java.util.List;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.android.common.Constants;
 import com.android.common.DateUtils;
@@ -182,5 +183,14 @@ public class BalanceOrder extends Model {
 			balance.status = Constants.DB_SUCCESS;
 			balance.save();
 		}
+	}
+
+	/**
+	 * 删除历史数据
+	 * 
+	 * @param time
+	 */
+	public static void deleteByDate(String time) {
+		new Delete().from(BalanceOrder.class).where("date < ?", time).execute();
 	}
 }

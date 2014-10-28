@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
@@ -45,7 +46,7 @@ public class FoodOrder extends Model {
 
 	@Column(name = "foc")
 	public String foc;
-	
+
 	@Column(name = "order_type")
 	public String orderType;
 
@@ -54,22 +55,18 @@ public class FoodOrder extends Model {
 
 	@Column(name = "date")
 	public String date;
-	
+
 	@Column(name = "attributesID")
 	public String attributesID;
-	
+
 	@Column(name = "attributesContext")
 	public String attributesContext;
 
-
 	@Override
 	public String toString() {
-		return "FoodOrder [orderId=" + orderId + ", userId=" + userId
-				+ ", shopId=" + shopId + ", retailPrice=" + retailPrice
-				+ ", quantity=" + quantity + ", foodId=" + foodId
-				+ ", discount=" + discount + ", totalPackage=" + totalPackage
-				+ ", foc=" + foc + ", status=" + status + ", date=" + date
-				+ ", attributesID=" + attributesID + ", attributesContext="
+		return "FoodOrder [orderId=" + orderId + ", userId=" + userId + ", shopId=" + shopId + ", retailPrice=" + retailPrice
+				+ ", quantity=" + quantity + ", foodId=" + foodId + ", discount=" + discount + ", totalPackage=" + totalPackage + ", foc="
+				+ foc + ", status=" + status + ", date=" + date + ", attributesID=" + attributesID + ", attributesContext="
 				+ attributesContext + "]";
 	}
 
@@ -108,7 +105,8 @@ public class FoodOrder extends Model {
 	 */
 	public static Double totalRetailCollection(String type, String userId, String shopId, String date) {
 		FoodOrder food = new Select("sum(retail_price) as retail_price").from(FoodOrder.class)
-				.where("user_id = ? and shop_id = ? and date >= ? and order_type = ? ", userId, shopId, date, type).groupBy("user_id, shop_id").executeSingle();
+				.where("user_id = ? and shop_id = ? and date >= ? and order_type = ? ", userId, shopId, date, type)
+				.groupBy("user_id, shop_id").executeSingle();
 		if (food != null) {
 			return food.retailPrice;
 		}
@@ -175,4 +173,12 @@ public class FoodOrder extends Model {
 		}
 	}
 
+	/**
+	 * 删除历史数据
+	 * 
+	 * @param time
+	 */
+	public static void deleteByDate(String time) {
+		new Delete().from(FoodOrder.class).where("date < ?", time).execute();
+	}
 }

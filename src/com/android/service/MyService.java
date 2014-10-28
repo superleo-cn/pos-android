@@ -3,7 +3,6 @@
  */
 package com.android.service;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -12,7 +11,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 
-import com.android.common.DateUtils;
+import com.android.component.CleanHistorySchedularComponent;
 import com.android.component.SharedPreferencesComponent_;
 import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
@@ -49,10 +48,16 @@ public class MyService extends Service {
 	@Bean
 	StringResComponent stringResComponent;
 
+	@Bean
+	CleanHistorySchedularComponent cleanHistorySchedularComponent;
+
 	// run on another Thread to avoid crash
 	private Handler mHandler = new Handler();
 	// timer handling
 	private Timer mTimer = null;
+
+	// cleanHitoryTimer handling
+	private Timer cleanHitoryTimer = null;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -71,6 +76,17 @@ public class MyService extends Service {
 		// schedule task
 		final long time = myPrefs.time().get() * 60 * 1000;
 		mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 60 * 1000, time);
+
+		// cancel if already existed
+		if (cleanHitoryTimer != null) {
+			cleanHitoryTimer.cancel();
+		} else {
+			// recreate new
+			cleanHitoryTimer = new Timer();
+		}
+		// schedule task
+		final long clearTime = 4 * 60 * 60 * 1000;
+		cleanHitoryTimer.scheduleAtFixedRate(new Keep7DaysTimerTask(), 60 * 1000, clearTime);
 	}
 
 	class TimeDisplayTimerTask extends TimerTask {
@@ -100,4 +116,22 @@ public class MyService extends Service {
 		}
 
 	}
+
+	class Keep7DaysTimerTask extends TimerTask {
+
+		@Override
+		public void run() {
+			// run on another thread
+			mHandler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					// display toast
+					cleanHistorySchedularComponent.cleanHistory();
+				}
+
+			});
+		}
+	}
+
 }
