@@ -3,6 +3,7 @@ package com.android.component;
 import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultLong;
 import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultString;
 import com.googlecode.androidannotations.annotations.sharedpreferences.SharedPref;
+import com.googlecode.androidannotations.api.sharedpreferences.StringPrefField;
 
 // 用接口代替直接使用变量, 方便安全
 @SharedPref(value = SharedPref.Scope.UNIQUE)
@@ -26,5 +27,17 @@ public interface SharedPreferencesComponent {
 
 	@DefaultLong(30)
 	long time();
+	
+	@DefaultString("")
+	String shopAddress();
+	
+	@DefaultString("")
+	String shopContact();
+	
+	@DefaultString("")
+	String shopWebsite();
+	
+	@DefaultString("")
+	String shopEmail();
 
 }
