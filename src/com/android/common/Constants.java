@@ -34,9 +34,9 @@ public final class Constants {
 	public static final String CACHE_IMAGE;
 	static {
 		if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-			CACHE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android_pos/";
+			CACHE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android_pos";
 		} else {
-			CACHE_DIR = Environment.getRootDirectory().getAbsolutePath() + "/Android_pos/";
+			CACHE_DIR = Environment.getRootDirectory().getAbsolutePath() + "/Android_pos";
 		}
 
 		CACHE_IMAGE = CACHE_DIR + "/image";

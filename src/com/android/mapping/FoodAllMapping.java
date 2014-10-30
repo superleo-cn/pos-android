@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -145,7 +146,8 @@ public class FoodAllMapping extends BasicExMapping<Remotes> {
 	 */
 	public static String downloadImage(FoodRemote foodRemote, int i) {
 		try {
-			String image_file = Constants.CACHE_IMAGE + "/" + "food_image_" + i + ".png";
+			String filename = StringUtils.substringAfterLast(foodRemote.picture, "/");
+			String image_file = Constants.CACHE_IMAGE + "/" + filename;
 			HttpHelper.download(foodRemote.picture, new File(image_file));
 			return image_file;
 		} catch (Exception ex) {
