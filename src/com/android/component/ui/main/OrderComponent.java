@@ -222,6 +222,19 @@ public class OrderComponent {
 	// doCalculation();
 	// }
 	// }
+	
+	private boolean isOrderAlready(String foodId){
+		if(this.selectDataList != null){
+			for(SelectFoodBean bean : selectDataList){
+				if(StringUtils.equals(foodId, bean.getFood_id())){
+					int val = Integer.parseInt(bean.getFood_num()) + 1;
+					bean.setFood_num(String.valueOf(val));
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * 添加订单
@@ -229,16 +242,18 @@ public class OrderComponent {
 	 * @param foodBean
 	 */
 	public void order(FoodR foodBean) {
-		SelectFoodBean bean = new SelectFoodBean();
-		bean.setFood_name(foodBean.title);
-		bean.setFood_price(foodBean.retailPrice);
-		bean.setFood_dayin_code(foodBean.sn);
-		bean.setFood_id(foodBean.foodId);
-		bean.setFood_type(foodBean.type);
-		bean.setFood_num("1");
-		bean.setAttributesID(foodBean.attributesID);
-		bean.setAttributesContext(foodBean.attributesContext);
-		selectDataList.add(bean);
+		if(!isOrderAlready(foodBean.foodId)){
+			SelectFoodBean bean = new SelectFoodBean();
+			bean.setFood_name(foodBean.title);
+			bean.setFood_price(foodBean.retailPrice);
+			bean.setFood_dayin_code(foodBean.sn);
+			bean.setFood_id(foodBean.foodId);
+			bean.setFood_type(foodBean.type);
+			bean.setFood_num("1");
+			bean.setAttributesID(foodBean.attributesID);
+			bean.setAttributesContext(foodBean.attributesContext);
+			selectDataList.add(bean);
+		}
 		selectAdapter.notifyDataSetChanged();
 		doCalculation();
 	}
