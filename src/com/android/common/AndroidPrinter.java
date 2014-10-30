@@ -29,32 +29,42 @@ public class AndroidPrinter {
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
 	
+	public String shopName;
+	
+	public String shopAddress;
+	
+	public String shopContact;
+	
+	public String shopWebsite;
+	
+	public String gstRegNo;
+	
+	public String weChat;
+	
+	public String gstRate;
+	
+	public String serviceRate;
+	
 	@AfterInject
 	public void initPrinter() {
+		shopName = myPrefs.shopName().get();		
+		shopAddress = myPrefs.shopAddress().get();		
+		shopContact = myPrefs.shopContact().get();		
+		shopWebsite = myPrefs.shopWebsite().get();		
+		gstRegNo = myPrefs.gstRegNo().get();		
+		weChat = myPrefs.weChat().get();		
+		gstRate = myPrefs.gstRate().get();		
+		serviceRate = myPrefs.serviceRate().get();
 
 	}
 	
-	private String shopName = myPrefs.shopName().get();
+
 	
-	private String shopAddress = myPrefs.shopAddress().get();
-	
-	private String shopContact = myPrefs.shopContact().get();
-	
-	private String shopWebsite = myPrefs.shopWebsite().get();
-	
-	private String gstRegNo = myPrefs.gstRegNo().get();
-	
-	private String weChat = myPrefs.weChat().get();
-	
-	private String gstRate = myPrefs.gstRate().get();
-	
-	private String serviceRate = myPrefs.serviceRate().get();
-	
-	public void print(String message, String gstCharge, String serviceCharge, String cost, String paid, String remain, String type) {
+	public void print(String message, String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain, String type) {
 		try {
 			Log.d("[AndroidPrinter]", "连接打印机");
 			if (connect()) {
-				startPrint(message, cost, paid, remain, type);
+				startPrint(message,subTotal, gstCharge, serviceCharge,cost, paid, remain, type);
 				disconnect();
 			} else {
 				disconnect();
@@ -91,7 +101,7 @@ public class AndroidPrinter {
 		}
 	}
 
-	public void startPrint(String message, String cost, String paid, String remain, String type) {
+	public void startPrint(String message,String subTotal, String gstCharge, String serviceCharge ,String cost, String paid, String remain, String type) {
 		WifiPrintDriver.Begin();
 
 		if (StringUtils.equals(type, Constants.PLACE_ORDER)) {
@@ -113,7 +123,7 @@ public class AndroidPrinter {
 			}
 			printLine();
 			printSpace();
-			printFooter(cost, paid, remain);
+			printFooter(subTotal, gstCharge, serviceCharge, cost, paid, remain);
 			feedAndCutPaper();
 		}
 
@@ -188,25 +198,29 @@ public class AndroidPrinter {
 		printSpace();
 	}
 
-	private void printFooter(String cost, String paid, String remain) {
+	private void printFooter(String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain) {
 		setNormal();			
+		if(!serviceRate.isEmpty() || !gstRate.isEmpty()){
+			printContent("\t\t\t" + "Sub-Total:\t\t$" + subTotal);			
+			printSpace();
+		}
 		if(!serviceRate.isEmpty()){
 			/*
 			 * Please parse parameter for serviceCharge and gstCharge
 			 */
-//			printContent("\t\t\t" +serviceRate + "% Service Charge:\t$" + serviceCharge);			
+			printContent("\t\t\t" +serviceRate + "% Service(服务费）:\t$" + serviceCharge);			
 			printSpace();
 		}
 		if(!gstRate.isEmpty()){
-//			printContent("\t\t\t" +gstRate + "% GST:\t$" + gstCharge);
+			printContent("\t\t\t" +gstRate + "% GST（税金）:\t\t$" + gstCharge);
 			printSpace();
 		}
 			
-		printContent("\t\t\tTotal(总计):\t$" + cost);
+		printContent("\t\t\tTotal(总计):\t\t$" + cost);
 		printSpace();
-		printContent("\t\t\tPayment(付款):\t$" + paid);
+		printContent("\t\t\tPayment(付款):\t\t$" + paid);
 		printSpace();
-		printContent("\t\t\tChange(找零):\t$" + remain);
+		printContent("\t\t\tChange(找零):\t\t$" + remain);
 		printSpace();
 	}
 

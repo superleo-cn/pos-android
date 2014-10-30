@@ -134,13 +134,11 @@ public class OrderComponent {
 	private double save_discount_price;
 	private double package_money;
 	
+	private double subTotal = 0;
+	
 	private double gstCharge = 0;
 	
 	private double serviceCharge =0;
-	
-	private String gstRate = myPrefs.gstRate().get(); 			
-	
-	private String serviceRate = myPrefs.serviceRate().get();
 
 	// 打印框
 	Dialog dialg;
@@ -159,6 +157,7 @@ public class OrderComponent {
 		dialg = buildPrintDialog();
 		mydialog = new MyDialog(context);
 		String type = sharedPrefs.language().get();
+
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
 		this.selectAdapter = new SelectListAdapter(context, selectDataList, type);
@@ -480,7 +479,7 @@ public class OrderComponent {
 				@Override
 				public void onClick(View v) {
 					mydialog.dismiss();
-					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal),MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 							.toString(), orderType);
 					// 保存数据------------------------------
 					storeOrders(orderType);
@@ -504,7 +503,7 @@ public class OrderComponent {
 			// 先打印数据，不耽误正常使用----------------------------
 			printList = getPrintList();
 			Log.i("[OrderComponent] -> [Result]", printList.toString());
-			androidPrinter.print(printList.toString(),  MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+			androidPrinter.print(printList.toString(),MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 					.toString(), orderType);
 			clean();
 		}
@@ -550,11 +549,11 @@ public class OrderComponent {
 			/*
 			 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
 			 */
-			if(!serviceRate.isEmpty()){
-				serviceCharge = showTotalPrice * (MyNumberUtils.strToNum(serviceRate) * 0.01);
+			if(!myPrefs.serviceRate().get().isEmpty()){
+				serviceCharge = showTotalPrice * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
 			}
-			if (!gstRate.isEmpty()){
-				gstCharge = (showTotalPrice +serviceCharge) * (MyNumberUtils.strToNum(gstRate) * 0.01);
+			if (!myPrefs.gstRate().get().isEmpty()){
+				gstCharge = (showTotalPrice +serviceCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
 			}
 						
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + gstCharge + serviceCharge));

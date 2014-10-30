@@ -20,7 +20,7 @@ public interface SharedPreferencesComponent {
 	@DefaultString("0.2")
 	String packageCost();
 
-	@DefaultString("192.168.0.100")
+	@DefaultString("")
 	String printIp();
 
 	@DefaultString("0")

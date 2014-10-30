@@ -96,6 +96,14 @@ public class ShopSynchronizationComponent {
 			myPrefs.shopContact().put(mapping.datas.get(0).contact);
 			myPrefs.shopWebsite().put(mapping.datas.get(0).website);
 			myPrefs.shopEmail().put(mapping.datas.get(0).email);
+			myPrefs.gstRate().put(mapping.datas.get(0).gstRate);
+			myPrefs.gstRegNo().put(mapping.datas.get(0).gstRegNo);
+			myPrefs.serviceRate().put(mapping.datas.get(0).serviceRate);
+			myPrefs.weChat().put(mapping.datas.get(0).weChat);
+			myPrefs.kichenPrinter().put(mapping.datas.get(0).kichenPrinter);
+			myPrefs.openTime().put(mapping.datas.get(0).openTime);
+			
+			
 			new ShopSynchronizationTask().execute(shopId);
 			
 			shopAddress.setText(myPrefs.shopAddress().get());
