@@ -161,5 +161,5 @@ public final class Constants {
 	public static final String password = "sgweeboteam";
 
 	public static final String RECEIVE_EMAIL = "possupport@weebo.com.sg";
-	public static final String RECEIVE_DAILY_SUM_EMAIL = "lihui@weebo.com.sg,88888@live.com.sg";
+	public static final String RECEIVE_DAILY_SUM_EMAIL = "lihui@weebo.com.sg";
 }
