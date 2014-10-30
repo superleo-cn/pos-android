@@ -91,6 +91,7 @@ public class ShopSynchronizationComponent {
 		ShopMapping mapping = ShopMapping.getJSON(Constants.URL_SHOP_PATH + shopId);
 		if (mapping != null && mapping.code == Constants.STATUS_SUCCESS) {			
 			myPrefs.shopId().put(shopId);
+			myPrefs.shopName().put(mapping.datas.get(0).name);
 			myPrefs.shopAddress().put(mapping.datas.get(0).address);
 			myPrefs.shopContact().put(mapping.datas.get(0).contact);
 			myPrefs.shopWebsite().put(mapping.datas.get(0).website);

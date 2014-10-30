@@ -103,12 +103,16 @@ public class OrderComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
+	
+	@Pref
+	SharedPreferencesComponent_ myPrefs;
 
 	@Bean
 	WifiComponent wifiComponent;
 
 	@Bean
 	KeyboardComponent keyboardComponent;
+	
 
 	FoodComponent foodComponent;
 
@@ -129,6 +133,14 @@ public class OrderComponent {
 	private boolean is_foc;
 	private double save_discount_price;
 	private double package_money;
+	
+	private double gstCharge = 0;
+	
+	private double serviceCharge =0;
+	
+	private String gstRate = myPrefs.gstRate().get(); 			
+	
+	private String serviceRate = myPrefs.serviceRate().get();
 
 	// 打印框
 	Dialog dialg;
@@ -468,7 +480,7 @@ public class OrderComponent {
 				@Override
 				public void onClick(View v) {
 					mydialog.dismiss();
-					androidPrinter.print(sb.toString(), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 							.toString(), orderType);
 					// 保存数据------------------------------
 					storeOrders(orderType);
@@ -492,7 +504,7 @@ public class OrderComponent {
 			// 先打印数据，不耽误正常使用----------------------------
 			printList = getPrintList();
 			Log.i("[OrderComponent] -> [Result]", printList.toString());
-			androidPrinter.print(printList.toString(), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+			androidPrinter.print(printList.toString(),  MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 					.toString(), orderType);
 			clean();
 		}
@@ -535,7 +547,18 @@ public class OrderComponent {
 				}
 
 			}
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			/*
+			 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
+			 */
+			if(!serviceRate.isEmpty()){
+				serviceCharge = showTotalPrice * (MyNumberUtils.strToNum(serviceRate) * 0.01);
+			}
+			if (!gstRate.isEmpty()){
+				gstCharge = (showTotalPrice +serviceCharge) * (MyNumberUtils.strToNum(gstRate) * 0.01);
+			}
+						
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + gstCharge + serviceCharge));
+			
 			if (Double.parseDouble(gathering.getText().toString()) > 0) {
 				calculatorComponent.compute_surplus();
 			}

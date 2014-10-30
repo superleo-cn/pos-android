@@ -1,9 +1,10 @@
 package com.android.component;
 
+
+import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultBoolean;
 import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultLong;
 import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultString;
 import com.googlecode.androidannotations.annotations.sharedpreferences.SharedPref;
-import com.googlecode.androidannotations.api.sharedpreferences.StringPrefField;
 
 // 用接口代替直接使用变量, 方便安全
 @SharedPref(value = SharedPref.Scope.UNIQUE)
@@ -29,6 +30,9 @@ public interface SharedPreferencesComponent {
 	long time();
 	
 	@DefaultString("")
+	String shopName();
+		
+	@DefaultString("")
 	String shopAddress();
 	
 	@DefaultString("")
@@ -39,5 +43,22 @@ public interface SharedPreferencesComponent {
 	
 	@DefaultString("")
 	String shopEmail();
-
+	
+	@DefaultString("")
+	public String openTime();
+	
+	@DefaultString("")
+	public String gstRegNo();
+	
+	@DefaultString("")
+	public String gstRate();
+	
+	@DefaultString("")
+	public String serviceRate();
+	
+	@DefaultString("")
+	public String weChat();
+	
+	@DefaultBoolean(false)
+	public boolean kichenPrinter();
 }

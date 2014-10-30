@@ -16,6 +16,14 @@ public class ShopMapping extends BasicMapping<ShopMapping.Shop> {
 		
 		/** Add new attributes 27/10/2014 **/
 		
+		public String openTime;
+		
+		public String gstRegNo;
+		
+		public String gstRate;
+		
+		public String serviceRate;
+		
 		public String address;
 		
 		public String contact;
@@ -24,6 +32,9 @@ public class ShopMapping extends BasicMapping<ShopMapping.Shop> {
 		
 		public String email;
 		
+		public String weChat;
+		
+		public Boolean kichenPrinter;
 		/** End **/
 
 		public String code;

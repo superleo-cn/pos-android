@@ -33,8 +33,24 @@ public class AndroidPrinter {
 	public void initPrinter() {
 
 	}
-
-	public void print(String message, String cost, String paid, String remain, String type) {
+	
+	private String shopName = myPrefs.shopName().get();
+	
+	private String shopAddress = myPrefs.shopAddress().get();
+	
+	private String shopContact = myPrefs.shopContact().get();
+	
+	private String shopWebsite = myPrefs.shopWebsite().get();
+	
+	private String gstRegNo = myPrefs.gstRegNo().get();
+	
+	private String weChat = myPrefs.weChat().get();
+	
+	private String gstRate = myPrefs.gstRate().get();
+	
+	private String serviceRate = myPrefs.serviceRate().get();
+	
+	public void print(String message, String gstCharge, String serviceCharge, String cost, String paid, String remain, String type) {
 		try {
 			Log.d("[AndroidPrinter]", "连接打印机");
 			if (connect()) {
@@ -144,17 +160,29 @@ public class AndroidPrinter {
 		// Log.e("[AndroidPrinter]", "图片打印失败", ex);
 		// }
 
-		setLarge();
-		printContent(myPrefs.shopAddress().get());
+		setLarge();		
+		printContent(shopName);
 		printSpace();
 		printSpace();
 		setNormal();
-		printContent("Address(地址）: "+myPrefs.shopAddress().get());
+		printContent("Address(地址）: "+ shopAddress);
 		printSpace();
-		printContent("Contact（电话）: "+myPrefs.shopContact().get());
-		printSpace();
-		if(!myPrefs.shopWebsite().get().isEmpty())
-		printContent("Website（网站）: " + myPrefs.shopWebsite().get());
+		if(!shopContact.isEmpty()){
+			printContent("Contact（电话）: "+ shopContact);
+			printSpace();
+		}		
+		if(!weChat.isEmpty()){
+			printContent("WeChat（微信）: " + weChat);
+			printSpace();
+		}
+		if(!shopWebsite.isEmpty()){
+			printContent("Website（网站）: " + shopWebsite);
+			printSpace();
+		}
+		if(!gstRegNo.isEmpty()){
+			printContent("GST Reg No: " + gstRegNo);
+			printSpace();
+		}			
 		printSpace();
 		printLine();
 		printSpace();
@@ -162,12 +190,24 @@ public class AndroidPrinter {
 
 	private void printFooter(String cost, String paid, String remain) {
 		setNormal();			
+		if(!serviceRate.isEmpty()){
+			/*
+			 * Please parse parameter for serviceCharge and gstCharge
+			 */
+//			printContent("\t\t\t" +serviceRate + "% Service Charge:\t$" + serviceCharge);			
+			printSpace();
+		}
+		if(!gstRate.isEmpty()){
+//			printContent("\t\t\t" +gstRate + "% GST:\t$" + gstCharge);
+			printSpace();
+		}
+			
 		printContent("\t\t\tTotal(总计):\t$" + cost);
 		printSpace();
-		 printContent("\t\t\tPayment(付款):\t$" + paid);
-		 printSpace();
-		 printContent("\t\t\tChange(找零):\t$" + remain);
-		 printSpace();
+		printContent("\t\t\tPayment(付款):\t$" + paid);
+		printSpace();
+		printContent("\t\t\tChange(找零):\t$" + remain);
+		printSpace();
 	}
 
 	private void printTransaction() {		
