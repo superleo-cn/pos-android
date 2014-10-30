@@ -129,7 +129,7 @@ public class FoodOrder extends Model {
 			food_order.totalPackage = String.valueOf(bean.getDabao_price());// 打包钱数
 			food_order.discount = String.valueOf(bean.getDazhe_price()); // 打折钱数
 			food_order.userId = myApp.getUserId();// 用户id
-			double totalRetailPrice = Double.parseDouble(bean.getFood_price()) - bean.getDazhe_price() + bean.getDabao_price();
+			double totalRetailPrice = Double.parseDouble(bean.getFood_price()) * Integer.parseInt(bean.getFood_num()) - bean.getDazhe_price() + bean.getDabao_price();
 			if (is_foc) {
 				food_order.foc = Constants.FOC_YES;// 是否免费 1是 0否
 				totalRetailPrice = Constants.DEFAULT_PRICE_NUM_INT;
