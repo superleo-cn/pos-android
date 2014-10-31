@@ -116,14 +116,19 @@ public class AndroidPrinter {
 		} else {
 			printHeader();
 			printTransaction();
+			
 			if (StringUtils.equals(type, Constants.PAYTYPE_CASH)) {
 				printWithDrawer(message, true);
+				printLine();
+				printSpace();				
+				printFooter(subTotal, gstCharge, serviceCharge, cost, paid, remain,Constants.PAYTYPE_CASH);
 			} else {
 				printWithDrawer(message, false);
+				printLine();
+				printSpace();				
+				printFooter(subTotal, gstCharge, serviceCharge, cost, paid, remain,Constants.PAYTYPE_CARD);
 			}
-			printLine();
-			printSpace();
-			printFooter(subTotal, gstCharge, serviceCharge, cost, paid, remain);
+			
 			feedAndCutPaper();
 		}
 
@@ -198,7 +203,7 @@ public class AndroidPrinter {
 		printSpace();
 	}
 
-	private void printFooter(String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain) {
+	private void printFooter(String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain,String type) {
 		setNormal();			
 		if(!serviceRate.isEmpty() || !gstRate.isEmpty()){
 			printContent("\t\t\t" + "Sub-Total:\t\t$" + subTotal);			
@@ -215,13 +220,22 @@ public class AndroidPrinter {
 			printContent("\t\t\t" +gstRate + "% GST（税金）:\t\t$" + gstCharge);
 			printSpace();
 		}
-			
+		
 		printContent("\t\t\tTotal(总计):\t\t$" + cost);
 		printSpace();
-		printContent("\t\t\tPayment(付款):\t\t$" + paid);
+		
+		if(type.equalsIgnoreCase(Constants.PAYTYPE_CASH))	{
+			printContent("\t\t\tPayment(付款):\t\t$" + paid);
+			printSpace();
+			printContent("\t\t\tChange(找零):\t\t$" + remain);
+			printSpace();	
+		}else{
+			printContent("\t\t\tPaid by Nets / Credit Card\t\t");
+			printSpace();	
+		}
 		printSpace();
-		printContent("\t\t\tChange(找零):\t\t$" + remain);
-		printSpace();
+		WifiPrintDriver.SetAlignMode((byte) 1);// 居中对齐
+		printContent("Welcome!  Hope to see you next timee!");
 	}
 
 	private void printTransaction() {		
