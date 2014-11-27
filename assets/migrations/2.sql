@@ -1,1 +1,0 @@
-ALTER TABLE tb_food_order ADD COLUMN order_id TEXT;

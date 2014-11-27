@@ -342,6 +342,10 @@ public class DailyPayComponent {
 					String str = (String) msg.obj;
 					int num = Integer.parseInt(str.substring(0, 1));
 					String price = str.substring(2, str.length());
+					if(StringUtils.length(str) > 3){
+						num =  Integer.parseInt(str.substring(0, 2));
+						price = str.substring(3, str.length());
+					}
 					all_pay_price.set(num, Double.parseDouble(price));
 					for (Double sigle_price : all_pay_price) {
 						count = count + sigle_price;
