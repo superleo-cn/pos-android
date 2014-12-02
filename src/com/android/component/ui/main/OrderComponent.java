@@ -551,6 +551,15 @@ public class OrderComponent {
 					mydialog.dismiss();
 					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal),MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 							.toString(), orderType);
+					// 支付时刷新下拉列表
+					if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+						for (int i = 0; i < orderList.size(); i++) {
+							if(StringUtils.equals(orderList.get(i), orderIdSelected))
+								orderList.remove(i);
+						}
+					}
+					FoodOrder.deleteOrderByOrderId(orderIdSelected);
+					updateSpinner(orderList);
 					// 保存数据------------------------------
 					storeOrders(orderType, "", Constants.FOODORDER_SUBMIT_SUCCESS);
 					// 同步开始------------------------------
@@ -611,10 +620,7 @@ public class OrderComponent {
 									}
 								}
 								orderList.add(orderId);
-								ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, orderList);
-								adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-								orderIdSpinner.setSelection(0);
-								orderIdSpinner.setAdapter(adapter);
+								updateSpinner(orderList);
 								myOrderDialog.order_msg_text.setText("");
 								myOrderDialog.order_edt.setText("");
 								myOrderDialog.dismiss();
@@ -645,6 +651,13 @@ public class OrderComponent {
 		myOrderDialog.order_edt.setFocusable(true);   
 		myOrderDialog.order_edt.setFocusableInTouchMode(true);   
 		myOrderDialog.order_edt.requestFocus();
+	}
+	
+	public void updateSpinner(List<String> orderLit){
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, orderList);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		orderIdSpinner.setSelection(0);
+		orderIdSpinner.setAdapter(adapter);
 	}
 	
 	public void printOrder(String orderType){
