@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/dialog_panel"
+        android:layout_width="800dp"
+        android:layout_height="500dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/dialog"
+        android:orientation="vertical"
+        android:padding="20dip" >
+
+        <LinearLayout
+            android:id="@+id/dialog_title_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="96dp"
+            android:layout_marginTop="10dp" >
+
+            <TextView
+                android:id="@+id/dialog_title"
+                style="@style/StyleBarTitle"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="bottom|center"
+                android:text="@string/spinner_orderId"
+                android:textSize="30dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dialog_title_panel"
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/order_edt"
+                android:layout_width="400dp"
+                android:layout_height="65dp"
+                android:paddingLeft="10dp"
+                android:textSize="26dp"
+                android:digits="@string/register_name_digits"
+                android:background="@color/white" />
+
+            <TextView
+                android:id="@+id/order_msg_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/inputorder_msg_color"
+                android:textSize="18dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialog_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:padding="10dip" >
+
+            <Button
+                android:id="@+id/dialog_yes"
+                style="@style/StyleBarTitle"
+                android:layout_width="42dp"
+                android:layout_height="fill_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/tong_btu_bg3"
+                android:gravity="center"
+                android:paddingBottom="50dip"
+                android:paddingLeft="25dip"
+                android:paddingRight="25dip"
+                android:paddingTop="50dip"
+                android:text="@string/btu_queren"
+                android:textSize="50dp" >
+            </Button>
+
+            <Button
+                android:id="@+id/dialog_cancel"
+                style="@style/StyleBarTitle"
+                android:layout_width="42dp"
+                android:layout_height="fill_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/tong_btu_bg3"
+                android:gravity="center"
+                android:paddingBottom="50dip"
+                android:paddingLeft="25dip"
+                android:paddingRight="25dip"
+                android:paddingTop="50dip"
+                android:text="@string/btn_quxiao"
+                android:textSize="50dp" >
+            </Button>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
