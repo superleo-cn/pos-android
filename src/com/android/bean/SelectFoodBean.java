@@ -11,8 +11,12 @@ public class SelectFoodBean {
 	private double dabao_price;
 	private double dazhe_price;
 	
+	private double gst_charge;
+	private double service_charge;
+	
 	private String attributesID;
 	private String attributesContext;
+	private String flag;
 	
 	public String getFood_id() {
 		return food_id;
@@ -56,6 +60,18 @@ public class SelectFoodBean {
 	public void setDazhe_price(double dazhe_price) {
 		this.dazhe_price = dazhe_price;
 	}
+	public double getGst_charge() {
+		return gst_charge;
+	}
+	public void setGst_charge(double gst_charge) {
+		this.gst_charge = gst_charge;
+	}
+	public double getService_charge() {
+		return service_charge;
+	}
+	public void setService_charge(double service_charge) {
+		this.service_charge = service_charge;
+	}
 	public String getFood_type() {
 		return food_type;
 	}
@@ -75,6 +91,12 @@ public class SelectFoodBean {
 	public void setAttributesContext(String attributesContext) {
 		this.attributesContext = attributesContext;
 	}
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 	@Override
 	public String toString() {
 		return "SelectFoodBean [food_name=" + food_name + ", food_num="
@@ -82,8 +104,9 @@ public class SelectFoodBean {
 				+ ", food_dayin_code=" + food_dayin_code + ", food_id="
 				+ food_id + ", food_type=" + food_type + ", dabao_price="
 				+ dabao_price + ", dazhe_price=" + dazhe_price
-				+ ", attributesID=" + attributesID + ", attributesContext="
-				+ attributesContext + "]";
+				+ ", gst_charge=" + gst_charge + ", service_charge="
+				+ service_charge + ", attributesID=" + attributesID
+				+ ", attributesContext=" + attributesContext + "]";
 	}
 	
 }

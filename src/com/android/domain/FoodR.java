@@ -114,5 +114,12 @@ public class FoodR extends Model {
 		// save Food
 		new Delete().from(FoodR.class).execute();
 	}
+	
+	/**
+	 * 根据食物ID查询食物信息
+	 */
+	public static FoodR queryFoodRByFoodId(String foodId) {
+		return new Select().from(FoodR.class).where("foodId =?", foodId).executeSingle();
+	}
 
 }

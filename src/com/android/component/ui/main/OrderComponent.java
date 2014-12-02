@@ -3,6 +3,7 @@ package com.android.component.ui.main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -10,15 +11,23 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 import com.android.R;
 import com.android.adapter.SelectListAdapter;
@@ -35,6 +44,7 @@ import com.android.component.ToastComponent;
 import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.dialog.MyDialog;
+import com.android.dialog.MyOrderDialog;
 import com.android.domain.FoodOrder;
 import com.android.domain.FoodR;
 import com.android.mapping.StatusMapping;
@@ -88,6 +98,9 @@ public class OrderComponent {
 
 	@ViewById(R.id.select_list)
 	ListView selectList; // 左上角面板
+	
+	@ViewById(R.id.orderId_spinner)
+	Spinner orderIdSpinner; // 菜单右侧下拉框
 
 	@ViewById(R.id.digit_btn)
 	GridView calucatorView; // 0-9按钮 用gridView做的按钮
@@ -121,6 +134,10 @@ public class OrderComponent {
 	public List<SelectFoodBean> selectDataList;
 
 	private SelectListAdapter selectAdapter;
+	
+	private ArrayAdapter<String> orderAdapter;// 挂单下拉框适配器
+	private List<String> orderList;
+	private String orderIdSelected;
 
 	private StringBuffer printList;
 	private StringBuffer sb;
@@ -144,6 +161,7 @@ public class OrderComponent {
 	Dialog dialg;
 
 	private MyDialog mydialog;
+	private MyOrderDialog myOrderDialog;
 
 	/**
 	 * 初始化订单组件
@@ -156,8 +174,8 @@ public class OrderComponent {
 		// 初始化打印对话框
 		dialg = buildPrintDialog();
 		mydialog = new MyDialog(context);
+		myOrderDialog = new MyOrderDialog(context);
 		String type = sharedPrefs.language().get();
-
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
 		this.selectAdapter = new SelectListAdapter(context, selectDataList, type);
@@ -167,6 +185,7 @@ public class OrderComponent {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
 				int count = event.getPointerCount();
+				
 				if (count >= 2) {
 					selectDataList.clear();
 					selectAdapter.notifyDataSetChanged();
@@ -180,6 +199,42 @@ public class OrderComponent {
 					return true;
 				}
 				return false;
+			}
+
+		});
+		orderList = FoodOrder.queryOrderListDistact();
+		if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+			orderList.add(0, "--请选择--");
+		} else {
+			orderList.add(0, "--please select--");
+		}
+		orderAdapter = new ArrayAdapter<String>(context,
+				android.R.layout.simple_spinner_item, orderList);
+		orderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		orderIdSpinner.setAdapter(orderAdapter);
+		orderIdSpinner.setSelection(-1, true);
+		orderIdSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view,
+					int position, long arg3) {
+				// 选择订单号，重置订单数据
+				clean();
+				orderIdSelected = orderList.get(position);
+				List<FoodOrder> foodOrderList = FoodOrder.queryListByOrderId(orderIdSelected);
+				for (FoodOrder foodOrder : foodOrderList) {
+					FoodR foodR = FoodR.queryFoodRByFoodId(foodOrder.foodId);
+					String type = sharedPrefs.language().get();
+					if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+						foodR.title = foodR.nameZh;
+					} else {
+						foodR.title = foodR.name;
+					}
+					update(foodR, foodOrder.quantity);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 
 		});
@@ -250,6 +305,28 @@ public class OrderComponent {
 			bean.setFood_id(foodBean.foodId);
 			bean.setFood_type(foodBean.type);
 			bean.setFood_num("1");
+			bean.setAttributesID(foodBean.attributesID);
+			bean.setAttributesContext(foodBean.attributesContext);
+			selectDataList.add(bean);
+		}
+		selectAdapter.notifyDataSetChanged();
+		doCalculation();
+	}
+	
+	/**
+	 * 修改订单
+	 * 
+	 * @param foodBean
+	 */
+	public void update(FoodR foodBean, String num) {
+		if(!isOrderAlready(foodBean.foodId)){
+			SelectFoodBean bean = new SelectFoodBean();
+			bean.setFood_name(foodBean.title);
+			bean.setFood_price(foodBean.retailPrice);
+			bean.setFood_dayin_code(foodBean.sn);
+			bean.setFood_id(foodBean.foodId);
+			bean.setFood_type(foodBean.type);
+			bean.setFood_num(num);
 			bean.setAttributesID(foodBean.attributesID);
 			bean.setAttributesContext(foodBean.attributesContext);
 			selectDataList.add(bean);
@@ -475,7 +552,7 @@ public class OrderComponent {
 					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal),MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 							.toString(), orderType);
 					// 保存数据------------------------------
-					storeOrders(orderType);
+					storeOrders(orderType, "", Constants.FOODORDER_SUBMIT_SUCCESS);
 					// 同步开始------------------------------
 					syncToServer();
 					// 清空数据------------------------------
@@ -493,20 +570,97 @@ public class OrderComponent {
 
 	private void doOrder(final String orderType) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			// 先打印数据，不耽误正常使用----------------------------
-			printList = getPrintList();
-			Log.i("[OrderComponent] -> [Result]", printList.toString());
-			androidPrinter.print(printList.toString(),MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
-					.toString(), orderType);
-			clean();
+			// 挂单操作
+			if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+				myOrderDialog.order_edt.setText(orderIdSelected);
+				myOrderDialog.order_msg_text.setText("");
+			}
+			myOrderDialog.show();
+			myOrderDialog.dialog_yes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					String orderId = myOrderDialog.order_edt.getText().toString().trim();
+					if (StringUtils.isEmpty(orderId)) {// 为空，提示输入订单号
+						myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
+						myOrderDialog.order_msg_text.setText(R.string.inputorder_message_empty);
+						getOrderEditFocus();
+					} else {// 不为空,判断订单号是否已存在.1,不存在，保存订单.2,存在，提示订单号已经存在.
+						if(StringUtils.equals(orderIdSelected, orderId)){
+							FoodOrder.deleteOrderByOrderId(orderIdSelected);
+							storeOrders(Constants.PAYTYPE_CARD, orderId, Constants.FOODORDER_PAUSE);
+							myOrderDialog.order_msg_text.setText("");
+							myOrderDialog.order_edt.setText("");
+							orderIdSpinner.setSelection(0);
+							myOrderDialog.dismiss();
+							// 先打印数据，不耽误正常使用----------------------------
+							printOrder(orderType);
+							clean();
+						} else {
+							if(FoodOrder.queryOrderIdExist(orderId)){
+								myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
+								myOrderDialog.order_msg_text.setText(R.string.inputorder_message_error);
+								getOrderEditFocus();
+							}else{
+								FoodOrder.deleteOrderByOrderId(orderIdSelected);
+								storeOrders(Constants.PAYTYPE_CARD, orderId, Constants.FOODORDER_PAUSE);
+								// 更新下拉框数据
+								if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+									for (int i = 0; i < orderList.size(); i++) {
+										if(StringUtils.equals(orderList.get(i), orderIdSelected))
+											orderList.remove(i);
+									}
+								}
+								orderList.add(orderId);
+								ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, orderList);
+								adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+								orderIdSpinner.setSelection(0);
+								orderIdSpinner.setAdapter(adapter);
+								myOrderDialog.order_msg_text.setText("");
+								myOrderDialog.order_edt.setText("");
+								myOrderDialog.dismiss();
+								// 先打印数据，不耽误正常使用----------------------------
+								printOrder(orderType);
+								clean();
+							}
+						}
+					}
+				}
+			});
+			myOrderDialog.dialog_cancel.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					myOrderDialog.order_edt.setText("");
+					myOrderDialog.order_msg_text.setVisibility(View.GONE);
+					myOrderDialog.order_msg_text.setText("");
+					myOrderDialog.dismiss();
+				}
+			});
 		}
 	}
-
+	
+	/**
+	 * 订单号输入框重新获取焦点
+	 */
+	public void getOrderEditFocus(){
+		myOrderDialog.order_edt.setFocusable(true);   
+		myOrderDialog.order_edt.setFocusableInTouchMode(true);   
+		myOrderDialog.order_edt.requestFocus();
+	}
+	
+	public void printOrder(String orderType){
+		printList = getPrintList();
+		Log.i("[OrderComponent] -> [Result]", printList.toString());
+		androidPrinter.print(printList.toString(),MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+				.toString(), orderType);
+	}
+	
 	/**
 	 * 计算总金额
 	 */
 	public void doCalculation() {
 		double showTotalPrice = 0;
+		double sCharge = 0;
+		double gCharge = 0;
 		if (is_foc) {
 			// 免费的话，全部清空
 			showTotalPrice = 0;
@@ -537,16 +691,21 @@ public class OrderComponent {
 				} else {
 					showTotalPrice += price;
 				}
+				
+				/*
+				 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
+				 */
+				if(!myPrefs.serviceRate().get().isEmpty()){
+					sCharge = price * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
+					serviceCharge += sCharge;
+				    bean.setService_charge(sCharge);
+				}
+				if (!myPrefs.gstRate().get().isEmpty()){
+					gCharge = (price + sCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
+					gstCharge += gCharge;
+					bean.setGst_charge(gCharge);
+				}
 
-			}
-			/*
-			 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
-			 */
-			if(!myPrefs.serviceRate().get().isEmpty()){
-				serviceCharge = showTotalPrice * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
-			}
-			if (!myPrefs.gstRate().get().isEmpty()){
-				gstCharge = (showTotalPrice +serviceCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
 			}
 						
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + gstCharge + serviceCharge));
@@ -579,10 +738,10 @@ public class OrderComponent {
 	}
 
 	// 保存数据
-	void storeOrders(String orderType) {
+	void storeOrders(String orderType, String orderId, String flag) {
 		for (int i = 0; i < selectDataList.size(); i++) {
 			SelectFoodBean bean = selectDataList.get(i);
-			FoodOrder.save(bean, myApp, is_foc, orderType);
+			FoodOrder.save(bean, myApp, is_foc, orderType, orderId, flag);
 		}
 	}
 
@@ -615,6 +774,8 @@ public class OrderComponent {
 			params.put("transactions[" + i + "].totalRetailPrice", String.valueOf(foodOrder.retailPrice));
 			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
 			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
+			params.put("transactions[" + i + "].gstCharge", String.valueOf(foodOrder.gstCharge));
+			params.put("transactions[" + i + "].serviceCharge", String.valueOf(foodOrder.serviceCharge));
 			params.put("transactions[" + i + "].orderDate", foodOrder.date);
 			params.put("transactions[" + i + "].type", foodOrder.orderType);
 			params.put("transactions[" + i + "].attributeIds", foodOrder.attributesID);

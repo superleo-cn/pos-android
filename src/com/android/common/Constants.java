@@ -53,7 +53,8 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "pos.weebo.com.sg";
+	//public static final String HOST = "pos.weebo.com.sg";
+	public static final String HOST = "pos.emd.com.sg";
 
 	/** 服务器端口号 */
 	public static final String PORT = ":80";
@@ -122,6 +123,11 @@ public final class Constants {
 	public static final String PAYTYPE_CASH = "CASH";
 	public static final String PAYTYPE_CARD = "CARD";
 	public static final String PLACE_ORDER = "ORDER";
+	
+	/** 食物种类 */
+	public static final String FOODORDER_PAUSE = "-1";// 挂单
+	public static final String FOODORDER_SUBMIT_FAILURE = "0";// 结账，但数据还未上传或者上传失败
+	public static final String FOODORDER_SUBMIT_SUCCESS = "1";// 结账，上传成功
 
 	/** 最大金额 */
 	public static final String MAX_PRICE = "9999.99";
