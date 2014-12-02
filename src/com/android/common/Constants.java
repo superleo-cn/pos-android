@@ -124,7 +124,7 @@ public final class Constants {
 	public static final String PAYTYPE_CARD = "CARD";
 	public static final String PLACE_ORDER = "ORDER";
 	
-	/** 食物种类 */
+	/** 订单种类 */
 	public static final String FOODORDER_PAUSE = "-1";// 挂单
 	public static final String FOODORDER_SUBMIT_FAILURE = "0";// 结账，但数据还未上传或者上传失败
 	public static final String FOODORDER_SUBMIT_SUCCESS = "1";// 结账，上传成功

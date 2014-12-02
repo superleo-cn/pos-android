@@ -557,9 +557,9 @@ public class OrderComponent {
 							if(StringUtils.equals(orderList.get(i), orderIdSelected))
 								orderList.remove(i);
 						}
+						FoodOrder.deleteOrderByOrderId(orderIdSelected);
+						updateSpinner(orderList);
 					}
-					FoodOrder.deleteOrderByOrderId(orderIdSelected);
-					updateSpinner(orderList);
 					// 保存数据------------------------------
 					storeOrders(orderType, "", Constants.FOODORDER_SUBMIT_SUCCESS);
 					// 同步开始------------------------------
