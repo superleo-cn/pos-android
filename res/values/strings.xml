@@ -120,10 +120,6 @@
 	<string name="query_db">Query</string>
 	<string name="SGD">S$</string>
 	<string name="scan">SCAN</string>
-	<string name="inputorder_message_empty">Please input your order number.</string>
-	<string name="inputorder_message_error">Order number exist.</string>
-	<string name="spinner_default">--please select--</string>
-	<string name="spinner_orderId">order number</string>
 </resources>
 
 
