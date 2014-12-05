@@ -2,6 +2,7 @@ package com.android.activity;
 
 import android.app.Activity;
 import android.os.StrictMode;
+import android.view.WindowManager;
 
 import com.android.common.CrashHandler;
 import com.android.common.MyApp;

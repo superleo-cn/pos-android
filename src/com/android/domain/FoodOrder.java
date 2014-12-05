@@ -101,7 +101,7 @@ public class FoodOrder extends Model {
 	 * @return
 	 */
 	public static List<FoodOrder> queryListByStatus(String status, int size) {
-		return new Select().from(FoodOrder.class).where("status = ?", status).limit("0, " + size).execute();
+		return new Select().from(FoodOrder.class).where("status = ? and flag != ?", status, Constants.FOODORDER_PAUSE).limit("0, " + size).execute();
 	}
 
 	/**
@@ -228,10 +228,12 @@ public class FoodOrder extends Model {
 	/**
 	 * 查询所有挂单状态且不重复的订单号
 	 * 
-	 * @param orderNo 订单号
 	 */
 	public static List<String> queryOrderListDistact() {
-		List<FoodOrder> foodOrderList = new Select().from(FoodOrder.class).where("flag = ?", Constants.FOODORDER_PAUSE).groupBy("order_id").execute();
+		List<FoodOrder> foodOrderList = new Select().from(FoodOrder.class).where("flag = ?", Constants.FOODORDER_PAUSE)
+				.groupBy("order_id")
+				.orderBy("date")
+				.orderBy("order_id").execute();
 		List<String> orders = new ArrayList<String>();
 		for (int i = 0; i < foodOrderList.size(); i++) {
 			FoodOrder foodOrder = foodOrderList.get(i);

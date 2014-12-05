@@ -12,12 +12,14 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Dialog;
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
@@ -155,7 +157,7 @@ public class OrderComponent {
 	
 	private double gstCharge = 0;
 	
-	private double serviceCharge =0;
+	private double serviceCharge = 0;
 
 	// 打印框
 	Dialog dialg;
@@ -585,6 +587,7 @@ public class OrderComponent {
 				myOrderDialog.order_msg_text.setText("");
 			}
 			myOrderDialog.show();
+//			myOrderDialog.order_edt.setInputType(InputType.TYPE_CLASS_NUMBER);
 			myOrderDialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -674,6 +677,8 @@ public class OrderComponent {
 		double showTotalPrice = 0;
 		double sCharge = 0;
 		double gCharge = 0;
+		double sChargeSum = 0;
+		double gChargeSum = 0;
 		if (is_foc) {
 			// 免费的话，全部清空
 			showTotalPrice = 0;
@@ -685,43 +690,50 @@ public class OrderComponent {
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 			calculatorComponent.compute_surplus();
 		} else {
-			for (SelectFoodBean bean : selectDataList) {
-				// 计算总价
-				int num = Integer.parseInt(bean.getFood_num());
-				double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
-				double dabao = 0;
-				double dazhe = 0;
-				String type = bean.getFood_type();
-				if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
-					if (is_discount) {
-						dazhe = price * (1 - save_discount_price);
-						showTotalPrice += (price * save_discount_price);
+			if(selectDataList.size() > 0){
+				for (SelectFoodBean bean : selectDataList) {
+					// 计算总价
+					int num = Integer.parseInt(bean.getFood_num());
+					double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
+					double dabao = 0;
+					double dazhe = 0;
+					String type = bean.getFood_type();
+					if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
+						if (is_discount) {
+							dazhe = price * (1 - save_discount_price);
+							showTotalPrice += (price * save_discount_price);
+						} else {
+							showTotalPrice += price;
+						}
+						bean.setDabao_price(dabao);
+						bean.setDazhe_price(dazhe);
 					} else {
 						showTotalPrice += price;
 					}
-					bean.setDabao_price(dabao);
-					bean.setDazhe_price(dazhe);
-				} else {
-					showTotalPrice += price;
-				}
-				
-				/*
-				 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
-				 */
-				if(!myPrefs.serviceRate().get().isEmpty()){
-					sCharge = price * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
-					serviceCharge += sCharge;
-				    bean.setService_charge(sCharge);
-				}
-				if (!myPrefs.gstRate().get().isEmpty()){
-					gCharge = (price + sCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
-					gstCharge += gCharge;
-					bean.setGst_charge(gCharge);
-				}
+					
+					/*
+					 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
+					 */
+					if(!myPrefs.serviceRate().get().isEmpty()){
+						sCharge = price * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
+						sChargeSum += sCharge;
+					    bean.setService_charge(sCharge);
+					}
+					if (!myPrefs.gstRate().get().isEmpty()){
+						gCharge = (price + sCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
+						gChargeSum += gCharge;
+						bean.setGst_charge(gCharge);
+					}
 
+				}
+			} else {
+				serviceCharge = 0;
+				gstCharge = 0;
 			}
 						
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + gstCharge + serviceCharge));
+			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + sChargeSum + gChargeSum));
+			serviceCharge = sChargeSum;
+			gstCharge = gChargeSum;
 			
 			if (Double.parseDouble(gathering.getText().toString()) > 0) {
 				calculatorComponent.compute_surplus();

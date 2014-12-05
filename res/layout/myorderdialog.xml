@@ -44,6 +44,7 @@
                 android:layout_width="400dp"
                 android:layout_height="65dp"
                 android:paddingLeft="10dp"
+                android:maxLength="5"
                 android:textSize="26dp"
                 android:digits="@string/register_name_digits"
                 android:background="@color/white" />

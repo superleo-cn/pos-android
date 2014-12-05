@@ -43,6 +43,7 @@
         <activity
             android:name="com.android.activity.MainActivity_"
             android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:theme="@android:style/Theme.Black.NoTitleBar" />
          <activity
             android:name="com.android.activity.QueryAllDBActivity_"
