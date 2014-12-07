@@ -357,7 +357,8 @@
                                         android:layout_weight="2"
                                         android:orientation="vertical" >
 
-                                         <Button
+                                        <!--  
+                               			<Button
                                             android:id="@+id/order_btn"
                                             android:layout_width="fill_parent"
                                             android:layout_height="fill_parent"
@@ -380,6 +381,7 @@
                                             android:textColor="#FFFFFF"
                                             android:textSize="30sp"
                                             android:textStyle="bold" />
+                                      	-->
 
                                         <Button
                                             android:id="@+id/ok_btn"

@@ -120,8 +120,4 @@
     <string name="query_db">数据查询</string>
 	<string name="SGD">S$</string>
 	<string name="scan">SCAN</string>
-	<string name="inputorder_message_empty">请输入订单号</string>
-	<string name="inputorder_message_error">您输入的订单号已存在</string>
-	<string name="spinner_default">--请选择--</string>
-	<string name="spinner_orderId">订单编号</string>
 </resources>
