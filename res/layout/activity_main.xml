@@ -197,7 +197,6 @@
                                 android:layout_marginLeft="10dip"
                                 android:layout_marginRight="10dip"                                -->
                                 
-                                <!-- 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_take_package"
                                     android:layout_width="fill_parent"
@@ -226,9 +225,8 @@
                                         android:textColor="#CD6715"
                                         android:textSize="24sp"
                                         android:textStyle="bold" />
-                                </RelativeLayout> -->
+                                </RelativeLayout>
  
-                               <!-- 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_foc"
                                     android:layout_width="fill_parent"
@@ -260,7 +258,6 @@
                                         android:textStyle="bold" />
                                 </RelativeLayout> -->
                                 
-                                <!-- 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_bar_code"
                                     android:layout_width="0dip"
@@ -290,7 +287,6 @@
                                         android:textSize="16sp"
                                         android:textStyle="bold" />
                                 </RelativeLayout>
-								-->
                                 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_discount"

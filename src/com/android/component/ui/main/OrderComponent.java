@@ -11,9 +11,11 @@ import org.apache.commons.lang.StringUtils;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -65,8 +67,8 @@ public class OrderComponent {
 	MyApp myApp; // 注入 MyApp
 
 	// 扫描
-	// @ViewById(R.id.bar_code_text)
-	// TextView barCodeText;
+	@ViewById(R.id.bar_code_text)
+	TextView barCodeText;
 
 	@ViewById(R.id.total_price)
 	TextView totalPrice; // 总价格
@@ -77,11 +79,11 @@ public class OrderComponent {
 	@ViewById(R.id.surplus)
 	TextView surplus; // 找回
 
-	// @ViewById(R.id.take_package)
-	// ImageView take_package; // 打包选项
+	@ViewById(R.id.take_package)
+	ImageView take_package; // 打包选项
 
-	// @ViewById(R.id.foc)
-	// ImageView foc; // FOC
+	@ViewById(R.id.foc)
+	ImageView foc; // FOC
 
 	@ViewById(R.id.discount)
 	ImageView discount; // 打折选项
@@ -103,7 +105,7 @@ public class OrderComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
-	
+
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
 
@@ -112,7 +114,6 @@ public class OrderComponent {
 
 	@Bean
 	KeyboardComponent keyboardComponent;
-	
 
 	FoodComponent foodComponent;
 
@@ -133,12 +134,12 @@ public class OrderComponent {
 	private boolean is_foc;
 	private double save_discount_price;
 	private double package_money;
-	
+
 	private double subTotal = 0;
-	
+
 	private double gstCharge = 0;
-	
-	private double serviceCharge =0;
+
+	private double serviceCharge = 0;
 
 	// 打印框
 	Dialog dialg;
@@ -188,27 +189,25 @@ public class OrderComponent {
 		save_discount_price = MyNumberUtils.strToNum(sharedPrefs.discount().get());
 		package_money = MyNumberUtils.strToNum(sharedPrefs.packageCost().get());
 
-		// barCodeText.setOnKeyListener(new OnKeyListener() {
-		// public boolean onKey(View v, int keyCode, KeyEvent event) {
-		// // If the event is a key-down event on the "enter" button
-		// if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode ==
-		// KeyEvent.KEYCODE_ENTER)) {
-		// sann();
-		// return false;
-		// } else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode ==
-		// KeyEvent.KEYCODE_DEL) {
-		// String str = barCodeText.getText().toString();
-		// if (StringUtils.length(str) > 0) {
-		// barCodeText.setText(str.substring(0, str.length() - 1));
-		// }
-		// }
-		// return true;
-		// }
-		// });
+		barCodeText.setOnKeyListener(new OnKeyListener() {
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				// If the event is a key-down event on the "enter" button
+				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+					sann();
+					return false;
+				} else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_DEL) {
+					String str = barCodeText.getText().toString();
+					if (StringUtils.length(str) > 0) {
+						barCodeText.setText(str.substring(0, str.length() - 1));
+					}
+				}
+				return true;
+			}
+		});
 
-		// barCodeText.setFocusableInTouchMode(true);
-		// barCodeText.setFocusable(true);
-		// barCodeText.requestFocus();
+		barCodeText.setFocusableInTouchMode(true);
+		barCodeText.setFocusable(true);
+		barCodeText.requestFocus();
 
 	}
 
@@ -222,11 +221,11 @@ public class OrderComponent {
 	// doCalculation();
 	// }
 	// }
-	
-	private boolean isOrderAlready(String foodId){
-		if(this.selectDataList != null){
-			for(SelectFoodBean bean : selectDataList){
-				if(StringUtils.equals(foodId, bean.getFood_id())){
+
+	private boolean isOrderAlready(String foodId) {
+		if (this.selectDataList != null) {
+			for (SelectFoodBean bean : selectDataList) {
+				if (StringUtils.equals(foodId, bean.getFood_id())) {
 					int val = Integer.parseInt(bean.getFood_num()) + 1;
 					bean.setFood_num(String.valueOf(val));
 					return true;
@@ -242,7 +241,7 @@ public class OrderComponent {
 	 * @param foodBean
 	 */
 	public void order(FoodR foodBean) {
-		if(!isOrderAlready(foodBean.foodId)){
+		if (!isOrderAlready(foodBean.foodId)) {
 			SelectFoodBean bean = new SelectFoodBean();
 			bean.setFood_name(foodBean.title);
 			bean.setFood_price(foodBean.retailPrice);
@@ -317,30 +316,30 @@ public class OrderComponent {
 		}
 	}
 
-	// @Click(R.id.bar_code_btn)
-	// public void sann() {
-	// List<FoodR> foodList = foodComponent.getFoodDataAllList();
-	// String sannId = StringUtils.trim(barCodeText.getText().toString());
-	// if (StringUtils.isNotEmpty(sannId)) {
-	// for (FoodR food : foodList) {
-	// if (StringUtils.equals(food.barCode, sannId)) {
-	// order(food);
-	// }
-	// }
-	// }
-	// barCodeText.setText("");
-	// }
+	@Click(R.id.bar_code_btn)
+	public void sann() {
+		List<FoodR> foodList = foodComponent.getFoodDataAllList();
+		String sannId = StringUtils.trim(barCodeText.getText().toString());
+		if (StringUtils.isNotEmpty(sannId)) {
+			for (FoodR food : foodList) {
+				if (StringUtils.equals(food.barCode, sannId)) {
+					order(food);
+				}
+			}
+		}
+		barCodeText.setText("");
+	}
 
 	/**
 	 * 打包操作
 	 */
-	// @Click(R.id.r_lay_id_take_package)
-	// public void takePackage() {
-	// if (CollectionUtils.isNotEmpty(selectDataList)) {
-	// setImageStatus(take_package, foc);
-	// doCalculation();
-	// }
-	// }
+	@Click(R.id.r_lay_id_take_package)
+	public void takePackage() {
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(take_package, foc);
+			doCalculation();
+		}
+	}
 
 	/**
 	 * 打折等操作
@@ -356,13 +355,13 @@ public class OrderComponent {
 	/**
 	 * 免费等操作
 	 */
-	// @Click(R.id.r_lay_id_foc)
-	// public void foc() {
-	// if (CollectionUtils.isNotEmpty(selectDataList)) {
-	// setImageStatus(foc, discount, take_package);
-	// doCalculation();
-	// }
-	// }
+	@Click(R.id.r_lay_id_foc)
+	public void foc() {
+		if (CollectionUtils.isNotEmpty(selectDataList)) {
+			setImageStatus(foc, discount, take_package);
+			doCalculation();
+		}
+	}
 
 	/**
 	 * 
@@ -410,20 +409,19 @@ public class OrderComponent {
 	void calulatorPanel(int position) {
 		calculatorComponent.calculation(sbuff, position);
 	}
-	
+
 	/*
 	 * Button used for place an order
 	 */
-
-//	@Click(R.id.order_btn)
-//	public void placeOrderBtn() {
-//		doOrder(Constants.PLACE_ORDER);
-//	}
-//	
-//	@Click(R.id.card_btn)
-//	public void creidtCardBtn() {
-//		doPay(Constants.PAYTYPE_CARD);
-//	}
+	// @Click(R.id.order_btn)
+	// public void placeOrderBtn() {
+	// doOrder(Constants.PLACE_ORDER);
+	// }
+	//
+	// @Click(R.id.card_btn)
+	// public void creidtCardBtn() {
+	// doPay(Constants.PAYTYPE_CARD);
+	// }
 
 	/**
 	 * 确定打印
@@ -432,9 +430,8 @@ public class OrderComponent {
 	public void ok() {
 		doPay(Constants.PAYTYPE_CASH);
 	}
-	
-	
-	private StringBuffer getPrintList(){
+
+	private StringBuffer getPrintList() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Item(名称)\tQty(数量)\tAmount(价格)\n");
 		if (selectDataList != null) {
@@ -447,7 +444,7 @@ public class OrderComponent {
 		}
 		return sb;
 	}
-	
+
 	private void doPay(final String orderType) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
@@ -472,7 +469,8 @@ public class OrderComponent {
 				@Override
 				public void onClick(View v) {
 					mydialog.dismiss();
-					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal),MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils
+							.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 							.toString(), orderType);
 					// 保存数据------------------------------
 					storeOrders(orderType);
@@ -496,8 +494,9 @@ public class OrderComponent {
 			// 先打印数据，不耽误正常使用----------------------------
 			printList = getPrintList();
 			Log.i("[OrderComponent] -> [Result]", printList.toString());
-			androidPrinter.print(printList.toString(),MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
-					.toString(), orderType);
+			androidPrinter.print(printList.toString(), MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils
+					.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(),
+					surplus.getText().toString(), orderType);
 			clean();
 		}
 	}
@@ -540,17 +539,18 @@ public class OrderComponent {
 
 			}
 			/*
-			 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
+			 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10
+			 * to service Charge
 			 */
-			if(!myPrefs.serviceRate().get().isEmpty()){
+			if (!myPrefs.serviceRate().get().isEmpty()) {
 				serviceCharge = showTotalPrice * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
 			}
-			if (!myPrefs.gstRate().get().isEmpty()){
-				gstCharge = (showTotalPrice +serviceCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
+			if (!myPrefs.gstRate().get().isEmpty()) {
+				gstCharge = (showTotalPrice + serviceCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
 			}
-						
+
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + gstCharge + serviceCharge));
-			
+
 			if (Double.parseDouble(gathering.getText().toString()) > 0) {
 				calculatorComponent.compute_surplus();
 			}
