@@ -1,9 +1,7 @@
 ﻿package com.android.adapter;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -23,11 +21,9 @@ import com.android.R;
 import com.android.bean.SelectFoodBean;
 import com.android.common.Constants;
 import com.android.common.DisplayUtil;
-import com.android.component.SharedPreferencesComponent_;
 import com.android.component.ui.main.OrderComponent;
 import com.android.dialog.MyAttrbutesDialog;
 import com.android.domain.AttributesR;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 public class SelectListAdapter extends BaseAdapter {
 
 	private Context context;
@@ -61,22 +57,18 @@ public class SelectListAdapter extends BaseAdapter {
 	}
 
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return classList.size();
 	}
 
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		ViewHolder viewHolder;
 		final SelectFoodBean bean;
 		if (convertView == null) {

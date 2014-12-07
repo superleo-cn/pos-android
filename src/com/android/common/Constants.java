@@ -53,11 +53,11 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	//public static final String HOST = "pos.weebo.com.sg";
-	public static final String HOST = "pos.emd.com.sg";
+	// public static final String HOST = "pos.weebo.com.sg";
+	public static final String HOST = "192.168.0.15";
 
 	/** 服务器端口号 */
-	public static final String PORT = ":80";
+	public static final String PORT = ":9000";
 	/** 应用上下文名 */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */
@@ -123,7 +123,7 @@ public final class Constants {
 	public static final String PAYTYPE_CASH = "CASH";
 	public static final String PAYTYPE_CARD = "CARD";
 	public static final String PLACE_ORDER = "ORDER";
-	
+
 	/** 订单种类 */
 	public static final String FOODORDER_PAUSE = "-1";// 挂单
 	public static final String FOODORDER_SUBMIT_FAILURE = "0";// 结账，但数据还未上传或者上传失败
@@ -149,7 +149,7 @@ public final class Constants {
 
 	/** 默认最多一次提交50条数据 */
 	public static final int SYCN_SIZE = 25;
-	
+
 	/** 金额单位 */
 	public static final String DOLLAR = "S$";
 
