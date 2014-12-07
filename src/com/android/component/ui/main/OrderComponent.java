@@ -67,8 +67,8 @@ public class OrderComponent {
 	MyApp myApp; // 注入 MyApp
 
 	// 扫描
-	@ViewById(R.id.bar_code_text)
-	TextView barCodeText;
+//	@ViewById(R.id.bar_code_text)
+//	TextView barCodeText;
 
 	@ViewById(R.id.total_price)
 	TextView totalPrice; // 总价格
@@ -189,25 +189,25 @@ public class OrderComponent {
 		save_discount_price = MyNumberUtils.strToNum(sharedPrefs.discount().get());
 		package_money = MyNumberUtils.strToNum(sharedPrefs.packageCost().get());
 
-		barCodeText.setOnKeyListener(new OnKeyListener() {
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				// If the event is a key-down event on the "enter" button
-				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-					sann();
-					return false;
-				} else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_DEL) {
-					String str = barCodeText.getText().toString();
-					if (StringUtils.length(str) > 0) {
-						barCodeText.setText(str.substring(0, str.length() - 1));
-					}
-				}
-				return true;
-			}
-		});
-
-		barCodeText.setFocusableInTouchMode(true);
-		barCodeText.setFocusable(true);
-		barCodeText.requestFocus();
+//		barCodeText.setOnKeyListener(new OnKeyListener() {
+//			public boolean onKey(View v, int keyCode, KeyEvent event) {
+//				// If the event is a key-down event on the "enter" button
+//				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+//					sann();
+//					return false;
+//				} else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_DEL) {
+//					String str = barCodeText.getText().toString();
+//					if (StringUtils.length(str) > 0) {
+//						barCodeText.setText(str.substring(0, str.length() - 1));
+//					}
+//				}
+//				return true;
+//			}
+//		});
+//
+//		barCodeText.setFocusableInTouchMode(true);
+//		barCodeText.setFocusable(true);
+//		barCodeText.requestFocus();
 
 	}
 
@@ -316,19 +316,19 @@ public class OrderComponent {
 		}
 	}
 
-	@Click(R.id.bar_code_btn)
-	public void sann() {
-		List<FoodR> foodList = foodComponent.getFoodDataAllList();
-		String sannId = StringUtils.trim(barCodeText.getText().toString());
-		if (StringUtils.isNotEmpty(sannId)) {
-			for (FoodR food : foodList) {
-				if (StringUtils.equals(food.barCode, sannId)) {
-					order(food);
-				}
-			}
-		}
-		barCodeText.setText("");
-	}
+//	@Click(R.id.bar_code_btn)
+//	public void sann() {
+//		List<FoodR> foodList = foodComponent.getFoodDataAllList();
+//		String sannId = StringUtils.trim(barCodeText.getText().toString());
+//		if (StringUtils.isNotEmpty(sannId)) {
+//			for (FoodR food : foodList) {
+//				if (StringUtils.equals(food.barCode, sannId)) {
+//					order(food);
+//				}
+//			}
+//		}
+//		barCodeText.setText("");
+//	}
 
 	/**
 	 * 打包操作

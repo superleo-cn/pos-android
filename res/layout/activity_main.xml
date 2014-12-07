@@ -256,8 +256,9 @@
                                         android:textColor="#CD6715"
                                         android:textSize="24sp"
                                         android:textStyle="bold" />
-                                </RelativeLayout> -->
+                                </RelativeLayout> 
                                 
+                                <!--  
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_bar_code"
                                     android:layout_width="0dip"
@@ -287,12 +288,15 @@
                                         android:textSize="16sp"
                                         android:textStyle="bold" />
                                 </RelativeLayout>
+                                -->
                                 
                                 <RelativeLayout
                                     android:id="@+id/r_lay_id_discount"
-                                    android:layout_width="150dip"
+                                    android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="10dip"
+                                    android:layout_marginLeft="5dip"
+                                    android:layout_weight="1"
+                                    android:background="@drawable/layout_mid_bg"
                                     android:orientation="horizontal" >
 
                                     <ImageView
