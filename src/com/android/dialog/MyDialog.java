@@ -23,6 +23,9 @@ public class MyDialog extends Dialog {
 	public TextView textDialogSearchMoenyID;
 	public TextView textDialogAllMoenyTitleID;
 	public TextView textDialogSearchMoenyTitleID;
+	public TextView textDialogGSTMoenyID;
+	public TextView textDialogSCMoenyID;
+	public TextView textDialogSumMoenyID;
 	public LinearLayout linearlayoutID;
 	public MyDialog(Context context) {
 		super(context, R.style.MyProgressDialog);
@@ -33,6 +36,9 @@ public class MyDialog extends Dialog {
 		textDialogSearchMoenyID = (TextView) findViewById(R.id.textDialogSearchMoenyID);
 		textDialogAllMoenyTitleID = (TextView) findViewById(R.id.textDialogAllMoenyTitleID);
 		textDialogSearchMoenyTitleID = (TextView) findViewById(R.id.textDialogSearchMoenyTitleID);
+		textDialogGSTMoenyID = (TextView) findViewById(R.id.textDialogGSTMoenyID);
+		textDialogSCMoenyID = (TextView) findViewById(R.id.textDialogSCMoenyID);
+		textDialogSumMoenyID = (TextView) findViewById(R.id.textDialogSumMoenyID);
 		dialog_yes = (Button) findViewById(R.id.dialog_yes);
 		dialog_no = (Button) findViewById(R.id.dialog_no);
 		dialog_title  = (TextView) findViewById(R.id.dialog_title);

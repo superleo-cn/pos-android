@@ -4,7 +4,7 @@
     <string name="title_activity_main">MainActivity</string>
 	<string name="exit_txt">Exit</string>
 	<string name="layoutLeft_title">WEEBO</string>
-	<string name="total_prie">Total:</string>
+	<string name="total_prie">price:</string>
 	<string name="gathering">Pay:</string>
 	<string name="surplus">Change:</string>
 	<string name="surplus2">Change:</string>
@@ -124,6 +124,9 @@
 	<string name="inputorder_message_error">Order number exist.</string>
 	<string name="spinner_default">--please select--</string>
 	<string name="spinner_orderId">order number</string>
+	<string name="gst">GST:</string>
+	<string name="sc">SC:</string>
+	<string name="sumMoney">total：</string>
 </resources>
 
 

@@ -124,4 +124,7 @@
 	<string name="inputorder_message_error">您输入的订单号已存在</string>
 	<string name="spinner_default">--请选择--</string>
 	<string name="spinner_orderId">订单编号</string>
+	<string name="gst">印花税：</string>
+	<string name="sc">服务税：</string>
+	<string name="sumMoney">总计：</string>
 </resources>

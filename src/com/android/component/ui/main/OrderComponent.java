@@ -11,25 +11,20 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Toast;
 
 import com.android.R;
 import com.android.adapter.SelectListAdapter;
@@ -152,6 +147,7 @@ public class OrderComponent {
 	private boolean is_foc;
 	private double save_discount_price;
 	private double package_money;
+	double showTotalPrice = 0;
 	
 	private double subTotal = 0;
 	
@@ -539,14 +535,17 @@ public class OrderComponent {
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
 			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
 			mydialog.dialog_message.setVisibility(View.GONE);
-			mydialog.textDialogAllMoenyID.setTextSize(60);
-			mydialog.textDialogSearchMoenyID.setTextSize(60);
-			mydialog.textDialogAllMoenyTitleID.setTextSize(60);
-			mydialog.textDialogSearchMoenyTitleID.setTextSize(60);
+			mydialog.textDialogAllMoenyID.setTextSize(26);
+			mydialog.textDialogSearchMoenyID.setTextSize(26);
+			mydialog.textDialogAllMoenyTitleID.setTextSize(26);
+			mydialog.textDialogSearchMoenyTitleID.setTextSize(26);
 			mydialog.textDialogAllMoenyTitleID.setText(stringResComponent.totalPrie);
 			mydialog.textDialogSearchMoenyTitleID.setText(stringResComponent.Surplus);
-			mydialog.textDialogAllMoenyID.setText(Constants.DOLLAR + totalPrice.getText().toString());
+			mydialog.textDialogAllMoenyID.setText(Constants.DOLLAR + MyNumberUtils.numToStr(showTotalPrice));
 			mydialog.textDialogSearchMoenyID.setText(Constants.DOLLAR + surplus.getText().toString());
+			mydialog.textDialogGSTMoenyID.setText(Constants.DOLLAR + MyNumberUtils.numToStr(gstCharge));
+			mydialog.textDialogSCMoenyID.setText(Constants.DOLLAR + MyNumberUtils.numToStr(serviceCharge));
+			mydialog.textDialogSumMoenyID.setText(Constants.DOLLAR + totalPrice.getText().toString());
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -587,19 +586,19 @@ public class OrderComponent {
 				myOrderDialog.order_msg_text.setText("");
 			}
 			myOrderDialog.show();
-//			myOrderDialog.order_edt.setInputType(InputType.TYPE_CLASS_NUMBER);
+			myOrderDialog.order_edt.setInputType(InputType.TYPE_CLASS_NUMBER);
 			myOrderDialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					String orderId = myOrderDialog.order_edt.getText().toString().trim();
-					if (StringUtils.isEmpty(orderId)) {// 为空，提示输入订单号
+					String tableId = myOrderDialog.order_edt.getText().toString().trim();
+					if (StringUtils.isEmpty(tableId)) {// 为空，提示输入订单号
 						myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
 						myOrderDialog.order_msg_text.setText(R.string.inputorder_message_empty);
 						getOrderEditFocus();
 					} else {// 不为空,判断订单号是否已存在.1,不存在，保存订单.2,存在，提示订单号已经存在.
-						if(StringUtils.equals(orderIdSelected, orderId)){
+						if(StringUtils.equals(orderIdSelected, tableId)){
 							FoodOrder.deleteOrderByOrderId(orderIdSelected);
-							storeOrders(Constants.PAYTYPE_CARD, orderId, Constants.FOODORDER_PAUSE);
+							storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
 							myOrderDialog.order_msg_text.setText("");
 							myOrderDialog.order_edt.setText("");
 							orderIdSpinner.setSelection(0);
@@ -608,21 +607,22 @@ public class OrderComponent {
 							printOrder(orderType);
 							clean();
 						} else {
-							if(FoodOrder.queryOrderIdExist(orderId)){
+							if(FoodOrder.queryOrderIdExist(tableId)){
 								myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
 								myOrderDialog.order_msg_text.setText(R.string.inputorder_message_error);
 								getOrderEditFocus();
 							}else{
 								FoodOrder.deleteOrderByOrderId(orderIdSelected);
-								storeOrders(Constants.PAYTYPE_CARD, orderId, Constants.FOODORDER_PAUSE);
+								storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
 								// 更新下拉框数据
 								if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
 									for (int i = 0; i < orderList.size(); i++) {
-										if(StringUtils.equals(orderList.get(i), orderIdSelected))
+										if(StringUtils.equals(orderList.get(i), orderIdSelected)){
 											orderList.remove(i);
+										}
 									}
 								}
-								orderList.add(orderId);
+								orderList.add(tableId);
 								updateSpinner(orderList);
 								myOrderDialog.order_msg_text.setText("");
 								myOrderDialog.order_edt.setText("");
@@ -674,20 +674,20 @@ public class OrderComponent {
 	 * 计算总金额
 	 */
 	public void doCalculation() {
-		double showTotalPrice = 0;
 		double sCharge = 0;
 		double gCharge = 0;
 		double sChargeSum = 0;
 		double gChargeSum = 0;
+		double allPrice = 0;
 		if (is_foc) {
 			// 免费的话，全部清空
-			showTotalPrice = 0;
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			allPrice = 0;
+			totalPrice.setText(MyNumberUtils.numToStr(allPrice));
 			for (SelectFoodBean bean : selectDataList) {
 				bean.setDabao_price(0);
 				bean.setDazhe_price(0);
 			}
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			totalPrice.setText(MyNumberUtils.numToStr(allPrice));
 			calculatorComponent.compute_surplus();
 		} else {
 			if(selectDataList.size() > 0){
@@ -701,14 +701,14 @@ public class OrderComponent {
 					if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
 						if (is_discount) {
 							dazhe = price * (1 - save_discount_price);
-							showTotalPrice += (price * save_discount_price);
+							allPrice += (price * save_discount_price);
 						} else {
-							showTotalPrice += price;
+							allPrice += price;
 						}
 						bean.setDabao_price(dabao);
 						bean.setDazhe_price(dazhe);
 					} else {
-						showTotalPrice += price;
+						allPrice += price;
 					}
 					
 					/*
@@ -729,11 +729,13 @@ public class OrderComponent {
 			} else {
 				serviceCharge = 0;
 				gstCharge = 0;
+				showTotalPrice = 0;
 			}
 						
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + sChargeSum + gChargeSum));
+			totalPrice.setText(MyNumberUtils.numToStr(allPrice + sChargeSum + gChargeSum));
 			serviceCharge = sChargeSum;
 			gstCharge = gChargeSum;
+			showTotalPrice = allPrice;
 			
 			if (Double.parseDouble(gathering.getText().toString()) > 0) {
 				calculatorComponent.compute_surplus();
@@ -763,10 +765,10 @@ public class OrderComponent {
 	}
 
 	// 保存数据
-	void storeOrders(String orderType, String orderId, String flag) {
+	void storeOrders(String orderType, String tableId, String flag) {
 		for (int i = 0; i < selectDataList.size(); i++) {
 			SelectFoodBean bean = selectDataList.get(i);
-			FoodOrder.save(bean, myApp, is_foc, orderType, orderId, flag);
+			FoodOrder.save(bean, myApp, is_foc, orderType, tableId, flag);
 		}
 	}
 
