@@ -1,9 +1,7 @@
 package com.android.adapter;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 import android.os.Handler;
@@ -11,6 +9,7 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,8 +31,8 @@ public class TakeNumerAdapter extends BaseAdapter {
 	public static final int SET_NUM = 2001;
 	private int index = -1;
 	private Handler handler;
-	public static Map<Integer, String> hashMap_numprice = new HashMap<Integer, String>();
-	public static Map<Integer, String> hashMap_num = new HashMap<Integer, String>();
+	public static SparseArray<String> hashMap_numprice = new SparseArray<String>();
+	public static SparseArray<String> hashMap_num = new SparseArray<String>();
 
 	public TakeNumerAdapter(Context context, List<TakeNumberBean> list, Handler handler) {
 		this.context = context;
@@ -57,17 +56,17 @@ public class TakeNumerAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		final ViewHolder viewHolder;
 		final TakeNumberBean bean;
-		//if (convertView == null) {
-			convertView = inflater.inflate(R.layout.num_list_item, null);
-			viewHolder = new ViewHolder();
-			viewHolder.num_id_name = (TextView) convertView.findViewById(R.id.num_id_name);
-			viewHolder.id_price = (EditText) convertView.findViewById(R.id.num_id_price);
-			viewHolder.num_price = (TextView) convertView.findViewById(R.id.num_price);
-			viewHolder.danwei = (TextView) convertView.findViewById(R.id.danwei);
-			convertView.setTag(viewHolder);
-		//} else {
-			//viewHolder = (ViewHolder) convertView.getTag();
-		//}
+		// if (convertView == null) {
+		convertView = inflater.inflate(R.layout.num_list_item, null);
+		viewHolder = new ViewHolder();
+		viewHolder.num_id_name = (TextView) convertView.findViewById(R.id.num_id_name);
+		viewHolder.id_price = (EditText) convertView.findViewById(R.id.num_id_price);
+		viewHolder.num_price = (TextView) convertView.findViewById(R.id.num_price);
+		viewHolder.danwei = (TextView) convertView.findViewById(R.id.danwei);
+		convertView.setTag(viewHolder);
+		// } else {
+		// viewHolder = (ViewHolder) convertView.getTag();
+		// }
 
 		bean = classList.get(position);
 		viewHolder.num_id_name.setText(new DecimalFormat("0.00").format(Double.parseDouble(bean.getPrice() == "" ? "0" : bean.getPrice()))
@@ -98,16 +97,11 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}
 
 		viewHolder.id_price.setOnTouchListener(new OnTouchListener() {
-
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
-				// TODO Auto-generated method stub
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-
 					index = position;
-
 				}
-
 				return false;
 			}
 		});
@@ -116,7 +110,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				// TODO Auto-generated method stub
 				// viewHolder.id_price.setInputType(InputType.TYPE_CLASS_NUMBER);
 				if (is_maxPrice(s.toString())) {
 					viewHolder.id_price.setText("9999.99");
@@ -165,7 +158,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 		viewHolder.id_price.clearFocus();
 
 		if (index != -1 && index == position) {
-
 			// 如果当前的行下标和点击事件中保存的index一致，手动为EditText设置焦点。
 			viewHolder.id_price.requestFocus();
 			if (hashMap_num.get(position) != null) {
@@ -179,7 +171,6 @@ public class TakeNumerAdapter extends BaseAdapter {
 		}
 
 		convertView.setOnTouchListener(new OnTouchListener() {
-
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// keyboardComponent.dismissKeyboard(v);

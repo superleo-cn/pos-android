@@ -44,9 +44,7 @@ public class GiditNumberAdapter extends BaseAdapter {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-
 		number = classList.get(position);
-
 		viewHolder.gidit_num.setText(number);
 		return convertView;
 	}

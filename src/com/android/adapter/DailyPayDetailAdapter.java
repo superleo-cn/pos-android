@@ -168,8 +168,9 @@ public class DailyPayDetailAdapter extends BaseAdapter {
 	}
 
 	public void cacheData(String price, int p) {
-		if (p > classList.size())
+		if (p > classList.size()){
 			return;
+		}
 		detailBean = classList.get(p);
 		detailBean.setPrice(price);
 		classList.set(p, detailBean);

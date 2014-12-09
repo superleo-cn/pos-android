@@ -3,7 +3,6 @@ package com.android.component.ui.setting;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 
 import com.android.R;
 import com.android.common.Constants;
@@ -56,27 +55,26 @@ public class ShopSynchronizationComponent {
 
 	@ViewById(R.id.shop_set)
 	EditText shopSset;
-	
+
 	@ViewById(R.id.shop_address_edit)
 	EditText shopAddress;
-	
+
 	@ViewById(R.id.shop_contact_edit)
 	EditText shopContact;
-	
+
 	@ViewById(R.id.shop_website_edit)
 	EditText shopWebsite;
-	
+
 	@ViewById(R.id.shop_email_edit)
 	EditText shopEmail;
 
-	
 	@AfterViews
 	public void initFoodSynchronization() {
-		shopSset.setText(myPrefs.shopId().get());	
+		shopSset.setText(myPrefs.shopId().get());
 		shopAddress.setText(myPrefs.shopAddress().get());
 		shopContact.setText(myPrefs.shopContact().get());
 		shopWebsite.setText(myPrefs.shopWebsite().get());
-		shopEmail.setText(myPrefs.shopEmail().get());		
+		shopEmail.setText(myPrefs.shopEmail().get());
 	}
 
 	@AfterInject
@@ -87,9 +85,9 @@ public class ShopSynchronizationComponent {
 	@Click(R.id.synchronization_shop_btn)
 	public void synchronizeShopID() {
 		String shopId = shopSet.getText().toString();
-		
+
 		ShopMapping mapping = ShopMapping.getJSON(Constants.URL_SHOP_PATH + shopId);
-		if (mapping != null && mapping.code == Constants.STATUS_SUCCESS) {			
+		if (mapping != null && mapping.code == Constants.STATUS_SUCCESS) {
 			myPrefs.shopId().put(shopId);
 			myPrefs.shopName().put(mapping.datas.get(0).name);
 			myPrefs.shopAddress().put(mapping.datas.get(0).address);
@@ -102,14 +100,13 @@ public class ShopSynchronizationComponent {
 			myPrefs.weChat().put(mapping.datas.get(0).weChat);
 			myPrefs.kichenPrinter().put(mapping.datas.get(0).kichenPrinter);
 			myPrefs.openTime().put(mapping.datas.get(0).openTime);
-			
-			
+
 			new ShopSynchronizationTask().execute(shopId);
-			
+
 			shopAddress.setText(myPrefs.shopAddress().get());
 			shopContact.setText(myPrefs.shopContact().get());
 			shopWebsite.setText(myPrefs.shopWebsite().get());
-			shopEmail.setText(myPrefs.shopEmail().get());	
+			shopEmail.setText(myPrefs.shopEmail().get());
 		} else {
 			toastComponent.show(stringResComponent.toastSettingShopFail);
 		}

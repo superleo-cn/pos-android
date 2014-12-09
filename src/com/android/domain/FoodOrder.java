@@ -29,6 +29,9 @@ public class FoodOrder extends Model {
 
 	@Column(name = "shop_id")
 	public String shopId;
+	
+	@Column(name = "table_id")
+	public String tableId;
 
 	@Column(name = "retail_price")
 	public Double retailPrice;
@@ -75,7 +78,7 @@ public class FoodOrder extends Model {
 	@Override
 	public String toString() {
 		return "FoodOrder [orderId=" + orderId + ", userId=" + userId
-				+ ", shopId=" + shopId + ", retailPrice=" + retailPrice
+				+ ", shopId=" + shopId + ", tableId=" + tableId + ", retailPrice=" + retailPrice
 				+ ", quantity=" + quantity + ", foodId=" + foodId
 				+ ", discount=" + discount + ", totalPackage=" + totalPackage
 				+ ", foc=" + foc + ", orderType=" + orderType + ", status="
@@ -135,15 +138,16 @@ public class FoodOrder extends Model {
 	 * @param myApp
 	 * @param is_foc
 	 */
-	public static void save(SelectFoodBean bean, MyApp myApp, boolean is_foc, String orderType, String orderId, String flag) {
+	public static void save(SelectFoodBean bean, MyApp myApp, boolean is_foc, String orderType, String tableId, String flag) {
 		if (StringUtils.isNotEmpty(bean.getFood_id()) && !StringUtils.equals(bean.getFood_id(), "0")) {
 			FoodOrder food_order = new FoodOrder();
 			food_order.status = Constants.DB_FAILED;// 是否成功 1是 0否
 			food_order.shopId = myApp.getShopId();// 店idmyApp.getShopid()
-			if(StringUtils.isNotEmpty(orderId.trim()))
-				food_order.orderId = orderId;
-			else
+			if(StringUtils.isNotEmpty(tableId.trim())){
+				food_order.orderId = tableId;
+			}else{
 				food_order.orderId = SystemHelper.getUuid();
+			}
 			food_order.totalPackage = String.valueOf(bean.getDabao_price());// 打包钱数
 			food_order.discount = String.valueOf(bean.getDazhe_price()); // 打折钱数
 			food_order.userId = myApp.getUserId();// 用户id
@@ -204,7 +208,7 @@ public class FoodOrder extends Model {
 	}
 	
 	/**
-	 * 查询输入的订单号是否存在
+	 * 查询输入的桌号是否存在
 	 * 
 	 * @param orderNo 订单号
 	 */
@@ -226,7 +230,7 @@ public class FoodOrder extends Model {
 	}
 	
 	/**
-	 * 查询所有挂单状态且不重复的订单号
+	 * 查询所有挂单状态且不重复的桌号
 	 * 
 	 */
 	public static List<String> queryOrderListDistact() {
@@ -243,12 +247,12 @@ public class FoodOrder extends Model {
 	}
 	
 	/**
-	 * 根据订单号查询订单数据
+	 * 根据桌号查询订单数据
 	 * 
 	 * 
 	 * @param orderNo 订单号
 	 */
-	public static List<FoodOrder> queryListByOrderId(String orderId) {
-		return new Select().from(FoodOrder.class).where("order_id = ?", orderId).execute();
+	public static List<FoodOrder> queryListByOrderId(String tableId) {
+		return new Select().from(FoodOrder.class).where("order_id = ?", tableId).execute();
 	}
 }
