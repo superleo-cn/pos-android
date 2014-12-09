@@ -11,19 +11,25 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.database.DataSetObserver;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Toast;
 
 import com.android.R;
 import com.android.adapter.SelectListAdapter;
@@ -585,15 +591,15 @@ public class OrderComponent {
 			myOrderDialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					String tableId = myOrderDialog.order_edt.getText().toString().trim();
-					if (StringUtils.isEmpty(tableId)) {// 为空，提示输入订单号
+					String orderId = myOrderDialog.order_edt.getText().toString().trim();
+					if (StringUtils.isEmpty(orderId)) {// 为空，提示输入订单号
 						myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
 						myOrderDialog.order_msg_text.setText(R.string.inputorder_message_empty);
 						getOrderEditFocus();
 					} else {// 不为空,判断订单号是否已存在.1,不存在，保存订单.2,存在，提示订单号已经存在.
-						if(StringUtils.equals(orderIdSelected, tableId)){
+						if(StringUtils.equals(orderIdSelected, orderId)){
 							FoodOrder.deleteOrderByOrderId(orderIdSelected);
-							storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
+							storeOrders(Constants.PAYTYPE_CARD, orderId, Constants.FOODORDER_PAUSE);
 							myOrderDialog.order_msg_text.setText("");
 							myOrderDialog.order_edt.setText("");
 							orderIdSpinner.setSelection(0);
@@ -602,22 +608,21 @@ public class OrderComponent {
 							printOrder(orderType);
 							clean();
 						} else {
-							if(FoodOrder.queryOrderIdExist(tableId)){
+							if(FoodOrder.queryOrderIdExist(orderId)){
 								myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
 								myOrderDialog.order_msg_text.setText(R.string.inputorder_message_error);
 								getOrderEditFocus();
 							}else{
 								FoodOrder.deleteOrderByOrderId(orderIdSelected);
-								storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
+								storeOrders(Constants.PAYTYPE_CARD, orderId, Constants.FOODORDER_PAUSE);
 								// 更新下拉框数据
 								if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
 									for (int i = 0; i < orderList.size(); i++) {
-										if(StringUtils.equals(orderList.get(i), orderIdSelected)){
+										if(StringUtils.equals(orderList.get(i), orderIdSelected))
 											orderList.remove(i);
-										}
 									}
 								}
-								orderList.add(tableId);
+								orderList.add(orderId);
 								updateSpinner(orderList);
 								myOrderDialog.order_msg_text.setText("");
 								myOrderDialog.order_edt.setText("");
@@ -758,10 +763,10 @@ public class OrderComponent {
 	}
 
 	// 保存数据
-	void storeOrders(String orderType, String tableId, String flag) {
+	void storeOrders(String orderType, String orderId, String flag) {
 		for (int i = 0; i < selectDataList.size(); i++) {
 			SelectFoodBean bean = selectDataList.get(i);
-			FoodOrder.save(bean, myApp, is_foc, orderType, tableId, flag);
+			FoodOrder.save(bean, myApp, is_foc, orderType, orderId, flag);
 		}
 	}
 
