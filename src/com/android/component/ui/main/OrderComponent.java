@@ -172,11 +172,11 @@ public class OrderComponent {
 					selectDataList.clear();
 					selectAdapter.notifyDataSetChanged();
 					is_takePackage = false;
-					// take_package.setImageResource(R.drawable.package_not_select);
+					take_package.setImageResource(R.drawable.package_not_select);
 					is_discount = false;
 					discount.setImageResource(R.drawable.package_not_select);
 					is_foc = false;
-					// foc.setImageResource(R.drawable.package_not_select);
+					foc.setImageResource(R.drawable.package_not_select);
 					doCalculation();
 					return true;
 				}
@@ -305,11 +305,11 @@ public class OrderComponent {
 			selectAdapter.notifyDataSetChanged();
 			if (CollectionUtils.isEmpty(selectDataList)) {
 				is_takePackage = false;
-				// take_package.setImageResource(R.drawable.package_not_select);
+				take_package.setImageResource(R.drawable.package_not_select);
 				is_discount = false;
 				discount.setImageResource(R.drawable.package_not_select);
 				is_foc = false;
-				// foc.setImageResource(R.drawable.package_not_select);
+				foc.setImageResource(R.drawable.package_not_select);
 			}
 			doCalculation();
 
@@ -382,6 +382,16 @@ public class OrderComponent {
 			} else {
 				currentView.setImageResource(R.drawable.package_seclect);
 				is_discount = true;
+				is_foc = false;
+			}
+
+		} else if (currentView == take_package) {
+			if (is_takePackage) {
+				currentView.setImageResource(R.drawable.package_not_select);
+				is_takePackage = false;
+			} else {
+				currentView.setImageResource(R.drawable.package_seclect);
+				is_takePackage = true;
 				is_foc = false;
 			}
 
@@ -512,6 +522,7 @@ public class OrderComponent {
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
 			for (SelectFoodBean bean : selectDataList) {
 				bean.setDabao_price(0);
+				bean.setPackageable(Constants.PACKAGEABLE_NO);
 				bean.setDazhe_price(0);
 			}
 			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
@@ -520,19 +531,40 @@ public class OrderComponent {
 			for (SelectFoodBean bean : selectDataList) {
 				// 计算总价
 				int num = Integer.parseInt(bean.getFood_num());
+				showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price())*num;
+
+				// 计算打折，打包
 				double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
-				double dabao = 0;
-				double dazhe = 0;
+				double dabao = num*package_money;
+				double dazhe = num * save_discount_price;
 				String type = bean.getFood_type();
 				if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
-					if (is_discount) {
-						dazhe = price * (1 - save_discount_price);
-						showTotalPrice += (price * save_discount_price);
-					} else {
-						showTotalPrice += price;
+					if (!is_discount && is_takePackage) {
+						showTotalPrice += dabao;
+						dazhe = 0;
+						bean.setPackageable(Constants.PACKAGEABLE_YES);
+					} else if (is_discount && !is_takePackage) {
+						showTotalPrice -= dazhe;
+						dabao = 0;
+						bean.setPackageable(Constants.PACKAGEABLE_NO);
+					} else if (!is_discount && !is_takePackage) {
+						dabao = 0;
+						dazhe = 0;
+						bean.setPackageable(Constants.PACKAGEABLE_NO);
+					} else if (is_discount && is_takePackage) {
+						showTotalPrice = showTotalPrice + dabao - dazhe;
+						bean.setPackageable(Constants.PACKAGEABLE_YES);
 					}
 					bean.setDabao_price(dabao);
 					bean.setDazhe_price(dazhe);
+//					if (is_discount) {
+//						dazhe = price * (1 - save_discount_price);
+//						showTotalPrice += (price * save_discount_price);
+//					} else {
+//						showTotalPrice += price;
+//					}
+//					bean.setDabao_price(dabao);
+//					bean.setDazhe_price(dazhe);
 				} else {
 					showTotalPrice += price;
 				}
@@ -571,11 +603,11 @@ public class OrderComponent {
 		surplus.setText(Constants.DEFAULT_PRICE_FLOAT);
 		sbuff.delete(0, sbuff.length());
 		is_takePackage = false;
-		// take_package.setImageResource(R.drawable.package_not_select);
+		take_package.setImageResource(R.drawable.package_not_select);
 		is_discount = false;
 		discount.setImageResource(R.drawable.package_not_select);
 		is_foc = false;
-		// foc.setImageResource(R.drawable.package_not_select);
+		foc.setImageResource(R.drawable.package_not_select);
 	}
 
 	// 保存数据

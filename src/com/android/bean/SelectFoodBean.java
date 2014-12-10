@@ -17,7 +17,14 @@ public class SelectFoodBean {
 	private String attributesID;
 	private String attributesContext;
 	private String flag;
+	private String packageable;
 	
+	public String getPackageable() {
+		return packageable;
+	}
+	public void setPackageable(String packageable) {
+		this.packageable = packageable;
+	}
 	public String getFood_id() {
 		return food_id;
 	}
@@ -106,7 +113,8 @@ public class SelectFoodBean {
 				+ dabao_price + ", dazhe_price=" + dazhe_price
 				+ ", gst_charge=" + gst_charge + ", service_charge="
 				+ service_charge + ", attributesID=" + attributesID
-				+ ", attributesContext=" + attributesContext + "]";
+				+ ", attributesContext=" + attributesContext + ", flag=" + flag
+				+ ", packageable=" + packageable + "]";
 	}
 	
 }
