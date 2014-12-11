@@ -70,20 +70,16 @@ public class FoodOrder extends Model {
 
 	@Column(name = "service_charge")
 	public Double serviceCharge;
-	
+
 	@Column(name = "packageable")
 	public String packageable;
 
 	@Override
 	public String toString() {
-		return "FoodOrder [orderId=" + orderId + ", userId=" + userId
-				+ ", shopId=" + shopId + ", retailPrice=" + retailPrice
-				+ ", quantity=" + quantity + ", foodId=" + foodId
-				+ ", discount=" + discount + ", totalPackage=" + totalPackage
-				+ ", foc=" + foc + ", orderType=" + orderType + ", status="
-				+ status + ", date=" + date + ", attributesID=" + attributesID
-				+ ", attributesContext=" + attributesContext + ", flag=" + flag
-				+ ", gstCharge=" + gstCharge + ", serviceCharge="
+		return "FoodOrder [orderId=" + orderId + ", userId=" + userId + ", shopId=" + shopId + ", retailPrice=" + retailPrice
+				+ ", quantity=" + quantity + ", foodId=" + foodId + ", discount=" + discount + ", totalPackage=" + totalPackage + ", foc="
+				+ foc + ", orderType=" + orderType + ", status=" + status + ", date=" + date + ", attributesID=" + attributesID
+				+ ", attributesContext=" + attributesContext + ", flag=" + flag + ", gstCharge=" + gstCharge + ", serviceCharge="
 				+ serviceCharge + ", packageable=" + packageable + "]";
 	}
 
@@ -103,8 +99,7 @@ public class FoodOrder extends Model {
 	 * @return
 	 */
 	public static List<FoodOrder> queryListByStatus(String status, int size) {
-		return new Select().from(FoodOrder.class).where("status = ? and flag != ?", status, Constants.FOODORDER_PAUSE).limit("0, " + size)
-				.execute();
+		return new Select().from(FoodOrder.class).where("status = ? ", status).limit("0, " + size).execute();
 	}
 
 	/**
