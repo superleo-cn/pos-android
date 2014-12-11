@@ -104,7 +104,7 @@ public class FoodOrder extends Model {
 	 * @return
 	 */
 	public static List<FoodOrder> queryListByStatus(String status, int size) {
-		return new Select().from(FoodOrder.class).where("status = ? and flag != ?", status, Constants.FOODORDER_PAUSE).limit("0, " + size).execute();
+		return new Select().from(FoodOrder.class).where("status = ?", status).limit("0, " + size).execute();
 	}
 
 	/**
