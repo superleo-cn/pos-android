@@ -701,7 +701,7 @@ public class OrderComponent {
 					if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
 						if (is_discount) {
 							dazhe = price * (1 - save_discount_price);
-							allPrice += (price * save_discount_price);
+							allPrice += (price - dazhe);
 						} else {
 							allPrice += price;
 						}
