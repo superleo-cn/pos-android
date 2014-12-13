@@ -175,12 +175,14 @@ public class AndroidPrinter {
 		printSpace();
 		printSpace();
 		setNormal();
-		printContent("Address(地址）: "+ shopAddress);
-		printSpace();
-		if(!shopContact.isEmpty()){
-			printContent("Contact（电话）: "+ shopContact);
+		if(!shopAddress.isEmpty()){
+			printContent("Address(地址）: "+ shopAddress);
 			printSpace();
 		}		
+//		if(!shopContact.isEmpty()){
+//			printContent("Contact（电话）: "+ shopContact);
+//			printSpace();
+//		}		
 		if(!weChat.isEmpty()){
 			printContent("WeChat（微信）: " + weChat);
 			printSpace();
@@ -225,11 +227,11 @@ public class AndroidPrinter {
 	}
 
 	private void printTransaction() {		
-		String billNo = DateUtils.dateToStr(new Date(), DateUtils.YYYYMMDD_HH_MM_SS );
+//		String billNo = DateUtils.dateToStr(new Date(), DateUtils.YYYYMMDD_HH_MM_SS );
 		String time = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-		setNormal();
-		printContent("SN(单号): B" + billNo);
-		printSpace();
+//		setNormal();
+//		printContent("SN(单号): B" + billNo);
+//		printSpace();
 		setNormal();
 		printContent("Time(时间): " + time);
 		printSpace();
@@ -271,7 +273,8 @@ public class AndroidPrinter {
 
 	private void setNormal() {
 		WifiPrintDriver.SetAlignMode((byte) 0);
-		WifiPrintDriver.SetFontEnlarge((byte) 0x00);
+		WifiPrintDriver.SetFontEnlarge((byte) 0x01);
+//		WifiPrintDriver.SetCharacterFont((byte)0X00);
 	}
 
 	private void setLarge() {

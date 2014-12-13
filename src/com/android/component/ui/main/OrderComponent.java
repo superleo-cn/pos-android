@@ -535,8 +535,8 @@ public class OrderComponent {
 
 				// 计算打折，打包
 				double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
-				double dabao = num*package_money;
-				double dazhe = num * save_discount_price;
+				double dabao = num * package_money;
+				double dazhe = price * (1 - save_discount_price);
 				String type = bean.getFood_type();
 				if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
 					if (!is_discount && is_takePackage) {
