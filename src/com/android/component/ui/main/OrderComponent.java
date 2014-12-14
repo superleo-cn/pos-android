@@ -531,7 +531,6 @@ public class OrderComponent {
 			for (SelectFoodBean bean : selectDataList) {
 				// 计算总价
 				int num = Integer.parseInt(bean.getFood_num());
-				showTotalPrice += MyNumberUtils.strToNum(bean.getFood_price())*num;
 
 				// 计算打折，打包
 				double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
@@ -565,10 +564,8 @@ public class OrderComponent {
 //					}
 //					bean.setDabao_price(dabao);
 //					bean.setDazhe_price(dazhe);
-				} else {
-					showTotalPrice += price;
-				}
-
+				} 
+				showTotalPrice += price;
 			}
 			/*
 			 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10
