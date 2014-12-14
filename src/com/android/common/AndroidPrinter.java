@@ -202,22 +202,27 @@ public class AndroidPrinter {
 
 	private void printFooter(String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain) {
 		setNormal();			
-		if(!serviceRate.isEmpty() || !gstRate.isEmpty()){
+		boolean iSserviceRate = false;
+		boolean isGstRate = false;
+		if(StringUtils.isNotEmpty(serviceRate) && !StringUtils.equals(serviceRate, "0")){
+			iSserviceRate = true;
+		}
+		if(StringUtils.isNotEmpty(gstRate) && !StringUtils.equals(gstRate, "0")){
+			isGstRate = true;
+		}
+		if(iSserviceRate || isGstRate){
 			printContent("\t\t\t" + "Sub-Total:\t\t$" + subTotal);			
 			printSpace();
 		}
-		if(!serviceRate.isEmpty()){
-			/*
-			 * Please parse parameter for serviceCharge and gstCharge
-			 */
+		if(iSserviceRate){
 			printContent("\t\t\t" +serviceRate + "% Service(服务费）:\t$" + serviceCharge);			
 			printSpace();
 		}
-		if(!gstRate.isEmpty()){
+		if(isGstRate){
 			printContent("\t\t\t" +gstRate + "% GST（税金）:\t\t$" + gstCharge);
 			printSpace();
 		}
-			
+		
 		printContent("\t\t\tTotal(总计):\t\t$" + cost);
 		printSpace();
 		printContent("\t\t\tPayment(付款):\t\t$" + paid);
