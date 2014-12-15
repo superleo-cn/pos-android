@@ -53,7 +53,7 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "pos.emd.com.sg";
+	public static final String HOST = "pos.weebo.com.sg";
 	//public static final String HOST = "192.168.0.15";
 
 	/** 服务器端口号 */
