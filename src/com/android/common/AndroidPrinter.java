@@ -43,8 +43,6 @@ public class AndroidPrinter {
 
 	public String serviceRate;
 
-	public String shopPrintable;
-
 	@AfterInject
 	public void initPrinter() {
 		shopName = myPrefs.shopName().get();
@@ -55,8 +53,6 @@ public class AndroidPrinter {
 		weChat = myPrefs.weChat().get();
 		gstRate = myPrefs.gstRate().get();
 		serviceRate = myPrefs.serviceRate().get();
-		shopPrintable = myPrefs.shopPrintable().get();
-
 	}
 
 	public void print(String message, String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain, String type) {
@@ -102,7 +98,7 @@ public class AndroidPrinter {
 
 	public void startPrint(String message, String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain, String type) {
 		WifiPrintDriver.Begin();
-
+		String shopPrintable = myPrefs.shopPrintable().get();
 		if (StringUtils.equals(shopPrintable, Constants.PRINTABLE_YES)) {
 			if (StringUtils.equals(type, Constants.PLACE_ORDER)) {
 				printOrderDate();
