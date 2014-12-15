@@ -375,6 +375,34 @@
                         android:layout_toRightOf="@+id/shop_email" />   
                 </RelativeLayout>
                 
+  				
+  				<RelativeLayout
+                    android:id="@+id/shop_printable_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/shop_email_layout"
+                    android:layout_marginTop="10dip" >
+                    
+                    <TextView
+                        android:id="@+id/shop_printable"
+                        android:layout_width="200dip"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/shop_printable"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp" />
+
+                    <EditText                      
+                        android:id="@+id/shop_printable_edit"
+                        android:layout_width="450dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="65dip"
+                        android:layout_marginRight="20dip"
+                        android:background="@drawable/edit_bg"
+                        android:layout_toRightOf="@+id/shop_printable" />   
+                </RelativeLayout>
+                
             </RelativeLayout>
             
             
