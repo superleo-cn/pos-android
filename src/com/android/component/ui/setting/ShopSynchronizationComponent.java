@@ -68,6 +68,9 @@ public class ShopSynchronizationComponent {
 	@ViewById(R.id.shop_email_edit)
 	EditText shopEmail;
 
+	@ViewById(R.id.shop_printable_edit)
+	EditText shopPrintable;
+
 	@AfterViews
 	public void initFoodSynchronization() {
 		shopSset.setText(myPrefs.shopId().get());
@@ -75,6 +78,7 @@ public class ShopSynchronizationComponent {
 		shopContact.setText(myPrefs.shopContact().get());
 		shopWebsite.setText(myPrefs.shopWebsite().get());
 		shopEmail.setText(myPrefs.shopEmail().get());
+		shopPrintable.setText(myPrefs.shopPrintable().get());
 	}
 
 	@AfterInject

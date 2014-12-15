@@ -15,8 +15,6 @@ import com.googlecode.androidannotations.annotations.RootContext;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import com.googlecode.androidannotations.api.Scope;
 
-
-
 @EBean(scope = Scope.Singleton)
 public class AndroidPrinter {
 
@@ -28,43 +26,44 @@ public class AndroidPrinter {
 
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
-	
+
 	public String shopName;
-	
+
 	public String shopAddress;
-	
+
 	public String shopContact;
-	
+
 	public String shopWebsite;
-	
+
 	public String gstRegNo;
-	
+
 	public String weChat;
-	
+
 	public String gstRate;
-	
+
 	public String serviceRate;
-	
+
+	public String shopPrintable;
+
 	@AfterInject
 	public void initPrinter() {
-		shopName = myPrefs.shopName().get();		
-		shopAddress = myPrefs.shopAddress().get();		
-		shopContact = myPrefs.shopContact().get();		
-		shopWebsite = myPrefs.shopWebsite().get();		
-		gstRegNo = myPrefs.gstRegNo().get();		
-		weChat = myPrefs.weChat().get();		
-		gstRate = myPrefs.gstRate().get();		
+		shopName = myPrefs.shopName().get();
+		shopAddress = myPrefs.shopAddress().get();
+		shopContact = myPrefs.shopContact().get();
+		shopWebsite = myPrefs.shopWebsite().get();
+		gstRegNo = myPrefs.gstRegNo().get();
+		weChat = myPrefs.weChat().get();
+		gstRate = myPrefs.gstRate().get();
 		serviceRate = myPrefs.serviceRate().get();
+		shopPrintable = myPrefs.shopPrintable().get();
 
 	}
-	
 
-	
 	public void print(String message, String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain, String type) {
 		try {
 			Log.d("[AndroidPrinter]", "连接打印机");
 			if (connect()) {
-				startPrint(message,subTotal, gstCharge, serviceCharge,cost, paid, remain, type);
+				startPrint(message, subTotal, gstCharge, serviceCharge, cost, paid, remain, type);
 				disconnect();
 			} else {
 				disconnect();
@@ -101,53 +100,63 @@ public class AndroidPrinter {
 		}
 	}
 
-	public void startPrint(String message,String subTotal, String gstCharge, String serviceCharge ,String cost, String paid, String remain, String type) {
+	public void startPrint(String message, String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain, String type) {
 		WifiPrintDriver.Begin();
 
-		if (StringUtils.equals(type, Constants.PLACE_ORDER)) {
-			printOrderDate();
-			printOrder(message);
-//			printWithDrawer(message, false);
-			feedAndCutPaper();
-			printOrderDate();
-			printOrder(message);
-//			printWithDrawer(message, false);
-			feedAndCutPaper();
-		} else {
-			printHeader();
-			printTransaction();
-			if (StringUtils.equals(type, Constants.PAYTYPE_CASH)) {
-				printWithDrawer(message, true);
+		if (StringUtils.equals(shopPrintable, Constants.PRINTABLE_YES)) {
+			if (StringUtils.equals(type, Constants.PLACE_ORDER)) {
+				printOrderDate();
+				printOrder(message);
+				// printWithDrawer(message, false);
+				feedAndCutPaper();
+				printOrderDate();
+				printOrder(message);
+				// printWithDrawer(message, false);
+				feedAndCutPaper();
 			} else {
-				printWithDrawer(message, false);
+				printHeader();
+				printTransaction();
+				if (StringUtils.equals(type, Constants.PAYTYPE_CASH)) {
+					printWithDrawer(message, true);
+				} else {
+					printWithDrawer(message, false);
+				}
+				printLine();
+				printSpace();
+				printFooter(subTotal, gstCharge, serviceCharge, cost, paid, remain);
+				feedAndCutPaper();
 			}
-			printLine();
-			printSpace();
-			printFooter(subTotal, gstCharge, serviceCharge, cost, paid, remain);
-			feedAndCutPaper();
+		} else {
+			openDrawer();
 		}
 
 	}
 
 	public void printWithDrawer(String message, boolean flag) {
 		if (StringUtils.isNotEmpty(message)) {
-			setNormal();	
+			setNormal();
 			printContent(message);
 			if (flag) {
-				WifiPrintDriver.OpenDrawer((byte) 0X00, (byte) 0X00, (byte) 0X10);
-				WifiPrintDriver.excute();
-				WifiPrintDriver.ClearData();
-			}			
+				openDrawer();
+			}
 		}
 	}
+
+	public void openDrawer() {
+		WifiPrintDriver.OpenDrawer((byte) 0X00, (byte) 0X00, (byte) 0X10);
+		WifiPrintDriver.excute();
+		WifiPrintDriver.ClearData();
+	}
+
 	public void printOrder(String message) {
 		if (StringUtils.isNotEmpty(message)) {
 			WifiPrintDriver.SetAlignMode((byte) 0);// 左对齐
 			WifiPrintDriver.SetLineSpacing((byte) 20);
-			WifiPrintDriver.SetFontEnlarge((byte) 0x00);// 字体放大	
-			printContent(message);						
+			WifiPrintDriver.SetFontEnlarge((byte) 0x00);// 字体放大
+			printContent(message);
 		}
 	}
+
 	private void printHeader() {
 		// InputStream in = null;
 		// try {
@@ -170,59 +179,59 @@ public class AndroidPrinter {
 		// Log.e("[AndroidPrinter]", "图片打印失败", ex);
 		// }
 
-		setLarge();		
+		setLarge();
 		printContent(shopName);
 		printSpace();
 		printSpace();
 		setNormal();
-		if(!shopAddress.isEmpty()){
-			printContent("Address(地址）: "+ shopAddress);
+		if (!shopAddress.isEmpty()) {
+			printContent("Address(地址）: " + shopAddress);
 			printSpace();
-		}		
-//		if(!shopContact.isEmpty()){
-//			printContent("Contact（电话）: "+ shopContact);
-//			printSpace();
-//		}		
-		if(!weChat.isEmpty()){
+		}
+		// if(!shopContact.isEmpty()){
+		// printContent("Contact（电话）: "+ shopContact);
+		// printSpace();
+		// }
+		if (!weChat.isEmpty()) {
 			printContent("WeChat（微信）: " + weChat);
 			printSpace();
 		}
-		if(!shopWebsite.isEmpty()){
+		if (!shopWebsite.isEmpty()) {
 			printContent("Website（网站）: " + shopWebsite);
 			printSpace();
 		}
-		if(!gstRegNo.isEmpty()){
+		if (!gstRegNo.isEmpty()) {
 			printContent("GST Reg No: " + gstRegNo);
 			printSpace();
-		}			
+		}
 		printSpace();
 		printLine();
 		printSpace();
 	}
 
 	private void printFooter(String subTotal, String gstCharge, String serviceCharge, String cost, String paid, String remain) {
-		setNormal();			
+		setNormal();
 		boolean iSserviceRate = false;
 		boolean isGstRate = false;
-		if(StringUtils.isNotEmpty(serviceRate) && !StringUtils.equals(serviceRate, "0")){
+		if (StringUtils.isNotEmpty(serviceRate) && !StringUtils.equals(serviceRate, "0")) {
 			iSserviceRate = true;
 		}
-		if(StringUtils.isNotEmpty(gstRate) && !StringUtils.equals(gstRate, "0")){
+		if (StringUtils.isNotEmpty(gstRate) && !StringUtils.equals(gstRate, "0")) {
 			isGstRate = true;
 		}
-		if(iSserviceRate || isGstRate){
-			printContent("\t\t\t" + "Sub-Total:\t\t$" + subTotal);			
+		if (iSserviceRate || isGstRate) {
+			printContent("\t\t\t" + "Sub-Total:\t\t$" + subTotal);
 			printSpace();
 		}
-		if(iSserviceRate){
-			printContent("\t\t\t" +serviceRate + "% Service(服务费）:\t$" + serviceCharge);			
+		if (iSserviceRate) {
+			printContent("\t\t\t" + serviceRate + "% Service(服务费）:\t$" + serviceCharge);
 			printSpace();
 		}
-		if(isGstRate){
-			printContent("\t\t\t" +gstRate + "% GST（税金）:\t\t$" + gstCharge);
+		if (isGstRate) {
+			printContent("\t\t\t" + gstRate + "% GST（税金）:\t\t$" + gstCharge);
 			printSpace();
 		}
-		
+
 		printContent("\t\t\tTotal(总计):\t\t$" + cost);
 		printSpace();
 		printContent("\t\t\tPayment(付款):\t\t$" + paid);
@@ -231,19 +240,20 @@ public class AndroidPrinter {
 		printSpace();
 	}
 
-	private void printTransaction() {		
-//		String billNo = DateUtils.dateToStr(new Date(), DateUtils.YYYYMMDD_HH_MM_SS );
+	private void printTransaction() {
+		// String billNo = DateUtils.dateToStr(new Date(),
+		// DateUtils.YYYYMMDD_HH_MM_SS );
 		String time = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
-//		setNormal();
-//		printContent("SN(单号): B" + billNo);
-//		printSpace();
+		// setNormal();
+		// printContent("SN(单号): B" + billNo);
+		// printSpace();
 		setNormal();
 		printContent("Time(时间): " + time);
 		printSpace();
 		printLine();
 		printSpace();
 	}
-	
+
 	private void printOrderDate() {
 		String time = DateUtils.dateToStr(new Date(), DateUtils.YYYY_MM_DD_HH_MM_SS);
 		setNormal();
@@ -279,7 +289,7 @@ public class AndroidPrinter {
 	private void setNormal() {
 		WifiPrintDriver.SetAlignMode((byte) 0);
 		WifiPrintDriver.SetFontEnlarge((byte) 0x01);
-//		WifiPrintDriver.SetCharacterFont((byte)0X00);
+		// WifiPrintDriver.SetCharacterFont((byte)0X00);
 	}
 
 	private void setLarge() {
@@ -287,7 +297,5 @@ public class AndroidPrinter {
 		WifiPrintDriver.SetLineSpacing((byte) 50);
 		WifiPrintDriver.SetFontEnlarge((byte) 0x11);// 字体放大
 	}
-
-	
 
 }
