@@ -12,12 +12,11 @@ import com.android.component.ui.setting.ExpenseSynchronizationComponent;
 import com.android.component.ui.setting.FoodSynchronizationComponent;
 import com.android.component.ui.setting.LanguageSetComponent;
 import com.android.component.ui.setting.PrintSetComponent;
+import com.android.component.ui.setting.PrintableSetComponent;
 import com.android.component.ui.setting.ResetPasswordComponent;
 import com.android.component.ui.setting.ShopSynchronizationComponent;
 import com.android.component.ui.setting.SynchronizationStatusComponent;
 import com.android.component.ui.setting.TimeSetComponent;
-import com.android.dialog.MyProcessDialog;
-import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
@@ -58,6 +57,10 @@ public class SettingActivity extends BasicActivity {
 	// 语言组件
 	@Bean
 	LanguageSetComponent languageSetComponent;
+	
+	// 是否打印组件
+	@Bean
+	PrintableSetComponent printableSetComponent;
 
 	// 食物组件
 	@Bean
@@ -90,6 +93,7 @@ public class SettingActivity extends BasicActivity {
 		shopSynchronizationComponent.dissmissKeyboard();
 		languageSetComponent.dissmissKeyboard();
 		resetPasswordComponent.dissmissKeyboard();
+		printableSetComponent.dissmissKeyboard();
 		return super.dispatchTouchEvent(event);
 	}
 

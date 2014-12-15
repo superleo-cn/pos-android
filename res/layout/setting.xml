@@ -393,14 +393,25 @@
                         android:textColor="#ffffff"
                         android:textSize="18sp" />
 
-                    <EditText                      
+                    <EditText
                         android:id="@+id/shop_printable_edit"
                         android:layout_width="450dip"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="65dip"
                         android:layout_marginRight="20dip"
                         android:background="@drawable/edit_bg"
-                        android:layout_toRightOf="@+id/shop_printable" />   
+                        android:layout_toRightOf="@+id/shop_printable" />  
+                        
+                    <Button
+                        android:id="@+id/btu_printable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/tong_btu_bg3"
+                        android:textColor="#ffffff"
+                        android:text="@string/set_title"
+                        android:layout_marginRight="20dip"
+                        android:textSize="18sp" />
                 </RelativeLayout>
                 
             </RelativeLayout>
