@@ -4,8 +4,8 @@
     <string name="menu_settings">配置页面</string>
     <string name="title_activity_main">收款页面</string>
     <string name="exit_txt">退出</string>
-    <string name="layoutLeft_title">LAIYIWAN</string>
-    <!--  <string name="layoutLeft_title">WEEBO</string> -->
+    <!--  <string name="layoutLeft_title">LAIYIWAN</string> -->
+    <string name="layoutLeft_title">WEEBO</string> 
     <string name="total_prie">应收款:</string>
     <string name="gathering">收款:</string>
     <string name="surplus">剩余:</string>
