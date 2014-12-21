@@ -3,8 +3,8 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
 	<string name="exit_txt">Exit</string>
-	<string name="layoutLeft_title">LAIYIWAN</string>
-	<!-- <string name="layoutLeft_title">WEEBO</string> -->
+<!--<string name="layoutLeft_title">LAIYIWAN</string> -->
+	<string name="layoutLeft_title">WEEBO</string> 
 	<string name="total_prie">Total:</string>
 	<string name="gathering">Pay:</string>
 	<string name="surplus">Change:</string>
