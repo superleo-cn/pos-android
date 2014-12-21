@@ -116,7 +116,7 @@ public class LoginComponent {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("user.username", username);
 			params.put("user.password", password);
-			params.put("user.shop.id", myPrefs.shopId().get());
+			params.put("user.shopId", myPrefs.shopId().get());
 			params.put("user.userIp", strIP);
 			params.put("user.userMac", strMAC);
 			return loginRemote(userType, params);
