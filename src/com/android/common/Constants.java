@@ -53,11 +53,13 @@ public final class Constants {
 	/** 与服务器端连接的协议名 */
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
-	public static final String HOST = "pos.emd.com.sg";
-	// public static final String HOST = "192.168.0.15";
+//	 public static final String HOST = "pos.weebo.com.sg";
+	 public static final String HOST = "pos.emd.com.sg";
+//	public static final String HOST = "192.168.0.15";
 
 	/** 服务器端口号 */
-	public static final String PORT = ":80";
+	 public static final String PORT = ":80";
+//	public static final String PORT = ":9000";
 	/** 应用上下文名 */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */
@@ -116,14 +118,6 @@ public final class Constants {
 	/** 是否免费状态 */
 	public static final String FOC_YES = "1";
 	public static final String FOC_NO = "0";
-
-	/** 是否打包 */
-	public static final String PACKAGEABLE_YES = "1";
-	public static final String PACKAGEABLE_NO = "0";
-
-	/** 是否打印 */
-	public static final String PRINTABLE_YES = "1";
-	public static final String PRINTABLE_NO = "0";
 
 	/** 食物种类 */
 	public static final String MEMBER = "MEMBER";

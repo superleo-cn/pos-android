@@ -59,7 +59,7 @@ public class SystemHelper {
 		Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
 
 		// 快捷方式的名称
-		shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.app_name));
+		shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.app_restaurant_name));
 		shortcut.putExtra("duplicate", false); // 不允许重复创建
 
 		Intent localIntent2 = new Intent(context, clazz);
@@ -132,7 +132,7 @@ public class SystemHelper {
 			url = "content://com.android.launcher2.settings/favorites?notify=true";
 		}
 		ContentResolver resolver = context.getContentResolver();
-		Cursor cursor = resolver.query(Uri.parse(url), null, "title=?", new String[] { context.getString(R.string.app_name) }, null);
+		Cursor cursor = resolver.query(Uri.parse(url), null, "title=?", new String[] { context.getString(R.string.app_restaurant_name) }, null);
 
 		if (cursor != null && cursor.moveToFirst()) {
 			cursor.close();

@@ -1,11 +1,10 @@
 <resources>
 
-    <string name="app_name">炜博</string>
+    <string name="app_restaurant_name">威博餐厅版</string>
     <string name="menu_settings">配置页面</string>
     <string name="title_activity_main">收款页面</string>
     <string name="exit_txt">退出</string>
-    <!--  <string name="layoutLeft_title">LAIYIWAN</string> -->
-    <string name="layoutLeft_title">WEEBO</string> 
+    <string name="layoutLeft_title">WEEBO</string>
     <string name="total_prie">应收款:</string>
     <string name="gathering">收款:</string>
     <string name="surplus">剩余:</string>
@@ -76,7 +75,6 @@
 	<string name="shop_contact">电话</string>
 	<string name="shop_website">网站</string>
 	<string name="shop_email">邮件</string>
-	<string name="shop_printable">是否打印</string>
     <string name="synchronization_pay">支付款同步</string>
     <string name="price_set">现金配置</string>
     <string name="pass_set">密    码</string>
@@ -122,4 +120,11 @@
     <string name="query_db">数据查询</string>
 	<string name="SGD">S$</string>
 	<string name="scan">SCAN</string>
+	<string name="inputorder_message_empty">请输入订单号</string>
+	<string name="inputorder_message_error">您输入的订单号已存在</string>
+	<string name="spinner_default">--请选择--</string>
+	<string name="spinner_orderId">订单编号</string>
+	<string name="gst">印花税：</string>
+	<string name="sc">服务税：</string>
+	<string name="sumMoney">总计：</string>
 </resources>

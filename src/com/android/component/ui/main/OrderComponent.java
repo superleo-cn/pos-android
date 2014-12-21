@@ -3,6 +3,7 @@ package com.android.component.ui.main;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -10,17 +11,20 @@ import org.apache.commons.lang.StringUtils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.InputType;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.android.R;
 import com.android.adapter.SelectListAdapter;
@@ -37,6 +41,7 @@ import com.android.component.ToastComponent;
 import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
 import com.android.dialog.MyDialog;
+import com.android.dialog.MyOrderDialog;
 import com.android.domain.FoodOrder;
 import com.android.domain.FoodR;
 import com.android.mapping.StatusMapping;
@@ -67,8 +72,8 @@ public class OrderComponent {
 	MyApp myApp; // 注入 MyApp
 
 	// 扫描
-//	@ViewById(R.id.bar_code_text)
-//	TextView barCodeText;
+	// @ViewById(R.id.bar_code_text)
+	// TextView barCodeText;
 
 	@ViewById(R.id.total_price)
 	TextView totalPrice; // 总价格
@@ -79,17 +84,20 @@ public class OrderComponent {
 	@ViewById(R.id.surplus)
 	TextView surplus; // 找回
 
-	@ViewById(R.id.take_package)
-	ImageView take_package; // 打包选项
+	// @ViewById(R.id.take_package)
+	// ImageView take_package; // 打包选项
 
-	@ViewById(R.id.foc)
-	ImageView foc; // FOC
+	// @ViewById(R.id.foc)
+	// ImageView foc; // FOC
 
 	@ViewById(R.id.discount)
 	ImageView discount; // 打折选项
 
 	@ViewById(R.id.select_list)
 	ListView selectList; // 左上角面板
+	
+	@ViewById(R.id.orderId_spinner)
+	Spinner orderIdSpinner; // 菜单右侧下拉框
 
 	@ViewById(R.id.digit_btn)
 	GridView calucatorView; // 0-9按钮 用gridView做的按钮
@@ -105,7 +113,7 @@ public class OrderComponent {
 
 	@Pref
 	SharedPreferencesComponent_ sharedPrefs;
-
+	
 	@Pref
 	SharedPreferencesComponent_ myPrefs;
 
@@ -114,6 +122,7 @@ public class OrderComponent {
 
 	@Bean
 	KeyboardComponent keyboardComponent;
+	
 
 	FoodComponent foodComponent;
 
@@ -122,6 +131,10 @@ public class OrderComponent {
 	public List<SelectFoodBean> selectDataList;
 
 	private SelectListAdapter selectAdapter;
+	
+	private ArrayAdapter<String> orderAdapter;// 挂单下拉框适配器
+	private List<String> orderList;
+	private String orderIdSelected;
 
 	private StringBuffer printList;
 	private StringBuffer sb;
@@ -134,17 +147,19 @@ public class OrderComponent {
 	private boolean is_foc;
 	private double save_discount_price;
 	private double package_money;
-
+	double showTotalPrice = 0;
+	
 	private double subTotal = 0;
-
+	
 	private double gstCharge = 0;
-
+	
 	private double serviceCharge = 0;
 
 	// 打印框
 	Dialog dialg;
 
 	private MyDialog mydialog;
+	private MyOrderDialog myOrderDialog;
 
 	/**
 	 * 初始化订单组件
@@ -157,8 +172,8 @@ public class OrderComponent {
 		// 初始化打印对话框
 		dialg = buildPrintDialog();
 		mydialog = new MyDialog(context);
+		myOrderDialog = new MyOrderDialog(context);
 		String type = sharedPrefs.language().get();
-
 		// 初始化订单面板
 		this.selectDataList = new ArrayList<SelectFoodBean>();
 		this.selectAdapter = new SelectListAdapter(context, selectDataList, type);
@@ -168,19 +183,56 @@ public class OrderComponent {
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
 				int count = event.getPointerCount();
+				
 				if (count >= 2) {
 					selectDataList.clear();
 					selectAdapter.notifyDataSetChanged();
 					is_takePackage = false;
-					take_package.setImageResource(R.drawable.package_not_select);
+					// take_package.setImageResource(R.drawable.package_not_select);
 					is_discount = false;
 					discount.setImageResource(R.drawable.package_not_select);
 					is_foc = false;
-					foc.setImageResource(R.drawable.package_not_select);
+					// foc.setImageResource(R.drawable.package_not_select);
 					doCalculation();
 					return true;
 				}
 				return false;
+			}
+
+		});
+		orderList = FoodOrder.queryOrderListDistact();
+		if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+			orderList.add(0, "--请选择--");
+		} else {
+			orderList.add(0, "--please select--");
+		}
+		orderAdapter = new ArrayAdapter<String>(context,
+				android.R.layout.simple_spinner_item, orderList);
+		orderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		orderIdSpinner.setAdapter(orderAdapter);
+		orderIdSpinner.setSelection(-1, true);
+		orderIdSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view,
+					int position, long arg3) {
+				// 选择订单号，重置订单数据
+				clean();
+				orderIdSelected = orderList.get(position);
+				List<FoodOrder> foodOrderList = FoodOrder.queryListByOrderId(orderIdSelected);
+				for (FoodOrder foodOrder : foodOrderList) {
+					FoodR foodR = FoodR.queryFoodRByFoodId(foodOrder.foodId);
+					String type = sharedPrefs.language().get();
+					if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+						foodR.title = foodR.nameZh;
+					} else {
+						foodR.title = foodR.name;
+					}
+					update(foodR, foodOrder.quantity);
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 
 		});
@@ -189,25 +241,27 @@ public class OrderComponent {
 		save_discount_price = MyNumberUtils.strToNum(sharedPrefs.discount().get());
 		package_money = MyNumberUtils.strToNum(sharedPrefs.packageCost().get());
 
-//		barCodeText.setOnKeyListener(new OnKeyListener() {
-//			public boolean onKey(View v, int keyCode, KeyEvent event) {
-//				// If the event is a key-down event on the "enter" button
-//				if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//					sann();
-//					return false;
-//				} else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_DEL) {
-//					String str = barCodeText.getText().toString();
-//					if (StringUtils.length(str) > 0) {
-//						barCodeText.setText(str.substring(0, str.length() - 1));
-//					}
-//				}
-//				return true;
-//			}
-//		});
-//
-//		barCodeText.setFocusableInTouchMode(true);
-//		barCodeText.setFocusable(true);
-//		barCodeText.requestFocus();
+		// barCodeText.setOnKeyListener(new OnKeyListener() {
+		// public boolean onKey(View v, int keyCode, KeyEvent event) {
+		// // If the event is a key-down event on the "enter" button
+		// if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode ==
+		// KeyEvent.KEYCODE_ENTER)) {
+		// sann();
+		// return false;
+		// } else if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode ==
+		// KeyEvent.KEYCODE_DEL) {
+		// String str = barCodeText.getText().toString();
+		// if (StringUtils.length(str) > 0) {
+		// barCodeText.setText(str.substring(0, str.length() - 1));
+		// }
+		// }
+		// return true;
+		// }
+		// });
+
+		// barCodeText.setFocusableInTouchMode(true);
+		// barCodeText.setFocusable(true);
+		// barCodeText.requestFocus();
 
 	}
 
@@ -221,11 +275,11 @@ public class OrderComponent {
 	// doCalculation();
 	// }
 	// }
-
-	private boolean isOrderAlready(String foodId) {
-		if (this.selectDataList != null) {
-			for (SelectFoodBean bean : selectDataList) {
-				if (StringUtils.equals(foodId, bean.getFood_id())) {
+	
+	private boolean isOrderAlready(String foodId){
+		if(this.selectDataList != null){
+			for(SelectFoodBean bean : selectDataList){
+				if(StringUtils.equals(foodId, bean.getFood_id())){
 					int val = Integer.parseInt(bean.getFood_num()) + 1;
 					bean.setFood_num(String.valueOf(val));
 					return true;
@@ -241,7 +295,7 @@ public class OrderComponent {
 	 * @param foodBean
 	 */
 	public void order(FoodR foodBean) {
-		if (!isOrderAlready(foodBean.foodId)) {
+		if(!isOrderAlready(foodBean.foodId)){
 			SelectFoodBean bean = new SelectFoodBean();
 			bean.setFood_name(foodBean.title);
 			bean.setFood_price(foodBean.retailPrice);
@@ -249,6 +303,28 @@ public class OrderComponent {
 			bean.setFood_id(foodBean.foodId);
 			bean.setFood_type(foodBean.type);
 			bean.setFood_num("1");
+			bean.setAttributesID(foodBean.attributesID);
+			bean.setAttributesContext(foodBean.attributesContext);
+			selectDataList.add(bean);
+		}
+		selectAdapter.notifyDataSetChanged();
+		doCalculation();
+	}
+	
+	/**
+	 * 修改订单
+	 * 
+	 * @param foodBean
+	 */
+	public void update(FoodR foodBean, String num) {
+		if(!isOrderAlready(foodBean.foodId)){
+			SelectFoodBean bean = new SelectFoodBean();
+			bean.setFood_name(foodBean.title);
+			bean.setFood_price(foodBean.retailPrice);
+			bean.setFood_dayin_code(foodBean.sn);
+			bean.setFood_id(foodBean.foodId);
+			bean.setFood_type(foodBean.type);
+			bean.setFood_num(num);
 			bean.setAttributesID(foodBean.attributesID);
 			bean.setAttributesContext(foodBean.attributesContext);
 			selectDataList.add(bean);
@@ -305,41 +381,41 @@ public class OrderComponent {
 			selectAdapter.notifyDataSetChanged();
 			if (CollectionUtils.isEmpty(selectDataList)) {
 				is_takePackage = false;
-				take_package.setImageResource(R.drawable.package_not_select);
+				// take_package.setImageResource(R.drawable.package_not_select);
 				is_discount = false;
 				discount.setImageResource(R.drawable.package_not_select);
 				is_foc = false;
-				foc.setImageResource(R.drawable.package_not_select);
+				// foc.setImageResource(R.drawable.package_not_select);
 			}
 			doCalculation();
 
 		}
 	}
 
-//	@Click(R.id.bar_code_btn)
-//	public void sann() {
-//		List<FoodR> foodList = foodComponent.getFoodDataAllList();
-//		String sannId = StringUtils.trim(barCodeText.getText().toString());
-//		if (StringUtils.isNotEmpty(sannId)) {
-//			for (FoodR food : foodList) {
-//				if (StringUtils.equals(food.barCode, sannId)) {
-//					order(food);
-//				}
-//			}
-//		}
-//		barCodeText.setText("");
-//	}
+	// @Click(R.id.bar_code_btn)
+	// public void sann() {
+	// List<FoodR> foodList = foodComponent.getFoodDataAllList();
+	// String sannId = StringUtils.trim(barCodeText.getText().toString());
+	// if (StringUtils.isNotEmpty(sannId)) {
+	// for (FoodR food : foodList) {
+	// if (StringUtils.equals(food.barCode, sannId)) {
+	// order(food);
+	// }
+	// }
+	// }
+	// barCodeText.setText("");
+	// }
 
 	/**
 	 * 打包操作
 	 */
-	@Click(R.id.r_lay_id_take_package)
-	public void takePackage() {
-		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(take_package, foc);
-			doCalculation();
-		}
-	}
+	// @Click(R.id.r_lay_id_take_package)
+	// public void takePackage() {
+	// if (CollectionUtils.isNotEmpty(selectDataList)) {
+	// setImageStatus(take_package, foc);
+	// doCalculation();
+	// }
+	// }
 
 	/**
 	 * 打折等操作
@@ -355,13 +431,13 @@ public class OrderComponent {
 	/**
 	 * 免费等操作
 	 */
-	@Click(R.id.r_lay_id_foc)
-	public void foc() {
-		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			setImageStatus(foc, discount, take_package);
-			doCalculation();
-		}
-	}
+	// @Click(R.id.r_lay_id_foc)
+	// public void foc() {
+	// if (CollectionUtils.isNotEmpty(selectDataList)) {
+	// setImageStatus(foc, discount, take_package);
+	// doCalculation();
+	// }
+	// }
 
 	/**
 	 * 
@@ -382,16 +458,6 @@ public class OrderComponent {
 			} else {
 				currentView.setImageResource(R.drawable.package_seclect);
 				is_discount = true;
-				is_foc = false;
-			}
-
-		} else if (currentView == take_package) {
-			if (is_takePackage) {
-				currentView.setImageResource(R.drawable.package_not_select);
-				is_takePackage = false;
-			} else {
-				currentView.setImageResource(R.drawable.package_seclect);
-				is_takePackage = true;
 				is_foc = false;
 			}
 
@@ -419,19 +485,20 @@ public class OrderComponent {
 	void calulatorPanel(int position) {
 		calculatorComponent.calculation(sbuff, position);
 	}
-
+	
 	/*
 	 * Button used for place an order
 	 */
-	// @Click(R.id.order_btn)
-	// public void placeOrderBtn() {
-	// doOrder(Constants.PLACE_ORDER);
-	// }
-	//
-	// @Click(R.id.card_btn)
-	// public void creidtCardBtn() {
-	// doPay(Constants.PAYTYPE_CARD);
-	// }
+
+	@Click(R.id.order_btn)
+	public void placeOrderBtn() {
+		doOrder(Constants.PLACE_ORDER);
+	}
+	
+	@Click(R.id.card_btn)
+	public void creidtCardBtn() {
+		doPay(Constants.PAYTYPE_CARD);
+	}
 
 	/**
 	 * 确定打印
@@ -440,8 +507,9 @@ public class OrderComponent {
 	public void ok() {
 		doPay(Constants.PAYTYPE_CASH);
 	}
-
-	private StringBuffer getPrintList() {
+	
+	
+	private StringBuffer getPrintList(){
 		StringBuffer sb = new StringBuffer();
 		sb.append("Item(名称)\tQty(数量)\tAmount(价格)\n");
 		if (selectDataList != null) {
@@ -454,7 +522,7 @@ public class OrderComponent {
 		}
 		return sb;
 	}
-
+	
 	private void doPay(final String orderType) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 先打印数据，不耽误正常使用----------------------------
@@ -467,23 +535,34 @@ public class OrderComponent {
 			mydialog.dialog_message.setText(stringResComponent.openPrint);
 			mydialog.linearlayoutID.setVisibility(View.VISIBLE);
 			mydialog.dialog_message.setVisibility(View.GONE);
-			mydialog.textDialogAllMoenyID.setTextSize(60);
-			mydialog.textDialogSearchMoenyID.setTextSize(60);
-			mydialog.textDialogAllMoenyTitleID.setTextSize(60);
-			mydialog.textDialogSearchMoenyTitleID.setTextSize(60);
+			mydialog.textDialogAllMoenyID.setTextSize(26);
+			mydialog.textDialogSearchMoenyID.setTextSize(26);
+			mydialog.textDialogAllMoenyTitleID.setTextSize(26);
+			mydialog.textDialogSearchMoenyTitleID.setTextSize(26);
 			mydialog.textDialogAllMoenyTitleID.setText(stringResComponent.totalPrie);
 			mydialog.textDialogSearchMoenyTitleID.setText(stringResComponent.Surplus);
-			mydialog.textDialogAllMoenyID.setText(Constants.DOLLAR + totalPrice.getText().toString());
+			mydialog.textDialogAllMoenyID.setText(Constants.DOLLAR + MyNumberUtils.numToStr(showTotalPrice));
 			mydialog.textDialogSearchMoenyID.setText(Constants.DOLLAR + surplus.getText().toString());
+			mydialog.textDialogGSTMoenyID.setText(Constants.DOLLAR + MyNumberUtils.numToStr(gstCharge));
+			mydialog.textDialogSCMoenyID.setText(Constants.DOLLAR + MyNumberUtils.numToStr(serviceCharge));
+			mydialog.textDialogSumMoenyID.setText(Constants.DOLLAR + totalPrice.getText().toString());
 			mydialog.dialog_yes.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					mydialog.dismiss();
-					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils
-							.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal),MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 							.toString(), orderType);
+					// 支付时刷新下拉列表
+					if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+						for (int i = 0; i < orderList.size(); i++) {
+							if(StringUtils.equals(orderList.get(i), orderIdSelected))
+								orderList.remove(i);
+						}
+						FoodOrder.deleteOrderByOrderId(orderIdSelected);
+						updateSpinner(orderList);
+					}
 					// 保存数据------------------------------
-					storeOrders(orderType);
+					storeOrders(orderType, "", Constants.FOODORDER_SUBMIT_SUCCESS);
 					// 同步开始------------------------------
 					syncToServer();
 					// 清空数据------------------------------
@@ -501,85 +580,163 @@ public class OrderComponent {
 
 	private void doOrder(final String orderType) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
-			// 先打印数据，不耽误正常使用----------------------------
-			printList = getPrintList();
-			Log.i("[OrderComponent] -> [Result]", printList.toString());
-			androidPrinter.print(printList.toString(), MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils
-					.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(),
-					surplus.getText().toString(), orderType);
-			clean();
+			// 挂单操作
+			if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+				myOrderDialog.order_edt.setText(orderIdSelected);
+				myOrderDialog.order_msg_text.setText("");
+			}
+			myOrderDialog.show();
+			myOrderDialog.order_edt.setInputType(InputType.TYPE_CLASS_NUMBER);
+			myOrderDialog.dialog_yes.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					String tableId = myOrderDialog.order_edt.getText().toString().trim();
+					if (StringUtils.isEmpty(tableId)) {// 为空，提示输入订单号
+						myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
+						myOrderDialog.order_msg_text.setText(R.string.inputorder_message_empty);
+						getOrderEditFocus();
+					} else {// 不为空,判断订单号是否已存在.1,不存在，保存订单.2,存在，提示订单号已经存在.
+						if(StringUtils.equals(orderIdSelected, tableId)){
+							FoodOrder.deleteOrderByOrderId(orderIdSelected);
+							storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
+							myOrderDialog.order_msg_text.setText("");
+							myOrderDialog.order_edt.setText("");
+							orderIdSpinner.setSelection(0);
+							myOrderDialog.dismiss();
+							// 先打印数据，不耽误正常使用----------------------------
+							printOrder(orderType);
+							clean();
+						} else {
+							if(FoodOrder.queryOrderIdExist(tableId)){
+								myOrderDialog.order_msg_text.setVisibility(View.VISIBLE);
+								myOrderDialog.order_msg_text.setText(R.string.inputorder_message_error);
+								getOrderEditFocus();
+							}else{
+								FoodOrder.deleteOrderByOrderId(orderIdSelected);
+								storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
+								// 更新下拉框数据
+								if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+									for (int i = 0; i < orderList.size(); i++) {
+										if(StringUtils.equals(orderList.get(i), orderIdSelected)){
+											orderList.remove(i);
+										}
+									}
+								}
+								orderList.add(tableId);
+								updateSpinner(orderList);
+								myOrderDialog.order_msg_text.setText("");
+								myOrderDialog.order_edt.setText("");
+								myOrderDialog.dismiss();
+								// 先打印数据，不耽误正常使用----------------------------
+								printOrder(orderType);
+								clean();
+							}
+						}
+					}
+				}
+			});
+			myOrderDialog.dialog_cancel.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					myOrderDialog.order_edt.setText("");
+					myOrderDialog.order_msg_text.setVisibility(View.GONE);
+					myOrderDialog.order_msg_text.setText("");
+					myOrderDialog.dismiss();
+				}
+			});
 		}
 	}
-
+	
+	/**
+	 * 订单号输入框重新获取焦点
+	 */
+	public void getOrderEditFocus(){
+		myOrderDialog.order_edt.setFocusable(true);   
+		myOrderDialog.order_edt.setFocusableInTouchMode(true);   
+		myOrderDialog.order_edt.requestFocus();
+	}
+	
+	public void updateSpinner(List<String> orderLit){
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, orderList);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		orderIdSpinner.setSelection(0);
+		orderIdSpinner.setAdapter(adapter);
+	}
+	
+	public void printOrder(String orderType){
+		printList = getPrintList();
+		Log.i("[OrderComponent] -> [Result]", printList.toString());
+		androidPrinter.print(printList.toString(),MyNumberUtils.numToStr(subTotal), MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge), totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
+				.toString(), orderType);
+	}
+	
 	/**
 	 * 计算总金额
 	 */
 	public void doCalculation() {
-		double showTotalPrice = 0;
+		double sCharge = 0;
+		double gCharge = 0;
+		double sChargeSum = 0;
+		double gChargeSum = 0;
+		double allPrice = 0;
 		if (is_foc) {
 			// 免费的话，全部清空
-			showTotalPrice = 0;
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			allPrice = 0;
+			totalPrice.setText(MyNumberUtils.numToStr(allPrice));
 			for (SelectFoodBean bean : selectDataList) {
 				bean.setDabao_price(0);
-				bean.setPackageable(Constants.PACKAGEABLE_NO);
 				bean.setDazhe_price(0);
 			}
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice));
+			totalPrice.setText(MyNumberUtils.numToStr(allPrice));
 			calculatorComponent.compute_surplus();
 		} else {
-			for (SelectFoodBean bean : selectDataList) {
-				// 计算总价
-				int num = Integer.parseInt(bean.getFood_num());
-
-				// 计算打折，打包
-				double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
-				double dabao = num * package_money;
-				double dazhe = price * (1 - save_discount_price);
-				String type = bean.getFood_type();
-				if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
-					if (!is_discount && is_takePackage) {
-						showTotalPrice += dabao;
-						dazhe = 0;
-						bean.setPackageable(Constants.PACKAGEABLE_YES);
-					} else if (is_discount && !is_takePackage) {
-						showTotalPrice -= dazhe;
-						dabao = 0;
-						bean.setPackageable(Constants.PACKAGEABLE_NO);
-					} else if (!is_discount && !is_takePackage) {
-						dabao = 0;
-						dazhe = 0;
-						bean.setPackageable(Constants.PACKAGEABLE_NO);
-					} else if (is_discount && is_takePackage) {
-						showTotalPrice = showTotalPrice + dabao - dazhe;
-						bean.setPackageable(Constants.PACKAGEABLE_YES);
+			if(selectDataList.size() > 0){
+				for (SelectFoodBean bean : selectDataList) {
+					// 计算总价
+					int num = Integer.parseInt(bean.getFood_num());
+					double price = MyNumberUtils.strToNum(bean.getFood_price()) * num;
+					double dabao = 0;
+					double dazhe = 0;
+					String type = bean.getFood_type();
+					if (StringUtils.equalsIgnoreCase(type, Constants.MEMBER)) {
+						if (is_discount) {
+							dazhe = price * (1 - save_discount_price);
+							allPrice += (price - dazhe);
+						} else {
+							allPrice += price;
+						}
+						bean.setDabao_price(dabao);
+						bean.setDazhe_price(dazhe);
+					} else {
+						allPrice += price;
 					}
-					bean.setDabao_price(dabao);
-					bean.setDazhe_price(dazhe);
-//					if (is_discount) {
-//						dazhe = price * (1 - save_discount_price);
-//						showTotalPrice += (price * save_discount_price);
-//					} else {
-//						showTotalPrice += price;
-//					}
-//					bean.setDabao_price(dabao);
-//					bean.setDazhe_price(dazhe);
-				} 
-				showTotalPrice += price;
-			}
-			/*
-			 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10
-			 * to service Charge
-			 */
-			if (!myPrefs.serviceRate().get().isEmpty()) {
-				serviceCharge = showTotalPrice * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
-			}
-			if (!myPrefs.gstRate().get().isEmpty()) {
-				gstCharge = (showTotalPrice + serviceCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
-			}
+					
+					/*
+					 * Add GST and Service Charge , DB shall insert e.g. 7 to GST and 10 to service Charge
+					 */
+					if(!myPrefs.serviceRate().get().isEmpty()){
+						sCharge = price * (MyNumberUtils.strToNum(myPrefs.serviceRate().get()) * 0.01);
+						sChargeSum += sCharge;
+					    bean.setService_charge(sCharge);
+					}
+					if (!myPrefs.gstRate().get().isEmpty()){
+						gCharge = (price + sCharge) * (MyNumberUtils.strToNum(myPrefs.gstRate().get()) * 0.01);
+						gChargeSum += gCharge;
+						bean.setGst_charge(gCharge);
+					}
 
-			totalPrice.setText(MyNumberUtils.numToStr(showTotalPrice + gstCharge + serviceCharge));
-
+				}
+			} else {
+				serviceCharge = 0;
+				gstCharge = 0;
+				showTotalPrice = 0;
+			}
+						
+			totalPrice.setText(MyNumberUtils.numToStr(allPrice + sChargeSum + gChargeSum));
+			serviceCharge = sChargeSum;
+			gstCharge = gChargeSum;
+			showTotalPrice = allPrice;
+			
 			if (Double.parseDouble(gathering.getText().toString()) > 0) {
 				calculatorComponent.compute_surplus();
 			}
@@ -600,18 +757,18 @@ public class OrderComponent {
 		surplus.setText(Constants.DEFAULT_PRICE_FLOAT);
 		sbuff.delete(0, sbuff.length());
 		is_takePackage = false;
-		take_package.setImageResource(R.drawable.package_not_select);
+		// take_package.setImageResource(R.drawable.package_not_select);
 		is_discount = false;
 		discount.setImageResource(R.drawable.package_not_select);
 		is_foc = false;
-		foc.setImageResource(R.drawable.package_not_select);
+		// foc.setImageResource(R.drawable.package_not_select);
 	}
 
 	// 保存数据
-	void storeOrders(String orderType) {
+	void storeOrders(String orderType, String tableId, String flag) {
 		for (int i = 0; i < selectDataList.size(); i++) {
 			SelectFoodBean bean = selectDataList.get(i);
-			FoodOrder.save(bean, myApp, is_foc, orderType);
+			FoodOrder.save(bean, myApp, is_foc, orderType, tableId, flag);
 		}
 	}
 
@@ -644,6 +801,8 @@ public class OrderComponent {
 			params.put("transactions[" + i + "].totalRetailPrice", String.valueOf(foodOrder.retailPrice));
 			params.put("transactions[" + i + "].totalPackage", foodOrder.totalPackage);
 			params.put("transactions[" + i + "].freeOfCharge", foodOrder.foc);
+			params.put("transactions[" + i + "].gstCharge", String.valueOf(foodOrder.gstCharge));
+			params.put("transactions[" + i + "].serviceCharge", String.valueOf(foodOrder.serviceCharge));
 			params.put("transactions[" + i + "].orderDate", foodOrder.date);
 			params.put("transactions[" + i + "].type", foodOrder.orderType);
 			params.put("transactions[" + i + "].attributeIds", foodOrder.attributesID);
