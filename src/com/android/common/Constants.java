@@ -54,10 +54,10 @@ public final class Constants {
 	public static final String PROTOCOL = "http://";
 	/** 服务器IP */
 	public static final String HOST = "pos.emd.com.sg";
-	// public static final String HOST = "192.168.0.15";
+	//public static final String HOST = "192.168.0.24";
 
 	/** 服务器端口号 */
-	public static final String PORT = ":80";
+	public static final String PORT = ":9000";
 	/** 应用上下文名 */
 	public static final String APP = "";//
 	/** 应用上下文完整路径 */
