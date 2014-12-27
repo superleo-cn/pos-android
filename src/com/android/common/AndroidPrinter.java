@@ -134,7 +134,9 @@ public class AndroidPrinter {
 			setNormal();	
 			printContent(message);
 			if (flag) {
-				WifiPrintDriver.OpenDrawer((byte) 0X00, (byte) 0X00, (byte) 0X10);
+				WifiPrintDriver.OpenDrawer((byte) 0X30, (byte) 0X02, (byte) 0X10);
+				WifiPrintDriver.excute();
+				WifiPrintDriver.OpenDrawer((byte) 0X31, (byte) 0X02, (byte) 0X10);
 				WifiPrintDriver.excute();
 				WifiPrintDriver.ClearData();
 			}			
