@@ -1,6 +1,8 @@
 package com.android.activity;
 
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.android.R;
 import com.android.common.MyApp;
@@ -23,6 +25,7 @@ import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 //不需要标题
 @NoTitle
@@ -78,9 +81,17 @@ public class SettingActivity extends BasicActivity {
 	// 权限设置组件
 	@Bean
 	AccessRightComponent accessRightComponent;
+	
+	@ViewById(R.id.orderId_circle)
+	ImageView orderId_circle;
 
 	@App
 	MyApp myApp;
+	
+	@AfterViews
+	public void init(){
+		orderId_circle.setVisibility(View.GONE);
+	}
 	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {

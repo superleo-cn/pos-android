@@ -23,4 +23,6 @@
  	<color name="popup_main_background">#b0000000</color>
     <color name="choose_eara_item_press_color">#f4f4f4</color>
     <color name="inputorder_msg_color">#FF4500</color>
+    <color name="orderid_popupwindow_bg">#f1f1f1</color>
+    <color name="grey">#808080</color>
 </resources>

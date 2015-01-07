@@ -1,15 +1,19 @@
 package com.android.activity;
 
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.android.R;
 import com.android.component.ui.MenuComponent;
 import com.android.component.ui.daily.DailyPayComponent;
+import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Fullscreen;
 import com.googlecode.androidannotations.annotations.NoTitle;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 /**
  * @author jingang
@@ -27,6 +31,14 @@ public class DailyPayActivity extends BasicActivity {
 	
 	@Bean
 	public MenuComponent menuComponent;
+	
+	@ViewById(R.id.orderId_circle)
+	ImageView orderId_circle;
+	
+	@AfterViews
+	public void init(){
+		orderId_circle.setVisibility(View.GONE);
+	}
 
 	/**
 	 * @TODO: 最后放到基类里面去

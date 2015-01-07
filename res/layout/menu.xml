@@ -130,14 +130,34 @@
             android:background="#00000000"
             android:scaleType="fitXY" />
         
-        <Spinner 
+        <FrameLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            
+            <ImageView 
+                android:id="@+id/orderId_circle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle"/>
+            
+            <TextView
+                android:id="@+id/orderId_sum_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:textSize="18sp" 
+                android:textStyle="bold" />
+        </FrameLayout>
+        
+        <!-- <Spinner 
             android:id="@+id/orderId_spinner"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:background="@color/white"
-            android:visibility="visible"
-            android:layout_alignParentRight="true"/>
+            android:visibility="gone"
+            android:layout_alignParentRight="true"/> -->
     </RelativeLayout>
 
 </RelativeLayout>

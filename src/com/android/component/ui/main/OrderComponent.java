@@ -9,24 +9,29 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.android.R;
+import com.android.adapter.AttrbutesGridViewAdapter;
 import com.android.adapter.SelectListAdapter;
 import com.android.bean.SelectFoodBean;
 import com.android.common.AndroidPrinter;
@@ -40,8 +45,10 @@ import com.android.component.StringResComponent;
 import com.android.component.ToastComponent;
 import com.android.component.WifiComponent;
 import com.android.dialog.ConfirmDialog;
+import com.android.dialog.MyAttrbutesDialog;
 import com.android.dialog.MyDialog;
 import com.android.dialog.MyOrderDialog;
+import com.android.domain.AttributesR;
 import com.android.domain.FoodOrder;
 import com.android.domain.FoodR;
 import com.android.mapping.StatusMapping;
@@ -67,6 +74,9 @@ public class OrderComponent {
 
 	@RootContext
 	Context context;
+	
+	@RootContext
+	Activity activity;
 
 	@App
 	MyApp myApp; // 注入 MyApp
@@ -96,11 +106,17 @@ public class OrderComponent {
 	@ViewById(R.id.select_list)
 	ListView selectList; // 左上角面板
 	
-	@ViewById(R.id.orderId_spinner)
-	Spinner orderIdSpinner; // 菜单右侧下拉框
+	@ViewById(R.id.orderId_circle)
+	ImageView orderId_circle; // 菜单右侧图标
 
 	@ViewById(R.id.digit_btn)
 	GridView calucatorView; // 0-9按钮 用gridView做的按钮
+	
+	@ViewById(R.id.orderId_sum_tv)
+	TextView orderId_sum_tv; // 挂单数量
+	
+	@ViewById(R.id.orderid_lv)
+	ListView orderId_lv;
 
 	@Bean
 	AndroidPrinter androidPrinter;
@@ -132,9 +148,11 @@ public class OrderComponent {
 
 	private SelectListAdapter selectAdapter;
 	
-	private ArrayAdapter<String> orderAdapter;// 挂单下拉框适配器
+//	private ArrayAdapter<String> orderAdapter;// 挂单下拉框适配器
 	private List<String> orderList;
-	private String orderIdSelected;
+	private String orderIdSelected = "";
+	private PopupWindow orderIdPopupWindow;
+	private OrderIdListAdapter orderIdListAdapter;
 
 	private StringBuffer printList;
 	private StringBuffer sb;
@@ -200,42 +218,10 @@ public class OrderComponent {
 			}
 
 		});
-		orderList = FoodOrder.queryOrderListDistact();
-		if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
-			orderList.add(0, "--请选择--");
-		} else {
-			orderList.add(0, "--please select--");
-		}
-		orderAdapter = new ArrayAdapter<String>(context,
-				android.R.layout.simple_spinner_item, orderList);
-		orderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		orderIdSpinner.setAdapter(orderAdapter);
-		orderIdSpinner.setSelection(-1, true);
-		orderIdSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> adapterView, View view,
-					int position, long arg3) {
-				// 选择订单号，重置订单数据
-				clean();
-				orderIdSelected = orderList.get(position);
-				List<FoodOrder> foodOrderList = FoodOrder.queryListByOrderId(orderIdSelected);
-				for (FoodOrder foodOrder : foodOrderList) {
-					FoodR foodR = FoodR.queryFoodRByFoodId(foodOrder.foodId);
-					String type = sharedPrefs.language().get();
-					if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
-						foodR.title = foodR.nameZh;
-					} else {
-						foodR.title = foodR.name;
-					}
-					update(foodR, foodOrder.quantity);
-				}
-			}
+		
+		// 初始化右上角订单数量
+		setOrderIdSum();
 
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-
-		});
 		// 初始化订单价钱
 		sbuff = new StringBuffer();
 		save_discount_price = MyNumberUtils.strToNum(sharedPrefs.discount().get());
@@ -263,6 +249,47 @@ public class OrderComponent {
 		// barCodeText.setFocusable(true);
 		// barCodeText.requestFocus();
 
+	}
+	
+	/**
+	 * 设置初始挂单数量
+	 */
+	public void setOrderIdSum(){
+		orderList = new ArrayList<String>();
+		orderList = FoodOrder.queryOrderListDistact();
+		int orderListSize = orderList.size();
+		orderId_sum_tv.setText(String.valueOf(orderListSize));
+	}
+	
+	/**
+	 * 调出挂单的订单列表
+	 */
+	@Click(R.id.orderId_circle)
+	public void showOrderIds(){
+		if (orderList.size() > 0){
+			initPopupWindow();
+		}
+	}
+	
+	/**
+	 * 初始化挂单列表popupwindow
+	 */
+	public void initPopupWindow(){
+		View view = activity.getLayoutInflater().inflate(R.layout.popupwindow_orderid, null);
+	    orderId_lv = (ListView) view.findViewById(R.id.orderid_lv);
+	    orderIdListAdapter = new OrderIdListAdapter(context, orderList);
+	    orderId_lv.setAdapter(orderIdListAdapter);
+		if (orderIdPopupWindow == null) {
+		    orderIdPopupWindow = new PopupWindow(view, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		    orderIdPopupWindow.setOutsideTouchable(true);
+		    orderIdPopupWindow.setFocusable(true);
+		    orderIdPopupWindow.setBackgroundDrawable(new BitmapDrawable(context.getResources()));
+		    orderIdPopupWindow.setWidth(300);
+		    orderIdPopupWindow.setHeight(500);
+		    orderIdPopupWindow.showAtLocation(orderId_circle, Gravity.CENTER, 0, -5);
+		} else {
+			orderIdPopupWindow.showAtLocation(orderId_circle, Gravity.CENTER, 0, -5);
+		}
 	}
 
 	//
@@ -553,13 +580,15 @@ public class OrderComponent {
 					androidPrinter.print(sb.toString(), MyNumberUtils.numToStr(subTotal),MyNumberUtils.numToStr(gstCharge), MyNumberUtils.numToStr(serviceCharge),totalPrice.getText().toString(), gathering.getText().toString(), surplus.getText()
 							.toString(), orderType);
 					// 支付时刷新下拉列表
-					if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+					if(!StringUtils.equals(orderIdSelected, "")){
 						for (int i = 0; i < orderList.size(); i++) {
 							if(StringUtils.equals(orderList.get(i), orderIdSelected))
 								orderList.remove(i);
 						}
 						FoodOrder.deleteOrderByOrderId(orderIdSelected);
-						updateSpinner(orderList);
+						orderId_sum_tv.setText(String.valueOf(orderList.size()));
+						orderIdSelected = "";
+//						updateOrderIdList(orderList);
 					}
 					// 保存数据------------------------------
 					storeOrders(orderType, "", Constants.FOODORDER_SUBMIT_SUCCESS);
@@ -581,7 +610,7 @@ public class OrderComponent {
 	private void doOrder(final String orderType) {
 		if (CollectionUtils.isNotEmpty(selectDataList)) {
 			// 挂单操作
-			if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+			if(!StringUtils.equals(orderIdSelected, "")){
 				myOrderDialog.order_edt.setText(orderIdSelected);
 				myOrderDialog.order_msg_text.setText("");
 			}
@@ -601,7 +630,7 @@ public class OrderComponent {
 							storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
 							myOrderDialog.order_msg_text.setText("");
 							myOrderDialog.order_edt.setText("");
-							orderIdSpinner.setSelection(0);
+//							orderIdSpinner.setSelection(0);
 							myOrderDialog.dismiss();
 							// 先打印数据，不耽误正常使用----------------------------
 							printOrder(orderType);
@@ -612,10 +641,10 @@ public class OrderComponent {
 								myOrderDialog.order_msg_text.setText(R.string.inputorder_message_error);
 								getOrderEditFocus();
 							}else{
-								FoodOrder.deleteOrderByOrderId(orderIdSelected);
 								storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
 								// 更新下拉框数据
-								if(orderIdSpinner.getSelectedItemPosition() != 0 && !StringUtils.equals(orderIdSelected, "")){
+								if(!StringUtils.equals(orderIdSelected, "")){
+									FoodOrder.deleteOrderByOrderId(orderIdSelected);
 									for (int i = 0; i < orderList.size(); i++) {
 										if(StringUtils.equals(orderList.get(i), orderIdSelected)){
 											orderList.remove(i);
@@ -623,7 +652,8 @@ public class OrderComponent {
 									}
 								}
 								orderList.add(tableId);
-								updateSpinner(orderList);
+								orderId_sum_tv.setText(String.valueOf(orderList.size()));
+//								updateOrderIdList(orderList);
 								myOrderDialog.order_msg_text.setText("");
 								myOrderDialog.order_edt.setText("");
 								myOrderDialog.dismiss();
@@ -656,11 +686,10 @@ public class OrderComponent {
 		myOrderDialog.order_edt.requestFocus();
 	}
 	
-	public void updateSpinner(List<String> orderLit){
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, orderList);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		orderIdSpinner.setSelection(0);
-		orderIdSpinner.setAdapter(adapter);
+	public void updateOrderIdList(List<String> orderList){
+		orderIdListAdapter = new OrderIdListAdapter(context, orderList);
+		orderId_lv.setAdapter(orderIdListAdapter);
+		orderIdListAdapter.notifyDataSetChanged();
 	}
 	
 	public void printOrder(String orderType){
@@ -875,5 +904,114 @@ public class OrderComponent {
 
 	public void setCalculatorComponent(CalculatorComponent calculatorComponent) {
 		this.calculatorComponent = calculatorComponent;
+	}
+	
+	class OrderIdListAdapter extends BaseAdapter {
+		private float x, ux;
+		private Context context;
+		private LayoutInflater inflater;
+		private List<String> orderIdList;
+
+		public OrderIdListAdapter(Context context, List<String> orderIdList) {
+			this.context = context;
+			this.orderIdList = orderIdList;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+		@Override
+		public int getCount() {
+			return orderIdList.size();
+		}
+
+		@Override
+		public Object getItem(int position) {
+			return orderIdList.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			ViewHolder viewHolder;
+			convertView = inflater.inflate(R.layout.orderid_item, null);
+			viewHolder = new ViewHolder();
+			viewHolder.orderid_tv = (TextView) convertView
+					.findViewById(R.id.orderid_tv);
+			viewHolder.orderid_tv.setText(String.valueOf(getItem(position)));
+			convertView.setTag(viewHolder);
+			
+			/*convertView.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					clean();
+					orderIdSelected = orderIdList.get(position);
+					List<FoodOrder> foodOrderList = FoodOrder.queryListByOrderId(orderIdSelected);
+					for (FoodOrder foodOrder : foodOrderList) {
+						FoodR foodR = FoodR.queryFoodRByFoodId(foodOrder.foodId);
+						String type = sharedPrefs.language().get();
+						if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+							foodR.title = foodR.nameZh;
+						} else {
+							foodR.title = foodR.name;
+						}
+						update(foodR, foodOrder.quantity);
+					}
+					orderIdPopupWindow.dismiss();
+				}
+			});*/
+			// 为每一个view项设置触控监听
+			convertView.setOnTouchListener(new OnTouchListener() {
+				public boolean onTouch(View v, MotionEvent event) {
+					// 当按下时处理
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						// 获取按下时的x轴坐标
+						x = event.getX();
+					} else if (event.getAction() == MotionEvent.ACTION_UP) {// 松开处理
+						// 获取松开时的x坐标
+						ux = event.getX();
+						if (x - ux > 0 && Math.abs(x - ux) >= 20) { // 向左
+							if (!StringUtils.equals(orderIdSelected, "")){
+								clean();
+							}
+							String orderId = orderList.get(position);
+							FoodOrder.deleteOrderByOrderId(orderId);
+							orderList.remove(position);
+							orderIdPopupWindow.dismiss();
+							orderId_sum_tv.setText(String.valueOf(orderIdList.size()));
+							orderIdListAdapter.notifyDataSetChanged();
+							return true;
+						} else{
+							clean();
+							orderIdSelected = orderIdList.get(position);
+							List<FoodOrder> foodOrderList = FoodOrder.queryListByOrderId(orderIdSelected);
+							for (FoodOrder foodOrder : foodOrderList) {
+								FoodR foodR = FoodR.queryFoodRByFoodId(foodOrder.foodId);
+								String type = sharedPrefs.language().get();
+								if (StringUtils.equalsIgnoreCase(Locale.SIMPLIFIED_CHINESE.getLanguage(), type)) {
+									foodR.title = foodR.nameZh;
+								} else {
+									foodR.title = foodR.name;
+								}
+								update(foodR, foodOrder.quantity);
+							}
+							orderIdPopupWindow.dismiss();
+							return true;
+						}
+					}
+					return true;
+				}
+			});
+
+			return convertView;
+		}
+
+		public final class ViewHolder {
+			TextView orderid_tv;
+		}
+
 	}
 }
