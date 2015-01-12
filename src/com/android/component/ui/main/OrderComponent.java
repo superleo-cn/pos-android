@@ -31,7 +31,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.R;
-import com.android.adapter.AttrbutesGridViewAdapter;
 import com.android.adapter.SelectListAdapter;
 import com.android.bean.SelectFoodBean;
 import com.android.common.AndroidPrinter;
@@ -628,9 +627,9 @@ public class OrderComponent {
 						if(StringUtils.equals(orderIdSelected, tableId)){
 							FoodOrder.deleteOrderByOrderId(orderIdSelected);
 							storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
+							orderIdSelected = "";
 							myOrderDialog.order_msg_text.setText("");
 							myOrderDialog.order_edt.setText("");
-//							orderIdSpinner.setSelection(0);
 							myOrderDialog.dismiss();
 							// 先打印数据，不耽误正常使用----------------------------
 							printOrder(orderType);
@@ -642,7 +641,7 @@ public class OrderComponent {
 								getOrderEditFocus();
 							}else{
 								storeOrders(Constants.PAYTYPE_CARD, tableId, Constants.FOODORDER_PAUSE);
-								// 更新下拉框数据
+								// 更新popupwindow数据
 								if(!StringUtils.equals(orderIdSelected, "")){
 									FoodOrder.deleteOrderByOrderId(orderIdSelected);
 									for (int i = 0; i < orderList.size(); i++) {
@@ -653,7 +652,6 @@ public class OrderComponent {
 								}
 								orderList.add(tableId);
 								orderId_sum_tv.setText(String.valueOf(orderList.size()));
-//								updateOrderIdList(orderList);
 								myOrderDialog.order_msg_text.setText("");
 								myOrderDialog.order_edt.setText("");
 								myOrderDialog.dismiss();
